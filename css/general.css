@@ -1,8 +1,46 @@
 body {
 	font-family: "Gadugi";
+}
+/*
+img {
+	border-radius: 10%;
+	padding: 20px;
+}
+*/
+h1, h2, h3 {
+	color: #555555;
+	padding: 0 15% 0 15%;
+}
+
+h1 {
+	font-size: 40px;
+}
+
+coverphoto {
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	box-sizing: border-box;
 	text-align: center;
 }
 
-img {
-	border-radius: 10%;
+p {
+	width: 70%;
+	padding: 0 15% 0 15%;
+	font-size: 20px;
+	margin: 0 0 20px 0;
+}
+
+.photocaption {
+	font-size: 5;
+	margin: 0;
+	margin-top: -12px;
+	text-align: left;
+}
+
+details {
+	width: 70%;
+	padding: 5% 15% 0 15%;
+	font-size: 20px;
 }
