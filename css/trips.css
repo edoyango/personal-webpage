@@ -1,0 +1,30 @@
+.container {
+	width: 70%;
+	max-width: 800px;
+	padding: 0 15% 0 15%;
+}
+
+.linkbanner-left {
+	width: 50%;
+	float: left;
+	margin-top: -16px;
+}
+
+.linkbanner-right {
+	width: 50%;
+	float: right;
+	margin-top: -16px;
+}
+
+.linkbanner-left img, .linkbanner-right img {
+	width: 97.5%;
+}
+
+.linkbanner-left .label, .linkbanner-right .label {
+	position: relative;
+	font-size: min(2vw, 23px);
+	font-family: Garamond;
+	font-weight: bold;
+	color: white;
+	transform: translate(1%, -120%);
+}
