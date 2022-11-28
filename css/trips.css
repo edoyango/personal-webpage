@@ -28,3 +28,16 @@
 	color: white;
 	transform: translate(1%, -120%);
 }
+
+.gallerycontainer {
+	width: 100%;
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.gallerycontainer img {
+	max-width: 394;
+	width: 31%;
+	padding: 0 0 0 1.5%;
+}
