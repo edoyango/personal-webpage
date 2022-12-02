@@ -1,43 +1,22 @@
-.container {
-	width: 70%;
-	max-width: 800px;
-	padding: 0 15% 0 15%;
-}
-
-.linkbanner-left {
+.linkbanner {
 	width: 50%;
-	float: left;
-	margin-top: -16px;
+	display: inline-block;
 }
 
-.linkbanner-right {
-	width: 50%;
-	float: right;
-	margin-top: -16px;
-}
-
-.linkbanner-left img, .linkbanner-right img {
+.linkbanner img {
 	width: 97.5%;
+	padding: 1.25%;
+	position: relative;
 }
 
-.linkbanner-left .label, .linkbanner-right .label {
-	position: relative;
+.linkbanner .label, .linkbanner .label {
+	display: block;
+	position: absolute;
 	font-size: min(2vw, 23px);
 	font-family: Garamond;
 	font-weight: bold;
 	color: white;
-	transform: translate(1%, -120%);
-}
-
-.gallerycontainer {
-	width: 100%;
-	max-width: 1200px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.gallerycontainer img {
-	max-width: 394;
-	width: 31%;
-	padding: 0 0 0 1.5%;
+	transform: translate(3%, -120%);
+	width: 35%;
+	max-width: 390px;
 }
