@@ -1,12 +1,10 @@
 body {
 	font-family: Gadugi;
+	margin: 0;
+	border: 0;
+	padding: 0;
 }
-/*
-img {
-	border-radius: 10%;
-	padding: 20px;
-}
-*/
+
 h1, h2, h3 {
 	color: #555555;
 	padding: 0 15% 0 15%;
@@ -16,20 +14,24 @@ h1 {
 	font-size: 40px;
 }
 
-coverphoto {
+.fullwidth, .longwidth, .normalwidth {
+	width: 100%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
 
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	box-sizing: border-box;
-	text-align: center;
+.longwidth {
+	max-width: 1200px;
+}
+
+.normalwidth {
+	max-width: 800px;
+	width: 70%;
 }
 
 p {
-	width: 70%;
-	padding: 0 15% 0 15%;
 	font-size: 20px;
-	margin: 0 0 20px 0;
 }
 
 .photocaption {
@@ -40,7 +42,10 @@ p {
 }
 
 details {
-	width: 70%;
-	padding: 5% 15% 0 15%;
 	font-size: 20px;
 }
+
+/*
+.normalwidthcontentscale {
+	padding: min(
+*/
