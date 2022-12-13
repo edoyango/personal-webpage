@@ -1,15 +1,10 @@
-.imgtile {
-	width: 33.33%;
-	display: inline-block;
+.gallery {
+	grid-template-columns: repeat(3, 1fr); 
+	display: grid;
+	grid-gap: 1.25%;
 }
 
-.imgtile img {
-	width: 97.5%;
-	padding: 1.25%;
-	position: relative;
-}
-
-.imgtile .label, .imgtile .label {
+.gallery .label {
 	display: block;
 	position: absolute;
 	font-size: min(2vw, 23px);
@@ -19,9 +14,4 @@
 	transform: translate(3%, -120%);
 	width: 35%;
 	max-width: 390px;
-}
-
-/* extending long width */
-.longwidth {
-	font-size: 0;
 }
