@@ -4,7 +4,7 @@
 	grid-gap: 1.25%;
 }
 
-.gallery .label {
+.gallery .gallerylabel {
 	display: block;
 	position: absolute;
 	font-size: min(2vw, 23px);
