@@ -8,4 +8,4 @@ import sys
 args = sys.argv[1:]
 for i in args:
 	img = Image.open(i)
-	img.save(i,optimize=True,quality=85)
+	img.save(i,optimize=True,quality=80)
