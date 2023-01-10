@@ -1,0 +1,80 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes</title>
+		<link href="../../css/general.css" rel="stylesheet">
+		<link href="../../css/topnav.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="../../index.html">Home</a></li>
+					<li class="nav-item"><a href="../../about.html">About Me</a></li>
+					<li class="nav-item active"><a href="../index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="../../trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="../../apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+			<h1>Installing CUDA + NVHPC on WSL</h1>
+            <p>This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.</p>
+            <ol>
+                <li>Install the <a href="https://www.nvidia.com/Download/index.aspx?lang=en-us">latest Windows CUDA graphics driver</a></li>
+                <li>Install WSL2
+                    <ol type="a">
+                        <li>open PowerShell as administrator</li>
+                        <li>Make sure to update WSL kernel to latest version <code>wsl --update</code>
+                        <ol type="i">
+                            <li>if accidentally rolled back, follow the instructions <a href="https://github.com/microsoft/WSL/issues/5452">here</a></li>
+                            <li>then <code>wsl --update</code> again</li>
+                        </ol></li>
+                        <li>check which Linux flavours are available with <code>wsl --list --online</code></li>
+                        <li>install the desired flavour by <code>wsl --install -d &lt;flavour name&gt;</code></li>
+                        <li>start WSL with <code>wsl</code>, or opening the WSL application from the Windows search bar</li>
+                    </ol>
+                </li>
+                <li><code>sudo apt update && sudo apt upgrade -y</code></li>
+                <li>Close and restart WSL</li>
+                <li><code>sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y</code></li>
+                <li>Install CUDA for WSL
+                    <ol type="a">
+                        <li>check which CUDA version is compatible with the desired version NVHPC kit <a href="https://developer.nvidia.com/nvidia-hpc-sdk-downloads">here</a></li>
+                        <li>select the correct CUDA version <a href="https://developer.nvidia.com/cuda-toolkit-archive">here</a></li>
+                        <li>Select the right setup: Linux -> x86_64 -> WSL-Ubuntu -> 2.0 -> dev (local)</li>
+                        <li>before beginning install, delete old GPG key <code>sudo apt-key del 7fa2af80</code></li>
+                        <li><pre><code>wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin
+sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb
+sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb
+sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda</code></pre></li>
+                    </ol>
+                </li>
+                <li>Install NVHPC
+                    <ol type="a">
+                        <li>Download the desired <a href="https://developer.nvidia.com/nvidia-hpc-sdk-downloads">NVHPC kit</a></li>
+                        <li><code>tar xzvf &lt;nvhpc*.tar.gz&gt;</code></li>
+                        <li><code>sudo nvhpc*/install</code></li>
+                    </ol>
+                </li>
+            </ol>
+            <h1>Uninstalling NVHPC and CUDA</h1>
+            <pre><code>sudo rm /opt/nvidia/hpc_sdk
+sudo apt-get purge -y cuda && sudo apt-get autoremove -y
+sudo rm /usr/share/keyrings/cuda-*-keyring.gpg
+sudo dpdkg -P cuda-repo-wsl-ubuntu-*-*-local_*amd64.deb</code></pre>
+            <p>You can then perform the installation steps again for the desired NVHPC-CUDA combination</p>
+		</div>
+		<div class="footer">
+			<h2>Links:</h2>
+			<p><a href="mailto:edward_yang_125@hotmail.com">Email</a> <a href="https://www.github.com/edoyango">Github</a> <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1">LinkedIn</a></p>
+		</div>
+	</body>
+</html>
