@@ -22,7 +22,7 @@ h1 {
 	max-width: 1200px;
 }
 
-.normalwidth {
+.normalwidth, hr {
 	max-width: 800px;
 	width: 70%;
 }
@@ -33,4 +33,25 @@ p, ul, li {
 
 details {
 	font-size: 20px;
+}
+
+.footer {
+	background-color: #fff;
+	padding: 0 15% 0 15%;
+}
+
+.footer p {
+	font-size: 12px;
+	margin-top: 0px;
+}
+
+.footer img {
+	height: 12px;
+}
+
+body hr {
+	height: 3px;
+	background-color: #aaa;
+	border-width: 0;
+	margin-bottom: 6px;
 }
