@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes - Raspberry Pis</title>
+		<link href="../../css/general.css" rel="stylesheet">
+		<link href="../../css/topnav.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="../index.html">Home</a></li>
+					<li class="nav-item"><a href="../about.html">About Me</a></li>
+					<li class="nav-item active"><a href="index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="../trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="../apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+			<h1>Setting Up Raspberry Pi Slurm Cluster</h1>
+			<p><ol>
+				<li>Flash disk(s) with raspberry pi lite. Insert disk(s) into pi(s) and power them on.</li>
+				<li>Run <code>sudo raspi-config</code>
+					<ol>
+						<li>update raspi-config</li>
+						<li>change hostname</li>
+						<li>setup ssh</li>
+						<li>change password for pi user</li>
+						<li>set wlan locale</li>
+						<li>set timezone</li>
+					</ol>
+				</li>
+				<li>Setup ssh keys on pis</li>
+				<li>update <code>/etc/hosts</code> with all hosts names. e.g.:
+					<pre><code>10.0.0.1 pimananager
+10.0.0.2 picompute1
+10.0.0.3 picompute2</code></pre>
+				</li>
+				<li>Setup dhcp server on manager/login node (<a href="https://downey.io/blog/create-raspberry-pi-3-router-dhcp-server/">detailed instructions</a>)<ol type="a">
+					<li>Install packages required for this step:
+						<pre><code>sudo apt install iptables dnsmasq</code></pre></li>
+					<li>In <code>/etc/dhcpcd.conf</code>, add the following:
+					<pre><code>interface eth0 # for the ethernet network
+static ip_address=10.0.0.1/8 # provide static ip of 10.0.0.1
+static domain_name_servers=8.8.8.8,8.8.4.4 #???
+nolink # sets up the interface without being attached to ethernet</code></pre></li>
+					<li>move default config file and create new one with text below:
+						<pre><code>sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.old
+sudo nano /etc/dnsmasq.conf
+
+interface=eth0
+listen-address=10.0.0.1
+dhcp-range=10.0.0.32,10.0.0.128,12h
+dhcp-host=&lt;mac-address of nodes&gt;,10.0.0.2
+dhcp-host=&lt;mac-address of nodes&gt;,10.0.0.3
+...
+server=8.8.8.8
+server=8.8.4.4
+bind-interfaces
+domain-needed
+bogus-priv
+expand-hosts</code></pre>
+					</li>
+					<li>add <code>sleep 10</code> to very start of <code>/etc/init.d/dnsmasq</code></li>
+					<li>reboot manager/login node</li>
+					<li>from <code>/etc/sysctl.conf</code>, uncomment <code>net.ipv4.ip_forward=1</code></li>
+					<li>Add iptables rules:
+						<pre><code>sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE
+sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT</code></pre>
+					</li>
+					<li>ensure iptables rules are presistent between boots:
+						<pre><code>sudo apt install iptables-persistent</code></pre>
+					</li>
+					<li>reboot switch and check DHCP leases were granted:
+						<pre><code>cat /var/lib/misc/dnsmasq.leases</code></pre>
+						Internet should be being forwarded to new nodes
+					</li>
+				</ol></li>
+				<li>update existing packages on all nodes:
+					<pre><code>sudo apt update; sudo apt upgrade -y; sudo apt update</code></pre>
+				</li>
+				<li>packages to install:
+					<pre><code>sudo apt install cmake tcl tcl-dev ntpdate tmux git slurm-wlm openmpi-bin openmpi-common libopenmpi3 libopenmpi-dev git tree -y</code></pre>
+				</li>
+				<li>turn off swapfiles (kills the sd card):
+					<pre><code>sudo dphys-swapfile swapoff
+sudo dphys-swapfile uninstall
+sudo update-rc.d dphys-swapfile remove
+					</code></pre>
+				</li>
+				<li>Setup NFS for shared filesystem:
+					<ol type="a">
+						<li>on the node with the drive connected:
+							<ol type="i">
+								<li>install nfs server package:
+									<pre><code>sudo apt install nfs-kernel-server -y</code></pre>
+								</li>
+								<li>identify partition with <code>lsblk</code> and corresponding UUID with <code>blkid</code></li>
+								<li>format disk:
+									<pre><code>sudo mkfs -t ext4 /dev/&lt;partition&gt;</code></pre>
+								</li>
+								<li>make directory drive is to be mounted on:
+									<pre><code>sudo mkdir &lt;directory&gt;</code></pre>
+								</li>
+								<li>mount drive by <code>sudo nano /etc/fstab</code> add the following:
+									<pre><code>UUID=&lt;UUID&gt; &lt;directory to mount to&gt; ext4 defaults 0 &lt;next integer in the list&gt;</code></pre>
+								</li>
+								<li>export the nfs by editing <code>sudo nano /etc/exports/</code> and add the following</li>
+								<pre><code>&lt;directory to export&gt; &lt;ip style&gt;/&lt;search format&gt;(rw,sync,no_root_squash,no_subtree_check)</code></pre>
+								examples:
+								<pre><code>/clusterfs 192.168.1.0/255.255.255.0(rw,sync,no_root_squash,no_subtree_check)
+/clusterfs 10.0.0.0/8.8.8.0(rw,sync,no_root_squash,no_subtree_check)
+								</code></pre>
+								<li>mount the drive and then export:
+									<pre><code>sudo mount -a
+sudo exportfs -a
+									</code></pre>
+								</li>
+							</ol>
+						</li>
+						<li>on the nodes not connect to the drive:
+							<ol type="i">
+								<li>install nfs common package:
+									<pre><code>sudo apt install nfs-common -y</code></pre>
+								</li>
+								<li>make directory drive where nfs folder is to be located. For purposes of MPI programs, make the folder name the same on all nodes</li>
+								<li>mount drive by <code>sudo nano /etc/fstab</code> and add the following lines:
+									<pre><code>&lt;ip of node with drive&gt;:&lt;directory&gt; &lt;directory&gt; nfs defaults 0 &lt;next index&gt;</code></pre>
+								</li>
+								<li>mount drive:
+									<pre><code>sudo mount -a</code></pre>
+								</li>
+							</ol>
+						</li>
+					</ol>
+				</li>
+				<li>install spack on nfs and setup spack env to load for root
+					<ol type="a">
+						<li>
+							<pre><code>cd /clusterfs
+git clone -c feature.manyFiles=true https://github.com/spack/spack.git</code></pre>
+						</li>
+						<li>add spack setup script to root <code>.bashrc</code> by <code>sudo nano /root/.bashrc</code> and add:
+						<pre><code>. <spack install directory>/share/spack/setup-env.sh</code></pre></li>
+					</ol>
+				</li>
+			</ol>
+		</div>
+
+		<hr>
+		<div class="footer">
+			<p>Content first published: 18 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 18 Jan 2023</p>
+			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="../../static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="../../static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="../../static/logos/linkedin.png"> LinkedIn</a></p>
+		</div>
+		
+	</body>
+</html>
