@@ -35,7 +35,7 @@
 						<li>set timezone</li>
 					</ol>
 				</li>
-				<li>Setup ssh keys on pis</li>
+				<li>Setup ssh keys on pis (<strong>would prefer sshd to automatically use a key-pair for inter-node ssh</strong>)</li>
 				<li>update <code>/etc/hosts</code> with all hosts names. e.g.:
 					<pre><code>10.0.0.1 pimananager
 10.0.0.2 picompute1
@@ -66,7 +66,7 @@ domain-needed
 bogus-priv
 expand-hosts</code></pre>
 					</li>
-					<li>add <code>sleep 10</code> to very start of <code>/etc/init.d/dnsmasq</code></li>
+					<li>add <code>sleep 10</code> to very start of <code>/etc/init.d/dnsmasq</code></li> <strong>needs to be improved on</strong>
 					<li>reboot manager/login node</li>
 					<li>from <code>/etc/sysctl.conf</code>, uncomment <code>net.ipv4.ip_forward=1</code></li>
 					<li>Add iptables rules:
@@ -91,8 +91,7 @@ sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT</code></pre>
 				<li>turn off swapfiles (kills the sd card):
 					<pre><code>sudo dphys-swapfile swapoff
 sudo dphys-swapfile uninstall
-sudo update-rc.d dphys-swapfile remove
-					</code></pre>
+sudo update-rc.d dphys-swapfile remove</code></pre>
 				</li>
 				<li>Setup NFS for shared filesystem:
 					<ol type="a">
@@ -119,8 +118,7 @@ sudo update-rc.d dphys-swapfile remove
 								</code></pre>
 								<li>mount the drive and then export:
 									<pre><code>sudo mount -a
-sudo exportfs -a
-									</code></pre>
+sudo exportfs -a</code></pre>
 								</li>
 							</ol>
 						</li>
@@ -147,7 +145,8 @@ sudo exportfs -a
 git clone -c feature.manyFiles=true https://github.com/spack/spack.git</code></pre>
 						</li>
 						<li>add spack setup script to root <code>.bashrc</code> by <code>sudo nano /root/.bashrc</code> and add:
-						<pre><code>. <spack install directory>/share/spack/setup-env.sh</code></pre></li>
+						<pre><code>. <spack install directory>/share/spack/setup-env.sh</code></pre>
+						(<strong>would prefer this to be setup system wide</strong>)</li>
 					</ol>
 				</li>
 			</ol>
