@@ -49,6 +49,19 @@ insert example code</code></pre>
 				</li>
 				<li>Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone.</li>
 			</ul></p>
+			<h2>Setting up a development webserver on WSL2</h2>
+			<p>If you're on a Windows machine like I am, you can use WSL2 to test the html code. To setup WSL2, follow the instructions <a href="https://learn.microsoft.com/en-us/windows/wsl/install">here</a>.</p>
+			<p>You then need to setup <code>systemd</code> so the Apache web server package will work properly. To set it up, follow the instructions below (reproduced from <a href="https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/">these instructions</a> in case the page disappears):</p>
+			<ol>
+				<li>Inside the WSL2 instance, edit/create the <code>/etc/wsl.conf</code> file and add the following lines of code:
+					<pre><code>[boot]
+systemd=true</code></pre>
+				</li>
+				<li>Restart WSL by exiting WSL, opening a powershell terminal as administrator, and running the command <code>wsl --shutdown</code>. After doing so, <code>systemd</code> should be running!</li>
+			</ol>
+			<p>You can now go ahead and install the Apache web server packages:</p>
+			<pre><code>sudo apt install apache2</code></pre>
+			<p>and then copy your html code into <code>/var/www/html</code></p>
 		</div>
 
 		<hr>
