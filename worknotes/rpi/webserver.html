@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes - Raspberry Pis</title>
+		<link href="/css/general.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="/index.html">Home</a></li>
+					<li class="nav-item"><a href="/about.html">About Me</a></li>
+					<li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+			<h1>Setting Up Public Webserver on Raspberry Pi</h1>
+			<p>The instructions here assumes you're using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OS' are largely similar though. The main difference will be the packages and package managers, and the firewall tool.</p>
+			<p><ul>
+				<li>Setup the pi to host the server<ol>
+					<li>Flash disk with raspberry pi lite. Insert disk into pi and power them on.</li>
+					<li>(follow the instructions <a href="https://linuxhint.com/install_apache_web_server_ubuntu/">here</a> up to step 4)</li>
+				</ol></li>
+				<li>Setup router to forward http/https/ssh requests to the Raspberry Pi
+					<ol>
+						<li>Obtain MAC address of Raspberry Pi e.g.,
+							<pre><code>$ ip addr
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+	link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+	inet 127.0.0.1/8 scope host lo
+	   valid_lft forever preferred_lft forever
+	inet6 ::1/128 scope host
+	   valid_lft forever preferred_lft forever
+2: eth0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+	link/ether b8:27:eb:24:cb:98 brd ff:ff:ff:ff:ff:ff
+	inet 10.0.0.1/8 brd 10.255.255.255 scope global noprefixroute eth0
+	   valid_lft forever preferred_lft forever
+	inet6 fe80::1209:6b01:5af1:d12b/64 scope link tentative
+	   valid_lft forever preferred_lft forever
+3: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+	link/ether b8:27:eb:71:9e:cd brd ff:ff:ff:ff:ff:ff
+	inet 192.168.0.104/24 brd 192.168.0.255 scope global dynamic noprefixroute wlan0
+	   valid_lft 4773sec preferred_lft 3873sec
+	inet6 fe80::9a0:b632:2b19:bb89/64 scope link
+	   valid_lft forever preferred_lft forever</code></pre>
+							and the MAC address is the first address following <code>link/ether</code> for the interface you're using. If the Raspberry Pi is connected to the router via WiFi, then you use the <code>wlan</code> address. If connected via ethernet cable, then you use the <code>eth0</code> address. In the above example, I used the address <code>b8:27:eb:71:9e:cd</code>, because my Pi is connected to the router via Wifi. We use this MAC address to link the physical device to an IP address in the next step.
+						</li>
+						<li>On the router:
+							<ol>
+								<li>Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. To do this on my routher (TP-Link AC1200), I browsed to <code>http://192.168.0.1</code>, signed in, and then went to "IP & MAC Binding" &#8594; "Binding Settings" &#8594; "Add New" and enter the MAC address collected from above and the desired IP to bind it to.</li>
+								<li>Setup port forwarding to forward packages to port 22, 80, 443, and 8443 to the IP address you've assigned the pi in the previous step. On my router, I navigated to "Forwarding" &#8594; "Virtual Server" &#8594; "Add New". This step forward incoming requests matching those ports, to the Raspberry Pi.
+								</li>
+								<li>Test the setup. While on a machine connected to the router, you can test ssh and http connection from the command line with <code>ssh pi@&lt;ip-address&gt;</code> and <code>curl http://&lt;ip-address&gt;</code><li>. You can also check http by entering the URL into your web browser: <code>http://&lt;ip-address&gt;</code>. Note that <code>&lt;ip-address&gt;</code> is the static IP address you assigned to the Pi on the router.
+							</ol>
+						</li>
+						<li>Sign an SSL certificate to enable HTTPS connections. This requires signing an SSL certificate. There are many paid services out there, but the free <a href="https://letencrypt.org">Let's Encrypt</a> SSL certificate signing service is the best option (because it's free). Using the automatic cert-bot option should be fine (<a href="https://certbot.eff.org/instructions?ws=apache&os=ubuntufocal">instructions for Ubuntu</a>).
+							You can test that the signed certificate works, by navigating to the Pi web server in a browser on another device i.e., <code>https://&lt;ip-address&gt;</code> (note the "s").
+						</li>
+					</ol>
+				</li>
+				<li>Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone.</li>
+			</ul></p>
+			<h2>Setting up a development webserver on WSL2</h2>
+			<p>If you're on a Windows machine like I am, you can use WSL2 to test the html code. To setup WSL2, follow the instructions <a href="https://learn.microsoft.com/en-us/windows/wsl/install">here</a>.</p>
+			<p>You then need to setup <code>systemd</code> so the Apache web server package will work properly. To set it up, follow the instructions below (reproduced from <a href="https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/">these instructions</a> in case the page disappears):</p>
+			<ol>
+				<li>Inside the WSL2 instance, edit/create the <code>/etc/wsl.conf</code> file and add the following lines of code:
+					<pre><code>[boot]
+systemd=true</code></pre>
+				</li>
+				<li>Restart WSL by exiting WSL, opening a powershell terminal as administrator, and running the command <code>wsl --shutdown</code>. After doing so, <code>systemd</code> should be running!</li>
+			</ol>
+			<p>You can now go ahead and install the Apache web server packages:</p>
+			<pre><code>sudo apt install apache2</code></pre>
+			<p>and then copy your html code into <code>/var/www/html</code>.</p>
+		</div>
+
+		<hr>
+		<div class="footer">
+			<p>Content first published: 21 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 21 Jan 2023</p>
+			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+		</div>
+		
+	</body>
+</html>
