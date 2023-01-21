@@ -32,13 +32,31 @@
 					<ol>
 						<li>Obtain MAC address of Raspberry Pi e.g.,
 							<pre><code>$ ip addr
-insert example code</code></pre>
-								and note the correct one based on which interface you're using to the router. I.e., if the Pi is connected to the router via WiFi, use the <code>wlan</code> MAC address. If connected via ethernet, use the <code>eth0</code> MAC address.
+1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+	link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+	inet 127.0.0.1/8 scope host lo
+	   valid_lft forever preferred_lft forever
+	inet6 ::1/128 scope host
+	   valid_lft forever preferred_lft forever
+2: eth0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+	link/ether b8:27:eb:24:cb:98 brd ff:ff:ff:ff:ff:ff
+	inet 10.0.0.1/8 brd 10.255.255.255 scope global noprefixroute eth0
+	   valid_lft forever preferred_lft forever
+	inet6 fe80::1209:6b01:5af1:d12b/64 scope link tentative
+	   valid_lft forever preferred_lft forever
+3: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+	link/ether b8:27:eb:71:9e:cd brd ff:ff:ff:ff:ff:ff
+	inet 192.168.0.104/24 brd 192.168.0.255 scope global dynamic noprefixroute wlan0
+	   valid_lft 4773sec preferred_lft 3873sec
+	inet6 fe80::9a0:b632:2b19:bb89/64 scope link
+	   valid_lft forever preferred_lft forever</code></pre>
+							and the MAC address is the first address following <code>link/ether</code> for the interface you're using. If the Raspberry Pi is connected to the router via WiFi, then you use the <code>wlan</code> address. If connected via ethernet cable, then you use the <code>eth0</code> address. In the above example, I used the address <code>b8:27:eb:71:9e:cd</code>, because my Pi is connected to the router via Wifi. We use this MAC address to link the physical device to an IP address in the next step.
 						</li>
 						<li>On the router:
 							<ol>
-								<li>Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. This will require the MAC address collected in the previous step.</li>
-								<li>Setup port forwarding to forward packages to port 22, 80, 443, and 8443 to the IP address you've assigned the pi in the previous step.</li>
+								<li>Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. To do this on my routher (TP-Link AC1200), I browsed to <code>http://192.168.0.1</code>, signed in, and then went to "IP & MAC Binding" &#8594; "Binding Settings" &#8594; "Add New" and enter the MAC address collected from above and the desired IP to bind it to.</li>
+								<li>Setup port forwarding to forward packages to port 22, 80, 443, and 8443 to the IP address you've assigned the pi in the previous step. On my router, I navigated to "Forwarding" &#8594; "Virtual Server" &#8594; "Add New". This step forward incoming requests matching those ports, to the Raspberry Pi.
+								</li>
 								<li>Test the setup. While on a machine connected to the router, you can test ssh and http connection from the command line with <code>ssh pi@&lt;ip-address&gt;</code> and <code>curl http://&lt;ip-address&gt;</code><li>. You can also check http by entering the URL into your web browser: <code>http://&lt;ip-address&gt;</code>. Note that <code>&lt;ip-address&gt;</code> is the static IP address you assigned to the Pi on the router.
 							</ol>
 						</li>
