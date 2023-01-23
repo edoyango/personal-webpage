@@ -65,9 +65,13 @@
 						</li>
 					</ol>
 				</li>
-				<li>Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone.</li>
+				<li>Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone. Some ISPs may not be blocking any ports either.</li>
+				<li>Purchase a domain and setup <a href="https://support.google.com/domains/answer/3290350">resource records</a> so that the domain points your IP address. I setup:<pre><code>Host Name	Type	TTL		Data
+ed-yang.com	A	10 minutes	&lt;my IP&gt;
+ed-yang.com	CAA	10 minutes	0 issues "letsencrypt.org"
+www.ed-yang.com	CNAME	10 minutes	ed-yang.com</code></pre></li>
 			</ul></p>
-			<h2>Setting up a development webserver on WSL2</h2>
+			<h2 id="wsl-webserver">Setting up a development webserver on WSL2</h2>
 			<p>If you're on a Windows machine like I am, you can use WSL2 to test the html code. To setup WSL2, follow the instructions <a href="https://learn.microsoft.com/en-us/windows/wsl/install">here</a>.</p>
 			<p>You then need to setup <code>systemd</code> so the Apache web server package will work properly. To set it up, follow the instructions below (reproduced from <a href="https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/">these instructions</a> in case the page disappears):</p>
 			<ol>
@@ -84,7 +88,7 @@ systemd=true</code></pre>
 
 		<hr>
 		<div class="footer">
-			<p>Content first published: 21 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 21 Jan 2023</p>
+			<p>Content first published: 21 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 23 Jan 2023</p>
 			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
 		</div>
 		
