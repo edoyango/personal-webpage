@@ -38,7 +38,7 @@
 
 			<h1>Snappy Hex Mesh Basics</h1>
             <p>This is a summary of meshing in OpenFOAM using the <code>snappyHexMesh</code> tool. I'm writing this in detail because I couldn't find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools. This only covers absolute basics and creating simple geometries. It only covers <code>snappyhexMesh</code> tool as the <a href="https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.4-mesh-generation-with-the-snappyhexmesh-utility">user guide for the basic tool <code>blockMesh</code></a> is pretty ok.</p>
-            <h2>Background</h2>
+            <h2 id="background">Background</h2>
             <p>The high-level of how <code>snappyHexMesh</code> works can be found <a href="https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.4-mesh-generation-with-the-snappyhexmesh-utility">here</a>.</p>
 
             <p>The basic steps are to:</p>
@@ -57,7 +57,7 @@
                 </li>
             </ol>
 
-            <h2>1. Defining the Background Mesh</h2>
+            <h2 id="define-bg-mesh">1. Defining the Background Mesh</h2>
             <p>This steps assumes that you know how to generate a simple mesh using the <code>blockMesh</code> utility. If you don't follow that guide first, and work through the excercises.</p>
             <p>The background mesh has to satisfy a few requirements:</p>
             <ul>
@@ -66,9 +66,9 @@
             </ul>
             <p>Otherwise defining a mesh in a manner described on the <a href="https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.3-mesh-generation-with-the-blockmesh-utility"><code>BlockMesh</code> guide</a> is sufficient.</p>
 
-            <h2>2. Creating an <code>stl</code> file</h2>
+            <h2 id="stl-file">2. Creating an <code>stl</code> file</h2>
             <p>As noted above, the <code>stl</code> mesh must be created in a way such that it is located inside or on the boundary of the background mesh. In addition to that, the mesh must be structured nicely (the exact requirements I'm not sure of). When I first started out, I couldn't find a tool that created nice meshes and was also easy to use. But, instead I found tools that can create crappy meshes, and another tool that can turn these meshes into nice meshes.</p>
-            <h3>a. Creating the basic shape</h3>
+            <h3 id="basic-mesh">a. Creating the basic shape</h3>
             <p>This step requires a Computer Aided Design (CAD) program. I found the following CAD programs to be basic, but free and perfectly fine for basic geometries:</p>
             <ul>
                 <li><a href="https://app.sketchup.com/app">SketchUp free</a> (<a href="https://www.youtube.com/watch?v=qgt2s9RzvKM">tutorial</a>)<br>
@@ -78,7 +78,7 @@
                     <code>stl</code> files can be exported using the "export" utility.
                 </li>
             </ul>
-            <h3>b. Converting the mesh into something nice</h3>
+            <h3 id="nice-mesh">b. Converting the mesh into something nice</h3>
             <p>The meshes the above tools create are not guaranteed to be nice e.g., meshes produced by the above utilities will have cells that are far from being equilateral.</p>
             <p>The tool that I found pretty easy to use and pickup is <a href="https://www.meshlab.net/">MeshLab</a>, but I found it to be pretty capable. To make a mesh nicer for use with <code>snappyHexMesh</code>, the "filters" dropdown list has a few tools that are pretty handy.</p>
 
@@ -99,7 +99,7 @@
             
             <p>To save the remeshed mesh, you go to File &#8594; Export Mesh As… and choose to save it as an <code>stl</code> file. Save this to the project folder in <code>constant/triSurface/</code> with any name you like. </p>
 
-            <h2>3. <code>surfaceFeatureExtract</code></h2>
+            <h2 id="surfacefeatureextract">3. <code>surfaceFeatureExtract</code></h2>
             <p>Create the file <code>system/surfaceFeatureExtractDict</code> with the contents (modifying the mesh file name):</p>
             <pre><code>/*--------------------------------*- C++ -*----------------------------------*\
   =========                 |
@@ -149,7 +149,7 @@ Untitled2.stl //change this to match your file name
 
             <p>After this is saved, run the <code>surfaceFeatureExtract</code> tool in the project root directory, which creates an .emesh file in <code>constant/triSurface</code>.</p>
 
-            <h2><code>4. snappyHexMesh</code></h2>
+            <h2 id="snappyhexmesh">4. <code>snappyHexMesh</code></h2>
             <p>Create the file <code>system/snappyHexMeshDict</code> with the contents of the file below, modifying it to point to the correct files.</p>
             <details>
                 <summary><a>Click here to see full file</a></summary>
@@ -475,7 +475,7 @@ mergeTolerance 1E-6;
 
             <p>If it's been setup correctly, you can then run <code>snappyHexMesh</code> in the project root directory to create the new mesh. This will create new time-step folders with the mesh created in steps. If you wish for the mesh to be saved into constant/polyMesh, pass the -overwrite option. The alternative is to move it there yourself.</p>
 
-            <h3>Running <code>snappyHexMesh</code> In Parallel</h3>
+            <h3 id="parallel-snappyhexmesh">Running <code>snappyHexMesh</code> In Parallel</h3>
             <p>The <code>system/decomposeParDict</code> file needs to be created. This is the same file to be used for parallel simulation. Example contents of the file (with 4 processors - change this to your desired number of parallel processes):</p>
             <pre><code>/*--------------------------------*- C++ -*----------------------------------*\
   =========                 |
