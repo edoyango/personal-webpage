@@ -1,0 +1,166 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes - CFDEM</title>
+		<link href="/css/general.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link href="/css/txtstyle.css" rel="stylesheet" type="text/css" />
+        <style>
+            body figure {
+                padding: 12px;
+            }
+            body figure figcaption {
+                text-align: center;
+                padding: 6px;
+            }
+            body figure img {
+                display: block;
+                margin: auto;
+                width: 100%;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="/index.html">Home</a></li>
+					<li class="nav-item"><a href="/about.html">About Me</a></li>
+					<li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+
+			<h1>Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</h1>
+            <p>This page looks at using basic optimization options and <a href="https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit.html#gs.ndxx16">Intel OneAPI Compilers</a> (for x86 CPU architectures) to reduce the run-time of LIGGGHTS.</p>
+            <p>The page will first show the difference in performance of the Intel compilers compared to the GNU compilers and also looks at different compiler options. After hopefully convincing you of why you should use the intel compilers, the page then goes on to explain how to build LIGGGHTS with the Intel compilers.</p>
+            <p>For those unaware, GNU compilers are shipped with most Linux systems, including Ubuntu. You can invoke the GNU C compiler with <code>gcc</code>.</p>
+            <p>Everything on this page is run on the following platform:</p>
+            <ul>
+                <li>An Inspiron 7501 with
+                    <ul>
+                        <li>i7-10750H CPU</li>
+                        <li>24GB (16GB + 8GB) @ 2933MHz RAM</li>
+                        <li>Windows 10</li>
+                    </ul>
+                </li>
+                <li>WSL2 Ubuntu 20.04</li>
+            </ul>
+            <p>The tests use the <code>chute-wear</code> example files in <code>LIGGGHTS-PUBLIC/examples/LIGGGHTS/Tutorials_public/chute_wear</code>.</p>
+            <p>For this investigation, I'm using the VTK and OpenMPI packages from APT, which give me VTK v6.3.0 and OpenMPI v4.0.3.</p>
+
+            <h2 id="compilers-options-performance">Compilers' and Compiler Options' Performance</h2>
+            <h3 id="methods">The compiler options to investigate</h3>
+            <p>The <code>-O2</code>optimisation option that the <code>Makefile.mpi</code> file specifies is a default level of optimisation that GNU and Intel compilers use. On the other hand, the <code>-funroll-loops</code> is an extra optimisation that <a href="https://en.wikipedia.org/wiki/Loop_unrolling">unrolls loops</a> which <em>may</em> improve speed of the compiled program.</p>
+            <p>Here, we're going to look at the following options:</p>
+            <ul>
+                <li><code>-O3</code>, which is increasing the optimisation level from default. This isn't guaranteed to improve run-times.</li>
+                <li><code>-march=native</code>/<code>-xhost</code>, which, respectively, ask the GNU and Intel compilers to compile code that can better take advantage of the CPU architecture on the computer.</li>
+                <li><code>-flto</code>/<code>-ipo</code>, which, respectively, ask the GNU and Intel compilers to perform <a href="https://en.wikipedia.org/wiki/Interprocedural_optimization">interprocedural optimization</a>, which <em>may</em> improve speed of the compiled program.</li>
+            </ul>
+            <p>I don't consider using options like <code>-Ofast</code> or <code>-ffast-math</code> because they can reduce the accuracy of numerical operations, which is not ideal, as time-integration simulations' results can be sensitive to numerical accuracy.</p>
+            <h3 id="tests">The tests</h3>
+            <table>
+                <tr>
+                    <th>Test No.</th>
+                    <th>Compiler Options</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td><pre><code>CCFLAGS = -O2 -funroll-loops -fPIC
+LINKFLAGS = -O2 -fPIC</code></pre></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><pre><code>CCFLAGS = -O2 -fPIC
+LINKFLAGS = -O2 -fPIC</code></pre></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><pre><code>CCFLAGS = -O3 -fPIC
+LINKFLAGS = -O3 -fPIC</code></pre></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><pre><code>CCFLAGS = -O3 -fPIC -march=native (-xhost)
+LINKFLAGS = -O3 -fPIC -march=native (-xhost)</code></pre></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td><pre><code>CCFLAGS = -O3 -fPIC -flto (-ipo)
+LINKFLAGS = -O3 -fPIC -flto (-ipo)</code></pre></td>
+                </tr>
+            </table>
+            <p>Where the options in brackets are the equivalent option for the Intel Compilers. Each test is run 5 times and the average is reported in the results below.</p>
+
+            <h3 id="results">Results</h3>
+            <figure>
+                <img src="/static/liggghts-compiler-options-compare-1.png">
+                <figcaption>The average (of 5 runs) run-time of LIGGGHTS <code>chute-wear</code> example, when LIGGGHTS is built with either GNU and Intel compilers and with different compiler options. The runs where the LIGGGHTS executable was built with the <code>-ipo</code> Intel Compiler option failed, so no results reported.</figcaption>
+            </figure>
+            <h3 id="discussion">Discussion</h3>
+            <p>The Intel compiler performed better in all tests, where the fastest average run-time of the Intel Compiler tests ran 2s (~11%) faster than the fastest average run-time of the GNU Compiler tests.</p>
+            <p>The Intel compilers meaningfully benefitted from the <code>-xhost</code> compiler option, whereas the GNU compiler didn't benefit from its equivalent (<code>-march=native</code>). In fact, it was slower! I should probably look into it further.</p>
+            <p>I failed to make use of the  Intel <code>-ipo</code> option, which I would like to work as this option has been quite useful in my Fortran simulation code. I suspect it's because the VTK libraries are dynamic, not static.</p>
+            <p>The <code>-O3</code> option didn't really make a difference, and the loop unrolling seemed to slow down the LIGGGHTS code. However, I need to see if both of those effects are observed with larger simulation (the <code>chute-wear</code> example uses only ~800 concurrent DEM particles).</p>
+
+            <h2 id="getting">Getting the Intel Compilers</h2>
+            <p>The Intel OneAPI compilers are free for anybody to use. For LIGGGHTS, only the base kit is necessary.</p>
+            <p>Once you have installed the compilers by following Intel's instructions, you will need to make sure you have the VTK and OpenMPI APT packages.</p>
+
+            <h2 id="modifying-for-compiler">Modifying the Make File to Use The Intel compiler</h2>
+            <p>The basic <a href="https://www.cfdem.com/media/DEM/docu/Section_start.html#start-2-2">LIGGGHTS installation documentation</a> will suggest users to build LIGGGHTS using the <code>make auto</code> command. But, here, we'll be using the <code>make mpi</code> command, which uses the <code>Makefile.mpi</code> Make file. LIGGGHTS assumes we're using the default APT packages, so we have to modify the Makefile. Edit <code>LIGGGHTS-PUBLIC/src/MAKE/Makefile.mpi</code> so that the following lines have been modified:</p>
+            <pre><code>CC = icpx # this is the Intel OneAPI C++ compiler
+LINK = icpx
+
+# These tell Make where your OpenMPI libraries and include files are. You may need to modify them to suit you.
+MPI_INC = -I/usr/lib/x86_64-linux-gnu/openmpi/include
+MPI_PATH = -L/usr/lib/x86_64-linux-gnu/openmpi/lib
+MPI_LIB = -lmpi
+
+# These tell Make where your VTK libraries and include files. You may need to modify them to suit you. I had to change the default 6.2 to 6.3 to reflect the version of the APT package.
+VTK_INC =  -I/usr/include/vtk-6.3
+VTK_PATH = -L/usr/lib/x86_64-linux-gnu
+VTK_LIB = -lvtkCommonCore-6.3 -lvtkIOCore-6.3 -lvtkIOXML-6.3 -lvtkIOLegacy-6.3 -lvtkCommonDataModel-6.3 -lvtkIOParallel-6.3 -lvtkParallelCore-6.3 -lvtkParallelMPI-6.3 -lvtkIOImage-6.3 -lvtkCommonExecutionModel-6.3 -lvtkFiltersCore-6.3 -lvtkIOParallelXML-6.3</code></pre>
+            <p>If you've modified the Make file correctly for your system, the <code>make mpi</code> command run inside the <code>src</code> directory should build the <code>lmp_mpi</code> executable.</p>
+
+            <h2 id="modifying-for-opt">Changing the LIGGGHTS default compiler options</h2>
+            <p>The default <code>make auto</code> command uses some default compiler options. While you can <em>add</em> to the default compiler options by editing the <code>Makefile.user</code> file, it's less straightforward to <em>change</em> the compiler options. To change them, you will want to edit the <code>LIGGGHTS_PUBLIC/src/MAKE/Makefile.mpi</code> file and use the <code>make mpi</code> command instead. At the time of writing, the default compiler and linker options are:</p>
+            <pre><code>CCFLAGS = -O2 -funroll-loops -fstrict-aliasing -Wall -Wno-unused-result -fPIC
+LINK = -O2 -fPIC</code></pre>
+            <p>Note that <code>-O2</code> and <code>-funroll-loops</code> are the optimisation options, and the rest are compiler warnings, although <code>-fPIC</code> is neither, and is telling the compiler to produce <a href="https://en.wikipedia.org/wiki/Position-independent_code">Position Independent Code</a>.</p>
+            <p>To change the compiler options, change the code following the <code>CCFLAGS =</code> or <code>LINKFLAGS =</code>. E.g.,</p>
+            <pre><code>CCFLAGS = -O3 -xhost -fPIC
+LINKFLAGS = -O3 -xhost -fPIC</code></pre>
+            <p>would be the best of the options <a href="#results">looked at on this page</a>. The meaning of the above changes are explained <a href="#methods">above</a>.</p>
+            
+		</div>
+
+		<hr>
+		<div class="footer">
+			<p>Content first published: 16 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 16 Jan 2023</p>
+			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+		</div>
+/
+	</body>
+</html>
