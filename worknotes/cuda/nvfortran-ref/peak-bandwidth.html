@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes - CUDA</title>
+		<link href="/css/general.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link href="/css/fortran-syntax.css" rel="stylesheet">
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="/index.html">Home</a></li>
+					<li class="nav-item"><a href="/about.html">About Me</a></li>
+					<li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+			<h1>peakBandwidth</h1>
+			<p>Code to obtain theoretical peak memory bandwidth of GPUs on the system.</p>
+			<p>Effective bandwidth can be obtained with</p>
+			<pre><code>bw<sub>e</sub> = (r<sub>B</sub> + w<sub>B</sub>)/(t*10<sup>9</sup>)</code></pre>
+			<p>where bw<sub>e</sub> is the effective bandiwdth, r<sub>B</sub> is the number of Bytes read, w<sub>B</sub> is the number of Bytes written, and t is elapsed wall time.</p>
+			<p>The wall time of the simple <code>memory</code> kernel written in the <a href="limiting-factor.html">limitingFactor</a> code can be used.</p>
+			<p>Another note: the three memory bandwidth values we care about are:</p>
+			<ul>
+				<li>Theoretical: calculated in the code below</li>
+				<li>Effective: can be measured with the approach above</li>
+				<li>Actual: the realised bandwidth which is affected by memory access patterns</li>
+			</ul>
+			<p><a href="peakBandwidth.cuf" download="peakBandwidth.cuf">Download link</a></p>
+            <pre><code><span class="fstd">program</span> peakBandwidth
+
+    <span class="fstd">use</span> cudafor
+
+    <span class="fstd">implicit</span> <span class="fstd">none</span>
+    <span class="fstd">integer</span>:: i, istat, nDevices=0
+    <span class="fstd">type</span>(<span class="fnv">cudaDeviceProp</span>):: prop
+
+    istat = <span class="fnv">cudaGetDeviceCount</span>(nDevices)
+    <span class="fstd">do</span> i = 0, nDevices-1
+        istat = <span class="fnv">cudaGetDeviceProperties</span>(prop, i)
+        <span class="fstd">write</span>(*,<span class="fstring">"('  Device Number: ',i0)"</span>) i
+        <span class="fstd">write</span>(*,<span class="fstring">"('    Device name: ',a)"</span>) trim(prop%name)
+        <span class="fstd">write</span>(*,<span class="fstring">"('    Memory Clock Rate (KHz): ', i0)"</span>) prop%memoryClockRate
+        <span class="fstd">write</span>(*,<span class="fstring">"('    Memory Bush Width (bits): ', i0)"</span>) prop%memoryBusWidth
+        <span class="fstd">write</span>(*,<span class="fstring">"('    Peak Memory Bandwidth (GB/s): ', f6.2)"</span>) 2. *prop%memoryClockRate * &
+            (prop%memoryBusWidth/8.) * 1.e-6
+        <span class="fstd">write</span>(*,*)
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+<span class="fstd">end</span> <span class="fstd">program</span> peakBandwidth</code></pre>
+		</div>
+
+		<hr>
+		<div class="footer">
+			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+		</div>
+		
+	</body>
+</html>

@@ -42,16 +42,16 @@ matches_chevron = re.findall(r'<<<.*?(?=>)>>>', content, re.DOTALL)
 for m in matches_chevron:
     content = content.replace('{}'.format(m), '{}{}{}'.format(openTagCuf, m, closeTag))
 
-stdwords = ['program', 'use', 'implicit', 'none', 'type', 'integer', 'if', 'then', 'else', 'elseif', 'end', 'endif', 'do', 'enddo', 'module', 'parameter', 'kind', 'endprogram', 'endmodule', 'call']
+stdwords = ['contains','value', 'real', 'subroutine', 'program', 'use', 'implicit', 'none', 'type', 'integer', 'if', 'then', 'else', 'elseif', 'end', 'endif', 'do', 'enddo', 'module', 'parameter', 'kind', 'endprogram', 'endmodule', 'call']
 
 for w in stdwords:
     content = re.sub(r'\b{}\b'.format(w), '{o}{w}{c}'.format(o=openTagStd, w=w, c=closeTag), content)
 
-cufwords = ['cudaDeviceProp', 'cudaSuccess', '>>>', '<<<']
+cufwords = ['global','blockIdx', 'blockDim', 'threadIdx', 'device', 'cudaDeviceProp', 'cudaSuccess', '>>>', '<<<']
 for w in cufwords:
     content = re.sub(r'\b{}\b'.format(w), '{o}{w}{c}'.format(o=openTagCuf, w=w, c=closeTag), content)
 
-cuffuncs = ['cudaGetDeviceCount', 'cudaGetDeviceProperties', 'cudaGetErrorString', 'cudaGetLastError', 'cudaDeviceSynchronize']
+cuffuncs = ['attributes','cudaGetDeviceCount', 'cudaGetDeviceProperties', 'cudaGetErrorString', 'cudaGetLastError', 'cudaDeviceSynchronize']
 for fu in cuffuncs:
     content = re.sub(r'\b{}\('.format(fu), '{o}{fu}{c}('.format(o=openTagCuf, fu=fu, c=closeTag), content)
 
