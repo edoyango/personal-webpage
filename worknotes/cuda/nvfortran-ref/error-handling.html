@@ -24,7 +24,7 @@
 		<div class="normalwidth">
 			<h1>Error Handling</h1>
 			<p>Basic functionality to check errors in CUDA functions and kernel subroutines.</p>
-			<p><a href="error-handling.cuf" download="error-handling.cuf">Download link</a></p>
+			<p><a href="samples/error-handling.cuf" download="error-handling.cuf">Download link</a></p>
             <pre><code><span class="fcomment">! the cuda GetErrorString function can be used to obtain error messages from error codes</span>
 ierr = <span class="fnv">cudaGetDeviceCount</span>(nDevices)
 <span class="fstd">if</span> (ierr/= <span class="fnv">cudaSuccess</span>) write (*,*) <span class="fnv">cudaGetErrorString</span>(ierr)

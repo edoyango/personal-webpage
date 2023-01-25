@@ -25,7 +25,7 @@
             <h1>offsetNStride</h1>
             <p>Demonstration of how coalesced access to GPU global memory i.e., accessing memory in strides of 16 (half-warp) or 32 (warp) can reduce the number of transactions made and reduce run times.</p>
             <p>My NVIDIA 1650 behaves like K20 and C2050 used in the book, where 0-stride accesses are fastest, and everything else is worse (by only a little). </p>
-            <p><a href="offsetNStride.cuf" download="offsetNStride.cuf">Download link</a></p>
+            <p><a href="samples/offsetNStride.cuf" download="offsetNStride.cuf">Download link</a></p>
             <pre><code><span class="fstd">module</span> kernels_m
 
     <span class="fstd">use</span> precision_m
