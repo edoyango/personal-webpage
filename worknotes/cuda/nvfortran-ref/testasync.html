@@ -25,7 +25,7 @@
             <h1>testAsync</h1>
             <p>Program to demonstrate the run-time improvements when performing asynchronous memory transfers and execution.</p>
             <p>In the book, they show three different batching approaches, which yield different results based on the GPU. On my NVIDIA 1650 (Turing architecture), I see V1 producing best results <em>most</em> of the time. On my workplace's P100 (Keplar), A30 (Ampere), and A100 (Ampere) GPUs, the lowest run times are reliably obtained with V2 (but only about 1% difference).</p>
-            <p><a href="testAsync.cuf" download="testAsync.cuf">Download link</a></p>
+            <p><a href="samples/testAsync.cuf" download="testAsync.cuf">Download link</a></p>
             <pre><code><span class="fcomment">! This code demonstrates strategies hiding data transfers via</span>
 <span class="fcomment">! asynchronous data copies in multiple streams</span>
 <span class="fstd">module</span> kernels_m

@@ -25,7 +25,7 @@
             <h1>Memcpy</h1>
             <p>Alternatives to array assignment to transfer data between host and device.</p>
             <p>Calls to the Memcpy function <em>may</em> be beneifical as transfers by array assignment can be implicitly broken up into multiple transfers, slowing down the transfer.</p>
-            <p><a href="memcpy.cuf" download="memcpy.cuf">Download link</a></p>
+            <p><a href="samples/memcpy.cuf" download="memcpy.cuf">Download link</a></p>
             <pre><code><span class="fcomment">! for contiguous data</span>
 istat = <span class="fnv">cudaMemcpy</span>(a_d , a_pageable , nElements)
 
