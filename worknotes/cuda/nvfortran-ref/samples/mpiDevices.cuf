@@ -12,7 +12,7 @@ program mpiDevices
     type(cudaDeviceProp):: prop
     integer(int_ptr_kind()):: freeB, totalB, freeA, totalA
     real, device, allocatable:: d(:)
-    integer:: i, istat, devid
+    integer:: i, j, istat, devid
 
     ! MPI initialization
     call MPI_INIT(ierr)
@@ -38,7 +38,7 @@ program mpiDevices
 
         ! allocate on device associated with rank j
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)
-        if (myrank == j) allocate(d(n))
+        if (procid == j) allocate(d(n))
 
         ! Get free memory after allocation
         call MPI_BARRIER(MPI_COMM_WORLD, ierr)

@@ -30,6 +30,7 @@
                 <li>prohibited (2): No host threads can use the GPU</li>
                 <li>exclusive process (3): Single contect cna be created by a single process, but that process can be current to all threads of that process.</li>
             </ul>
+            <p>GPUs in default mode will allow for multiple MPI processes to be assigned to a single GPU, whereas exclusive and exclusive process will only allow one MPI process per GPU.</p>
             <p><a href="samples/mpiDevices.cuf" download="mpiDevices.cuf">Download link</a></p>
             <pre><code><span class="fstd">program</span> mpiDevices
 
@@ -37,47 +38,47 @@
     <span class="fstd">use</span> mpi
 
     <span class="fstd">implicit</span> <span class="fstd">none</span>
-    <span class="fcomment">! global array size</span>
+    <span class="fcomment">! <span class="fnv">global</span> array size</span>
     <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: n = 1024*1024
     <span class="fcomment">! MPI variables</span>
     <span class="fstd">integer</span>:: procid, numprocs, ierr
-    <span class="fcomment">! device</span>
+    <span class="fcomment">! <span class="fnv">device</span></span>
     <span class="fstd">type</span>(<span class="fnv">cudaDeviceProp</span>):: prop
     <span class="fstd">integer</span>(<span class="fnv">int_ptr_kind</span>()):: freeB, totalB, freeA, totalA
     <span class="fstd">real</span>, <span class="fnv">device</span>, <span class="fstd">allocatable</span>:: d(:)
-    <span class="fstd">integer</span>:: i, istat, devid
+    <span class="fstd">integer</span>:: i, j, istat, devid
 
     <span class="fcomment">! MPI initialization</span>
     <span class="fstd">call</span> <span class="fmpi">MPI_INIT</span>(ierr)
     <span class="fstd">call</span> <span class="fmpi">MPI_COMM_RANK</span>(<span class="fmpi">MPI_COMM_WORLD</span>, procid, ierr)
     <span class="fstd">call</span> <span class="fmpi">MPI_COMM_SIZE</span>(<span class="fmpi">MPI_COMM_WORLD</span>, numprocs, ierr)
 
-    <span class="fcomment">! print compute mode for device</span>
+    <span class="fcomment">! print compute mode for <span class="fnv">device</span></span>
     istat = <span class="fnv">cudaGetDevice</span>(devid)
     istat = <span class="fnv">cudaGetDeviceProperties</span>(prop, devid)
 
     <span class="fstd">do</span> i = 1, numprocs
         <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
-        <span class="fstd">if</span> (procid == i) <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'['</span>,i0,<span class="fstring">'] using device: '</span>, i0, <span class="fstring">' in compute mode: '</span>, i0)"</span>) &
+        <span class="fstd">if</span> (procid == i) <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'['</span>,i0,<span class="fstring">'] using <span class="fnv">device</span>: '</span>, i0, <span class="fstring">' in compute mode: '</span>, i0)"</span>) &
             procid, devid, prop%computeMode
     <span class="fstd">end</span> <span class="fstd">do</span>
 
-    <span class="fcomment">! get memory use before large allocations</span>
+    <span class="fcomment">! get memory <span class="fstd">use</span> before large allocations</span>
     <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
     istat = <span class="fnv">cudaMemGetInfo</span>(freeB, totalB)
 
-    <span class="fcomment">! now allocate arrays, one rank at a time</span>
+    <span class="fcomment">! now <span class="fstd">allocate</span> arrays, one rank at a time</span>
     <span class="fstd">do</span> j = 0, numprocs-1
 
-        <span class="fcomment">! allocate on device associated with rank j</span>
+        <span class="fcomment">! <span class="fstd">allocate</span> on <span class="fnv">device</span> associated with rank j</span>
         <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
-        <span class="fstd">if</span> (myrank == j) <span class="fstd">allocate</span>(d(n))
+        <span class="fstd">if</span> (procid == j) <span class="fstd">allocate</span>(d(n))
 
         <span class="fcomment">! Get free memory after allocation</span>
         <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
         istat = <span class="fnv">cudaMemGetInfo</span>(freeA, totalA)
 
-        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">' ['</span>,i0,<span class="fstring">'] after allocation on rank: '</span>, i0, <span class="fstring">', device arrays allocated: '</span>, i0)"</span>) &
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">' ['</span>,i0,<span class="fstring">'] after allocation on rank: '</span>, i0, <span class="fstring">', <span class="fnv">device</span> arrays <span class="fintrinsic">allocated</span>: '</span>, i0)"</span>) &
             procid, devid, (freeB-freeA)/n/4
 
     <span class="fstd">end</span> <span class="fstd">do</span>
