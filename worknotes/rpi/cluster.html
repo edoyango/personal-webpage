@@ -34,7 +34,20 @@
 						<li>set timezone</li>
 					</ol>
 				</li>
-				<li>Setup ssh keys on pis (<strong>would prefer sshd to automatically use a key-pair for inter-node ssh</strong>)</li>
+				<li>setup login-less ssh between nodes.
+					<ol type="a">
+						<li>create key on one of the nodes
+							<pre><code>sudo ssh-keygen # save it somewhere central like in /etc/ssh</code></pre>
+						</li>
+						<li>configure ssh to use the newly created key by editing <code>/etc/ssh/ssh_config</code> and adding
+							<pre><code>   IdentityFile /etc/ssh/&lt;key name&gt;</code></pre>
+						</li>
+						<li>make the key readable
+							<pre><code>chmod +r /etc/ssh/&lt;key name&gt;</code></pre>
+						</li>
+						<li>for each other node, copy ssh key to the nodes (e.g. with <code>scp</code>) and repeat above steps.</li>
+					</ol>
+				</li>
 				<li>update <code>/etc/hosts</code> with all hosts names. e.g.:
 					<pre><code>10.0.0.1 pimananager
 10.0.0.2 picompute1
@@ -153,7 +166,7 @@ git clone -c feature.manyFiles=true https://github.com/spack/spack.git</code></p
 
 		<hr>
 		<div class="footer">
-			<p>Content first published: 18 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 18 Jan 2023</p>
+			<p>Content first published: 18 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 28 Jan 2023</p>
 			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
 		</div>
 		
