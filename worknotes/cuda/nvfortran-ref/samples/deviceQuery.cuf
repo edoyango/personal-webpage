@@ -28,7 +28,8 @@ program deviceQuery
         ! General device info
         write(*,"('  Device Name: ',a)") trim(prop%name)
         write(*,"('  Compute Capability: ',i0,'.',i0)") prop%major, prop%minor
-        write(*,"('  Number of Multiprocessors: ',i0)") prop%maxThreadsPerMultiprocessor
+        write(*,"('  Number of Multiprocessors: ',i0)") prop%multiProcessorCount
+        write(*,"('  Max Threads per Multiprocessor: ',i0)") prop%maxThreadsPerMultiprocessor
         write(*,"('  Global Memory (GB): ',f9.3,/)") prop%totalGlobalMem/1024.**3
 
         ! Execution Configuration

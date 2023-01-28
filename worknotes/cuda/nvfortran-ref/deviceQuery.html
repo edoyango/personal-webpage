@@ -55,7 +55,8 @@
         <span class="fcomment">! General device info</span>
         <span class="fstd">write</span>(*,<span class="fstring">"('  Device Name: ',a)"</span>) trim(prop%name)
         <span class="fstd">write</span>(*,<span class="fstring">"('  Compute Capability: ',i0,'.',i0)"</span>) prop%major, prop%minor
-        <span class="fstd">write</span>(*,<span class="fstring">"('  Number of Multiprocessors: ',i0)"</span>) prop%maxThreadsPerMultiprocessor
+        <span class="fstd">write</span>(*,<span class="fstring">"('  Number of Multiprocessors: ',i0)"</span>) prop%multiProcessorCount
+        <span class="fstd">write</span>(*,<span class="fstring">"('  Max Threads per Multiprocessor: ',i0)"</span>) prop%maxThreadsPerMultiprocessor
         <span class="fstd">write</span>(*,<span class="fstring">"('  Global Memory (GB): ',f9.3,/)"</span>) prop%totalGlobalMem/1024.**3
 
         <span class="fcomment">! Execution Configuration</span>
