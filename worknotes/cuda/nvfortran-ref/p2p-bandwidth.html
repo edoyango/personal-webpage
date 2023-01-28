@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Ed Space - Worknotes - CUDA</title>
+        <link href="/css/general.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="/css/fortran-syntax.css" rel="stylesheet">
+    </head>
+    <body>
+    
+        <!-- Top navigation bar -->
+        <nav class="navbar navbar-default sticky-top">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a href="/index.html">Home</a></li>
+                    <li class="nav-item"><a href="/about.html">About Me</a></li>
+                    <li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+                    <li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+                    <li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+                  </ul>
+            </div>
+        </nav>
+        
+        <div class="normalwidth">
+            <h1>p2pBandwidth</h1>
+            <p>Program to measure the bandwidth of memory transfer between a GPUs on a multi-GPU host.</p>
+            <p>A useful technique shown here, is the use of derived types with device member arrays to manage each GPU's instance of the device arrays.</p>
+            <p><a href="samples/p2pBandwidth.cuf" download="p2pBandwidth.cuf">Download link</a></p>
+            <pre><code><span class="fstd">program</span> p2pBandwidth
+
+    <span class="fstd">use</span> <span class="fnv">cudafor</span>
+
+    <span class="fstd">implicit</span> <span class="fstd">none</span>
+    <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: N = 4*1024*1024
+    <span class="fstd">type</span> distributedArray
+        <span class="fstd">real</span>, <span class="fnv">device</span>, <span class="fstd">allocatable</span>:: a_d(:)
+    <span class="fstd">end</span> <span class="fstd">type</span> distributedArray
+    <span class="fstd">type</span>(distributedArray), <span class="fstd">allocatable</span>:: distArray(:)
+
+    <span class="fstd">real</span>, <span class="fstd">allocatable</span>:: bandwidth(:,:)
+    <span class="fstd">real</span>:: array(N), time
+    <span class="fstd">integer</span>:: nDevices, access, i, j, istat
+    <span class="fstd">type</span>(<span class="fnv">cudaDeviceProp</span>):: prop
+    <span class="fstd">type</span>(<span class="fnv">cudaEvent</span>):: startEvent, stopEvent
+
+    <span class="fcomment">! displaying number of GPUs</span>
+    istat = <span class="fnv">cudaGetDeviceCount</span>(nDevices)
+    <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'Number of CUDA-capable devices: '</span>, i0,/)"</span>) nDevices
+
+    <span class="fcomment">! displaying GPU names</span>
+    <span class="fstd">do</span> i = 0, nDevices-1
+        istat = <span class="fnv">cudaGetDeviceProperties</span>(prop, i)
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'Device '</span>, i0, <span class="fstring">': '</span>, a)"</span>) i, <span class="fintrinsic">trim</span>(prop%name)
+    <span class="fstd">end</span> <span class="fstd">do</span>
+    <span class="fstd">write</span>(*,*)
+
+    <span class="fcomment">! creating <span class="fnv">device</span> array for each GPU</span>
+    <span class="fstd">allocate</span>(distArray(0:nDevices-1))
+
+    <span class="fcomment">! enable p2p access between GPUs (<span class="fstd">if</span> possible)</span>
+    <span class="fstd">do</span> j = 0, nDevices-1
+        istat = <span class="fnv">cudaSetDevice</span>(j)           <span class="fcomment">! sets GPU</span>
+        <span class="fstd">allocate</span>(distArray(j)%a_d(N))      <span class="fcomment">! allocates <span class="fnv">device</span> array on the set GPU</span>
+        distArray(j)%a_d = j
+        <span class="fstd">do</span> i = j+1, nDevices-1
+            istat = <span class="fnv">cudaDeviceCanAccessPeer</span>(access, j, i)
+            <span class="fstd">if</span> (access == 1) <span class="fstd">then</span>
+                istat = <span class="fnv">cudaSetDevice</span>(j)
+                istat = <span class="fnv">cudaDeviceEnablePeerAccess</span>(i, 0)
+                istat = <span class="fnv">cudaSetDevice</span>(i)
+                istat = <span class="fnv">cudaDeviceEnablePeerAccess</span>(j, 0)
+            <span class="fstd">end</span> <span class="fstd">if</span>
+        <span class="fstd">end</span> <span class="fstd">do</span>
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+    <span class="fcomment">! allocating array to record inter-GPU bandwidths</span>
+    <span class="fstd">allocate</span>(bandwidth(0:nDevices-1, 0:nDevices-1))
+    bandwidth(:,:) = 0.
+
+    <span class="fcomment">! measure p2p bandwidth between each pair of GPUs</span>
+    <span class="fstd">do</span> j = 0, nDevices-1
+        istat = <span class="fnv">cudaSetDevice</span>(j)
+        istat = <span class="fnv">cudaEventCreate</span>(startEvent)
+        istat = <span class="fnv">cudaEventCreate</span>(stopEvent)
+        <span class="fstd">do</span> i = 0, nDevices-1
+            <span class="fstd">if</span> (i == j) cycle
+            istat = <span class="fnv">cudaMemcpyPeer</span>(distArray(j)%a_d, j, distArray(i)%a_d, i, N)
+            istat = <span class="fnv">cudaEventRecord</span>(startEvent, 0)
+            istat = <span class="fnv">cudaMemcpyPeer</span>(distArray(j)%a_d, j, distArray(i)%a_d, i, N)
+            istat = <span class="fnv">cudaEventRecord</span>(stopEvent, 0)
+            istat = <span class="fnv">cudaEventSynchronize</span>(stopEvent)
+            istat = <span class="fnv">cudaEventElapsedTime</span>(time, startEvent, stopEvent)
+
+            array = distArray(j)%a_d
+            <span class="fstd">if</span> (all(array == i)) bandwidth(j,i) = N*4/time/1.0E+6
+        <span class="fstd">end</span> <span class="fstd">do</span>
+        distArray(j)%a_d = j
+        istat = <span class="fnv">cudaEventDestroy</span>(startEvent)
+        istat = <span class="fnv">cudaEventDestroy</span>(stopEvent)
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+    <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'Bandwidth (GB/s) for transfer size (MB): '</span>, f9.3,/)"</span>) N*4./1024**2
+    <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">' S\\R   0'</span>)"</span>, advance=<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">'no'</span></span></span></span></span>)
+    <span class="fstd">do</span> i = 1, nDevices-1
+        <span class="fstd">write</span>(*,<span class="fstring">"(5x,i3)"</span>, advance=<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">'no'</span></span></span></span></span>) i
+    <span class="fstd">end</span> <span class="fstd">do</span>
+    <span class="fstd">write</span>(*,*)
+
+    <span class="fstd">do</span> j = 0, nDevices-1
+        <span class="fstd">write</span>(*,<span class="fstring">"(i3)"</span>, advance=<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">'no'</span></span></span></span></span>) j
+        <span class="fstd">do</span> i = 0, nDevices-1
+            <span class="fstd">if</span> (i==j) <span class="fstd">then</span>
+                <span class="fstd">write</span>(*,<span class="fstring">"(4x,<span class="fstring">'0'</span>,3x)"</span>, advance=<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">'no'</span></span></span></span></span>)
+            <span class="fstd">else</span>
+                <span class="fstd">write</span>(*,<span class="fstring">"(f8.2)"</span>, advance=<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">'no'</span></span></span></span></span>) bandwidth(j,i)
+            <span class="fstd">end</span> <span class="fstd">if</span>
+        <span class="fstd">end</span> <span class="fstd">do</span>
+        <span class="fstd">write</span>(*,*)
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+    <span class="fcomment">! cleanup</span>
+    <span class="fstd">do</span> j = 0, nDevices-1
+        <span class="fstd">deallocate</span>(distArray(j)%a_d)
+    <span class="fstd">end</span> <span class="fstd">do</span>
+    <span class="fstd">deallocate</span>(distArray, bandwidth)
+
+<span class="fstd">end</span> <span class="fstd">program</span> p2pBandwidth</code></pre>
+        </div>
+
+        <hr>
+        <div class="footer">
+            <p>Content first published: 26 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 26 Jan 2023</p>
+            <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+        </div>
+        
+    </body>
+</html>
