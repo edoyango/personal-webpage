@@ -1,0 +1,145 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Ed Space - Worknotes - CUDA</title>
+        <link href="/css/general.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="/css/fortran-syntax.css" rel="stylesheet">
+    </head>
+    <body>
+    
+        <!-- Top navigation bar -->
+        <nav class="navbar navbar-default sticky-top">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a href="/index.html">Home</a></li>
+                    <li class="nav-item"><a href="/about.html">About Me</a></li>
+                    <li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+                    <li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+                    <li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+                </ul>
+            </div>
+        </nav>
+        
+        <div class="normalwidth">
+            <h1>bandwidthTest</h1>
+            <p>Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal "pageable" memory.</p>
+            <p><a href="samples/bandwidthTest.cuf" download="bandwidthTest.cuf">Download link</a></p>
+            <pre><code><span class="fstd">program</span> BandwidthTest
+
+    <span class="fstd">use</span> <span class="fnv">cudafor</span>
+
+    <span class="fstd">implicit</span> <span class="fstd">none</span>
+    <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: nElements = 4*1024*1024
+
+    <span class="fcomment">! host arrays</span>
+    <span class="fstd">real</span>(4):: a_pageable(nElements), b_pageable(nElements)
+    <span class="fstd">real</span>(4), <span class="fstd">allocatable</span>, <span class="fnv">pinned</span>:: a_pinned(:), b_pinned(:)
+
+    <span class="fcomment">! <span class="fnv">device</span> arrays</span>
+    <span class="fstd">real</span>(4), <span class="fnv">device</span>:: a_d(nElements)
+
+    <span class="fcomment">! events for timing</span>
+    <span class="fstd">type</span>(<span class="fnv">cudaEvent</span>):: startEvent, stopEvent
+
+    <span class="fcomment">! misc</span>
+    <span class="fstd">type</span>(<span class="fnv">cudaDeviceProp</span>):: prop
+    <span class="fstd">real</span>(4):: time
+    <span class="fstd">integer</span>:: istat, i
+    <span class="fstd">logical</span>:: pinnedFlag
+
+    <span class="fcomment">! <span class="fstd">allocate</span> and initialize</span>
+    <span class="fstd">do</span> i = 1, nElements
+        a_pageable(i) = i
+    <span class="fstd">end</span> <span class="fstd">do</span>
+    b_pageable = 0.
+
+    <span class="fstd">allocate</span>(a_pinned(nElements), b_pinned(nElements), <span class="fstd">STAT</span>=istat, <span class="fnv">PINNED</span>=pinnedFlag)
+    <span class="fstd">if</span> (istat /= 0) <span class="fstd">then</span>
+        <span class="fstd">write</span>(*,*) <span class="fstring">'Allocation of a_pinned/b_pinned failed'</span>
+        pinnedFlag = <span class="flog">.false.</span>
+    <span class="fstd">else</span>
+        <span class="fstd">if</span> (<span class="flog">.not.</span> pinnedFlag) <span class="fstd">write</span>(*,*) <span class="fstring">'Pinned allocation failed'</span>
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fstd">if</span> (pinnedFlag) <span class="fstd">then</span>
+        a_pinned = a_pageable
+        b_pinned = 0.
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    istat = <span class="fnv">cudaEventCreate</span>(startEvent)
+    istat = <span class="fnv">cudaEventCreate</span>(stopEvent)
+
+    <span class="fcomment">! output <span class="fnv">device</span> info and transfer size</span>
+    istat = <span class="fnv">cudaGetDeviceProperties</span>(prop, 0)
+
+    <span class="fstd">write</span>(*,*)
+    <span class="fstd">write</span>(*,*) <span class="fstring">'Device: '</span>, <span class="fintrinsic">trim</span>(prop%name)
+    <span class="fstd">write</span>(*,*) <span class="fstring">'Transfer size (MB): '</span>, 4*nElements/1024./1024.
+
+    <span class="fcomment">! pageable data transfer</span>
+    <span class="fstd">write</span>(*,*)
+    <span class="fstd">write</span>(*,*) <span class="fstring">'Pageable transfer'</span>
+
+    istat = <span class="fnv">cudaEventRecord</span>(startEvent, 0)
+    a_d = a_pageable
+    istat = <span class="fnv">cudaEventRecord</span>(stopEvent, 0)
+    istat = <span class="fnv">cudaEventSynchronize</span>(stopEvent)
+
+    istat = <span class="fnv">cudaEventElapsedTime</span>(time, startEvent, stopEvent)
+    <span class="fstd">write</span>(*,*) <span class="fstring">'  Host to Device bandwidth (GB/s): '</span>, nElements*4/time/1.e+6
+
+    istat = <span class="fnv">cudaEventRecord</span>(startEvent, 0)
+    b_pageable = a_d
+    istat = <span class="fnv">cudaEventRecord</span>(stopEvent, 0)
+    istat = <span class="fnv">cudaEventSynchronize</span>(stopEvent)
+
+    istat = <span class="fnv">cudaEventElapsedTime</span>(time, startEvent, stopEvent)
+    <span class="fstd">write</span>(*,*) <span class="fstring"><span class="fstring">'  Device to Host bandwidth (GB/s): '</span></span>, nElements*4/time/1.e+6
+
+    <span class="fstd">if</span> (<span class="fintrinsic">any</span>(a_pageable /= b_pageable)) <span class="fstd">write</span>(*,*) <span class="fstring">'*** Pageable transfers failed ***'</span>
+
+    <span class="fcomment">! <span class="fnv">pinned</span> data transfers</span>
+    <span class="fstd">if</span> (pinnedFlag) <span class="fstd">then</span>
+        <span class="fstd">write</span>(*,*)
+        <span class="fstd">write</span>(*,*) <span class="fstring">'Pinned transfer'</span>
+
+        istat = <span class="fnv">cudaEventRecord</span>(startEvent, 0)
+        a_d = a_pinned
+        istat = <span class="fnv">cudaEventRecord</span>(stopEvent, 0)
+        istat = <span class="fnv">cudaEventSynchronize</span>(stopEvent)
+
+        istat = <span class="fnv">cudaEventElapsedTime</span>(time , startEvent , stopEvent)
+        <span class="fstd">write</span>(*,*) <span class="fstring">' Host to Device bandwidth (GB/s): '</span>, nElements*4/time/1.e+6
+
+        istat = <span class="fnv">cudaEventRecord</span>(startEvent, 0)
+        b_pinned = a_d
+        istat = <span class="fnv">cudaEventRecord</span>(stopEvent, 0)
+        istat = <span class="fnv">cudaEventSynchronize</span>(stopEvent)
+
+        istat = <span class="fnv">cudaEventElapsedTime</span>(time, startEvent, stopEvent)
+        <span class="fstd">write</span>(*,*) <span class="fstring"><span class="fstring">'  Device to Host bandwidth (GB/s): '</span></span>, nElements*4/time/1.e+6
+
+        <span class="fstd">if</span> (<span class="fintrinsic">any</span>(a_pinned /= b_pinned)) <span class="fstd">write</span>(*,*) <span class="fstring">'*** Pinned transfers failed ***'</span>
+
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fstd">write</span>(*,*)
+
+    <span class="fcomment">! cleanup</span>
+    <span class="fstd">if</span> (<span class="fintrinsic">allocated</span>(a_pinned)) <span class="fstd">deallocate</span>(a_pinned)
+    <span class="fstd">if</span> (<span class="fintrinsic">allocated</span>(b_pinned)) <span class="fstd">deallocate</span>(b_pinned)
+    istat = <span class="fnv">cudaEventDestroy</span>(startEvent)
+    istat = <span class="fnv">cudaEventDestroy</span>(stopEvent)
+
+<span class="fstd">end</span> <span class="fstd">program</span> BandwidthTest</code></pre>
+        </div>
+
+        <hr>
+        <div class="footer">
+            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+            <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+        </div>
+        
+    </body>
+</html>

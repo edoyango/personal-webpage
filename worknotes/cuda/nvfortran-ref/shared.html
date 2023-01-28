@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Ed Space - Worknotes - CUDA</title>
+		<link href="/css/general.css" rel="stylesheet">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<link href="/css/fortran-syntax.css" rel="stylesheet">
+	</head>
+	<body>
+	
+		<!-- Top navigation bar -->
+		<nav class="navbar navbar-default sticky-top">
+			<div class="container-fluid">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"><a href="/index.html">Home</a></li>
+					<li class="nav-item"><a href="/about.html">About Me</a></li>
+					<li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+					<li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+					<li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+		  		</ul>
+			</div>
+		</nav>
+		
+		<div class="normalwidth">
+			<h1>sharedExample</h1>
+			<p>A sample code to demonstrate how the compiler uses various types of memory. This information is availed when compiling with <code>-Mcuda=ptxinfo</code>.</p>
+			<p><a href="samples/sharedExample.cuf" download="sharedExample.cuf">Download link</a></p>
+            <pre><code><span class="fcomment">! This code shows how dynamically and statically <span class="fintrinsic">allocated</span></span>
+<span class="fcomment">! shared memory are used to reverse a small array</span>
+<span class="fstd">module</span> reverse_m
+
+	<span class="fstd">implicit</span> <span class="fstd">none</span>
+	<span class="fstd">integer</span>, <span class="fnv">device</span>:: n_d
+	
+<span class="fstd">contains</span>
+
+	<span class="fnv">attributes</span>(<span class="fnv">global</span>) <span class="fstd">subroutine</span> staticReverse(d)
+
+		<span class="fstd">real</span>:: d(:)
+		<span class="fstd">integer</span>:: t, tr
+		<span class="fstd">real</span>, shared:: s(64)
+
+		t = <span class="fnv">threadIdx</span>%x
+		tr = size(d)-t+1
+
+		s(t) = d(t)
+		<span class="fstd">call</span> <span class="fnv">syncthreads</span>()
+		d(t) = s(tr)
+
+	<span class="fstd">end</span> <span class="fstd">subroutine</span> staticReverse
+
+	<span class="fnv">attributes</span>(<span class="fnv">global</span>) <span class="fstd">subroutine</span> dynamicReverse1(d)
+
+		<span class="fstd">real</span>:: d(:)
+		<span class="fstd">integer</span>:: t, tr
+		<span class="fstd">real</span>, shared:: s(*)
+
+		t = <span class="fnv">threadIdx</span>%x
+		tr = size(d)-t+1
+
+		s(t) = d(t)
+		<span class="fstd">call</span> <span class="fnv">syncthreads</span>()
+		d(t) = s(tr)
+
+	<span class="fstd">end</span> <span class="fstd">subroutine</span> dynamicReverse1
+
+	<span class="fnv">attributes</span>(<span class="fnv">global</span>) <span class="fstd">subroutine</span> dynamicReverse2(d, nSize)
+
+		<span class="fstd">real</span>:: d(nSize)
+		<span class="fstd">integer</span>, <span class="fstd">value</span>:: nSize
+		<span class="fstd">integer</span>:: t, tr
+		<span class="fstd">real</span>, shared:: s(nSize)
+
+		t = <span class="fnv">threadIdx</span>%x
+		tr = nSize -t+1
+
+		s(t) = d(t)
+		<span class="fstd">call</span> <span class="fnv">syncthreads</span>()
+		d(t) = s(tr)
+
+	<span class="fstd">end</span> <span class="fstd">subroutine</span> dynamicReverse2
+
+	<span class="fnv">attributes</span>(<span class="fnv">global</span>) <span class="fstd">subroutine</span> dynamicReverse3(d)
+
+		<span class="fstd">real</span>:: d(n_d)
+		<span class="fstd">real</span>, shared:: s(n_d)
+		<span class="fstd">integer</span>:: t, tr
+
+		t = <span class="fnv">threadIdx</span>%x
+		tr = n_d -t+1
+
+		s(t) = d(t)
+		<span class="fstd">call</span> <span class="fnv">syncthreads</span>()
+		d(t) = s(tr)
+
+	<span class="fstd">end</span> <span class="fstd">subroutine</span> dynamicReverse3
+
+<span class="fstd">end</span> <span class="fstd">module</span> reverse_m
+
+<span class="fstd">program</span> sharedExample
+
+	<span class="fstd">use</span> <span class="fnv">cudafor</span>
+	<span class="fstd">use</span> reverse_m
+
+	<span class="fstd">implicit</span> <span class="fstd">none</span>
+	<span class="fstd">integer</span>, <span class="fstd">parameter</span>:: n = 64
+	<span class="fstd">real</span>:: a(n), r(n), d(n)
+	<span class="fstd">real</span>, <span class="fnv">device</span>:: d_d(n)
+	<span class="fstd">type</span>(<span class="fnv">dim3</span>):: grid, tBlock
+	<span class="fstd">integer</span>:: i, sizeInBytes
+
+	tBlock = <span class="fnv">dim3</span>(n,1,1)
+	grid = <span class="fnv">dim3</span> (1,1,1)
+
+	<span class="fstd">do</span> i = 1, n
+		a(i) = i
+		r(i) = n-i+1
+	<span class="fstd">enddo</span>
+
+	sizeInBytes = <span class="fintrinsic">sizeof</span>(a(1))* tBlock%x
+
+	<span class="fcomment">! run version with static shared memory</span>
+	d_d = a
+	<span class="fstd">call</span> staticReverse<span class="fnv">&lt;&lt;&lt;grid,tBlock&gt;&gt;&gt;</span>(d_d)
+	d = d_d
+	<span class="fstd">write</span>(*,*) <span class="fstring">'Static case max error:'</span>, <span class="fintrinsic">maxval</span>(<span class="fintrinsic">abs</span>(r-d))
+
+	<span class="fcomment">! run dynamic shared memory version 1</span>
+	d_d = a
+	<span class="fstd">call</span> dynamicReverse1<span class="fnv">&lt;&lt;&lt;grid,tBlock,sizeInBytes&gt;&gt;&gt;</span>(d_d)
+	d = d_d
+	<span class="fstd">write</span>(*,*) <span class="fstring">'Dynamic case 1 max error:'</span>, <span class="fintrinsic">maxval</span>(<span class="fintrinsic">abs</span>(r-d))
+
+	<span class="fcomment">! run dynamic shared memory version 2</span>
+	d_d = a
+	<span class="fstd">call</span> dynamicReverse2<span class="fnv">&lt;&lt;&lt;grid,tBlock,sizeInBytes&gt;&gt;&gt;</span>(d_d,n)
+	d = d_d
+	<span class="fstd">write</span>(*,*) <span class="fstring">'Dynamic case 2 max error:'</span>, <span class="fintrinsic">maxval</span>(<span class="fintrinsic">abs</span>(r-d))
+
+	<span class="fcomment">! run dynamic shared memory version 3</span>
+	n_d = n <span class="fcomment">! n_d declared in reverse_m</span>
+	d_d = a
+	<span class="fstd">call</span> dynamicReverse3<span class="fnv">&lt;&lt;&lt;grid,tBlock,sizeInBytes&gt;&gt;&gt;</span>(d_d)
+	d = d_d
+	<span class="fstd">write</span>(*,*) <span class="fstring">'Dynamic case 3 max error:'</span>, <span class="fintrinsic">maxval</span>(<span class="fintrinsic">abs</span>(r-d))
+
+<span class="fstd">end</span> <span class="fstd">program</span> sharedExample</code></pre>
+		</div>
+
+		<hr>
+		<div class="footer">
+			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+		</div>
+		
+	</body>
+</html>
