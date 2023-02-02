@@ -5,6 +5,7 @@
         <link href="/css/general.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <link href="/css/fortran-syntax.css" rel="stylesheet">
+        <link href="/css/cpp-syntax.css" rel="stylesheet">
     </head>
     <body>
     
@@ -24,7 +25,113 @@
         <div class="normalwidth">
             <h1>bandwidthTest</h1>
             <p>Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal "pageable" memory.</p>
-            <p><a href="samples/bandwidthTest.cuf" download="bandwidthTest.cuf">Download link</a></p>
+            <p>Download: <a href="samples/bandwidthTest.cu" download="bandwidthTest.cu"><img src="/static/logos/cpp.svg" height="32px"></a> <a href="samples/bandwidthTest.cuf" download="bandwidthTest.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+			<h2>C++</h2>
+            <pre><code><span class="cpp">#include &lt;stdio.h&gt;</span>
+<span class="cpp">#include &lt;cstdlib&gt;</span>
+
+<span class="cstd">int</span> main() {
+
+    <span class="cstd"><span class="cstd">const</span></span> <span class="cstd">int</span> nElements = 4*1024*1024;
+    <span class="cstd">size_t</span> nbytes = nElements*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>);
+    <span class="cstd">float</span> *a_pageable, *b_pageable;
+    <span class="cstd">float</span> *a_pinned, *b_pinned;
+    <span class="cstd">float</span> *a_d;
+    <span class="cstd">int</span> ierr_a, ierr_b;
+    <span class="cnv">cudaDeviceProp</span> prop;
+    <span class="cnv">cudaEvent_t</span> startEvent, stopEvent;
+    <span class="cstd">float</span> time = 0.0;
+
+    <span class="ccomment">// pageable host memory</span>
+    a_pageable = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(nbytes);
+    b_pageable = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(nbytes);
+
+    <span class="ccomment">// pinned host memory</span>
+    ierr_a = <span class="cnv">cudaMallocHost</span>((<span class="cstd">void</span>**)&a_pinned, nbytes);
+    ierr_b = <span class="cnv">cudaMallocHost</span>((<span class="cstd">void</span>**)&b_pinned, nbytes);
+    <span class="cstd">if</span> (ierr_a != 0 || ierr_b != 0) {
+        printf(<span class="cstring">"Allocation of a_pinned/b_pinned failed\n"</span>);
+        std::<span class="cstd">exit</span>(1);
+    }
+
+    <span class="ccomment">// initializing</span>
+    <span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; nElements; ++i) a_pageable[i] = i;
+    <span class="cstd">memcpy</span>(a_pinned, a_pageable, nbytes);
+    <span class="cstd">memset</span>(b_pageable, 0.0, nbytes);
+    <span class="cstd">memset</span>(b_pinned, 0.0, nbytes);
+
+    <span class="ccomment">// <span class="cnv">device</span> memory</span>
+    <span class="cnv">cudaMalloc</span>((<span class="cstd">void</span>**)&a_d, nbytes);
+
+    <span class="ccomment">// output <span class="cnv">device</span> info and transfer size</span>
+    <span class="cnv">cudaGetDeviceProperties</span>(&prop, 0);
+    printf(<span class="cstring">"\nDevice: %s\n"</span>, prop.name);
+    printf(<span class="cstring">"Transfer size (MB): %f\n"</span>, nbytes/1024./1024.);
+
+    <span class="cnv">cudaEventCreate</span>(&startEvent);
+    <span class="cnv">cudaEventCreate</span>(&stopEvent);
+
+    <span class="ccomment">// pageable data transfers</span>
+    printf(<span class="cstring">"\nPageable transfers\n"</span>);
+    <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+    <span class="cnv">cudaMemcpy</span>(a_d, a_pageable, nbytes, cudaMemcpyHostToDevice);
+    <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+    <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+    <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+    printf(<span class="cstring"><span class="cstring">"  Host to Device bandwidth (GB/s): %f\n"</span></span>, nbytes/time/1.e+6);
+
+    <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+    <span class="cnv">cudaMemcpy</span>(b_pageable, a_d, nbytes, <span class="cnv">cudaMemcpyDeviceToHost</span>);
+    <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+    <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+    <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+    printf(<span class="cstring"><span class="cstring">"  Device to Host bandwidth (GB/s): %f\n"</span></span>, nbytes/time/1.e+6);
+
+    <span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; nElements; ++i) {
+        <span class="cstd">if</span> (a_pageable[i] != b_pageable[i]) {
+            printf(<span class="cstring">"*** Pageable transfers failed ***\n"</span>);
+            <span class="cstd">break</span>;
+        }
+    }
+
+    <span class="cnv">cudaMemset</span>(a_d, 0.0, nbytes);
+
+    <span class="ccomment">// pinned data transfers</span>
+    printf(<span class="cstring">"\nPinned transfers\n"</span>);
+    <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+    <span class="cnv">cudaMemcpy</span>(a_d, a_pinned, nbytes, <span class="cnv">cudaMemcpyHostToDevice</span>);
+    <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+    <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+    <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+    printf(<span class="cstring"><span class="cstring">"  Host to Device bandwidth (GB/s): %f\n"</span></span>, nbytes/time/1.e+6);
+
+    <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+    <span class="cnv">cudaMemcpy</span>(b_pinned, a_d, nbytes, <span class="cnv">cudaMemcpyDeviceToHost</span>);
+    <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+    <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+    <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+    printf(<span class="cstring"><span class="cstring">"  Device to Host bandwidth (GB/s): %f\n"</span></span>, nbytes/time/1.e+6);
+
+    <span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; nElements; ++i) {
+        <span class="cstd">if</span> (a_pinned[i] != a_pinned[i]) {
+            printf(<span class="cstring">"*** Pinned transfers failed ***\n"</span>);
+            <span class="cstd">break</span>;
+        }
+    }
+
+    printf(<span class="cstring">"\n"</span>);
+
+    <span class="ccomment">// cleanup</span>
+    <span class="cnv">cudaFree</span>(a_d);
+    <span class="cnv">cudaFreeHost</span>(a_pinned);
+    <span class="cnv">cudaFreeHost</span>(b_pinned);
+    <span class="cstd">free</span>(a_pageable);
+    <span class="cstd">free</span>(b_pageable);
+    <span class="cnv">cudaEventDestroy</span>(startEvent);
+    <span class="cnv">cudaEventDestroy</span>(stopEvent);
+
+}</code></pre>
+            <h2>Fortran</h2>
             <pre><code><span class="fstd">program</span> BandwidthTest
 
     <span class="fstd">use</span> <span class="fnv">cudafor</span>
@@ -137,7 +244,7 @@
 
         <hr>
         <div class="footer">
-            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
             <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
         </div>
         

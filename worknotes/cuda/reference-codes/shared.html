@@ -5,6 +5,7 @@
 		<link href="/css/general.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 		<link href="/css/fortran-syntax.css" rel="stylesheet">
+		<link href="/css/cpp-syntax.css" rel="stylesheet">
 	</head>
 	<body>
 	
@@ -24,8 +25,98 @@
 		<div class="normalwidth">
 			<h1>sharedExample</h1>
 			<p>A sample code to demonstrate how the compiler uses various types of memory. This information is availed when compiling with <code>-Mcuda=ptxinfo</code>.</p>
-			<p><a href="samples/sharedExample.cuf" download="sharedExample.cuf">Download link</a></p>
-            <pre><code><span class="fcomment">! This code shows how dynamically and statically <span class="fintrinsic">allocated</span></span>
+			<p>Download: <a href="samples/sharedExample.cu" download="sharedExample.cu"><img src="/static/logos/cpp.svg" height="32px"></a> <a href="samples/sharedExample.cuf" download="sharedExample.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+			<h2>C++</h2>
+			<pre><code><span class="ccomment">// This code shows how dynamically and statically allocated</span>
+<span class="ccomment">// shared memory are used to reverse a small array</span>
+<span class="cpp">#include &lt;stdio.h&gt;</span>
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> staticReverse(<span class="cstd">float</span>* d, <span class="cstd">int</span> n) {
+	<span class="cnv">__shared__</span> <span class="cstd">float</span> s[64];
+	<span class="cstd">int</span> t = <span class="cnv">threadIdx</span>.x, tr = n - t - 1;
+	s[t] = d[t];
+	<span class="cnv"><span class="cnv">__syncthreads</span></span>();
+	d[t] = s[tr];
+}
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> dynamicReverse1(<span class="cstd">float</span>* d, <span class="cstd">int</span> n) {
+	<span class="cstd">extern</span> <span class="cnv">__shared__</span> <span class="cstd">float</span> s[];
+	<span class="cstd">int</span> t = <span class="cnv">threadIdx</span>.x, tr = n - t - 1;
+	s[t] = d[t];
+	<span class="cnv">__syncthreads</span>();
+	d[t] = s[tr];
+}
+
+<span class="ccomment">// only one thread can initialize the shared memory buffer</span>
+<span class="cnv">__global__</span> <span class="cstd">void</span> dynamicReverse2(<span class="cstd">float</span>* d, <span class="cstd">int</span> n) {
+	<span class="cnv">__shared__</span> <span class="cstd">float</span> *s ;
+	<span class="cstd">int</span> t = <span class="cnv">threadIdx</span>.x, tr = n - t - 1;
+	<span class="cstd">if</span> (t==0) s = <span class="cstd">new</span> <span class="cstd">float</span>[n];
+	<span class="cnv">__syncthreads</span>();
+	s[t] = d[t];
+	<span class="cnv">__syncthreads</span>();
+	d[t] = s[tr];
+	<span class="cstd">if</span> (t==0) delete(s);
+}
+
+<span class="ccomment">// The Fortran dynamic Reverse3 doesn't have an equivalent in C++</span>
+
+<span class="cstd">int</span> main() {
+	<span class="cstd"><span class="cstd">const</span></span> <span class="cstd">int</span> n = 64, nbytes = n*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>);
+	<span class="cstd">float</span> *a, *r, *d, *d_d;
+	<span class="cnv">dim3</span> grid, tBlock;
+	<span class="cstd">float</span> maxerror;
+
+	a = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(nbytes);
+	r = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(nbytes);
+	d = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(nbytes);
+	<span class="cnv">cudaMalloc</span>(&d_d, nbytes);
+
+	tBlock = <span class="cnv">dim3</span>(n, 1, 1);
+	grid = <span class="cnv">dim3</span>(1, 1, 1);
+
+	<span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; n; ++i) {
+		a[i] = i;
+		r[i] = n-i-1;
+	}
+
+	<span class="ccomment">// run version with static shared memory</span>
+	<span class="cnv">cudaMemcpy</span>(d_d, a, nbytes, <span class="cnv">cudaMemcpyHostToDevice</span>);
+	staticReverse&lt;&lt;&lt;grid, tBlock&gt;&gt;&gt;(d_d, n);
+	<span class="cnv">cudaMemcpy</span>(d, d_d, nbytes, <span class="cnv">cudaMemcpyDeviceToHost</span>);
+	maxerror = 0.;
+	<span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; n; ++i) {
+		<span class="cstd">if</span> (<span class="cintrinsic">abs</span>(r[i]-d[i]) &gt; maxerror) maxerror = <span class="cintrinsic">abs</span>(r[i]-d[i]);
+	}
+	printf(<span class="cstring"><span class="cstring"><span class="cstring">"Static case max error: %f\n"</span></span></span>, maxerror);
+
+	<span class="ccomment">// run dynamic shared memory version 1</span>
+	<span class="cnv">cudaMemcpy</span>(d_d, a, nbytes, <span class="cnv">cudaMemcpyHostToDevice</span>);
+	dynamicReverse1&lt;&lt;&lt;grid, tBlock&gt;&gt;&gt;(d_d, n);
+	<span class="cnv">cudaMemcpy</span>(d, d_d, nbytes, <span class="cnv">cudaMemcpyDeviceToHost</span>);
+	maxerror = 0.;
+	<span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; n; ++i) {
+		<span class="cstd">if</span> (<span class="cintrinsic">abs</span>(r[i]-d[i]) &gt; maxerror) maxerror = <span class="cintrinsic">abs</span>(r[i]-d[i]);
+	}
+	printf(<span class="cstring"><span class="cstring"><span class="cstring">"Static case max error: %f\n"</span></span></span>, maxerror);
+
+	<span class="ccomment">// run dynamic shared memory version 2</span>
+	<span class="cnv">cudaMemcpy</span>(d_d, a, nbytes, <span class="cnv">cudaMemcpyHostToDevice</span>);
+	dynamicReverse2&lt;&lt;&lt;grid, tBlock&gt;&gt;&gt;(d_d, n);
+	<span class="cnv">cudaMemcpy</span>(d, d_d, nbytes, <span class="cnv">cudaMemcpyDeviceToHost</span>);
+	maxerror = 0.;
+	<span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; n; ++i) {
+		<span class="cstd">if</span> (<span class="cintrinsic">abs</span>(r[i]-d[i]) &gt; maxerror) maxerror = <span class="cintrinsic">abs</span>(r[i]-d[i]);
+	}
+	printf(<span class="cstring"><span class="cstring"><span class="cstring">"Static case max error: %f\n"</span></span></span>, maxerror);
+
+	<span class="cstd">free</span>(a);
+	<span class="cstd">free</span>(r);
+	<span class="cstd">free</span>(d);
+	<span class="cnv">cudaFree</span>(d_d);
+}</code></pre>
+			<h2>Fortran</h2>
+            <pre><code><span class="fcomment">! This code shows how dynamically and statically allocated</span>
 <span class="fcomment">! shared memory are used to reverse a small array</span>
 <span class="fstd">module</span> reverse_m
 
@@ -149,7 +240,7 @@
 
 		<hr>
 		<div class="footer">
-			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
 			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
 		</div>
 		

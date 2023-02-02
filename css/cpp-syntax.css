@@ -1,0 +1,31 @@
+.cstd {
+    color: blue;
+}
+
+.cnv {
+    color: #76b900;
+}
+
+.ccomment {
+    color: #eb9234;
+}
+
+.cstring {
+    color: #d669c9;
+}
+
+.cpp {
+    color: gray;
+}
+
+.cintrinsic {
+    color: purple;
+}
+
+.clog {
+    color: #62f2fc;
+}
+
+.cmpi {
+    color: navy;
+}

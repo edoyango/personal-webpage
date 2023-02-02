@@ -25,7 +25,8 @@
             <h1>Memcpy</h1>
             <p>Alternatives to array assignment to transfer data between host and device.</p>
             <p>Calls to the Memcpy function <em>may</em> be beneifical as transfers by array assignment can be implicitly broken up into multiple transfers, slowing down the transfer.</p>
-            <p><a href="samples/memcpy.cuf" download="memcpy.cuf">Download link</a></p>
+            <p><code>cudaMemcpy</code> is used heaps in the other C++ example codes, so I didn't bother including a sample here.</p>
+            <p>Download: <a href="samples/memcpy.cuf" download="memcpy.cuf"><img src="/static/logos/cpp.svg" height="32px"></a></p>
             <pre><code><span class="fcomment">! for contiguous data</span>
 istat = <span class="fnv">cudaMemcpy</span>(a_d , a_pageable , nElements)
 
@@ -39,7 +40,7 @@ istat = <span class="fnv">cudaMemcpy2D</span>(a_d(n1_l , n2_l), n, &
 
         <hr>
         <div class="footer">
-            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
             <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
         </div>
         
