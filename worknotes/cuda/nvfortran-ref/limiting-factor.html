@@ -5,6 +5,7 @@
 		<link href="/css/general.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 		<link href="/css/fortran-syntax.css" rel="stylesheet">
+        <link href="/css/cpp-syntax.css" rel="stylesheet">
 	</head>
 	<body>
 	
@@ -25,7 +26,52 @@
 			<h1>limitingFactor</h1>
 			<p>Code to test whether computation or memory transfer is the bottleneck. Compiled program intended to be run with <code>nvprof</code>.</p>
 			<p>The book demonstrates the effect of compiling with <code>-Mcuda=fastmath</code>, which shows a significant speedup in the "base" and "math" kernels (note they use very old C2050 and K20 GPUs).</p>
-			<p><a href="samples/limitingFactor.cuf" download="limitingFactor.cuf">Download link</a></p>
+			<p>Download: <a href="samples/limitingFactor.cu" download="limitingFactor.cu"><img src="/static/logos/cpp.svg" height="32px"></a> <a href="samples/limitingFactor.cuf" download="limitingFactor.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+            <h2>C++</h2>
+            <pre><code><span class="cpp">#include &lt;stdio.h&gt;</span>
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> base(<span class="cstd">float</span> *a, <span class="cstd">float</span> *b) {
+    <span class="cstd">int</span> i = <span class="cnv">blockIdx</span>.x * <span class="cnv">blockDim</span>.x + <span class="cnv">threadIdx</span>.x;
+    a[i] = <span class="cintrinsic">sin</span>(b[i]);
+}
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> memory(<span class="cstd">float</span> *a, <span class="cstd">float</span> *b) {
+    <span class="cstd">int</span> i = <span class="cnv">blockIdx</span>.x * <span class="cnv">blockDim</span>.x + <span class="cnv">threadIdx</span>.x;
+    a[i] = b[i];
+}
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> math(<span class="cstd">float</span> *a, <span class="cstd">float</span> b, <span class="cstd">int</span> flag) {
+    <span class="cstd">int</span> i = <span class="cnv">blockIdx</span>.x * <span class="cnv">blockDim</span>.x + <span class="cnv">threadIdx</span>.x;
+    <span class="cstd">float</span> v = <span class="cintrinsic">sin</span>(b);
+    <span class="cstd">if</span> (v*flag == 1.0) a[i] = v;
+}
+
+<span class="ccomment">// this exists because cudaMemSet is weird</span>
+<span class="cnv">__global__</span> <span class="cstd">void</span> setval(<span class="cstd">float</span> *a, <span class="cstd">float</span> val) {
+    <span class="cstd">int</span> i = <span class="cnv">blockIdx</span>.x * <span class="cnv">blockDim</span>.x + <span class="cnv">threadIdx</span>.x;
+    a[i] = val;
+}
+
+<span class="cstd">int</span> main() {
+
+    <span class="cstd"><span class="cstd">const</span></span> <span class="cstd">int</span> n = 8*1024*1024, blockSize = 256;
+    
+    <span class="cstd">float</span> *a, *a_d, *b_d;
+    a = (<span class="cstd">float</span>*)<span class="cstd">malloc</span>(n*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>));
+
+    <span class="cnv">cudaMalloc</span>(&a_d, n*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>));
+    <span class="cnv">cudaMalloc</span>(&b_d, n*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>));
+    setval<span class="cnv">&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;</span>(b_d, 1.0);
+
+    base<span class="cnv">&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;</span>(a_d, b_d);
+    memory<span class="cnv">&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;</span>(a_d, b_d);
+    math<span class="cnv">&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;</span>(a_d, 1.0, 0);
+
+    <span class="cnv">cudaMemcpy</span>(a_d, a, n*<span class="cintrinsic">sizeof</span>(<span class="cstd">float</span>), <span class="cnv">cudaMemcpyDeviceToHost</span>);
+    printf(<span class="cstring">"%f\n"</span>, a[0]);
+
+}</code></pre>
+            <h2>Fortran</h2>
             <pre><code><span class="fstd">module</span> kernel_m
 <span class="fstd">contains</span>
 
@@ -81,7 +127,7 @@
 
 		<hr>
 		<div class="footer">
-			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
 			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
 		</div>
 		

@@ -5,6 +5,7 @@
 		<link href="/css/general.css" rel="stylesheet">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 		<link href="/css/fortran-syntax.css" rel="stylesheet">
+		<link href="/css/cpp-syntax.css" rel="stylesheet">
 	</head>
 	<body>
 	
@@ -34,7 +35,26 @@
 				<li>Effective: can be measured with the approach above</li>
 				<li>Actual: the realised bandwidth which is affected by memory access patterns</li>
 			</ul>
-			<p><a href="samples/peakBandwidth.cuf" download="peakBandwidth.cuf">Download link</a></p>
+			<p>Download: <a href="samples/peakBandwidth.cu" download="peakBandwidth.cu"><img src="/static/logos/cpp.svg" height="32px"></a> <a href="samples/peakBandwidth.cuf" download="peakBandwidth.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+			<h2>C++</h2>
+			<pre><code><span class="cpp">#include &lt;stdio.h&gt;</span>
+
+<span class="cstd">int</span> main() {
+
+	<span class="cstd">int</span> nDevices;
+	<span class="cnv">cudaGetDeviceCount</span>(&nDevices);
+
+	<span class="cnv">cudaDeviceProp</span> prop;
+	<span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; nDevices; ++i) {
+		<span class="cnv">cudaGetDeviceProperties</span>(&prop, i);
+		printf(<span class="cstring">"  Device Number: %d\n"</span>, i);
+		printf(<span class="cstring">"    Memory Clock Rate (kHz): %d\n"</span>, prop.memoryClockRate);
+		printf(<span class="cstring">"    Memory Bush Width (bits): %d\n"</span>, prop.memoryBusWidth);
+		printf(<span class="cstring">"    Peak Memory Bandwidth (GB/s): %f\n\n"</span>, 
+			2.0*prop.memoryClockRate*(prop.memoryBusWidth / 8)*1.e-6);
+	}
+}</code></pre>
+			<h2>Fortran</h2>
             <pre><code><span class="fstd">program</span> peakBandwidth
 
     <span class="fstd">use</span> cudafor
@@ -60,7 +80,7 @@
 
 		<hr>
 		<div class="footer">
-			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+			<p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
 			<p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
 		</div>
 		
