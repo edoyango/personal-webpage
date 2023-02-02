@@ -5,6 +5,7 @@
         <link href="/css/general.css" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <link href="/css/fortran-syntax.css" rel="stylesheet">
+        <link href="/css/cpp-syntax.css" rel="stylesheet">
     </head>
     <body>
     
@@ -25,7 +26,77 @@
             <h1>offsetNStride</h1>
             <p>Demonstration of how coalesced access to GPU global memory i.e., accessing memory in strides of 16 (half-warp) or 32 (warp) can reduce the number of transactions made and reduce run times.</p>
             <p>My NVIDIA 1650 behaves like K20 and C2050 used in the book, where 0-stride accesses are fastest, and everything else is worse (by only a little). </p>
-            <p><a href="samples/offsetNStride.cuf" download="offsetNStride.cuf">Download link</a></p>
+            <p>Download: <a href="samples/offsetNStride.cu" download="offsetNStride.cu"><img src="/static/logos/cpp.svg" height="32px"></a> <a href="samples/offsetNStride.cuf" download="offsetNStride.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+			<h2>C++</h2>
+            <pre><code><span class="cpp">#include &lt;stdio.h&gt;</span>
+<span class="cpp">#include &lt;precision.h&gt;</span>
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> offset(userfp_t* a, <span class="cstd">int</span> s) {
+    <span class="cstd">int</span> i = <span class="cnv">blockDim</span>.x*<span class="cnv">blockIdx</span>.x + <span class="cnv">threadIdx</span>.x + s;
+    a[i] += 1.0;
+}
+
+<span class="cnv">__global__</span> <span class="cstd">void</span> stride(userfp_t* a, <span class="cstd">int</span> s) {
+    <span class="cstd">int</span> i = (<span class="cnv">blockDim</span>.x * <span class="cnv">blockIdx</span>.x + <span class="cnv">threadIdx</span>.x)*s;
+    a[i] += 1.0;
+}
+
+<span class="cstd">int</span> main() {
+    
+    <span class="cstd"><span class="cstd">const</span></span> <span class="cstd">int</span> nMB = 4, n = nMB*1024*1024/<span class="cintrinsic">sizeof</span>(userfp_t), blockSize = 256;
+    <span class="cstd"><span class="cstd">const</span></span> <span class="cstd">size_t</span> nbytes = n*<span class="cintrinsic">sizeof</span>(userfp_t);
+    userfp_t *a_d, *b_d;
+    <span class="cnv">cudaDeviceProp</span> prop;
+    <span class="cnv">cudaEvent_t</span> startEvent, stopEvent;
+    <span class="cstd">float</span> time;
+
+    <span class="ccomment">// array dimensions are 33*n <span class="cstd">for</span> stride cases</span>
+    <span class="cnv">cudaMalloc</span>(&a_d, 33*nbytes);
+    <span class="cnv">cudaMalloc</span>(&b_d, 33*nbytes);
+
+    <span class="cnv">cudaGetDeviceProperties</span>(&prop, 0);
+    printf(<span class="cstring">"Device: %s\n"</span>, prop.name);
+    printf(<span class="cstring">"Transfer size (MB): %d\n"</span>, nMB);
+
+    <span class="cstd">if</span> (<span class="cintrinsic">sizeof</span>(userfp_t)==<span class="cintrinsic">sizeof</span>(<span class="cstd">double</span>)) {
+        printf(<span class="cstring">"Double Precision\n"</span>);
+    } <span class="cstd">else</span> {
+        printf(<span class="cstring">"Single Precision\n"</span>);
+    }
+
+    <span class="cnv">cudaEventCreate</span>(&startEvent);
+    <span class="cnv">cudaEventCreate</span>(&stopEvent);
+
+    printf(<span class="cstring">"Offset, Bandwidth (GB/s):\n"</span>);
+    offset&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;(b_d, 0);
+    <span class="cstd">for</span> (<span class="cstd">int</span> i = 0; i &lt; 33; ++i) {
+        cudaMemset(&a_d, 0, 33*nbytes);
+        <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+        offset&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;(a_d, i);
+        <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+        <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+        <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+        printf(<span class="cstring"><span class="cstring">"%d %f\n"</span></span>, i, 2.0*nbytes/time*1.e-6);
+    }
+
+    printf(<span class="cstring">"\nStrid, Bandwidth (GB/s):\n"</span>);
+    stride&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;(b_d, 1);
+    <span class="cstd">for</span> (<span class="cstd">int</span> i = 1; i &lt; 33; ++i) {
+        cudaMemset(&a_d, 0, 33*nbytes);
+        <span class="cnv">cudaEventRecord</span>(startEvent, 0);
+        stride&lt;&lt;&lt;n/blockSize, blockSize&gt;&gt;&gt;(a_d, i);
+        <span class="cnv">cudaEventRecord</span>(stopEvent, 0);
+        <span class="cnv">cudaEventSynchronize</span>(stopEvent);
+        <span class="cnv">cudaEventElapsedTime</span>(&time, startEvent, stopEvent);
+        printf(<span class="cstring"><span class="cstring">"%d %f\n"</span></span>, i, 2.0*nbytes/time*1.e-6);
+    }
+
+    <span class="cnv">cudaFree</span>(a_d);
+    <span class="cnv">cudaFree</span>(b_d);
+    <span class="cnv">cudaEventDestroy</span>(startEvent);
+    <span class="cnv">cudaEventDestroy</span>(stopEvent);
+}</code></pre>
+            <h2>Fortran</h2>
             <pre><code><span class="fstd">module</span> kernels_m
 
     <span class="fstd">use</span> precision_m
@@ -38,7 +109,7 @@
         <span class="fstd">integer</span>, <span class="fstd">value</span>:: s
         <span class="fstd">integer</span>:: i
         i = <span class="fnv">blockDim</span>%x*(<span class="fnv">blockIdx</span>%x-1)+ <span class="fnv">threadIdx</span>%x + s
-        a(i) = a(i)+1
+        a(i) = a(i) + 1._f
 
     <span class="fstd">end</span> <span class="fstd">subroutine</span> offset
 
@@ -48,7 +119,7 @@
         <span class="fstd">integer</span>, <span class="fstd">value</span>:: s
         <span class="fstd">integer</span>:: i
         i = (<span class="fnv">blockDim</span>%x*(<span class="fnv">blockIdx</span>%x-1)+ <span class="fnv">threadIdx</span>%x) * s
-        a(i) = a(i)+1
+        a(i) = a(i) + 1._f
 
     <span class="fstd">end</span> <span class="fstd">subroutine</span> stride
 
@@ -69,7 +140,7 @@
     <span class="fstd">type</span>(<span class="fnv">cudaEvent</span>):: startEvent, stopEvent
     <span class="fstd">type</span>(<span class="fnv">cudaDeviceProp</span>):: prop
     <span class="fstd">integer</span>:: i, istat
-    <span class="fstd">real</span>(4):: time
+    <span class="fstd">real</span>:: time
 
     istat = <span class="fnv">cudaGetDeviceProperties</span>(prop, 0)
     <span class="fstd">write</span>(*,<span class="fstring">'(/,<span class="fstring">" Device: "</span>,a)'</span>) <span class="fintrinsic">trim</span>(prop%name)
@@ -86,7 +157,7 @@
     <span class="fstd">write</span>(*,*) <span class="fstring">'Offset, Bandwidth (GB/s):'</span>
     <span class="fstd">call</span> offset <span class="fnv">&lt;&lt;&lt;n/blockSize,blockSize &gt;&gt;&gt;</span>(b_d, 0)
     <span class="fstd">do</span> i = 0, 32
-        a_d = 0.0
+        a_d = 0._f
         istat = <span class="fnv">cudaEventRecord</span>(startEvent,0)
         <span class="fstd">call</span> offset <span class="fnv">&lt;&lt;&lt;n/blockSize,blockSize &gt;&gt;&gt;</span>(a_d, i)
         istat = <span class="fnv">cudaEventRecord</span>(stopEvent,0)
@@ -100,7 +171,7 @@
     <span class="fstd">write</span>(*,*) <span class="fstring">'Stride, Bandwidth (GB/s):'</span>
     <span class="fstd">call</span> stride <span class="fnv">&lt;&lt;&lt;n/blockSize,blockSize &gt;&gt;&gt;</span>(b_d, 1)
     <span class="fstd">do</span> i = 1, 32
-        a_d = 0.0
+        a_d = 0._f
         istat = <span class="fnv">cudaEventRecord</span>(startEvent,0)
         <span class="fstd">call</span> stride <span class="fnv">&lt;&lt;&lt;n/blockSize,blockSize &gt;&gt;&gt;</span>(a_d, i)
         istat = <span class="fnv">cudaEventRecord</span>(stopEvent,0)
@@ -118,7 +189,7 @@
 
         <hr>
         <div class="footer">
-            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 25 Jan 2023</p>
+            <p>Content first published: 25 Jan 2023 &nbsp;&nbsp;&nbsp; Content last modified: 02 Feb 2023</p>
             <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
         </div>
         
