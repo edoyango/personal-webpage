@@ -37,10 +37,13 @@ matches = re.findall(r'\'(.+?)\'',content)  # match text between two quotes
 for m in matches:
       content = content.replace('\'%s\'' % m, '%s\'%s\'%s' % (openTagString, m, closeTag))  # override text to include tags
 
-# match comments
+# match comments(?://[^\n]*
 matches_comment = re.findall(r'\!.*?(?=\n|$)', content, re.DOTALL)
 for m in matches_comment:
-    content = content.replace('{}'.format(m), '{}{}{}'.format(openTagComment, m, closeTag))
+    if not (len(m.split()) == 1 and m[0] == '!'): # handles lone exclamation marks
+        content = content.replace(m, '{}{}{}'.format(openTagComment, m, closeTag))
+
+content = content.replace('!', '{}!{}'.format(openTagComment, closeTag))
 
 # match preprocessor comments
 matches_pp = re.findall(r'#.*?(?=\n|$)', content, re.DOTALL)
@@ -52,7 +55,7 @@ matches_chevron = re.findall(r'<<<(.+?)>>>', content, re.DOTALL)
 for m in matches_chevron:
     content = content.replace('<<<{}>>>'.format(m), '{}&lt;&lt;&lt;{}&gt;&gt;&gt;{}'.format(openTagCuf, m, closeTag))
 
-stdwords = ['len', 'while', 'exit', 'stop', 'advance', 'deallocate', 'STAT', 'allocate', 'logical', 'allocatable', 'contains','value', 'real', 'subroutine', 'program', 'use', 'implicit', 'none', 'type', 'integer', 'if', 'then', 'else', 'elseif', 'end', 'endif', 'do', 'enddo', 'module', 'parameter', 'kind', 'endprogram', 'endmodule', 'call']
+stdwords = ['intent(in)', 'intent(out)', 'double precision', 'len', 'while', 'exit', 'stop', 'advance', 'deallocate', 'STAT', 'allocate', 'logical', 'allocatable', 'contains','value', 'real', 'subroutine', 'program', 'use', 'implicit', 'none', 'type', 'integer', 'if', 'then', 'else', 'elseif', 'end', 'endif', 'do', 'enddo', 'module', 'parameter', 'kind', 'endprogram', 'endmodule', 'call']
 for w in stdwords:
     content = re.sub(r'\b{}\b'.format(w), '{o}{w}{c}'.format(o=openTagStd, w=w, c=closeTag), content)
 
@@ -64,7 +67,7 @@ cuffuncs = ['cudaGetDevice', 'cudaDeviceDisablePeerAccess', 'cudaMemcpyPeer', 'c
 for fu in cuffuncs:
     content = re.sub(r'\b{}\('.format(fu), '{o}{fu}{c}('.format(o=openTagCuf, fu=fu, c=closeTag), content)
 
-intrinsicwords = ['hostnm', 'sizeof', 'sqrt', 'sin', 'cos', 'abs', 'maxval', 'trim', 'allocated', 'any']
+intrinsicwords = ['all', 'mod', 'modulo','hostnm', 'sizeof', 'sqrt', 'sin', 'cos', 'abs', 'maxval', 'trim', 'allocated', 'any']
 for w in intrinsicwords:
     content = re.sub(r'\b{}\b'.format(w), '{o}{w}{c}'.format(o=openTagIntrinsic, w=w, c=closeTag), content)
 
@@ -74,7 +77,7 @@ logicalwords = ['and', 'or', 'lt', 'gt', 'not', 'eq', 'ge', 'le' ,'false', 'true
 for w in logicalwords:
     content = re.sub(r'\.{}\.'.format(w), '{o}.{w}.{c}'.format(o=openTagLogical, w=w, c=closeTag), content)
 
-mpiwords = ['MPI_ALLGATHER', 'MPI_COMM_SPLIT', 'MPI_BARRIER', 'MPI_INIT', 'MPI_FINALIZE', 'MPI_COMM_WORLD', 'MPI_COMM_SIZE', 'MPI_COMM_RANK']
+mpiwords = ['MPI_WTIME', 'MPI_ABORT', 'MPI_ALLGATHER', 'MPI_COMM_SPLIT', 'MPI_BARRIER', 'MPI_INIT', 'MPI_FINALIZE', 'MPI_COMM_WORLD', 'MPI_COMM_SIZE', 'MPI_COMM_RANK']
 for w in mpiwords:
     content = re.sub(r'\b{}\b'.format(w), '{o}{w}{c}'.format(o=openTagMPI, w=w, c=closeTag), content)
 
