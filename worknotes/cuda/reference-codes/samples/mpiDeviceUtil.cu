@@ -7,6 +7,7 @@
 int main(int argc, char *argv[]) {
 
     const int n = 1024*1024;
+    
     int procid, numprocs;
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &procid);
@@ -18,7 +19,8 @@ int main(int argc, char *argv[]) {
     gethostname(hostname, HOST_NAME_MAX);
     for (int i = 0; i < numprocs; ++i) {
         MPI_Barrier(MPI_COMM_WORLD);
-        if (i == procid) printf(" [%d] host: %s, device: %d\n", procid, hostname, deviceID);
+        if (i == procid) printf(" [%d] host: %s, device: %d\n", 
+            procid, hostname, deviceID);
     }
 
     // get memory use bafore large allocations
@@ -35,7 +37,8 @@ int main(int argc, char *argv[]) {
 
     for (int i = 0; i < numprocs; ++i) {
         MPI_Barrier(MPI_COMM_WORLD);
-        if (i == procid) printf(" [%d] device arrays allocated: %d\n", procid, (freeB-freeA)/n/sizeof(float));
+        if (i == procid) printf(" [%d] device arrays allocated: %d\n", 
+            procid, (freeB-freeA)/n/sizeof(float));
     }
 
     cudaFree(d);
