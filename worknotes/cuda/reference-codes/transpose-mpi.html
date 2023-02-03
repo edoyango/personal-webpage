@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Ed Space - Worknotes - CUDA</title>
+        <link href="/css/general.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="/css/fortran-syntax.css" rel="stylesheet">
+        <link href="/css/cpp-syntax.css" rel="stylesheet">
+    </head>
+    <body>
+    
+        <!-- Top navigation bar -->
+        <nav class="navbar navbar-default sticky-top">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item"><a href="/index.html">Home</a></li>
+                    <li class="nav-item"><a href="/about.html">About Me</a></li>
+                    <li class="nav-item active"><a href="/worknotes/index.html">Work Notes</a></li>
+                    <li class="nav-item"><a href="/trips/index.html">Trips</a></li>
+                    <li class="nav-item"><a href="/apps/index.html">Web Tools</a></li>
+                  </ul>
+            </div>
+        </nav>
+        
+        <div class="normalwidth">
+            <h1>Module</h1>
+            <p>Code showing the use of tiling and shared memory in transposing a matrix. The book uses it as an example of the performance difference between CUDA aware MPI vs non-MPI transfers (transfers between GPUs via their respective host CPUs).</p>
+            <p>Download: <!--<a href="samples/sample.cu" download="sample.cu"><img src="/static/logos/cpp.svg" height="32px"></a> --><a href="samples/transposeMPI.cuf" download="transposeMPI.cuf"><img src="/static/logos/Fortran.svg" height="32px"></a></p>
+            <h2>C++</h2>
+            <pre><code>Not available yet</code></pre>
+            <h2>Fortran</h2>
+            <pre><code><span class="fstd">module</span> transpose_m
+
+    <span class="fstd">implicit</span> <span class="fstd">none</span>
+    <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: cudaTileDim = 32
+    <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: blockRows = 8
+
+<span class="fstd">contains</span>
+
+    <span class="fnv">attributes</span>(<span class="fnv">global</span>) <span class="fstd">subroutine</span> cudaTranspose(odata, ldo, idata, ldi)
+
+        <span class="fstd">real</span>, <span class="fstd">intent(out)</span>:: odata(ldo, *)
+        <span class="fstd">real</span>, <span class="fstd">intent(in)</span>:: idata(ldi, *)
+        <span class="fstd">integer</span>, <span class="fstd">value</span>, <span class="fstd">intent(in)</span>:: ldo, ldi
+        <span class="fstd">real</span>, <span class="fnv">shared</span>:: tile(cudaTileDim+1, cudaTileDim)
+        <span class="fstd">integer</span>:: x, y, j
+
+        x = (<span class="fnv">blockIdx</span>%x-1) * cudaTileDim + <span class="fnv">threadIdx</span>%x
+        y = (<span class="fnv">blockIdx</span>%y-1) * cudaTileDim + <span class="fnv">threadIdx</span>%y
+
+        <span class="fstd">do</span> j = 0, cudaTileDim-1, blockRows
+            tile(<span class="fnv">threadIdx</span>%x, <span class="fnv">threadIdx</span>%y+j) = idata(x, y+j)
+        <span class="fstd">end</span> <span class="fstd">do</span>
+
+        <span class="fstd">call</span> <span class="fnv">syncthreads</span>()
+
+        x = (<span class="fnv">blockIdx</span>%y-1) * cudaTileDim + <span class="fnv">threadIdx</span>%x
+        y = (<span class="fnv">blockIdx</span>%x-1) * cudaTileDim + <span class="fnv">threadIdx</span>%y
+
+        <span class="fstd">do</span> j = 0, cudaTileDim-1, blockRows
+            odata(x, y+j) = tile(<span class="fnv">threadIdx</span>%y+j, <span class="fnv">threadIdx</span>%x)
+        <span class="fstd">end</span> <span class="fstd">do</span>
+
+    <span class="fstd">end</span> <span class="fstd">subroutine</span>
+
+<span class="fstd">end</span> <span class="fstd">module</span> transpose_m
+
+<span class="fcomment">!</span>
+<span class="fcomment"><span class="fcomment">!</span> Main code</span>
+<span class="fcomment">!</span>
+
+<span class="fstd">program</span> transpose_MPI
+
+    <span class="fstd">use</span> <span class="fnv">cudafor</span>
+    <span class="fstd">use</span> mpi
+    <span class="fstd">use</span> transpose_m
+    <span class="fstd">use</span> mpiDeviceUtil
+
+    <span class="fstd">implicit</span> <span class="fstd">none</span>
+
+    <span class="fcomment"><span class="fcomment">!</span> global array size</span>
+    <span class="fstd">integer</span>, <span class="fstd">parameter</span>:: nx = 2048, ny = 2048
+
+    <span class="fcomment"><span class="fcomment">!</span> host arrays (global)</span>
+    <span class="fstd">real</span>:: idata_h(nx, ny), tdata_h(ny, nx), gold(ny, nx)
+
+    <span class="fcomment"><span class="fcomment">!</span> CUDA vars and <span class="fnv">device</span> arrays</span>
+    <span class="fstd">integer</span>:: deviceID, nDevices
+    <span class="fstd">type</span>(<span class="fnv">dim3</span>):: dimGrid, dimBlock
+    <span class="fstd">real</span>, <span class="fnv">device</span>, <span class="fstd">allocatable</span>:: idata_d(:, :), tdata_d(:, :), sTile_d(:, :), rTile_d(:, :)
+
+    <span class="fcomment"><span class="fcomment">!</span> MPI stuff</span>
+    <span class="fstd">integer</span>:: mpiTileDimX, mpiTileDimY
+    <span class="fstd">integer</span>:: procid, numprocs, tag, ierr, localRank
+    <span class="fstd">integer</span>:: nstages, stage, sRank, rRank
+    <span class="fstd">integer</span>:: status(MPI_STATUS_SIZE)
+    <span class="fstd">double precision</span>:: timeStart, timeStop
+    character(<span class="fstd">len</span>=10):: localRankStr
+
+    <span class="fstd">integer</span>:: i, j, nyl, jl, jg, p
+    <span class="fstd">integer</span>:: xOffset, yOffset
+
+    <span class="fcomment"><span class="fcomment">!</span> MPI initialization</span>
+    <span class="fstd">call</span> <span class="fmpi">MPI_INIT</span>(ierr)
+    <span class="fstd">call</span> <span class="fmpi">MPI_COMM_RANK</span>(<span class="fmpi">MPI_COMM_WORLD</span>, procid, ierr)
+    <span class="fstd">call</span> <span class="fmpi">MPI_COMM_SIZE</span>(<span class="fmpi">MPI_COMM_WORLD</span>, numprocs, ierr)
+
+    ierr = <span class="fnv">cudaGetDeviceCount</span>(nDevices)
+
+    <span class="fcomment"><span class="fcomment">!</span> check parameters and calculate execution configuration</span>
+    <span class="fstd">if</span> (<span class="fintrinsic">mod</span>(nx, numprocs) == 0 <span class="flog">.and.</span> <span class="fintrinsic">mod</span>(ny, numprocs) == 0) <span class="fstd">then</span>
+        mpiTileDimX = nx/numprocs
+        mpiTileDimY = ny/numprocs
+    <span class="fstd">else</span>
+        <span class="fstd">write</span>(*,*) <span class="fstring">"ny must be an integral multiple of numprocs"</span>
+        <span class="fstd">call</span> <span class="fmpi">MPI_ABORT</span>(<span class="fmpi">MPI_COMM_WORLD</span>, 1, ierr)
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fstd">if</span> (<span class="fintrinsic">mod</span>(mpiTileDimX, cudaTileDim) /= 0 <span class="flog">.or.</span> <span class="fintrinsic">mod</span>(mpiTileDimY, cudaTileDim) /= 0) <span class="fstd">then</span>
+        <span class="fstd">write</span>(*,*) <span class="fstring">"mpiTileDimX and mpiTileDimY must be an integral multiple of cudaTileDim"</span>
+        <span class="fstd">call</span> <span class="fmpi">MPI_ABORT</span>(<span class="fmpi">MPI_COMM_WORLD</span>, 1, ierr)
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fstd">if</span> (numprocs > nDevices) <span class="fstd">then</span>
+        <span class="fstd">write</span>(*,*) <span class="fstring">"numprcs must be <= number of GPUs on the system<span class="fcomment">!</span>"</span>
+        <span class="fstd">call</span> <span class="fmpi">MPI_ABORT</span>(<span class="fmpi">MPI_COMM_WORLD</span>, 1, ierr)
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fcomment"><span class="fcomment">!</span> each MPI process </span>
+    <span class="fstd">call</span> assignDevice(procid, numprocs, deviceID)
+
+    dimGrid = <span class="fnv">dim3</span>(mpiTileDimX/cudaTileDim, mpiTileDimY/cudaTileDim, 1)
+    dimBlock = <span class="fnv">dim3</span>(cudaTileDim, blockRows, 1)
+
+    <span class="fcomment"><span class="fcomment">!</span> write parameters to terminal</span>
+    <span class="fstd">if</span> (procid == 0) <span class="fstd">then</span>
+        <span class="fstd">write</span>(*,*)
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'Array size: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,/)"</span>) nx, ny
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'CUDA block size: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,<span class="fstring">',  CUDA tile size: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,/)"</span>) &
+            cudaTileDim, blockRows, cudaTileDim, cudaTileDim
+
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'dimGrid: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,<span class="fstring">'  dimBlock: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,/)"</span>) &
+            dimGrid%x, dimGrid%y, dimGrid%x, dimBlock%x, dimBlock%y, dimBlock%z
+
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'numprocs: '</span>, i0, <span class="fstring">',  Local input array size: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,/)"</span>) &
+            numprocs, nx, mpiTileDimY
+
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'mpiTileDim: '</span>, i0,<span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring"><span class="fstring">' x '</span></span></span></span></span></span></span></span></span>,i0,/)"</span>) mpiTileDimX, mpiTileDimY
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fcomment"><span class="fcomment">!</span> initalize data</span>
+    <span class="fcomment"><span class="fcomment">!</span> host - each process has entire array on host (for now)</span>
+    <span class="fstd">do</span> p = 0, numprocs-1
+        <span class="fstd">do</span> jl = 1, mpiTileDimY
+            jg = p*mpiTileDimY + jl
+            <span class="fstd">do</span> i = 1, nx
+                idata_h(i, jg) = i + (jg-1)*nx
+            <span class="fstd">end</span> <span class="fstd">do</span>
+        <span class="fstd">end</span> <span class="fstd">do</span>
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+    gold = transpose(idata_h)
+
+    <span class="fcomment"><span class="fcomment">!</span> device - each process has nx*mpiTileDimY = ny*mpiTileDimX elements</span>
+    <span class="fstd">allocate</span>( idata_d(nx, mpiTileDimY), &
+        tdata_d(ny, mpiTileDimX), &
+        sTile_d(mpiTileDimX, mpiTileDimY), &
+        rTile_d(mpiTileDimX, mpiTileDimY))
+
+    yOffset = procid*mpiTileDimY
+    idata_d(1:nx, 1:mpiTileDimY) = idata_h(1:nx, yOffset+1:yOffset+mpiTileDimY)
+    tdata_d = -1.0
+
+    <span class="fcomment"><span class="fcomment"><span class="fcomment">!</span> ---------</span></span>
+    <span class="fcomment"><span class="fcomment">!</span> transpose</span>
+    <span class="fcomment"><span class="fcomment"><span class="fcomment">!</span> ---------</span></span>
+    <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
+    timeStart = <span class="fmpi">MPI_WTIME</span>()
+
+    <span class="fcomment"><span class="fcomment">!</span> 0th stage - local transpose</span>
+    <span class="fstd">call</span> cudaTranspose<span class="fnv">&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;</span>&
+        (tdata_d(procid*mpiTileDimY+1, 1), ny, idata_d(procid*mpiTileDimX+1, 1), nx)
+
+    <span class="fcomment"><span class="fcomment">!</span> other stages that involve MPI transfers</span>
+    <span class="fstd">do</span> stage = 1, numprocs-1
+        <span class="fcomment"><span class="fcomment">!</span> sRank = the rank to which procid send data to</span>
+        <span class="fcomment"><span class="fcomment">!</span> rRank = the rank from which myrank receives data</span>
+        sRank = <span class="fintrinsic">modulo</span>(procid-stage, numprocs)
+        rRank = <span class="fintrinsic">modulo</span>(procid+stage, numprocs)
+
+        <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
+
+        <span class="fcomment"><span class="fcomment">!</span> pack tile so data to be sent is contiguous</span>
+
+        <span class="fnv">!$cuf kernel</span> <span class="fstd">do</span> (2) <span class="fnv">&lt;&lt;&lt;*, *&gt;&gt;&gt;</span></span>
+        <span class="fstd">do</span> j = 1, mpiTileDimY
+            <span class="fstd">do</span> i = 1, mpiTileDimX
+                sTile_d(i, j) = idata_d(sRank*mpiTileDimX+i, j)
+            <span class="fstd">end</span> <span class="fstd">do</span>
+        <span class="fstd">end</span> <span class="fstd">do</span>
+
+        <span class="fstd">call</span> MPI_SENDRECV(sTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, sRank, procid, &
+            rTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, rRank, rRank, <span class="fmpi">MPI_COMM_WORLD</span>, &
+            status, ierr)
+
+        <span class="fcomment"><span class="fcomment">!</span> do transpose from receive tile into final array</span>
+        <span class="fcomment"><span class="fcomment">!</span> (no need to unpack)</span>
+        <span class="fstd">call</span> cudaTranspose<span class="fnv">&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;</span>(tdata_d(rRank*mpiTileDimY+1, 1), ny, rTile_d, mpiTileDimX)
+
+    <span class="fstd">end</span> <span class="fstd">do</span>
+
+    <span class="fstd">call</span> <span class="fmpi">MPI_BARRIER</span>(<span class="fmpi">MPI_COMM_WORLD</span>, ierr)
+    timeStop = <span class="fmpi">MPI_WTIME</span>()
+
+    <span class="fcomment"><span class="fcomment">!</span> check results</span>
+    tdata_h = tdata_d
+
+    xOffset = procid*mpiTileDimX
+    <span class="fstd">if</span> (<span class="fintrinsic">all</span>(tdata_h(1:ny, 1:mpiTileDimX) == gold(1:ny, xOffset+1:xOffset+mpiTileDimX))) <span class="fstd">then</span>
+        <span class="fstd">if</span> (procid == 0) <span class="fstd">then</span>
+            <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'Bandwidth (GB/s): '</span>, f7.2,/)"</span>) 2.*(nx*ny*4)/(1.e9*(timeStop-timeStart))
+        <span class="fstd">end</span> <span class="fstd">if</span>
+    <span class="fstd">else</span>
+        <span class="fstd">write</span>(*,<span class="fstring">"(<span class="fstring">'['</span>,i0,<span class="fstring">']'</span>, <span class="fstring">'*** Failed ***'</span>)"</span>) procid
+    <span class="fstd">end</span> <span class="fstd">if</span>
+
+    <span class="fstd">deallocate</span>(idata_d, tdata_d, sTile_d, rTile_d)
+
+    <span class="fstd">call</span> <span class="fmpi">MPI_FINALIZE</span>(ierr)
+
+<span class="fstd">end</span> <span class="fstd">program</span> transpose_MPI</code></pre>
+        </div>
+
+        <hr>
+        <div class="footer">
+            <p>Content first published: 03 Feb 2023 &nbsp;&nbsp;&nbsp; Content last modified: 03 Feb 2023</p>
+            <p><a href="mailto:edward_yang_125@hotmail.com"><img src="/static/logos/email.png"> Email</a>&nbsp;&nbsp;&nbsp; <a href="https://www.github.com/edoyango"><img src="/static/logos/github.png"> Github</a>&nbsp;&nbsp;&nbsp; <a href="https://www.linkedin.com/in/edward-yang-a0a9941b1"><img src="/static/logos/linkedin.png"> LinkedIn</a></p>
+        </div>
+        
+    </body>
+</html>
