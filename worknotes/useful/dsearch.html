@@ -76,7 +76,7 @@
          xi(:) = x(:, i)
          <span class="fstd">do</span> j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            <span class="fstd">if</span> (r2 <= cutoff) <span class="fstd">then</span>
+            <span class="fstd">if</span> (r2 &lt;= cutoff**2) <span class="fstd">then</span>
                npairs = npairs + 1
                pair_i(npairs) = i
                pair_j(npairs) = j
@@ -101,7 +101,7 @@
          xi(:) = x(:, i)
          <span class="fstd">do</span> j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            <span class="fstd">if</span> (r2 <= cutoff) <span class="fstd">then</span>
+            <span class="fstd">if</span> (r2 &lt;= cutoff**2) <span class="fstd">then</span>
                npairs = npairs + 1
                pair_i(npairs) = i
                pair_j(npairs) = j
@@ -126,7 +126,7 @@
          xi(:) = x(:, i)
          <span class="fstd">do</span> j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            <span class="fstd">if</span> (r2 <= cutoff) <span class="fstd">then</span>
+            <span class="fstd">if</span> (r2 &lt;= cutoff**2) <span class="fstd">then</span>
                npairs = npairs + 1
                pair_j(npairs) = j
             <span class="fstd">end</span> <span class="fstd">if</span>
@@ -151,7 +151,7 @@
          xi(:) = x(:, i)
          <span class="fstd">do</span> j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            <span class="fstd">if</span> (r2 <= cutoff) <span class="fstd">then</span>
+            <span class="fstd">if</span> (r2 &lt;= cutoff**2) <span class="fstd">then</span>
                npairs = npairs + 1
                pair_j(npairs) = j
             <span class="fstd">end</span> <span class="fstd">if</span>
