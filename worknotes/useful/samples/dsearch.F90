@@ -90,7 +90,7 @@ contains
          xi(:) = x(:, i)
          do j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            if (r2 <= cutoff) then
+            if (r2 <= cutoff**2) then
                npairs = npairs + 1
                pair_j(npairs) = j
             end if
@@ -115,7 +115,7 @@ contains
          xi(:) = x(:, i)
          do j = i + 1, npoints
             r2 = sum((xi(:) - x(:, j))**2)
-            if (r2 <= cutoff) then
+            if (r2 <= cutoff**2) then
                npairs = npairs + 1
                pair_j(npairs) = j
             end if
