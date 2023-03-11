@@ -1,0 +1,12 @@
+####################### Banner #########################
+style: "style1 orient-left content-align-left image-position-right fullscreen onload-image-fade-in onload-content-fade-right"
+title : "Ed's Space"
+subtitle: |
+  Edward Yang, Research Computing Engineer
+content : |
+  Welcome to my website! This is a landing page from which you can navigate to my travel blog, coding notes, and GraSPH documentation. Scroll down to find links to these pages.
+button:
+  label : "About Me"
+  link : "/about"
+image : "images/home-photo_cr.jpg"
+

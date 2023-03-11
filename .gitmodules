@@ -1,0 +1,9 @@
+[submodule "src/home/themes/hugo-story"]
+	path = src/home/themes/hugo-story
+	url = https://github.com/caressofsteel/hugo-story.git
+[submodule "src/about/themes/hugo-story"]
+	path = src/about/themes/hugo-story
+	url = https://github.com/caressofsteel/hugo-story.git
+[submodule "src/cv/themes/resume-a4"]
+	path = src/cv/themes/resume-a4
+	url = https://gitlab.com/mertbakir/resume-a4.git
