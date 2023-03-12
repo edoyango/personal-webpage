@@ -7,7 +7,7 @@ showonlyimage = false
 weight = -2
 +++
 
-I spent just under a month in Italy - two weeks for an Australian winter (Italian summer) University subject; and the rest for travelling around.
+For those also keen on doing the TMB!
 <!--more-->
 
 ### What kind of research did I do for the trek?
