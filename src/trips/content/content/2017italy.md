@@ -52,6 +52,8 @@ The Tour du Mont Blanc is a popular 170km hiking tour around the Mont Blanc Mass
 
 I took 10 days (9 nights) which is 1 less day than commonly recommended by guides. I started in Courmeyour, which is the main town in Italy which the hike passes. Most people start in Les Houches or Chamonix. I took public transport to get there - starting in Florence, to Milan by train, and then Courmeyour by coach. I used this [book by Rev Reynold](https://www.amazon.co.uk/Tour-Mont-Blanc-Complete-Trekking/dp/1852846720) to plan my trip.
 
+**See [this page](/trips/content/2017tmb-packing) for details on how I prepared and what to expect from the trip.**
+
 #### Day 1: Courmayeur -> Rifugio Bonatti (Stage 5)
 Courmayeur is very well-signed, so it did'nt take long to find my start of the TMB. Almost immediately after I leave the town, I'm greeted by views of the massif, which remain in view for a short while before I enter forested areas. This day ended up being the hardest of the entire trip because I had minimal food and sleep in the 24 hours leading up to it (for various reasons).
 
