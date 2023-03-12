@@ -1,13 +1,13 @@
 +++
+showonlyimage = false
 draft = false
-image = "img/portfolio/paper-presentation.jpg"
-showonlyimage = true
-date = "2016-11-05T20:23:59+05:30"
-title = "Item with image"
-weight = 11
+image = "img/portfolio/adelaide-cover.jpeg"
+date = "2016-11-05T19:59:22+05:30"
+title = "Dec 2021 Adelaide, Australia"
+weight = -8
 +++
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+First trip with my partner and most of her family. We spent 5 days driving from her house in Melbourne, to Adelaide, and back again (via Grampians).
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.

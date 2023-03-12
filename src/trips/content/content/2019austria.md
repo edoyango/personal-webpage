@@ -1,13 +1,13 @@
 +++
-showonlyimage = false
 draft = false
-image = "img/portfolio/ipad-air-2.jpg"
-date = "2016-11-05T19:59:22+05:30"
-title = "Name of the work 8"
-weight = 8
+image = "img/portfolio/austria-cover.jpeg"
+date = "2016-11-05T19:56:17+05:30"
+title = "Sep 2019 Austria"
+showonlyimage = false
+weight = -6
 +++
 
-Fifth abundantly made Give sixth hath. Cattle creature i be don't them.
+A one-week post-conference trip seeing the sites in Vienna, Innsbruck, and Salzberg.
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.

@@ -1,13 +1,13 @@
 +++
 date = "2016-11-05T19:41:01+05:30"
-title = "Name of the work 2"
+title = "Jul 2017 North Italy"
 draft = false
-image = "img/portfolio/business-card-26.jpg"
+image = "img/portfolio/italy-cover.jpeg"
 showonlyimage = false
-weight = 1
+weight = -2
 +++
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.
+Two birds with one stone - knocking off a uni subject during the holidays, and spending 10 days hiking the astounding Tour Du Mont Blanc!
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.

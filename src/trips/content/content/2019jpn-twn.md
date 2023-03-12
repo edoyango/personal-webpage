@@ -1,13 +1,13 @@
 +++
-image = "img/portfolio/label-clothes.jpg"
+image = "img/portfolio/japantaiwan-cover.jpeg"
 showonlyimage = false
-date = "2016-11-05T19:57:40+05:30"
-title = "Name of the work 7"
 draft = false
-weight = 7
+date = "2016-11-05T19:53:42+05:30"
+title = "Feb 2019 Japan & Taiwan Cycle Trip"
+weight = -5
 +++
 
-Fifth abundantly made Give sixth hath. Cattle creature i be don't them.
+Cycling more than I ever have by trying to get from Yokohama (Tokyo) to Osaka in 3 days, followed by a 10-day cycle around Taiwan's circumference (route no. 1) &#128556;.
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
