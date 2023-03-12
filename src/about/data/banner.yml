@@ -1,10 +1,8 @@
 ####################### Banner #########################
 style: "style3 orient-left content-align-left image-position-right onload-image-fade-in onload-content-fade-right"
-title : "Hugo Story"
-subtitle: |
-  Hugo Story released for free under the <a target="_blank" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons</a>.
-content : |
-  This is a <strong>Banner</strong> element, and it's generally used as an introduction or opening statement. You can customize its <span class="demo-controls">appearance with a number of modifiers</span>, as well as assign it an optional <code>onload</code> or <code>onscroll</code> transition modifier (<a href="#reference-banner">details</a>).
+title : "About Me"
+subtitle: Occasionally sporty, very nerdy.
+content : This page has a candid and personal take on my life up until now. Or click the button below to view my general resume.
 button:
   label : "View Resume"
   link : "/cv"
