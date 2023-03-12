@@ -1,13 +1,13 @@
 +++
 draft = false
-image = ""
+image = "img/portfolio/thailand-cover.jpeg"
 showonlyimage = false
-date = "2016-11-05T19:50:47+05:30"
-title = "Item without image"
-weight = 4
+date = "2016-11-05T20:02:19+05:30"
+title = "Oct 2022 Thailand"
+weight = -9
 +++
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+Gotta take advantage of cheap post-COVID flights! A 1-week getaway with my partner in Bangkok and Phuket.
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.

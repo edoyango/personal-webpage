@@ -1,13 +1,13 @@
 +++
-image = "https://github.com/kishaningithub/hugo-creative-portfolio-theme/raw/master/exampleSite/static/img/portfolio/business-card.jpg"
-showonlyimage = true
+image = "img/portfolio/wilsonsprom-cover.jpeg"
+showonlyimage = false
+date = "2016-11-05T19:57:40+05:30"
+title = "Dec 2020 Wilson's Prom Eastern Circuit, Australia"
 draft = false
-date = "2016-11-05T19:53:42+05:30"
-title = "Name of the work 5"
-weight = 5
+weight = -7
 +++
 
-Fifth abundantly made Give sixth hath. Cattle creature i be don't them.
+A 2-night, 3-day hike in the beautiful Wilson's Promontory in south-east Victoria. This hike is half of the full Southern Circuit.
 <!--more-->
 
 Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
