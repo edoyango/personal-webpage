@@ -37,12 +37,9 @@ disableKinds = ["taxonomy", "taxonomyTerm", "section"]
   favicon = true
 
 [Params.social]
-  github = "https://github.com/caressofsteel/"
-  twitter = "https://twitter.com/caressofsteel_"
-  email = "caressofsteel@protonmail.com"
-  instagram = "https://instagram.com"
-  linkedin = "https://linkedin.com"
-  telegram = "https://telegram.org"
+  github = "https://github.com/edoyango/"
+  email = "edward_yang_125@hotmail.com"
+  linkedin = "https://www.linkedin.com/in/edward-yang-a0a9941b1/"
 
 [Params.asset]
   fontawesome_css = ["css/fontawesome-all.min.css"]
