@@ -1,31 +1,66 @@
 +++
 image = "img/portfolio/tasmania-cover.jpeg"
 showonlyimage = false
-date = "2016-11-05T19:44:32+05:30"
+date = "2023-03-12T20:22+11:00"
 title = "Apr 2018 Tasmania, Australia"
 draft = false
 weight = -3
 +++
 
-A spur of the moment trip to Tasmania with my housemates. A lot of great hiking on such a small island!
+My German housemate, who loves hiking and seeing what Australia has to offer, instigated this trip! Our other housemate came too. The trip was mostly hiking some of the mountains of Tasmania.
 <!--more-->
 
-Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.
+### Hobart
 
-A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.
+Flying into Hobart, we grabbed our rental car and headed straight to the accomodation. The accomodation was a beautiful house on a hillside with a view of the bay. But it definitely felt people still lived there with photos of family littered about.
 
-1. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-2. Aliquam tincidunt mauris eu risus.
+We stayed 3 nights in Hobart - using it as a base. From Hobart, we visited Mt Hartz and Mt Field - both a couple hours drive out. The things we saw in Hobart itself are: the (in)famous MONA musem; Mt Wellington also - although our view of Hobart at the peak was blocked by clouds &#128546;; and Pirate Bay.
+![DSC_0011.jpeg](/trips/img/trips-tasmania2018/DSC_0011.jpeg)
+![DSC_0074.jpeg](/trips/img/trips-tasmania2018/DSC_0074.jpeg)
+![DSC_0113.jpeg](/trips/img/trips-tasmania2018/DSC_0113.jpeg)
 
-> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+### Mt Hartz
 
-## Header Level 2
+The day we attempted this hike, the it had just rained and was forecast to rain again in the late morning. But we did it anyway (I resisted). We were aiming for Mt Hartz peak, which is about 13km from the carpark. The hike wasn't that bad bar the low temperatures. The winds at the peak were strooong though. We couldn't make the last few hundred meters to get to the top, at risk of being blown off the mountain! So unfortunately, we didn't get to complete the Mt Hartz Peak hike properly. On the way down, there we took a very cold dip in a lake 🥶, which would've been great if it wasn't already freezing cold 😫.
 
-Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.
+![DSC_0078.jpeg](/trips/img/trips-tasmania2018/DSC_0078.jpeg)
+![DSC_0089.jpeg](/trips/img/trips-tasmania2018/DSC_0089.jpeg)
+![DSC_0111.jpeg](/trips/img/trips-tasmania2018/DSC_0111.jpeg)
 
-The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way.
+### Mt Field
 
-* Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-* Aliquam tincidunt mauris eu risus.
+Thankfully, the weather on this hike was much more welcoming. But the hike felt much longer. Also because my two housemates are a fair bit faster hikers than me. The hike has a faux peak which I didn't realise wasn't the actual peak until we got there. The views from the first peak were good, but the real peak defintely delivered. The hike is punctuated by beautiful lakes and waterfalls.
 
-When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then  
+![DSC_0024.jpeg](/trips/img/trips-tasmania2018/DSC_0024.jpeg)
+![DSC_0062.jpeg](/trips/img/trips-tasmania2018/DSC_0062.jpeg)
+![DSC_0091.jpeg](/trips/img/trips-tasmania2018/DSC_0091.jpeg)
+
+### Mt Rufus
+Departing from hobart, our next destination was Queenstown (which I can tell you is very different from NZ's Queenstown). In between our 3.5h drive, we stopped at Lake St Clair famous in Tasmania, and known for being the end point of the overland track.
+
+We chose the Mt Rufus Track (19km) because the tracks following the lake's perimeter were a little easy and didn't offer anything impressive. The view from Mt Rufus was beautiful and still offered views of the lake. The track was a little long though.
+
+![DSC_0152.jpeg](/trips/img/trips-tasmania2018/DSC_0152.jpeg)
+![DSC_0209.jpeg](/trips/img/trips-tasmania2018/DSC_0209.jpeg)
+![DSC_0211.jpeg](/trips/img/trips-tasmania2018/DSC_0211.jpeg)
+
+### Mt Cradle
+
+The idea of staying at Queenstown was so that it wasn't long until we get to Mt Cradle - the start of the Overland Track!
+
+The weather wasn't welcoming this time, and there was fog and cloud cover all morning. We climbed up to Marion's lookout, but stopped short of the summit because of the bad weather. There were plenty of other tourists here, although we were early, so it wasn't so bad.
+
+![DSC_0239.jpeg](/trips/img/trips-tasmania2018/DSC_0239.jpeg)
+![DSC_0268.jpeg](/trips/img/trips-tasmania2018/DSC_0268.jpeg)
+![DSC_0281.jpeg](/trips/img/trips-tasmania2018/DSC_0281.jpeg)
+
+### Trowunna Wildlife Sanctuary
+
+Our last day in Tasmania was a short one due to having to fly out early. We spent the morning driving from our accomodation in Devonport and hanging out at the Trowunna Wildlife Sanctuary. Here they had an assortment of animals include the Tasmanian devil and baby kangaroos. Would recommend - especially for bird lovers!
+
+![DSC_0071.jpeg](/trips/img/trips-tasmania2018/DSC_0071.jpeg)
+![DSC_0087.jpeg](/trips/img/trips-tasmania2018/DSC_0087.jpeg)
+![DSC_0146.jpeg](/trips/img/trips-tasmania2018/DSC_0146.jpeg)
+![DSC_0173.jpeg](/trips/img/trips-tasmania2018/DSC_0173.jpeg)
+![DSC_0217.jpeg](/trips/img/trips-tasmania2018/DSC_0217.jpeg)
+![DSC_0249.jpeg](/trips/img/trips-tasmania2018/DSC_0249.jpeg)
