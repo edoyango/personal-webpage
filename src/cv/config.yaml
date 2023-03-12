@@ -1,6 +1,6 @@
 baseURL: "/about/cv"
 languageCode: "en-us"
-title: "Resume | MERT BAKIR"
+title: "Resume | Edward Yang"
 disableKinds: ["taxonomy", "term", "page", "section", "RSS", "sitemap", "robotsTXT", "404"]
 theme: "resume-a4"
 
@@ -51,7 +51,7 @@ params:
     - custom.scss
 #   - print_urls.scss
   header:
-    avatar: avatar.jpg
+    avatar: ed-avatar_cr.jpg
     contact: true
     tagline: true
     links: false
@@ -77,21 +77,18 @@ params:
         - feature: awards
         - feature: certificates
           title: Certifications
-        - feature: interests
-          widget: word-list
-          style: list
         
   footer:
     show: true
     credits: true
     footnote: >-
-      You can print this resume in A4 size or save as pdf. | Last update on 2020-09-01.
+      You can print this resume in A4 size or save as pdf | Last updated on 12 Mar 2023
     links:
       - prefix: Contact me on
         title: Linkedin
-        url: 'https://linkedin.com/in/mertbakir/'
+        url: 'https://www.linkedin.com/in/edward-yang-a0a9941b1/'
         icon: fab fa-linkedin
       - prefix: Check out my
         title: Website
-        url: 'https://mertbakir.gitlab.io/about/'
+        url: 'https://ed-yang.com'
         icon: fas fa-globe

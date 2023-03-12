@@ -1,82 +1,61 @@
 about:
-  name: Mert Bakir
-  tagline: Data Scientist
-  phone: "5070*4****"
-  email: yourmail@yourdomain
+  name: Edward Yang
+  tagline: Research Computing Engineer
+  phone: "Available on Request"
+  email: edward_yang_125@hotmail.com
   links:
     - title: /in/mertbakir
       url: https://tr.linkedin.com/in/mertbakir
       icon: fab fa-linkedin
-    - title: mertbakir
-      url: https://gitlab.com/mertbakir/
-      icon: fab fa-gitlab
-    - title: mertbakir
-      url: https://github.com/mertbakir
+    - title: edoyango
+      url: https://github.com/edoyango
       icon: fab fa-github
   details: |
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare sollicitudin fringilla.
-    Aenean nec volutpat arcu. Maecenas quis tempus risus. Curabitur condimentum ligula in erat pharetra porta.
-
-    Nam suscipit nisi a bibendum lacinia.
-
+    I am an Engineer with the WEHI Research Computing Platform and have over four years of experience using, administering, or providing support for HPC systems in science. My current interests include compute acceleration through parallelization and optimization, and leveraging GPGPUs.
 
 skills:
-  - groupName: Databases & Visualization
+  - groupName: Systems
     list:
-      - Grafana - Kibana - PowerBI
-      - InfluxDB - TICK Stack
-
-  - groupName: Data Analysis & Analytics
-    list:
-      - Python - R - SQL
-      - Excel - Minitab - SPSS
-      - GAMS - PuLP - OR Tools
-
-  - groupName: Programming & Systems
-    list:
-      - C# - Git - Docker - NGINX
       - Linux - CentOS RHEL
+  - groupName: Programming
+    list:
+      - Fortran - Bash - Git - Python - C++ - R
+  - groupName: Parallelisation
+    list: 
+      - MPI, OpenMP, CUDA (C and Fortran)
 
 interests:
-  - Data Science
-  - AI Applications
-  - Optimization Problems
+  - Programming
+  - Piano
+  - Cycling, Running, Swimming
+  - Hiking
 
 languages:
-  - name: Turkish
+  - name: English
     level: Native
 
-  - name: English
-    level: Professional
-    certificates:
-      - "YDS: 86.25 - 2018"
-      - "TOEFL: 109 - 2021"
+  - name: Chinese (Mandarin)
+    level: Basic
 
-# This will use the default widget: "details-list"
 awards:
-  - title: "Tübitak - Graduation Project"
-    date: "2017"
-    subtitle: "A Decision Support System for 3D Cutting Problem"
-    #details: |
-    #   - add more here if you like to.
-    #   - or just comment out/delete the field.
-    links:
-      - title: example
-        url: https://mertbakir.gitlab.io
-        icon: fas fa-bolt
-        prefix: "This is an " # use quotation marks if you want to pass the tailing space.
-      - title: second link.
-        url: https://esdfdsfdsf
-        icon: "-" # you can get rid of the icon by entering dummy text
-        prefix: "omg"
+  - title: "Best Poster Award"
+    date: "Feb 2020"
+    subtitle: "Large-scale Simulation of Piled Embankments"
+  - title: "Research Training Program Scholarship"
+    date: "May 2021"
+  - title: "Undergraduate Summer Research Scholarship"
+    date: "Nov 2017"
+    subtitle: "Simulating Lava Flows With SPH"
 
 certificates:
-  - title: "Supervised Learning: Regression"
-    subtitle: Coursera
-    date: "2020"
-    link: https://xkcd.com/605/ # This link will be on title level.
+  - title: "Red Hat Certified System Administrator (RHCSA)"
+    subtitle: "Red Hat, Credential ID: 220-044-465"
+    date: "Aug 2022"
 
-  - title: "Supervised Learning: Classification"
-    subtitle: Coursera
-    date: "2020"
-    link: https://xkcd.com/388/
+  - title: "Carpentry Instructor"
+    subtitle: The Carpentries
+    date: "Jul 2022"
+
+  - title: "SAFe 4 Practitioner Certification"
+    subtitle: Scaled Agile
+    date: "Mar 2022"

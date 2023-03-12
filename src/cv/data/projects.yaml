@@ -1,17 +1,11 @@
 projects:
-- title: "Simulated Annealing for Traveling Salesman Problem"
-  subtitle: "Some University"
-  date: "2016"
-  details: |
-    Lorem ipsum dolor sit amet
-
-- title: "Resume - A4"
-  subtitle: "mertbakir.gitlab.io/resume"
-  link: "https://gitlab.com/mertbakir/resume-a4"
+- title: "GraSPH"
+  subtitle: "Simulation of fluids and granular flows with SPH"
   date: "2020"
   details: |
-    Bring CI/CD to your resume using YAML and Git."
+    My master's code improved to use an NVIDIA GPU, Coarray Fortran, better usability, and documentation.
+  link: https://github.com/edoyango/GraSPH.git
   links:
-  - title: Available in GitLab
-    url: https://gitlab.com/mertbakir/resume-a4
-    icon: fab fa-gitlab
+  - title: Available on GitHub
+    url: https://github.com/edoyango/GraSPH.git
+    icon: fab fa-github

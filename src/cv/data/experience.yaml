@@ -1,27 +1,35 @@
-- company: Uber
+- company: Research Computing Engineer
   roles:
-    - role: Data Scientist
-      details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare sollicitudin fringilla.
-              Aenean nec volutpat arcu. Maecenas quis tempus risus. Curabitur condimentum ligula in erat pharetra porta. 
-              Nam suscipit nisi a bibendum lacinia. Donec aliquet, nibh dignissim placerat efficit"
-      date: "10.2020 -  Present"
+    - role: Walter Eliza Hall Institite (WEHI)
+      details: |
+        I work in a small team to provide HPC and software engineering support to health science researchers. Ongoing tasks include training, developing Python packages, and improving HPC services in collaboration with the infrastructure team. Projects I've been involved in:
+        - adapting and tuning metatranscriptome pipleline for HPC,
+        - download and processing ~5000 European Nucleotide Archive samples,
+        - diagnosing and resolving pipeline manager software issues due to NFS.
+      date: "Sep 2022 -  Present"
 
-- company: Google
+- company: Junior HPC DevOps
   roles: 
-    - role: Senior Software Developer
-      details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare sollicitudin fringilla.
-              Aenean nec volutpat arcu. Maecenas quis tempus risus. "
-      date: "06.2019 - 10.2020"
-    
-    - role: Junior Software Developer
-      date: "10.2018 - 06.2019"
-      details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare sollicitudin fringilla.
-              Aenean nec volutpat arcu. Maecenas quis tempus risus. "
+    - role: Monash University
+      details: |
+        I worked in an Agile team to administer Monash' two HPC clusters. I mostly resolved researchers' HPC workflow/code issues and managed the research software stack. I also helped deliver training; automate administration with Python and Ansible; and write internal and user-facing documentation.
+      date: "Nov 2021 - Sep 2022"
 
-- company: Uber
+- company: Geotechnical Engineer
   roles:
-    - role: Driver
-      details: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ornare sollicitudin fringilla.
-              Aenean nec volutpat arcu. Maecenas quis tempus risus. Curabitur condimentum ligula in erat pharetra porta. 
-              Nam suscipit nisi a bibendum lacinia. Donec aliquet, nibh dignissim placerat efficit"
-      date: "2017 - 2018"
+    - role: Golder Associates (now subsidiary of WSP)
+      details: |
+        I was mostly allocated across 3 Level Crossing Removals in Victoria, delivering site-based construction phase services within a team of engineers and managers. When off site, I developed Python tools to automate design tasks.
+      date: "Oct 2020 - Oct 2021"
+
+- company: Practice Class Assistant (CIV3247 - Geomechanics 2)
+  roles:
+    - role: "Monash University - Department of Civil Engineering"
+      date: "Jul 2019 - Dec 2020"
+      details: "Supporting students in learning of geotechnical engineering theory."
+
+- company: Research Assistant
+  roles:
+    - role: "Monash University - Department of Civil Engineering"
+      date: "Apr 2018 - Sep 2019"
+      details: "Proofreading manuscripts and grant proposals, preparing proposals for HPC resource grants, and training PhD students."

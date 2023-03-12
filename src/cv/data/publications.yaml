@@ -1,12 +1,53 @@
 - authors:
-    - last_name: Dantzing
-      first_name: George
-    - last_name: Sunstrider
-      middle_name: "Felo'melorn"
-      first_name: Kael'thas
-  date: "2006"
-  title: "Additive Outlier Detection Via Extreme-Value Theory"
-  journal: Journal of Time Series Analysis
-  vol: 27
-  issue: 5
-  page: "29-34"
+    - last_name: Yang
+      first_name: Edward
+    - last_name: Bui
+      first_name: Ha Hong
+    - last_name: Nguyen
+      first_name: Giang
+    - last_name: Choi
+      first_name: Clarence
+    - last_name: Ng
+      first_name: Charles
+    - last_name: De Sterck
+      first_name: Hans
+    - last_name: Bouazza
+      first_name: Abdelmalek
+  date: "2021"
+  title: "Numerical investigation of the mechanism of granular flow impact on rigid control structures"
+  journal: Acta Geotechnica
+  vol: 16
+  page: "2505-2527"
+
+- authors:
+    - last_name: Yang
+      first_name: Edward
+    - last_name: Bui
+      first_name: Ha Hong
+    - last_name: Nguyen
+      first_name: Giang
+    - last_name: Bouazza
+      first_name: Abdelmalek
+    - last_name: De Sterck
+      first_name: Hans
+  date: "2021"
+  title: "High-Resolution Modelling of Axisymmetric Granular Column Collapse Using Parallelized SPH"
+  journal: "Challenges and Innovations in Geomechanics. IACMAG 2021. Lecture Notes in Civil Engineering"
+  vol: 126
+  
+- authors:
+    - last_name: Yang
+      first_name: Edward
+    - last_name: Bui
+      first_name: Ha Hong
+    - last_name: De Sterck
+      first_name: Hans
+    - last_name: Nguyen
+      first_name: Giang
+    - last_name: Bouazza
+      first_name: Abdelmalek
+  date: "2020"
+  title: "A scalable parallel computing SPH framework for predictions of geophysical granular flows"
+  journal: Computers and Geotechnics
+  vol: 121
+  page: 103474
