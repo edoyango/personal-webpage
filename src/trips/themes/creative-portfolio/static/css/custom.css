@@ -1,1 +1,6 @@
 /* your styles go here */
+.content-column-content p img {
+    width: 33%;
+    float: left;
+    padding: 0.5%;
+}
