@@ -15,9 +15,9 @@ The ruins in Rome are amazing, and the Vatican City is beautiful, but as the old
 
 Rome is definitely a must go at some stage in your travelling life, but no more than a whole day is needed to see the sights. A bit of a warning for budget travellers: hostels are scarce and typically don't have aircon because of the inability to modify the old heritage buildings.
 
-![](/trips/img/trips-italy/DSC_0187.jpeg)
-![](/trips/img/trips-italy/DSC_0133.jpeg)
-![](/trips/img/trips-italy/DSC_0090.jpeg)
+![](/trips/img/trips-italy/DSC_0187.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0133.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0090.jpeg "gallery")
 
 ### Florence
 
@@ -25,17 +25,17 @@ Florence was located only a 30min train ride from Prato, where I would be attend
 
 Great place to visit as a tourist, but I wouldnt' spend more than 5 days, which I would say is already pushing it... It probably doesn't need a second visit either.
 
-![](/trips/img/trips-italy/DSC_0016.jpeg)
-![](/trips/img/trips-italy/DSC_0018.jpeg)
-![](/trips/img/trips-italy/DSC_0048.jpeg)
+![](/trips/img/trips-italy/DSC_0016.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0018.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0048.jpeg "gallery")
 
 ### Weekend 1: Dolomites
 
 Dolomites are a mountain range in north-east Italy. I was a bit sick of the city after a week in Florence, so I made the 4.5h trek via public transport to the mountain town of Belluno to visit the Tre Cime (three peaks), probably the most accessible but striking formation in the Dolomites. Tre Cime was another 2.5h to get to from Belluno. Took awhile, but I found it well worth it! The views of the Tre Cime were spectacular, and the small mountain town of Belluno was peaceful and beautiful. It's a bit of a trek to get out there, but I would strongly recommend a visit if you're a hiking/outdoorsy person. I just wish I had a car to drive around...
 
-![](/trips/img/trips-italy/DSC_0021.jpeg)
-![](/trips/img/trips-italy/DSC_0054.jpeg)
-![](/trips/img/trips-italy/DSC_0076.jpeg)
+![](/trips/img/trips-italy/DSC_0021.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0054.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0076.jpeg "gallery")
 
 ### Weekend 2: Cinque Terre
 
@@ -43,9 +43,9 @@ Here is a place you see a lot in pictures! Cinque terre means "five lands" and r
 
 It's a very popular place to visit, so I wasn't unique in my choice for the second weekend of my study trip. Most of the towns are accessible by train, but there's also a hiking route between them. Unfortunately it was summer when I did the hike, so I only made it to Manarola instead La Spezia.
 
-![](/trips/img/trips-italy/DSC_0157.jpeg)
-![](/trips/img/trips-italy/DSC_0190.jpeg)
-![](/trips/img/trips-italy/DSC_0332.jpeg)
+![](/trips/img/trips-italy/DSC_0157.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0190.jpeg "gallery")
+![](/trips/img/trips-italy/DSC_0332.jpeg "gallery")
 
 ### Post Study Travel: Tour du Mont Blanc
 The Tour du Mont Blanc is a popular 170km hiking tour around the Mont Blanc Massif in Europe. The route takes you through France, Italy, and Switzerland. It attracts tourists of all demographics: men and women, young and old, fit and not-so-fit, and I even saw a guy who was hiking with a missing arm! I wanted to do this beautiful but long hike because I wanted an exciting and challenging option to fill in my remaining week of holiday before I have to go back to normal University classes.
@@ -61,9 +61,9 @@ After about 1.5h from Courmayeur, I arrived at Rifugio Bertone, took a break and
 
 My stay at the Bonatti refuge was pretty comfortable. They served a four-course dinner with a salad entree, pasta, something made from zucchini, and some tart thing for dessert. I weirded out the dutch guys sitting next to me because of how much pasta I was eating. As I got up to get my third bowl of pasta, one of the guys asked me: "hey you know there's another dish after this?". I responded with a nervous laugh and "Yeah, I know".
 
-![](/trips/img/trips-italy/tmb/1/DSC_0006.jpeg)
-![](/trips/img/trips-italy/tmb/1/DSC_0033.jpeg)
-![](/trips/img/trips-italy/tmb/1/DSC_0127.jpeg)
+![](/trips/img/trips-italy/tmb/1/DSC_0006.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/1/DSC_0033.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/1/DSC_0127.jpeg "gallery")
 
 #### Day 2: Rifugio Bonatti -> La Fouly (Stage 6)
 I left around 7:30am to start my 6.5h day of walking. Still ecstatic about starting the hike, I found everything was super beautiful. I especially loved having fat bumblebees collecting pollen accompanying me on the hike.
@@ -76,12 +76,12 @@ My lunch was a macaroni and cheese with salad and it cost &#8364;28 (~$41 AUD). 
 
 I stayed in a dorm at Hotel Edelweiss which I didn't need a prior booking for. There I met a solo hiker from Sydney that was travelling in the opposite direction. For dinner, I just remember the soup entree was super nice, and they gave us some citrus-y mousse for dessert.
 
-![](/trips/img/trips-italy/tmb/2/DSC_0172.jpeg)
-![](/trips/img/trips-italy/tmb/2/DSC_0186.jpeg)
-![](/trips/img/trips-italy/tmb/2/DSC_0189.jpeg)
-![](/trips/img/trips-italy/tmb/2/DSC_0219.jpeg)
-![](/trips/img/trips-italy/tmb/2/DSC_0230.jpeg)
-![](/trips/img/trips-italy/tmb/2/DSC_0242.jpeg)
+![](/trips/img/trips-italy/tmb/2/DSC_0172.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/2/DSC_0186.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/2/DSC_0189.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/2/DSC_0219.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/2/DSC_0230.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/2/DSC_0242.jpeg "gallery")
 
 #### Day 3: La Fouly -> Champex (Stage 7)
 My body has yet to become conditioned to all the hiking, so I'm feeling pretty sore. Thankfully today is an easy day and shouldn't take a bit more than 4h. The track passed through villages which was quite nice because of the Swiss farmers tending to their cows, and the cute houses. For some reason there were heaps of carved wooden sculptures of animals that accompanied track signs.
@@ -90,9 +90,9 @@ Champex turned out to be a pretty large tourist town for the well-off Swiss. The
 
 I stayed at a chalet du Jardin Alpine (Literally: Chalet of the Alpine Gardens). It was a little house located in the middle of a small botanical garden in the south-western part of town. For dinner, I grabbed a pre-made tuna salad as well as supplied for tomorrow's breakfast from the local grocery. I slept at 6pm to help recover from the soreness and tiredness.
 
-![](/trips/img/trips-italy/tmb/3/DSC_0261.jpeg)
-![](/trips/img/trips-italy/tmb/3/DSC_0282.jpeg)
-![](/trips/img/trips-italy/tmb/3/DSC_0284.jpeg)
+![](/trips/img/trips-italy/tmb/3/DSC_0261.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/3/DSC_0282.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/3/DSC_0284.jpeg "gallery")
 
 #### Day 4: Champex -> Col de la Forclaz (Stage 8)
 I started the day early and feeling refreshed! I had a breakfast of 6 eggs, 6 slices of toast, and cherry tomatoes. I left around 7:00am to begin what was described to me as the hardest part of the whole trek. I took the variant track that goes for a consistent steep ascent for 3.5h climbing a vertical distance of 1.2km to an altitude of 2.6km above sea level. The descent was about 3h covering slightly less vertical distance.
@@ -103,9 +103,9 @@ The descent was long and constant. I wished that I had poles to use to save my k
 
 Departing from the chalet, I took a half-hour walk to Col de la Forclaz where there was a hotel with restaurant attached. I had a coffee and ice-cream before checking into the hotel (I didn't book this one in advance). Dinner itself was alright. We started off with vegetable soup which was pretty good; then got chicken, veges, and chips; and finally ice-cream for dessert. During dinner I chatted with a trio of sisters form Melbourne. Before sleeping, I had a short chat with a Chinese guy who was completing the TMB in a trio.
 
-![](/trips/img/trips-italy/tmb/4/DSC_0329.jpeg)
-![](/trips/img/trips-italy/tmb/4/DSC_0344.jpeg)
-![](/trips/img/trips-italy/tmb/4/DSC_0362.jpeg)
+![](/trips/img/trips-italy/tmb/4/DSC_0329.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/4/DSC_0344.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/4/DSC_0362.jpeg "gallery")
 
 #### Day 5: Col de la Forclaz -> Tre-le-Champ (Stage 9)
 The first half an hour of the hike goes back on what I covered yesterday until the Chalet du Glacier. I eventually made my first stop at Refuge les Grands. It's a small hut type thing that only provides accommodation and refreshment. It was manned by a French-Swiss lady who I chatted with for a bit while I had a lemonade. 1.5h later, I approached the Col de Balme, which had a refuge manned by an old lady who couldn't speak English and her grandkids. Passing the Col is France.
@@ -114,9 +114,9 @@ The guidebook offers a good and bad-weather alternatives. Although the lady from
 
 For dinner, I was chucked on a table with a french faily who didn't speak any English. The dad could speak a little English. But I tried to interact with the family as well as I could non-verbally. The mum was doting and kept offering me food and asking me (in french) if I thought the food was good. The food itself was great. We started off with a simple mixed salad, and moved onto a penne carbonara. Dessert was unsweetened yoghurt - you're supposed to add the sugar yourself.
 
-![](/trips/img/trips-italy/tmb/5/DSC_0419.jpeg)
-![](/trips/img/trips-italy/tmb/5/DSC_0467.jpeg)
-![](/trips/img/trips-italy/tmb/5/DSC_0488.jpeg)
+![](/trips/img/trips-italy/tmb/5/DSC_0419.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/5/DSC_0467.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/5/DSC_0488.jpeg "gallery")
 
 #### Day 6: Tre-le-Champ -> Refuge la Flegere (Stage 10)
 I got up pretty early - way before breakfast time. I spent my time hanging out with the resident cat, who was very friendly and loved being pet. At breakfast, I shared a table with one of the people that was on my table for dinner last night. Turns out he's from the Netherlands, can speak English, and is also a solo-traveler.
@@ -129,9 +129,9 @@ The descent to down from the lake to Refuge La Flegere shares the route from the
 
 Everyone at dinner was French for some reason, with the exception of an American couple who were seated on their own in the dining hall. My whole table didn't seem interested in talking with me :(.
 
-![](/trips/img/trips-italy/tmb/6/DSC_0575.jpeg)
-![](/trips/img/trips-italy/tmb/6/DSC_0606.jpeg)
-![](/trips/img/trips-italy/tmb/6/DSC_0616.jpeg)
+![](/trips/img/trips-italy/tmb/6/DSC_0575.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/6/DSC_0606.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/6/DSC_0616.jpeg "gallery")
 
 #### Day 7: La Flegere -> Les Houches (Stage 11)
 Today I left early to skip the crowds. I was expecting about 6.5h of hiking. The track took me along the side of the mountain, through grassy fields and wooded areas. It had rained in the morning and the clouds gave the mountaiside a mysterious look. Large swathes of the mountainside had been converted to skii resorts.
@@ -146,9 +146,9 @@ I got lost a couple times and took an hour longer to get to Les Houches. I arriv
 
 We continued chatting through dinner, also joined by a Canadian couple. Dinner didn't feel like it was enough. This place was the first on my trip to have a stable internet connectino, so I stayed up late to do uni work (fun I know).
 
-![](/trips/img/trips-italy/tmb/7/DSC_0069.jpeg)
-![](/trips/img/trips-italy/tmb/7/DSC_0124.jpeg)
-![](/trips/img/trips-italy/tmb/7/DSC_0138.jpeg)
+![](/trips/img/trips-italy/tmb/7/DSC_0069.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/7/DSC_0124.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/7/DSC_0138.jpeg "gallery")
 
 #### Day 8: Les Houces -> Les Contamines (Stage 1)
 I started the morning petting the resident dog. Breakfast bread with spread. Not many options. I didn't end up eating heaps. Today I planned on taking the high route alternative that goes through Col de Tricot. It's pretty long and is expected to take 7.5h of hiking. Once I gained a bit of altitude I was given pretty good morning views of the valley.
@@ -161,9 +161,9 @@ After a short, but steep ascent, I reached Auberge du Truc, a family run refuge.
 
 I sat alone for dinner, so I spent it reading. Dinner was great though. Nice vegetable soup, grilled zucchini with garlic and crumbed chicken. I can't remember what I had for dessert though. I made sure to eat heaps at dinner and have an early night to prevent a repeat of what happened at the Col de Tricot today.
 
-![](/trips/img/trips-italy/tmb/8/DSC_0171.jpeg)
-![](/trips/img/trips-italy/tmb/8/DSC_0253.jpeg)
-![](/trips/img/trips-italy/tmb/8/DSC_0285.jpeg)
+![](/trips/img/trips-italy/tmb/8/DSC_0171.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/8/DSC_0253.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/8/DSC_0285.jpeg "gallery")
 
 #### Day 9: Les Contamines -> Rifugio Elisabetta (Stage 2 and 3)
 
@@ -183,9 +183,9 @@ I arrived at Elisabetta at 7:15 and was absolutely soaked. I sat down for dinner
 
 I went to bed after having a short conversation with an American girl who was also travelling solo.
 
-![](/trips/img/trips-italy/tmb/9/DSC_0312.jpeg)
-![](/trips/img/trips-italy/tmb/9/DSC_0335.jpeg)
-![](/trips/img/trips-italy/tmb/9/DSC_0355.jpeg)
+![](/trips/img/trips-italy/tmb/9/DSC_0312.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/9/DSC_0335.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/9/DSC_0355.jpeg "gallery")
 
 #### Day 10: Rifugio Elisabetta -> Courmayeur (Stage 4)
 And here I am at the very last day of my trip! It's a cruisy 5h with only a moderate ascent. I left early so I could get back to Courmayeur and catch the 1:30pm bus back to Milan.
@@ -200,12 +200,12 @@ When I went to get my bus ticket, it turned out busses until 6:00pm were full, s
 
 Once 6pm rolled around, I hopped on the bus headed back to Milan.
 
-![](/trips/img/trips-italy/tmb/10/DSC_0457.jpeg)
-![](/trips/img/trips-italy/tmb/10/DSC_0461.jpeg)
-![](/trips/img/trips-italy/tmb/10/DSC_0485.jpeg)
-![](/trips/img/trips-italy/tmb/10/DSC_0551.jpeg)
-![](/trips/img/trips-italy/tmb/10/DSC_0558.jpeg)
-![](/trips/img/trips-italy/tmb/10/DSC_0592.jpeg)
+![](/trips/img/trips-italy/tmb/10/DSC_0457.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/10/DSC_0461.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/10/DSC_0485.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/10/DSC_0551.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/10/DSC_0558.jpeg "gallery")
+![](/trips/img/trips-italy/tmb/10/DSC_0592.jpeg "gallery")
 
 #### Reflections
 Hiking has been a hobby of mine for the last couple years. Previously, I had restricted myself to day hikes in Victoria and whenever I went overseas (Japan is great for day hikes btw).

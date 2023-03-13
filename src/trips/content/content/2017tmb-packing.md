@@ -13,10 +13,10 @@ For those also keen on doing the TMB!
 ### What kind of research did I do for the trek?
 The first thing I did was buy "[Tour of Mont Blanc: Complete Two-Way Trekking Guide](https://www.amazon.co.uk/Tour-Mont-Blanc-Complete-Trekking/dp/1852846720)" a very comprehensive guide on the trail, accommodation, and interesting information. I used this as my sole information source for planning my trek. However, there is plenty of information available at tourist offices in the major cities you will start at and pass through. You will be especially interested in lists of accommodation available on the trail, and guide maps that offer more finer details and alternative trails for the trek. These should be available in tourist and guide offices in Les Houches and Chamonix, the two most common starting points for the trek. **The tour book offered all the information I found I needed for the trek.**
 ### Where did I stay on the trek?
-![](/trips/img/trips-italy/tmb/DSC_0033-highres.jpeg)
 **The two options you generally have on the trail are to either camp or stay at refuges/hotels.** If one chooses to camp, there are certain restrictions on where you can camp. Most often, there will be signs informing you on which is the case. The people I met who chose this option mainly because it was far cheaper to camp than to pay for accommodation. The option to stay at refuges and hotels are the more common option - especially for older folk and families. I took the hotel/refuge option and will only comment on those.
 
 Firstly, what are refuges? They're hostel type accommodation that are scattered along the whole route between towns. If you choose to stay in hotels/refuges, you'll be spending more nights in refuges than hotels. They often provide food and refreshments during the day and dinner, a bed, and breakfast for those staying the night (half-board or demi-pension in French). All refuges will have dormitory style rooms (sizes vary from 4 beds per room to 30+). Some will offer private rooms for couples/groups. Those tend to be more economical. **Refuges are generally pretty nice with hospitable staff, decently comfortable beds, and good food.** Note that if you wish to stay in a refuge, they usually ask that you bring a sleeping bag liner for hygiene (note that you can rent or purchase a disposable one at some refuges).
+![DSC_0033-highres.jpeg](/trips/img/trips-italy/tmb/DSC_0033-highres.jpeg "fullwidth")
 
 The main advantage of going the paid accommodation option is that you get to sit in a hall with a bunch of people and share communal meals â€“ An awesome way to meet other hikers and have a great experience! Another advantage is the weight saved by not having to carry around your tent, sleeping bag, and food wherever you go (your knees will be a lot happier with you!). Some refuges will also be able to prepare a packed lunch for 5-10 euro per person â€“ and it comes with a lot! Most will have a few showers with hot water as well.
 
@@ -49,11 +49,12 @@ Some things I would add:
 * if I were to go next time in a colder part of the year, I'd bring more water proof and warmer clothing.
 
 ### Planning the Route
-![](/trips/img/trips-italy/tmb/tmbmap.jpg)
 Deciding on how long you want to take on your hike depends on a) your own travel time constraints, and b) how fit you are. The book offers up an 11-day route which is the one that I planned around. However, **it is more than possible to do it in fewer than 11 days**. Details of the route I took can be seen in my other TMB post.
 
 If following the book exactly, you'll spend about 5h hiking each day, covering an average of 17km. If you wish to lengthen your days to reduce the number of days, it only requires a bit of extra fiddling to change that up. Accommodation is generally only a couple hours from each other (super convenient!). Note also that new alternatives pop up that aren't always found in the book!
 
+![tmbmap.jpg](/trips/img/trips-italy/tmb/tmbmap.jpg "fullwidth")
+
 Also note that there are plenty of guided tour options available online. They ensure that you have accommodation and have a guide. Some tours ferry bags from town to town, which seemed pretty convenient! I even saw a couple groups with a donkey that carried everyone's bags!
 
-![](/trips/img/trips-italy/tmb/DSC_0335-highres.jpeg)
+![DSC_0335-highres.jpeg](/trips/img/trips-italy/tmb/DSC_0335-highres.jpeg "fullwidth")
