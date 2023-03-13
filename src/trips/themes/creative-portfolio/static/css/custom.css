@@ -1,6 +1,10 @@
 /* your styles go here */
-.content-column-content p img {
+.gallery {
     width: 33%;
     float: left;
     padding: 0.5%;
+}
+
+.fullwidth {
+    width: 100%;
 }
