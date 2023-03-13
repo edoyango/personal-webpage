@@ -1,109 +1,118 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Creative portfolio</title>
+    <title>Ed&#39;s Space - Trips</title>
     <link>/trips/</link>
-    <description>Recent content on Creative portfolio</description>
+    <description>Recent content on Ed&#39;s Space - Trips</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 06 Nov 2016 13:00:25 +0530</lastBuildDate><atom:link href="/trips/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 13 Mar 2023 19:09:00 +1100</lastBuildDate><atom:link href="/trips/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Name of the work 2</title>
-      <link>/trips/portfolio/work2/</link>
-      <pubDate>Sat, 05 Nov 2016 19:41:01 +0530</pubDate>
+      <title>Overland Track - Further Details</title>
+      <link>/trips/content/ot-details/</link>
+      <pubDate>Mon, 13 Mar 2023 19:09:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work2/</guid>
-      <description>&lt;p&gt;When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane.&lt;/p&gt;</description>
+      <guid>/trips/content/ot-details/</guid>
+      <description>&lt;p&gt;This page is dedicated to describing all the equipment I brought (and wish I brought), all the costs of the trip (not including equipment and food), and the food I brought (and wish I brought)&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Name of the work 3</title>
-      <link>/trips/portfolio/work3/</link>
-      <pubDate>Sat, 05 Nov 2016 19:44:32 +0530</pubDate>
+      <title>Dec 2022 Tasmania, Australia</title>
+      <link>/trips/content/2022tasmania/</link>
+      <pubDate>Mon, 13 Mar 2023 19:00:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work3/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.&lt;/p&gt;</description>
+      <guid>/trips/content/2022tasmania/</guid>
+      <description>&lt;p&gt;In lieue of going to China, who have yet to sort out their COVID situation, Winn and myself organised another road trip like the previous year&amp;rsquo;s, but this time to Tasmania!&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Item without image</title>
-      <link>/trips/portfolio/work4/</link>
-      <pubDate>Sat, 05 Nov 2016 19:50:47 +0530</pubDate>
+      <title>Oct 2022 Thailand</title>
+      <link>/trips/content/2022thailand/</link>
+      <pubDate>Mon, 13 Mar 2023 18:46:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work4/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;</description>
+      <guid>/trips/content/2022thailand/</guid>
+      <description>&lt;p&gt;My partner, Winn, booked this flight during a massive sale and at a time when Thailand&amp;rsquo;s border entry still had some restrictions due to COVID. But, it only cost us 250 AUD return (that&amp;rsquo;s right, $250 for there and back!) for each of us. The bet paid off and Thailand lifted all restrictions and we were free to enjoy our super cheap holiday in Thailand! This trip was a short one - only 7 nights, so we had to make the most of the time we were there! Winn was a champion and organised most, if not all, of the schedule.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Name of the work 5</title>
-      <link>/trips/portfolio/work5/</link>
+      <title>Dec 2021 Adelaide, Australia</title>
+      <link>/trips/content/2021adelaide/</link>
+      <pubDate>Mon, 13 Mar 2023 18:27:00 +1100</pubDate>
+      
+      <guid>/trips/content/2021adelaide/</guid>
+      <description>&lt;p&gt;My partner, Winn, and her family typically take an annual trip to Guang Zhou, China during the summer break as a family. Unfortunately, China still had borders locked to prevent COVID from entering the country. Instead, Winn planned a road trip for the family to Adelaide, departing from their place in Melbourne, with a stopever in Grampians on the way back. On the trip would be Winn, her parents, her youngest brother (Stone), and myself. We would all fit inside a Nissan Elgrand (like &lt;a href=&#34;https://www.google.com/search?q=nissan+elgrand+2008&amp;amp;client=firefox-b-e&amp;amp;sxsrf=ALiCzsYLqaKS_20M9l6wP2VthwBnMN6TVQ:1672741391668&amp;amp;source=lnms&amp;amp;tbm=isch&amp;amp;sa=X&amp;amp;ved=2ahUKEwiW9c2jl6v8AhWlyzgGHcD2DagQ_AUoAXoECAEQAw&amp;amp;biw=1440&amp;amp;bih=714&amp;amp;dpr=2#imgrc=RCJPNFYqKMp09M&#34;&gt;these&lt;/a&gt; but grey/silver) which can fit 7. We planned on staying overnight at places along the way to Adelaide, and two nights in Adelaide itself.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Dec 2020 Wilson&#39;s Prom Eastern Circuit, Australia</title>
+      <link>/trips/content/2020wilsons/</link>
+      <pubDate>Mon, 13 Mar 2023 18:19:00 +1100</pubDate>
+      
+      <guid>/trips/content/2020wilsons/</guid>
+      <description>&lt;p&gt;What better way to celebrate the easing of COVID lockdown measures than to go out for a 2-night hike in Victoria&amp;rsquo;s beautiful Wilson&amp;rsquo;s Prom?&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Sep 2019 Austria</title>
+      <link>/trips/content/2019austria/</link>
+      <pubDate>Mon, 13 Mar 2023 17:26:00 +1100</pubDate>
+      
+      <guid>/trips/content/2019austria/</guid>
+      <description>&lt;p&gt;I was in Austria for a workshop in Vienna for my Masters. Besides Vienna, I made stops to Insbruck, and Salzburg (where the Sound of Music was shot).&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Feb 2019 Japan &amp; Taiwan Cycle Trip</title>
+      <link>/trips/content/2019jpn-twn/</link>
       <pubDate>Sat, 05 Nov 2016 19:53:42 +0530</pubDate>
       
-      <guid>/trips/portfolio/work5/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.&lt;/p&gt;</description>
+      <guid>/trips/content/2019jpn-twn/</guid>
+      <description>&lt;p&gt;This was originally a Japan-only trip with a friend. She could no longer make it, so I made this an opportunity to tick off a bucket list item: cycling around the circumference of Taiwan. I&amp;rsquo;ve wanted to do this since I learnt of the No. 1 route that goes around Taiwan. To add to this, I thought it would be fun to attempt to cycle Tokyo to Osaka as a &amp;ldquo;warmup&amp;rdquo;.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Name of the work 6</title>
-      <link>/trips/portfolio/work6/</link>
-      <pubDate>Sat, 05 Nov 2016 19:56:17 +0530</pubDate>
+      <title>Feb 2019 NZ South Island</title>
+      <link>/trips/content/2019nz/</link>
+      <pubDate>Sun, 12 Mar 2023 20:29:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work6/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.&lt;/p&gt;</description>
+      <guid>/trips/content/2019nz/</guid>
+      <description>&lt;p&gt;I gratefully tagged along with my housemate on this trip. He wanted to make this trip purely for the Milford Sound Track, which he missed out on due to inclement weather. We stayed on the South Island - mostly around Queenstown.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Name of the work 7</title>
-      <link>/trips/portfolio/work7/</link>
-      <pubDate>Sat, 05 Nov 2016 19:57:40 +0530</pubDate>
+      <title>Apr 2018 Tasmania, Australia</title>
+      <link>/trips/content/2018tasmania/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/trips/portfolio/work7/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.&lt;/p&gt;</description>
+      <guid>/trips/content/2018tasmania/</guid>
+      <description>&lt;p&gt;My German housemate, who loves hiking and seeing what Australia has to offer, instigated this trip! Our other housemate came too. The trip was mostly hiking some of the mountains of Tasmania.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Name of the work 8</title>
-      <link>/trips/portfolio/work8/</link>
-      <pubDate>Sat, 05 Nov 2016 19:59:22 +0530</pubDate>
+      <title>What I packed for TMB</title>
+      <link>/trips/content/2017tmb-packing/</link>
+      <pubDate>Sun, 12 Mar 2023 20:12:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work8/</guid>
-      <description>&lt;p&gt;Fifth abundantly made Give sixth hath. Cattle creature i be don&amp;rsquo;t them.&lt;/p&gt;</description>
+      <guid>/trips/content/2017tmb-packing/</guid>
+      <description>&lt;p&gt;For those also keen on doing the TMB!&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Item with image</title>
-      <link>/trips/portfolio/work9/</link>
-      <pubDate>Sat, 05 Nov 2016 20:02:19 +0530</pubDate>
+      <title>Jul 2017 North Italy</title>
+      <link>/trips/content/2017italy/</link>
+      <pubDate>Sun, 12 Mar 2023 19:57:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work9/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;</description>
+      <guid>/trips/content/2017italy/</guid>
+      <description>&lt;p&gt;I spent just under a month in Italy - two weeks for an Australian winter (Italian summer) University subject; and the rest for travelling around.&lt;/p&gt;</description>
     </item>
     
     <item>
-      <title>Item with image</title>
-      <link>/trips/portfolio/work10/</link>
-      <pubDate>Sat, 05 Nov 2016 20:22:08 +0530</pubDate>
+      <title>Oct - Dec 2016 India</title>
+      <link>/trips/content/2016india/</link>
+      <pubDate>Sun, 12 Mar 2023 19:36:00 +1100</pubDate>
       
-      <guid>/trips/portfolio/work10/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Item with image</title>
-      <link>/trips/portfolio/work11/</link>
-      <pubDate>Sat, 05 Nov 2016 20:23:59 +0530</pubDate>
-      
-      <guid>/trips/portfolio/work11/</guid>
-      <description>&lt;p&gt;Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title>Name of the work 1</title>
-      <link>/trips/portfolio/work1/</link>
-      <pubDate>Sat, 05 Nov 2016 18:25:22 +0530</pubDate>
-      
-      <guid>/trips/portfolio/work1/</guid>
-      <description>&lt;p&gt;Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life. One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.&lt;/p&gt;</description>
+      <guid>/trips/content/2016india/</guid>
+      <description>&lt;p&gt;This trip was part of a University subject that let you volunteer as report on your experiences. I chose to do a volunteer program with 40K Globe which lasted for a month. I spent a week either side of it travelling around.&lt;/p&gt;</description>
     </item>
     
   </channel>
