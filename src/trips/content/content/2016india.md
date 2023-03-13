@@ -20,9 +20,9 @@ Afterwards, we paid a visit to the Qutab Minar and the Lotus Temple, short rides
 
 Can't say that these were spectacular times - I just recall being pretty tired from the jet leg haha!
 
-![DSC_0629_1.jpeg](/trips/img/trips-india/delhi/DSC_0629_1.jpeg)
-![DSC_0728.jpeg](/trips/img/trips-india/delhi/DSC_0728.jpeg)
-![DSC_0747.jpeg](/trips/img/trips-india/delhi/DSC_0747.jpeg)
+![DSC_0629_1.jpeg](/trips/img/trips-india/delhi/DSC_0629_1.jpeg "gallery")
+![DSC_0728.jpeg](/trips/img/trips-india/delhi/DSC_0728.jpeg "gallery")
+![DSC_0747.jpeg](/trips/img/trips-india/delhi/DSC_0747.jpeg "gallery")
 
 ### Agra
 
@@ -32,12 +32,12 @@ The train ride was packed, so pretty hectic getting on and off. But thankfully w
 
 The haze from the festive fireworks gave the Taj Mahal and the castles a different aesthetic from what you usually see in the photos.
 
-![DSC_0684.jpeg](/trips/img/trips-india/agra/DSC_0684.jpeg)
-![DSC_0694.jpeg](/trips/img/trips-india/agra/DSC_0694.jpeg)
-![DSC_0760.jpeg](/trips/img/trips-india/agra/DSC_0760.jpeg)
-![DSC_0914.jpeg](/trips/img/trips-india/agra/DSC_0914.jpeg)
-![DSC_0928.jpeg](/trips/img/trips-india/agra/DSC_0928.jpeg)
-![DSC_0982.jpeg](/trips/img/trips-india/agra/DSC_0982.jpeg)
+![DSC_0684.jpeg](/trips/img/trips-india/agra/DSC_0684.jpeg "gallery")
+![DSC_0694.jpeg](/trips/img/trips-india/agra/DSC_0694.jpeg "gallery")
+![DSC_0760.jpeg](/trips/img/trips-india/agra/DSC_0760.jpeg "gallery")
+![DSC_0914.jpeg](/trips/img/trips-india/agra/DSC_0914.jpeg "gallery")
+![DSC_0928.jpeg](/trips/img/trips-india/agra/DSC_0928.jpeg "gallery")
+![DSC_0982.jpeg](/trips/img/trips-india/agra/DSC_0982.jpeg "gallery")
 
 ### Jaipur
 Jaipur was the last leg of the Golden Triangle Tour. We were taken around by a tuk tuk driver who a colleague had recommended. He had stayed with us for the whole day and negotiated entry prices into some of the attractions. It was also helpful to not have to think about getting to places and where to eat.
@@ -48,12 +48,12 @@ For women: many men in India will make very direct comments in an attempt to fli
 
 The tour itself was great - we had tasty food popular with the locals, visited very well preserved marble temples and stepwells, and was taken to local stores for things like fabrics and jewellery.
 
-![DSC_0661.jpeg](/trips/img/trips-india/jaipur/DSC_0661.jpeg)
-![DSC_0678.jpeg](/trips/img/trips-india/jaipur/DSC_0678.jpeg)
-![DSC_0724.jpeg](/trips/img/trips-india/jaipur/DSC_0724.jpeg)
-![DSC_0741.jpeg](/trips/img/trips-india/jaipur/DSC_0741.jpeg)
-![DSC_0759.jpeg](/trips/img/trips-india/jaipur/DSC_0759.jpeg)
-![DSC_0961.jpeg](/trips/img/trips-india/jaipur/DSC_0961.jpeg)
+![DSC_0661.jpeg](/trips/img/trips-india/jaipur/DSC_0661.jpeg "gallery")
+![DSC_0678.jpeg](/trips/img/trips-india/jaipur/DSC_0678.jpeg "gallery")
+![DSC_0724.jpeg](/trips/img/trips-india/jaipur/DSC_0724.jpeg "gallery")
+![DSC_0741.jpeg](/trips/img/trips-india/jaipur/DSC_0741.jpeg "gallery")
+![DSC_0759.jpeg](/trips/img/trips-india/jaipur/DSC_0759.jpeg "gallery")
+![DSC_0961.jpeg](/trips/img/trips-india/jaipur/DSC_0961.jpeg "gallery")
 
 ### 40K Globe
 
@@ -63,12 +63,12 @@ The project that we would help out with is to setup a 40K Plus Pod in a village 
 
 The program scope is quite limited and uncomplicated, so much to my disappointment, I wasn't changing the world. But, it was cooler than a normal "voluntourism" trip because a lot of the relational groundwork had been laid, and so we felt very welcome and had meaningful engagement with the community - we were even invited to the village's festival!. I think it's a really good (albeit expensive) way to be immersed in Indian culture, learn a bit about their systems, and challenge yourself by having to do some actual work in a completely different environment.
 
-![DSC_0629.jpeg](/trips/img/trips-india/40k/DSC_0629.jpeg)
-![DSC_0590.jpeg](/trips/img/trips-india/40k/DSC_0590.jpeg)
-![DSC_0618.jpeg](/trips/img/trips-india/40k/DSC_0618.jpeg)
-![DSC_0624.jpeg](/trips/img/trips-india/40k/DSC_0624.jpeg)
-![DSC_0646.jpeg](/trips/img/trips-india/40k/DSC_0646.jpeg)
-![DSC_0586.jpeg](/trips/img/trips-india/40k/DSC_0586.jpeg)
+![DSC_0629.jpeg](/trips/img/trips-india/40k/DSC_0629.jpeg "gallery")
+![DSC_0590.jpeg](/trips/img/trips-india/40k/DSC_0590.jpeg "gallery")
+![DSC_0618.jpeg](/trips/img/trips-india/40k/DSC_0618.jpeg "gallery")
+![DSC_0624.jpeg](/trips/img/trips-india/40k/DSC_0624.jpeg "gallery")
+![DSC_0646.jpeg](/trips/img/trips-india/40k/DSC_0646.jpeg "gallery")
+![DSC_0586.jpeg](/trips/img/trips-india/40k/DSC_0586.jpeg "gallery")
 
 ### 40K Globe Weekend 1: Madikeri
 
@@ -78,9 +78,9 @@ I spent a fair bit of time reading in the accomodation, which had a beatuful vie
 
 But overall, it was a thankfully pleasant, but unexciting weekend.
 
-![DSC_0688.jpeg](/trips/img/trips-india/madikeri/DSC_0688.jpeg)
-![DSC_0720.jpeg](/trips/img/trips-india/madikeri/DSC_0720.jpeg)
-![DSC_0782.jpeg](/trips/img/trips-india/madikeri/DSC_0782.jpeg)
+![DSC_0688.jpeg](/trips/img/trips-india/madikeri/DSC_0688.jpeg "gallery")
+![DSC_0720.jpeg](/trips/img/trips-india/madikeri/DSC_0720.jpeg "gallery")
+![DSC_0782.jpeg](/trips/img/trips-india/madikeri/DSC_0782.jpeg "gallery")
 
 ### 40K Globe Weekend 2: Dandeli and Karwar
 
@@ -88,12 +88,12 @@ The second weekend of the 40K globe program was in Dandeli. This time I stayed a
 
 On the bus ride back to Bangalore, we made a detour to Karwar - a town on the west coast. We got there around lunch time and wandered around the beach, where there was a couple dudes giving people rides on a powered paraglider. Later in the evening, there happened to be a music festival, but we couldn't stay long because we needed to catch our overnight bus back to Bangalore. Again, not a "go-out-of-your-way" destination, but it was fun.
 
-![DSC_0615.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0615.jpeg)
-![DSC_0681.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0681.jpeg)
-![DSC_0812.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0812.jpeg)
-![DSC_0825.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0825.jpeg)
-![DSC_0850.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0850.jpeg)
-![DSC_0873.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0873.jpeg)
+![DSC_0615.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0615.jpeg "gallery")
+![DSC_0681.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0681.jpeg "gallery")
+![DSC_0812.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0812.jpeg "gallery")
+![DSC_0825.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0825.jpeg "gallery")
+![DSC_0850.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0850.jpeg "gallery")
+![DSC_0873.jpeg](/trips/img/trips-india/dandeli-karwar/DSC_0873.jpeg "gallery")
 
 ### 40K Globe Weekend 3: Hampi
 
@@ -103,9 +103,9 @@ I stayed on the ruins side of Hampi, but a bit away from where everyone else sta
 
 Hampi is a must visit for people visiting India, but most people would be ok with 2-3 days. The hippies might enjoy a bit longer.
 
-![DSC_0675.jpeg](/trips/img/trips-india/hampi/DSC_0675.jpeg)
-![DSC_0683.jpeg](/trips/img/trips-india/hampi/DSC_0683.jpeg)
-![DSC_0855.jpeg](/trips/img/trips-india/hampi/DSC_0855.jpeg)
+![DSC_0675.jpeg](/trips/img/trips-india/hampi/DSC_0675.jpeg "gallery")
+![DSC_0683.jpeg](/trips/img/trips-india/hampi/DSC_0683.jpeg "gallery")
+![DSC_0855.jpeg](/trips/img/trips-india/hampi/DSC_0855.jpeg "gallery")
 
 ### Post 40K tour: Rajasthan
 
@@ -113,9 +113,9 @@ After the 40K program, I went on a tour in the province of Rajasthan with two ot
 
 I would highly recommend Jodhpur and Jaisalmer, so you should prioritise thouse. Any of the others would by "on-the-way" destinations and just to help break up the long drive. They both have beautifully preserver ruins and of course, Jodhpur is famous for its blue painted buildings. Jaisalmer I liked very much because you could stay in the fort, and because we had a camel ride out to the desert to glamp under the stars overnight.
 
-![DSC_0716.jpeg](/trips/img/trips-india/rajasthan/DSC_0716.jpeg)
-![DSC_0824.jpeg](/trips/img/trips-india/rajasthan/DSC_0824.jpeg)
-![DSC_0878.jpeg](/trips/img/trips-india/rajasthan/DSC_0878.jpeg)
-![DSC_1011.jpeg](/trips/img/trips-india/rajasthan/DSC_1011.jpeg)
-![DSC_1059.jpeg](/trips/img/trips-india/rajasthan/DSC_1059.jpeg)
-![DSC_1205.jpeg](/trips/img/trips-india/rajasthan/DSC_1205.jpeg)
+![DSC_0716.jpeg](/trips/img/trips-india/rajasthan/DSC_0716.jpeg "gallery")
+![DSC_0824.jpeg](/trips/img/trips-india/rajasthan/DSC_0824.jpeg "gallery")
+![DSC_0878.jpeg](/trips/img/trips-india/rajasthan/DSC_0878.jpeg "gallery")
+![DSC_1011.jpeg](/trips/img/trips-india/rajasthan/DSC_1011.jpeg "gallery")
+![DSC_1059.jpeg](/trips/img/trips-india/rajasthan/DSC_1059.jpeg "gallery")
+![DSC_1205.jpeg](/trips/img/trips-india/rajasthan/DSC_1205.jpeg "gallery")
