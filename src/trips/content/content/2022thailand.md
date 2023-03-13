@@ -2,7 +2,7 @@
 draft = false
 image = "img/portfolio/thailand-cover.jpeg"
 showonlyimage = false
-date = "2016-11-05T20:02:19+05:30"
+date = "2023-03-13T18:46:00+11:00"
 title = "Oct 2022 Thailand"
 weight = -9
 +++
