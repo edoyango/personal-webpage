@@ -2,7 +2,7 @@
 showonlyimage = false
 draft = false
 image = "img/portfolio/adelaide-cover.jpeg"
-date = "2016-11-05T19:59:22+05:30"
+date = "2023-03-13T18:27:00+11:00"
 title = "Dec 2021 Adelaide, Australia"
 weight = -8
 +++
@@ -55,7 +55,7 @@ From Adelaide, we drove directly to Arrarat, the town just outside of the Grampi
 
 We visited the Grampians the day after arriving at Arrarat. Winn's family hadn't been to the Grampians before, so we hit the main spots:
 
-* [Mount William[(https://www.alltrails.com/trail/australia/victoria/mount-william)],
+* [Mount William](https://www.alltrails.com/trail/australia/victoria/mount-william),
 * Mackenzie Falls (Stone and I took a dip to refresh after the hike),
 * Lake Bellfield, and
 * Boroka Lookout.

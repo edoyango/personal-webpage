@@ -1,0 +1,5 @@
+<video class="video-shortcode" style="float: {{ .Get "float" }}; max-width: {{ .Get "maxwidth" }}px; padding: {{ .Get "padding" }};" preload="{{ .Get "preload" }}" controls="controls" onclick="this.paused ? this.play() : this.pause();">
+    <source src="{{ .Get "src" }}" type="{{ .Get "type" }}">
+    There should have been a video here but your browser does not seem
+    to support it.
+</video>
