@@ -1,9 +1,0 @@
-program deviceQuery
-
-    use deviceQuery_m
-
-    implicit none
-    
-    call deviceQuery
-
-end program deviceQuery
