@@ -29,10 +29,6 @@ enableGitInfo = true
 [menu]
 # [[menu.before]]
 [[menu.after]]
-  name = "Back to Home"
-  url = "https://ed-yang.com"
-  weight = 20
-[[menu.after]]
   name = "GitHub"
   url = "https://github.com/edoyango"
   weight = 10
@@ -62,7 +58,7 @@ enableGitInfo = true
 
   # Set source repository location.
   # Used for 'Last Modified' and 'Edit this page' links.
-  BookRepo = 'https://github.com/alex-shpak/hugo-book'
+  BookRepo = 'https://github.com/alex-shpak/personal-webpage'
 
   # (Optional, default 'commit') Specifies commit portion of the link to the page's last modified
   # commit hash for 'doc' page type.
@@ -74,7 +70,7 @@ enableGitInfo = true
   # Enable "Edit this page" links for 'doc' page type.
   # Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
   # Edit path must point to root directory of repo.
-  BookEditPath = 'edit/main/exampleSite'
+  BookEditPath = 'edit/main/worknotes'
 
   # Configure the date format used on the pages
   # - In git information
