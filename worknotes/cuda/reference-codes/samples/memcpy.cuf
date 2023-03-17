@@ -1,9 +1,0 @@
-! for contiguous data
-istat = cudaMemcpy(a_d , a_pageable , nElements)
-
-! for 2D data
-istat = cudaMemcpy2D(a_d(n1_l , n2_l), n, &
-                        a(n1_l , n2_l), n, &
-                        n1_u - n1_l + 1, n2_u - n2_l +1)
-
-! there is also cudaMemcpy3D
