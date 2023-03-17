@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="mpiDevices # Description # Code to get started with using MPI with nvfortran. All it does is check compute mode:
+default (0): multiple host threads can use a single GPU exclusive (1): one host thread can use a single GPU at a time prohibited (2): No host threads can use the GPU exclusive process (3): Single contect cna be created by a single process, but that process can be current to all threads of that process.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="mpiDevices" />
+<meta property="og:description" content="mpiDevices # Description # Code to get started with using MPI with nvfortran. All it does is check compute mode:
+default (0): multiple host threads can use a single GPU exclusive (1): one host thread can use a single GPU at a time prohibited (2): No host threads can use the GPU exclusive process (3): Single contect cna be created by a single process, but that process can be current to all threads of that process." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/cuda/reference-codes/mpiDevices/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-03-18T01:36:43+11:00" />
+<title>mpiDevices | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.289065163c3f720737165922e5d06dc0eb2a1d836622a1268993f36bb6ea5de8.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle" checked />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="active">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>mpiDevices</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#mpidevices">mpiDevices</a>
+      <ul>
+        <li><a href="#description">Description</a></li>
+        <li><a href="#code-c">Code (C++)</a></li>
+        <li><a href="#code-fortran">Code (Fortran)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="mpidevices">
+  mpiDevices
+  <a class="anchor" href="#mpidevices">#</a>
+</h1>
+<h2 id="description">
+  Description
+  <a class="anchor" href="#description">#</a>
+</h2>
+<p>Code to get started with using MPI with nvfortran. All it does is check compute mode:</p>
+<ul>
+<li>default (0): multiple host threads can use a single GPU</li>
+<li>exclusive (1): one host thread can use a single GPU at a time</li>
+<li>prohibited (2): No host threads can use the GPU</li>
+<li>exclusive process (3): Single contect cna be created by a single process, but that process can be current to all threads of that process.</li>
+</ul>
+<p>GPUs in default mode will allow for multiple MPI processes to be assigned to a single GPU, whereas exclusive and exclusive process will only allow one MPI process per GPU.</p>
+<h2 id="code-c">
+  Code (C++)
+  <a class="anchor" href="#code-c">#</a>
+</h2>
+<pre tabindex="0"><code>To do...
+</code></pre><h2 id="code-fortran">
+  Code (Fortran)
+  <a class="anchor" href="#code-fortran">#</a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fortran" data-lang="fortran"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">program</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">mpiDevices</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">use</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cudafor</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">use</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">mpi</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">implicit</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">none</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! global array size
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">parameter</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">n</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1024</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#0000cf;font-weight:bold">1024</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! MPI variables
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">procid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">numprocs</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! device
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">type</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cudaDeviceProp</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">prop</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">int_ptr_kind</span><span style="color:#000;font-weight:bold">())</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">freeB</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">totalB</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">freeA</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">totalA</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">device</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">allocatable</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">(:)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">istat</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">devid</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! MPI initialization
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_INIT</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_COMM_RANK</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">procid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_COMM_SIZE</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">numprocs</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! print compute mode for device
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#000">istat</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cudaGetDevice</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">devid</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#000">istat</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cudaGetDeviceProperties</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">prop</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">devid</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">numprocs</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_BARRIER</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">if</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">procid</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">==</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">write</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">&amp;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">            </span><span style="color:#4e9a06">&#34;(&#39;[&#39;,i0,&#39;] using device: &#39;, i0, &#39; in compute mode: &#39;, i0)&#34;</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">&amp;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">            </span><span style="color:#000">procid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">devid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">prop</span><span style="color:#000;font-weight:bold">%</span><span style="color:#000">computeMode</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! get memory use before large allocations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_BARRIER</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#000">istat</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cudaMemGetInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">freeB</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">totalB</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! now allocate arrays, one rank at a time
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">numprocs</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! allocate on device associated with rank j
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_BARRIER</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">if</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">procid</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">==</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">allocate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">))</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! Get free memory after allocation
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_BARRIER</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">MPI_COMM_WORLD</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">istat</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cudaMemGetInfo</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">freeA</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">totalA</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">write</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;(&#39; [&#39;,i0,&#39;] after allocation on rank: &#39;, i0, &amp;
+</span></span></span><span style="display:flex;"><span><span style="color:#4e9a06">            &#39;, device arrays allocated: &#39;, i0)&#34;</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">&amp;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">            </span><span style="color:#000">procid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">devid</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">freeB</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">freeA</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">n</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">deallocate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">MPI_FINALIZE</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ierr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">program</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">mpiDevices</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/7daac53108f4650eb77a9816344969fd8e7c434d" title='Last modified by Edward Yang | March 18, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>March 18, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/cuda/reference-codes/mpiDevices.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#mpidevices">mpiDevices</a>
+      <ul>
+        <li><a href="#description">Description</a></li>
+        <li><a href="#code-c">Code (C++)</a></li>
+        <li><a href="#code-fortran">Code (Fortran)</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

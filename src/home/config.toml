@@ -1,0 +1,38 @@
+## -----------------------------------------------
+## Basic Configuration
+## -----------------------------------------------
+
+theme = "hugo-story"
+
+## -----------------------------------------------
+## Publish
+## -----------------------------------------------
+
+relativeURLs = "true"
+#canonifyURLs = "true"
+
+# Local
+baseURL = "/"
+publishDir = "public"
+
+# Remote
+#baseURL = "http://172.24.87.19/"
+#publishDir = "//centos/sites/hugodev/hugostory/"
+
+
+## -----------------------------------------------
+## Hugo Built-in Features
+## -----------------------------------------------
+
+disableKinds = ["taxonomy", "taxonomyTerm", "section"]
+# googleAnalytics = "your-google-analytics-id"
+
+## -----------------------------------------------
+## Site Parameters
+## -----------------------------------------------
+
+#[Params]
+
+[Params.social]
+  github = "https://github.com/edoyango"
+  email = "edward_yang_125@hotmail.com"

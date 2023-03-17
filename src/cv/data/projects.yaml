@@ -1,0 +1,11 @@
+projects:
+- title: "GraSPH"
+  subtitle: "Simulation of fluids and granular flows with SPH"
+  date: "2020"
+  details: |
+    My master's code improved to use an NVIDIA GPU, Coarray Fortran, better usability, and documentation.
+  link: https://github.com/edoyango/GraSPH.git
+  links:
+  - title: Available on GitHub
+    url: https://github.com/edoyango/GraSPH.git
+    icon: fab fa-github

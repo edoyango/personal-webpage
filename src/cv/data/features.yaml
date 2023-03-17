@@ -1,0 +1,61 @@
+about:
+  name: Edward Yang
+  tagline: Research Computing Engineer
+  phone: "Available on Request"
+  email: edward_yang_125@hotmail.com
+  links:
+    - title: /in/mertbakir
+      url: https://tr.linkedin.com/in/mertbakir
+      icon: fab fa-linkedin
+    - title: edoyango
+      url: https://github.com/edoyango
+      icon: fab fa-github
+  details: |
+    I am an Engineer with the WEHI Research Computing Platform and have over four years of experience using, administering, or providing support for HPC systems in science. My current interests include compute acceleration through parallelization and optimization, and leveraging GPGPUs.
+
+skills:
+  - groupName: Systems
+    list:
+      - Linux - CentOS RHEL
+  - groupName: Programming
+    list:
+      - Fortran - Bash - Git - Python - C++ - R
+  - groupName: Parallelisation
+    list: 
+      - MPI, OpenMP, CUDA (C and Fortran)
+
+interests:
+  - Programming
+  - Piano
+  - Cycling, Running, Swimming
+  - Hiking
+
+languages:
+  - name: English
+    level: Native
+
+  - name: Chinese (Mandarin)
+    level: Basic
+
+awards:
+  - title: "Best Poster Award"
+    date: "Feb 2020"
+    subtitle: "Large-scale Simulation of Piled Embankments"
+  - title: "Research Training Program Scholarship"
+    date: "May 2021"
+  - title: "Undergraduate Summer Research Scholarship"
+    date: "Nov 2017"
+    subtitle: "Simulating Lava Flows With SPH"
+
+certificates:
+  - title: "Red Hat Certified System Administrator (RHCSA)"
+    subtitle: "Red Hat, Credential ID: 220-044-465"
+    date: "Aug 2022"
+
+  - title: "Carpentry Instructor"
+    subtitle: The Carpentries
+    date: "Jul 2022"
+
+  - title: "SAFe 4 Practitioner Certification"
+    subtitle: Scaled Agile
+    date: "Mar 2022"

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>nvfortran and nvc&#43;&#43; reference codes on Ed&#39;s Space - Notes</title>
+    <link>/worknotes/docs/cuda/reference-codes/</link>
+    <description>Recent content in nvfortran and nvc&#43;&#43; reference codes on Ed&#39;s Space - Notes</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/worknotes/docs/cuda/reference-codes/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>deviceQuery</title>
+      <link>/worknotes/docs/cuda/reference-codes/deviceQuery/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/deviceQuery/</guid>
+      <description>deviceQuery # Description # Function to query the properties of the NVIDIA GPUs detected on the system.
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; int main() { int nDevices; cudaGetDeviceCount(&amp;amp;nDevices); if (nDevices == 0) { printf(&amp;#34;No CUDA devices found\n&amp;#34;); } else if (nDevices == 1) { printf(&amp;#34;One CUDA device found\n&amp;#34;); } else { printf(&amp;#34;%d CUDA devices found\n&amp;#34;, nDevices); } // Loop over devices and print properties cudaDeviceProp prop; for (int i = 0; i &amp;lt; nDevices; ++i) { printf(&amp;#34;Device Number: %d\n&amp;#34;, i); cudaGetDeviceProperties(&amp;amp;prop, i); // General device info printf(&amp;#34; Device Name: %s\n&amp;#34;); printf(&amp;#34; Compute Capability: %d.</description>
+    </item>
+    
+    <item>
+      <title>precision_m</title>
+      <link>/worknotes/docs/cuda/reference-codes/precision_m/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/precision_m/</guid>
+      <description>precision_m # Description # Module containing static types for single and double precision. Note that nvfortran has the options that can be used to demote/promote the precision of real variable/parameter declarations e.g. -r4 asks the compiler to interpret real declarations as real(4), -r8 interprets real as real(8), and -M[no]r8 will promote real declarations to double precision. nvc, nvcc, and nvc++ don&amp;rsquo;t have an equivalent as far as I know.</description>
+    </item>
+    
+    <item>
+      <title>Error Handling</title>
+      <link>/worknotes/docs/cuda/reference-codes/error/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/error/</guid>
+      <description> Error Handling # Description # Basic functionality to check errors in CUDA functions and kernel subroutines.
+The C++ code is very similar to the Fortran code, so I&amp;rsquo;m not including it.
+Code (Fortran) # ! the cuda GetErrorString function can be used to obtain error messages from error codes ierr = cudaGetDeviceCount(nDevices) if (ierr/= cudaSuccess) write (*,*) cudaGetErrorString(ierr) ! kernel errors are checked using cudaGetLastError call increment &amp;lt;&amp;lt;&amp;lt;1,n&amp;gt;&amp;gt;&amp;gt;(a_d , b) ierrSync = cudaGetLastError() ierrAsync = cudaDeviceSynchronize() if (ierrSync /= cudaSuccess) write(*,*) &amp;#39;Sync kernel error&amp;#39;, cudaGetErrorString(ierrSync) if (ierrAsync /= cudaSuccess) write(*,*) &amp;#39;Async kernel error:&amp;#39;, cudaGetErrorString(cudaGetLastError()) </description>
+    </item>
+    
+    <item>
+      <title>limitingFactor</title>
+      <link>/worknotes/docs/cuda/reference-codes/limitingFactor/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/limitingFactor/</guid>
+      <description>limitingFactor # Description # Code to test whether computation or memory transfer is the bottleneck. Compiled program intended to be run with nvprof.
+The book demonstrates the effect of compiling with -Mcuda=fastmath, which shows a significant speedup in the &amp;ldquo;base&amp;rdquo; and &amp;ldquo;math&amp;rdquo; kernels (note they use very old C2050 and K20 GPUs).
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; __global__ void base(float *a, float *b) { int i = blockIdx.x * blockDim.</description>
+    </item>
+    
+    <item>
+      <title>peakBandwidth</title>
+      <link>/worknotes/docs/cuda/reference-codes/peakBandwidth/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/peakBandwidth/</guid>
+      <description>peakBandwidth # Description # Code to obtain theoretical peak memory bandwidth of GPUs on the system.
+Effective bandwidth can be obtained with
+\[bw_e = (r_B &amp;#43; w_B)/(t\cdot10^9)\] where \(bw_e\) is the effective bandiwdth, \(r_B\) is the number of Bytes read, \(w_B\) is the number of Bytes written, and \(t\) is elapsed wall time in seconds.
+The wall time of the simple memory kernel written in the limitingFactor code can be used.</description>
+    </item>
+    
+    <item>
+      <title>bandwidthTest</title>
+      <link>/worknotes/docs/cuda/reference-codes/bandwidthTest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/bandwidthTest/</guid>
+      <description>bandwidthTest # Description # Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal &amp;ldquo;pageable&amp;rdquo; memory.
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;cstdlib&amp;gt; int main() { const int nElements = 4*1024*1024; size_t nbytes = nElements*sizeof(float); float *a_pageable, *b_pageable; float *a_pinned, *b_pinned; float *a_d; int ierr_a, ierr_b; cudaDeviceProp prop; cudaEvent_t startEvent, stopEvent; float time = 0.0; // pageable host memory a_pageable = (float*)malloc(nbytes); b_pageable = (float*)malloc(nbytes); // pinned host memory ierr_a = cudaMallocHost((void**)&amp;amp;a_pinned, nbytes); ierr_b = cudaMallocHost((void**)&amp;amp;b_pinned, nbytes); if (ierr_a !</description>
+    </item>
+    
+    <item>
+      <title>MemCpy</title>
+      <link>/worknotes/docs/cuda/reference-codes/MemCpy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/MemCpy/</guid>
+      <description>Memcpy # Description # Alternatives to array assignment to transfer data between host and device.
+Calls to the Memcpy function may be beneifical as transfers by array assignment can be implicitly broken up into multiple transfers, slowing down the transfer.
+cudaMemcpy is used heaps in the other C++ example codes, so I didn&amp;rsquo;t bother including a sample here.
+Code (Fortran) # ! for contiguous data istat = cudaMemcpy(a_d , a_pageable , nElements) !</description>
+    </item>
+    
+    <item>
+      <title>testAsync</title>
+      <link>/worknotes/docs/cuda/reference-codes/testAsync/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/testAsync/</guid>
+      <description>testAsync # Description # Program to demonstrate the run-time improvements when performing asynchronous memory transfers and execution.
+In the book, they show three different batching approaches, which yield different results based on the GPU. On my NVIDIA 1650 (Turing architecture), I see V1 producing best results most of the time. On my workplace&amp;rsquo;s P100 (Keplar), A30 (Ampere), and A100 (Ampere) GPUs, the lowest run times are reliably obtained with V2 (but only about 1% difference).</description>
+    </item>
+    
+    <item>
+      <title>offsetNStride</title>
+      <link>/worknotes/docs/cuda/reference-codes/offsetNStride/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/offsetNStride/</guid>
+      <description>offsetNStride # Description # Demonstration of how coalesced access to GPU global memory i.e., accessing memory in strides of 16 (half-warp) or 32 (warp) can reduce the number of transactions made and reduce run times.
+My NVIDIA 1650 behaves like K20 and C2050 used in the book, where 0-stride accesses are fastest, and everything else is worse (by only a little).
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;precision.h&amp;gt; __global__ void offset(userfp_t* a, int s) { int i = blockDim.</description>
+    </item>
+    
+    <item>
+      <title>strideTexture</title>
+      <link>/worknotes/docs/cuda/reference-codes/strideTexture/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/strideTexture/</guid>
+      <description>strideTexture # Description # A demonstration showing how the use of textured memory pointers can improve strided global memory access.
+I find that using textured memory pointers didn&amp;rsquo;t improve anything reliably on my NVIDIA 1650.
+The deprecation is also why a C++ version is not provided here.
+Code (Fortran) # module kernels_m real, texture, pointer:: aTex (:) contains attributes(global) subroutine stride(b, a, s) real:: b(*), a(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)+ threadIdx%x is = (blockDim%x*( blockIdx%x-1)+ threadIdx%x) * s b(i) = a(is)+1 end subroutine stride attributes(global) subroutine strideTex(b, s) real:: b(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)+ threadIdx%x is = (blockDim%x*( blockIdx%x-1)+ threadIdx%x) * s b(i) = aTex(is)+1 end subroutine strideTex end module kernels_m program strideTexture use cudafor use kernels_m implicit none integer, parameter:: nMB = 4 !</description>
+    </item>
+    
+    <item>
+      <title>sharedExample</title>
+      <link>/worknotes/docs/cuda/reference-codes/sharedExample/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/sharedExample/</guid>
+      <description>sharedExample # Description # A sample code to demonstrate how the compiler uses various types of memory. This information is availed when compiling with -Mcuda=ptxinfo.
+Code (C++) # /* This code shows how dynamically and statically allocated shared memory are used to reverse a small array */ #include &amp;lt;stdio.h&amp;gt; __global__ void staticReverse(float* d, int n) { __shared__ float s[64]; int t = threadIdx.x, tr = n - t - 1; s[t] = d[t]; __syncthreads(); d[t] = s[tr]; } __global__ void dynamicReverse1(float* d, int n) { extern __shared__ float s[]; int t = threadIdx.</description>
+    </item>
+    
+    <item>
+      <title>checkP2PAccess</title>
+      <link>/worknotes/docs/cuda/reference-codes/checkP2pAccess/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/checkP2pAccess/</guid>
+      <description> checkP2pAccess # Description # Tool to check peer-to-peer connectivity between GPUs connected to the motherboard.
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; int main() { int nDevices; cudaGetDeviceCount(&amp;amp;nDevices); printf(&amp;#34;Number of CUDA-capable devices: %d\n&amp;#34;, nDevices); cudaDeviceProp prop; for (int i = 0; i &amp;lt; nDevices; ++i) { cudaGetDeviceProperties(&amp;amp;prop, i); printf(&amp;#34;Device %d: %s\n&amp;#34;, i, prop.name); } int p2pOK[nDevices][nDevices]; for (int i = 0; i &amp;lt; nDevices; ++i) { for (int j = i+1; j &amp;lt; nDevices; ++j) { cudaDeviceCanAccessPeer(&amp;amp;p2pOK[i][j], i, j); p2pOK[j][i] = p2pOK[i][j]; } } printf(&amp;#34;\n&amp;#34;); for (int i = 0; i &amp;lt; nDevices; ++i) { printf(&amp;#34; %3d&amp;#34;, i); } printf(&amp;#34;\n&amp;#34;); for (int j = 0; j &amp;lt; nDevices; ++j) { printf(&amp;#34;%3d&amp;#34;,j); for (int i = 0; i &amp;lt; nDevices; ++i) { if (i==j) { printf(&amp;#34; - &amp;#34;); } else if (p2pOK[i][j] == 1) { printf(&amp;#34; Y &amp;#34;); } else { printf(&amp;#34; &amp;#34;); } } printf(&amp;#34;\n&amp;#34;); } } Code (Fortran) # program checkP2pAccess use cudafor implicit none integer, allocatable:: p2pOK(:,:) integer:: nDevices, i, j, istat type (cudaDeviceProp):: prop istat = cudaGetDeviceCount(nDevices) write(*,&amp;#34;(&amp;#39;Number of CUDA -capable devices: &amp;#39;, i0,/)&amp;#34;) nDevices do i = 0, nDevices -1 istat = cudaGetDeviceProperties(prop, i) write(*,&amp;#34;(&amp;#39;Device &amp;#39;, i0, &amp;#39;: &amp;#39;, a)&amp;#34;) i, trim(prop%name) end do write(*,*) allocate(p2pOK (0: nDevices -1, 0: nDevices -1)) p2pOK = 0 do j = 0, nDevices -1 do i = j+1, nDevices -1 istat = cudaDeviceCanAccessPeer(p2pOK(i,j), i, j) p2pOK(j,i) = p2pOK(i,j) end do end do do i = 0, nDevices -1 write(*,&amp;#34;(3x,i3)&amp;#34;, advance=&amp;#39;no&amp;#39;) i end do write(*,*) do j = 0, nDevices -1 write(*,&amp;#34;(i3)&amp;#34;, advance=&amp;#39;no&amp;#39;) j do i = 0, nDevices -1 if (i == j) then write(*,&amp;#34;(2x,&amp;#39;-&amp;#39;,3x)&amp;#34;, advance=&amp;#39;no&amp;#39;) else if (p2pOK(i,j) == 1) then write(*,&amp;#34;(2x, &amp;#39;Y&amp;#39;,3x)&amp;#34;,advance=&amp;#39;no&amp;#39;) else write(*,&amp;#34;(6x)&amp;#34;,advance=&amp;#39;no&amp;#39;) end if end do write(*,*) end do end program checkP2pAccess </description>
+    </item>
+    
+    <item>
+      <title>directTransfer</title>
+      <link>/worknotes/docs/cuda/reference-codes/directTransfer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/directTransfer/</guid>
+      <description>directTransfer # Description # Demonstration code showing the difference in data transfer rates when transfering directly between peer GPUs, versus without p2p transfer.
+Running this on the GPUs at work, showed the transfer between GPUs with p2p disabled was maybe 5% slower, but this wasn&amp;rsquo;t produced reliably. The differnece was not nearly as dramatic as those in the book.
+Code (C++) # To do... Code (Fortran) # program directTransfer use cudafor implicit none integer, parameter:: N = 4*1024*1024 real, pinned, allocatable:: a(:), b(:) real, device, allocatable:: a_d(:), b_d(:) !</description>
+    </item>
+    
+    <item>
+      <title>p2pBandwidth</title>
+      <link>/worknotes/docs/cuda/reference-codes/p2pBandwidth/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/p2pBandwidth/</guid>
+      <description>p2pBandwidth # Description # Program to measure the bandwidth of memory transfer between a GPUs on a multi-GPU host.
+A useful technique shown here, is the use of derived types with device member arrays to manage each GPU&amp;rsquo;s instance of the device arrays.
+Code (C++) # #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;cstdlib&amp;gt; struct distributedArray { float* a_d; }; __global__ void setVal(float* __restrict__ array, float val) { int i = threadIdx.x + blockIdx.</description>
+    </item>
+    
+    <item>
+      <title>mpiDevices</title>
+      <link>/worknotes/docs/cuda/reference-codes/mpiDevices/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/mpiDevices/</guid>
+      <description>mpiDevices # Description # Code to get started with using MPI with nvfortran. All it does is check compute mode:
+default (0): multiple host threads can use a single GPU exclusive (1): one host thread can use a single GPU at a time prohibited (2): No host threads can use the GPU exclusive process (3): Single contect cna be created by a single process, but that process can be current to all threads of that process.</description>
+    </item>
+    
+    <item>
+      <title>mpiDeviceUtil</title>
+      <link>/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/</guid>
+      <description>mpiDeviceUtil # Description # Basic module to assign MPI processes to unique GPUs. This is modified from the code in the book to use MPI_ALLGATHER, an explicit definition of the quicksort subroutine, and the use of hostnm Fortran intrinsic function instead of the MPI_GET_PROCESSOR_NAME.
+Code (C++) # To do... Code (Fortran) # module mpiDeviceUtil contains subroutine assignDevice(procid, numprocs, dev) use mpi use cudafor implicit none integer:: numprocs, procid, dev character(len=100), allocatable:: hosts(:) character(len=100):: hostname integer:: namelength, color, i integer:: newComm, newProcid, ierr logical:: mpiInitialized !</description>
+    </item>
+    
+    <item>
+      <title>transposeMPI</title>
+      <link>/worknotes/docs/cuda/reference-codes/transposeMPI/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/cuda/reference-codes/transposeMPI/</guid>
+      <description>transposeMPI # Description # Code showing the use of tiling and shared memory in transposing a matrix. The book uses it as an example of the performance difference between CUDA aware MPI vs non-MPI transfers (transfers between GPUs via their respective host CPUs). The code will work on GPUs communicating across node boundaries.
+Code (C++) # To do... Code (Fortran) # module transpose_m implicit none integer, parameter:: cudaTileDim = 32 integer, parameter:: blockRows = 8 contains attributes(global) subroutine cudaTranspose(odata, ldo, idata, ldi) real, intent(out):: odata(ldo, *) real, intent(in):: idata(ldi, *) integer, value, intent(in):: ldo, ldi real, shared:: tile(cudaTileDim+1, cudaTileDim) integer:: x, y, j x = (blockIdx%x-1) * cudaTileDim + threadIdx%x y = (blockIdx%y-1) * cudaTileDim + threadIdx%y do j = 0, cudaTileDim-1, blockRows tile(threadIdx%x, threadIdx%y+j) = idata(x, y+j) end do call syncthreads() x = (blockIdx%y-1) * cudaTileDim + threadIdx%x y = (blockIdx%x-1) * cudaTileDim + threadIdx%y do j = 0, cudaTileDim-1, blockRows odata(x, y+j) = tile(threadIdx%y+j, threadIdx%x) end do end subroutine end module transpose_m !</description>
+    </item>
+    
+  </channel>
+</rss>

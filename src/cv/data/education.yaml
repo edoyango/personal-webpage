@@ -1,0 +1,13 @@
+- name: "MEngSc. - Civil (research)"
+  university: "Monash University"
+  date: "Sep 2018 - May 2021"
+
+- name: "BEng. - Civil (honours)"
+  university: "Monash University"
+  more: "WAM: 76.2 (first class)" # Optional field, if you want to add a non-standard line.
+  date: "Feb 2013 - Nov 2017"
+
+- name: "BComm - Finance"
+  university: "Monash University"
+  more: "WAM: 74.2" # Optional field, if you want to add a non-standard line.
+  date: "Feb 2013 - Nov 2017"
