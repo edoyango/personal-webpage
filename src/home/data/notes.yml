@@ -1,0 +1,8 @@
+####################### Spotlight #########################
+style: "style1 orient-left content-align-left image-position-center onscroll-image-fade-in"
+title : "Coding Notes"
+content: I write scientific code pretty often, so I've started documenting how to do things for future reference. This covers topics like programming with GPUs, and coarray Fortran. I mostly code in Fortran and Python.
+button: 
+  label: "See More"
+  link: "/worknotes"
+image: "images/notes_cr.jpg"

@@ -1,0 +1,23 @@
+{{ if .Footer.links }}
+<span class="footer-item">
+	{{ range .Footer.links }}
+	<span class="footer-link">
+		{{ .prefix }}
+		<a href="{{ .url }}" class="no-external-icon">
+			<span>{{ .title }} </span>
+			{{ if and $.useFontAwesome .icon }}<i class="{{ .icon }}"></i>{{ end }}
+		</a>
+	</span>
+	{{ end }}
+</span>
+{{ end }}
+
+<span class="footer-item">
+	{{ .Footer.footnote }}
+</span>
+
+{{ if .Footer.credits }}
+<span class="footer-item" id="credits">
+	<span>Built with Hugo using Resume-A4 theme</span>
+</span>
+{{ end }}

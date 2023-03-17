@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Setting Up Public Webserver on Raspberry Pi # The instructions here assumes you&rsquo;re using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OS&rsquo; are largely similar though. The main difference will be the packages and package managers, and the firewall tool.
+Setup the pi to host the server
+Flash disk with raspberry pi lite. Insert disk into pi and power them on. (follow the instructions here up to step 4) Setup router to forward http/https/ssh requests to the Raspberry Pi">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Setting Up Public Webserver on Raspberry Pi" />
+<meta property="og:description" content="Setting Up Public Webserver on Raspberry Pi # The instructions here assumes you&rsquo;re using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OS&rsquo; are largely similar though. The main difference will be the packages and package managers, and the firewall tool.
+Setup the pi to host the server
+Flash disk with raspberry pi lite. Insert disk into pi and power them on. (follow the instructions here up to step 4) Setup router to forward http/https/ssh requests to the Raspberry Pi" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/pi/webserver/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-03-18T01:36:43+11:00" />
+<title>Setting Up Public Webserver on Raspberry Pi | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.289065163c3f720737165922e5d06dc0eb2a1d836622a1268993f36bb6ea5de8.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle" checked />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="active">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Setting Up Public Webserver on Raspberry Pi</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#setting-up-public-webserver-on-raspberry-pi">Setting Up Public Webserver on Raspberry Pi</a></li>
+    <li><a href="#setting-up-a-development-webserver-on-wsl2">Setting up a development webserver on WSL2</a></li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="setting-up-public-webserver-on-raspberry-pi">
+  Setting Up Public Webserver on Raspberry Pi
+  <a class="anchor" href="#setting-up-public-webserver-on-raspberry-pi">#</a>
+</h1>
+<p>The instructions here assumes you&rsquo;re using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OS&rsquo; are largely similar though. The main difference will be the packages and package managers, and the firewall tool.</p>
+<ul>
+<li>
+<p>Setup the pi to host the server</p>
+<ol>
+<li>Flash disk with raspberry pi lite. Insert disk into pi and power them on.</li>
+<li>(follow the instructions 
+  <a href="https://linuxhint.com/install_apache_web_server_ubuntu/">here</a> up to step 4)</li>
+</ol>
+</li>
+<li>
+<p>Setup router to forward http/https/ssh requests to the Raspberry Pi</p>
+<ol>
+<li>
+<p>Obtain MAC address of Raspberry Pi e.g.,</p>
+<pre><code> $ ip addr
+ 1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+ 	    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+ 	    inet 127.0.0.1/8 scope host lo
+ 	       valid_lft forever preferred_lft forever
+ 	    inet6 ::1/128 scope host
+ 	       valid_lft forever preferred_lft forever
+ 2: eth0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc pfifo_fast state DOWN group default qlen 1000
+ 	    link/ether b8:27:eb:24:cb:98 brd ff:ff:ff:ff:ff:ff
+ 	    inet 10.0.0.1/8 brd 10.255.255.255 scope global noprefixroute eth0
+ 	       valid_lft forever preferred_lft forever
+ 	    inet6 fe80::1209:6b01:5af1:d12b/64 scope link tentative
+ 	       valid_lft forever preferred_lft forever
+ 3: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+ 	    link/ether b8:27:eb:71:9e:cd brd ff:ff:ff:ff:ff:ff
+ 	    inet 192.168.0.104/24 brd 192.168.0.255 scope global dynamic noprefixroute wlan0
+ 	       valid_lft 4773sec preferred_lft 3873sec
+ 	    inet6 fe80::9a0:b632:2b19:bb89/64 scope link
+ 	       valid_lft forever preferred_lft forever
+</code></pre>
+<p>and the MAC address is the first address following <code>link/ether</code> for the interface you&rsquo;re using. If the Raspberry Pi is connected to the router via WiFi, then you use the <code>wlan</code> address. If connected via ethernet cable, then you use the <code>eth0</code> address. In the above example, I used the address <code>b8:27:eb:71:9e:cd</code>, because my Pi is connected to the router via Wifi. We use this MAC address to link the physical device to an IP address in the next step.</p>
+</li>
+<li>
+<p>On the router:</p>
+<ol>
+<li>Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. To do this on my routher (TP-Link AC1200), I browsed to <code>http://192.168.0.1</code>, signed in, and then went to &ldquo;IP &amp; MAC Binding&rdquo; → &ldquo;Binding Settings&rdquo; → &ldquo;Add New&rdquo; and enter the MAC address collected from above and the desired IP to bind it to.</li>
+<li>Setup port forwarding to forward packages to port 22, 80, 443, and 8443 to the IP address you&rsquo;ve assigned the pi in the previous step. On my router, I navigated to &ldquo;Forwarding&rdquo; → &ldquo;Virtual Server&rdquo; → &ldquo;Add New&rdquo;. This step forward incoming requests matching those ports, to the Raspberry Pi.</li>
+<li>Test the setup. While on a machine connected to the router, you can test ssh and http connection from the command line with <code>ssh pi@&lt;ip-address&gt;</code> and <code>curl http://&lt;ip-address&gt;</code>.</li>
+<li>You can also check http by entering the URL into your web browser: <code>http://&lt;ip-address&gt;</code>. Note that <code>&lt;ip-address&gt;</code> is the static IP address you assigned to the Pi on the router.</li>
+</ol>
+</li>
+<li>
+<p>Sign an SSL certificate to enable HTTPS connections. This requires signing an SSL certificate. There are many paid services out there, but the free 
+  <a href="https://letsencrypt.org/">Let&rsquo;s Encrypt</a> SSL certificate signing service is the best option (because it&rsquo;s free). Using the automatic cert-bot option should be fine (
+  <a href="https://certbot.eff.org/instructions?ws=apache&amp;os=ubuntufocal">instructions for Ubuntu</a>). You can test that the signed certificate works, by navigating to the Pi web server in a browser on another device i.e., <code>https://&lt;ip-address&gt;</code> (note the &ldquo;s&rdquo;).</p>
+</li>
+</ol>
+</li>
+<li>
+<p>Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone. Some ISPs may not be blocking any ports either.</p>
+</li>
+<li>
+<p>Purchase a domain and setup 
+  <a href="https://support.google.com/domains/answer/3290350">resource records</a> so that the domain points your IP address. I setup:</p>
+<pre><code>  Host Name	Type	TTL		Data
+  ed-yang.com	A	10 minutes	&lt;my IP&gt;
+  ed-yang.com	CAA	10 minutes	0 issues &quot;letsencrypt.org&quot;
+  www.ed-yang.com	CNAME	10 minutes	ed-yang.com
+</code></pre>
+</li>
+</ul>
+<h1 id="setting-up-a-development-webserver-on-wsl2">
+  Setting up a development webserver on WSL2
+  <a class="anchor" href="#setting-up-a-development-webserver-on-wsl2">#</a>
+</h1>
+<p>If you&rsquo;re on a Windows machine like I am, you can use WSL2 to test the html code. To setup WSL2, follow the instructions 
+  <a href="https://learn.microsoft.com/en-us/windows/wsl/install">here</a>.</p>
+<p>You then need to setup <code>systemd</code> so the Apache web server package will work properly. To set it up, follow the instructions below (reproduced from 
+  <a href="https://devblogs.microsoft.com/commandline/systemd-support-is-now-available-in-wsl/">these instructions</a> in case the page disappears):</p>
+<ol>
+<li>
+<p>Inside the WSL2 instance, edit/create the <code>/etc/wsl.conf</code> file and add the following lines of code:</p>
+<pre><code> [boot]
+ systemd=true
+</code></pre>
+</li>
+<li>
+<p>Restart WSL by exiting WSL, opening a powershell terminal as administrator, and running the command <code>wsl --shutdown</code>. After doing so, <code>systemd</code> should be running!</p>
+</li>
+</ol>
+<p>You can now go ahead and install the Apache web server packages:</p>
+<pre tabindex="0"><code>sudo apt install apache2
+</code></pre><p>and then copy your html code into <code>/var/www/html</code>.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/7daac53108f4650eb77a9816344969fd8e7c434d" title='Last modified by Edward Yang | March 18, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>March 18, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/pi/webserver.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#setting-up-public-webserver-on-raspberry-pi">Setting Up Public Webserver on Raspberry Pi</a></li>
+    <li><a href="#setting-up-a-development-webserver-on-wsl2">Setting up a development webserver on WSL2</a></li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

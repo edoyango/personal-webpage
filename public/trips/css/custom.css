@@ -1,0 +1,10 @@
+/* your styles go here */
+.gallery {
+    width: 33%;
+    float: left;
+    padding: 0.5%;
+}
+
+.fullwidth {
+    width: 100%;
+}
