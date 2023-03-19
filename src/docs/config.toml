@@ -1,7 +1,7 @@
 # hugo server --minify --themesDir ... --baseURL=http://0.0.0.0:1313/theme/hugo-book/
 
-baseURL = '/worknotes'
-title = "Ed's Space - Notes"
+baseURL = '/docs'
+title = "GraSPH Docs"
 theme = 'hugo-book'
 
 # Book configuration
@@ -29,8 +29,8 @@ enableGitInfo = true
 [menu]
 # [[menu.before]]
 [[menu.after]]
-  name = "GitHub"
-  url = "https://github.com/edoyango"
+  name = "GraSPH GitHub"
+  url = "https://github.com/edoyango/GraSPH"
   weight = 10
 
 [params]
