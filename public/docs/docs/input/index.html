@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Inputs # GraSPH uses two files to describe the simulation:
-common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index The input HDF5 file # The arrangement of the HDF5 file is">
+common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index Note that every time you modify common/param.">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:title" content="Inputs" />
 <meta property="og:description" content="Inputs # GraSPH uses two files to describe the simulation:
-common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index The input HDF5 file # The arrangement of the HDF5 file is" />
+common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index Note that every time you modify common/param." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/docs/input/" /><meta property="article:section" content="docs" />
 
@@ -205,6 +205,7 @@ https://github.com/alex-shpak/hugo-book
 </ul>
 </li>
 </ul>
+<p>Note that every time you modify <code>common/param.f90</code>, or any of the files in <code>common</code>, <code>src_GPU</code>, or <code>src_CAF</code>, you will need to recompile the code. This is not the case if you change the input HDF5 file however.</p>
 <h2 id="the-input-hdf5-file">
   The input HDF5 file
   <a class="anchor" href="#the-input-hdf5-file">#</a>
@@ -227,7 +228,7 @@ https://github.com/alex-shpak/hugo-book
     ├── rho   (dataset)  
     ├── v     (dataset)  
     └── x     (dataset)
-</code></pre><p>The two groups <code>real</code> and <code>virt</code> describe the properties of virtual and real particles. The <code>n</code> attribute in each group defines how many particles are in each group. The datasets in the groups describe each of the particles&rsquo; properties. When writing the HDF5 file, ensure the dataset sizes are congruent with <code>dim</code> in <code>common/param.f90</code> and <code>n</code> in each group, or your results won&rsquo;t be as expected or the GraSPH will fail.</p>
+</code></pre><p>The two groups, <code>real</code> and <code>virt</code>, describe the properties of virtual and real particles, respectively. In each group, the <code>n</code> attribute tells GraSPH how many particles there are in the corresponding group. The datasets in the groups describe each of the particles&rsquo; properties. When writing the HDF5 file, ensure the dataset sizes are congruent with <code>dim</code> in <code>common/param.f90</code> and <code>n</code> in each group, or your results won&rsquo;t be as expected or GraSPH will fail.</p>
 <h2 id="examples">
   Examples
   <a class="anchor" href="#examples">#</a>

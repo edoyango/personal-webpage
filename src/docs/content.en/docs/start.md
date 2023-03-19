@@ -5,7 +5,7 @@ weight: 1
 
 # Getting Started
 
-This page will help you get setup and started to run the GraSPH code. And is aimed at beginners. The instruction assume you are working on an Ubuntu machine. a Virtual Machine (VM) or WSL2 will work fine too. This page assumes you are working in a terminal.
+This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. a Virtual Machine (VM) or WSL2 will work fine too. If you're using a different OS or CPU architecture, you will need modify the package install commands and paths used in the compilation setup. This page assumes you are working in a terminal.
 
 Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.
 
@@ -14,12 +14,13 @@ Steps are seperated based on which version you wish to run. See the table of con
 Clone the GraSPH repo with
 ```
 git clone https://github.com/edoyango/GraSPH.git
+cd GraSPH
 ```
 
 ## For running in serial
 
 ### Prerequisites
-To run the serial version of the code, all you need is a working Fortran compiler, and HDF5. A good compiler to start with is `gfortran`.
+To run the serial version of the code, all you need is a working Fortran compiler and the HDF5 libraries. A good compiler to start with is `gfortran`.
 
 ```
 sudo apt-get install gfortran libhdf5-dev
@@ -43,7 +44,7 @@ make mode=serial -f makefiles/Makefile.caf
 ## For running on multiple CPUs
 
 ### Prerequisites
-If you wish to run GraSPH in parallel with CPUs, you will need an MPI implementation, the HDF5 MPI libraries, as well as the OpenCoarrays library. All of these are available via APT. However, YUM/DNF does not have the OpenCoarrays library. Below commands use the OpenMPI implementation, but others should work fine too.
+If you wish to run GraSPH in parallel with CPUs, you will need an MPI implementation, the HDF5 MPI libraries, as well as the OpenCoarrays library. All of these are available via APT. Below commands use the OpenMPI implementation, but other MPI implementations should work fine too.
 
 ```
 sudo apt-get install openmpi-bin libopenmpi-dev libhdf5-dev libhdf5-openmpi-dev libcoarrays-openmpi-dev
