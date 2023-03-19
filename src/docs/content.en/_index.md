@@ -5,6 +5,7 @@ type: docs
 
 # GraSPH Documentation
 
+**WORK IN PROGRESS, CONTENT WILL BE ADDED/CHANGED OVER TIME.**
 
 ## This Page
 Provides more detailed documentation than in the GitHub README. It will help you create your own geometry. In the future, I aim to add documentation that explains the code structure and how to modify the code. Topics are on the menu on the left. If you have feedback (for the docs or the code), don't hestiate to [open an issue on the GitHub](https://github.com/edoyango/GraSPH/issues/new), or [email me](mailto://edward_yang_125@hotmail.com). But keep in mind I do this in my free time.
