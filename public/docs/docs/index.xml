@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Docs on Ed&#39;s Space - Notes</title>
-    <link>/worknotes/docs/</link>
-    <description>Recent content in Docs on Ed&#39;s Space - Notes</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="/worknotes/docs/index.xml" rel="self" type="application/rss+xml" />
+    <title>Docs on GraSPH Docs</title>
+    <link>/docs/docs/</link>
+    <description>Recent content in Docs on GraSPH Docs</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/docs/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Coarray Fortran Things</title>
-      <link>/worknotes/docs/caf/</link>
+      <title>Getting Started</title>
+      <link>/docs/docs/start/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/worknotes/docs/caf/</guid>
-      <description>Coarray Fortran Things # ignoring the basics. Best tutorial to start with is this one. Basic, but couldn&amp;rsquo;t find very beginner friendly ones.
-Install # OpenCoarrays is a library usable with gfortran and uses MPI 1-sided comms as the to perform the communications. install via linuxbrew or spack.
-Intel compilers don&amp;rsquo;t rely on external libraries and should be ready to use coarrays with intel-MPI. It only requires compilation with -coarray option.</description>
+      <guid>/docs/docs/start/</guid>
+      <description>Getting Started # This page will help you get setup and started to run the GraSPH code. And is aimed at beginners. The instruction assume you are working on an Ubuntu machine. a Virtual Machine (VM) or WSL2 will work fine too. This page assumes you are working in a terminal.
+Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.</description>
     </item>
     
   </channel>

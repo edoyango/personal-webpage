@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>CFDEM on Ed&#39;s Space - Notes</title>
-    <link>/worknotes/docs/cfdem/</link>
-    <description>Recent content in CFDEM on Ed&#39;s Space - Notes</description>
-    <generator>Hugo -- gohugo.io</generator><atom:link href="/worknotes/docs/cfdem/index.xml" rel="self" type="application/rss+xml" />
+    <title>CFDEM on GraSPH Docs</title>
+    <link>/docs/docs/cfdem/</link>
+    <description>Recent content in CFDEM on GraSPH Docs</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/docs/docs/cfdem/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Snappy Hex Mesh Basics</title>
-      <link>/worknotes/docs/cfdem/snappyhexmesh/</link>
+      <link>/docs/docs/cfdem/snappyhexmesh/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/worknotes/docs/cfdem/snappyhexmesh/</guid>
+      <guid>/docs/docs/cfdem/snappyhexmesh/</guid>
       <description>Snappy Hex Mesh Basics # This is a summary of meshing in OpenFOAM using the snappyHexMesh tool. I&amp;rsquo;m writing this in detail because I couldn&amp;rsquo;t find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools.</description>
     </item>
     
     <item>
       <title>Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</title>
-      <link>/worknotes/docs/cfdem/liggghts-intel-comp/</link>
+      <link>/docs/docs/cfdem/liggghts-intel-comp/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/worknotes/docs/cfdem/liggghts-intel-comp/</guid>
+      <guid>/docs/docs/cfdem/liggghts-intel-comp/</guid>
       <description>Speeding Up LIGGGHTS with Intel Compilers and Compiler Options # This page looks at using basic optimization options and Intel OneAPI Compilers (for x86 CPU architectures) to reduce the run-time of LIGGGHTS.
 The page will first show the difference in performance of the Intel compilers compared to the GNU compilers and also looks at different compiler options. After hopefully convincing you of why you should use the intel compilers, the page then goes on to explain how to build LIGGGHTS with the Intel compilers.</description>
     </item>

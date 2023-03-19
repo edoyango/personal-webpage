@@ -10,17 +10,17 @@ Code (C&#43;&#43;) # #include &lt;stdio.h&gt; int main() { int nDevices; cudaGet
 <meta property="og:description" content=" checkP2pAccess # Description # Tool to check peer-to-peer connectivity between GPUs connected to the motherboard.
 Code (C&#43;&#43;) # #include &lt;stdio.h&gt; int main() { int nDevices; cudaGetDeviceCount(&amp;nDevices); printf(&#34;Number of CUDA-capable devices: %d\n&#34;, nDevices); cudaDeviceProp prop; for (int i = 0; i &lt; nDevices; &#43;&#43;i) { cudaGetDeviceProperties(&amp;prop, i); printf(&#34;Device %d: %s\n&#34;, i, prop.name); } int p2pOK[nDevices][nDevices]; for (int i = 0; i &lt; nDevices; &#43;&#43;i) { for (int j = i&#43;1; j &lt; nDevices; &#43;&#43;j) { cudaDeviceCanAccessPeer(&amp;p2pOK[i][j], i, j); p2pOK[j][i] = p2pOK[i][j]; } } printf(&#34;\n&#34;); for (int i = 0; i &lt; nDevices; &#43;&#43;i) { printf(&#34; %3d&#34;, i); } printf(&#34;\n&#34;); for (int j = 0; j &lt; nDevices; &#43;&#43;j) { printf(&#34;%3d&#34;,j); for (int i = 0; i &lt; nDevices; &#43;&#43;i) { if (i==j) { printf(&#34; - &#34;); } else if (p2pOK[i][j] == 1) { printf(&#34; Y &#34;); } else { printf(&#34; &#34;); } } printf(&#34;\n&#34;); } } Code (Fortran) # program checkP2pAccess use cudafor implicit none integer, allocatable:: p2pOK(:,:) integer:: nDevices, i, j, istat type (cudaDeviceProp):: prop istat = cudaGetDeviceCount(nDevices) write(*,&#34;(&#39;Number of CUDA -capable devices: &#39;, i0,/)&#34;) nDevices do i = 0, nDevices -1 istat = cudaGetDeviceProperties(prop, i) write(*,&#34;(&#39;Device &#39;, i0, &#39;: &#39;, a)&#34;) i, trim(prop%name) end do write(*,*) allocate(p2pOK (0: nDevices -1, 0: nDevices -1)) p2pOK = 0 do j = 0, nDevices -1 do i = j&#43;1, nDevices -1 istat = cudaDeviceCanAccessPeer(p2pOK(i,j), i, j) p2pOK(j,i) = p2pOK(i,j) end do end do do i = 0, nDevices -1 write(*,&#34;(3x,i3)&#34;, advance=&#39;no&#39;) i end do write(*,*) do j = 0, nDevices -1 write(*,&#34;(i3)&#34;, advance=&#39;no&#39;) j do i = 0, nDevices -1 if (i == j) then write(*,&#34;(2x,&#39;-&#39;,3x)&#34;, advance=&#39;no&#39;) else if (p2pOK(i,j) == 1) then write(*,&#34;(2x, &#39;Y&#39;,3x)&#34;,advance=&#39;no&#39;) else write(*,&#34;(6x)&#34;,advance=&#39;no&#39;) end if end do write(*,*) end do end program checkP2pAccess " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" /><meta property="article:section" content="docs" />
+<meta property="og:url" content="/docs/docs/cuda/reference-codes/checkP2pAccess/" /><meta property="article:section" content="docs" />
 
+<meta property="article:modified_time" content="2023-03-19T13:46:31+11:00" />
+<title>checkP2PAccess | GraSPH Docs</title>
+<link rel="manifest" href="/docs/manifest.json">
+<link rel="icon" href="/docs/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/docs/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/docs/flexsearch.min.js"></script>
+  <script defer src="/docs/en.search.min.1dc4aeb0ca37d6f601b2ff9faba6ac9a7fb82cb199bd25fed7b7df280f01ad49.js" ></script>
 
-<title>checkP2PAccess | Ed&#39;s Space - Notes</title>
-<link rel="manifest" href="/worknotes/manifest.json">
-<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
-  <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.289065163c3f720737165922e5d06dc0eb2a1d836622a1268993f36bb6ea5de8.js" ></script>
-
-  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+  <script defer src="/docs/sw.min.a126dbd3736712094903d7d2e13a289d1f3f8eddcc1068f145702c048aaa9f61.js" ></script>
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -36,7 +36,7 @@ https://github.com/alex-shpak/hugo-book
         
   <nav>
 <h2 class="book-brand">
-  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  <a class="flex align-center" href="/docs/"><span>GraSPH Docs</span>
   </a>
 </h2>
 
@@ -72,7 +72,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+    <a href="/docs/docs/start/" class="">Getting Started</a>
   
 
         </li>
@@ -101,7 +101,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+    <a href="/docs/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
   
 
         </li>
@@ -114,7 +114,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+    <a href="/docs/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
   
 
         </li>
@@ -127,7 +127,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+    <a href="/docs/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
   
 
         </li>
@@ -140,7 +140,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+    <a href="/docs/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
   
 
         </li>
@@ -174,7 +174,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+    <a href="/docs/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
   
 
         </li>
@@ -187,7 +187,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+    <a href="/docs/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
   
 
           
@@ -200,7 +200,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+    <a href="/docs/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
   
 
         </li>
@@ -213,7 +213,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+    <a href="/docs/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
   
 
         </li>
@@ -226,7 +226,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+    <a href="/docs/docs/cuda/reference-codes/error/" class="">Error Handling</a>
   
 
         </li>
@@ -239,7 +239,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+    <a href="/docs/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
   
 
         </li>
@@ -252,7 +252,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+    <a href="/docs/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
   
 
         </li>
@@ -265,7 +265,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+    <a href="/docs/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
   
 
         </li>
@@ -278,7 +278,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+    <a href="/docs/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
   
 
         </li>
@@ -291,7 +291,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+    <a href="/docs/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
   
 
         </li>
@@ -304,7 +304,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+    <a href="/docs/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
   
 
         </li>
@@ -317,7 +317,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+    <a href="/docs/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
   
 
         </li>
@@ -330,7 +330,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+    <a href="/docs/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
   
 
         </li>
@@ -343,7 +343,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="active">checkP2PAccess</a>
+    <a href="/docs/docs/cuda/reference-codes/checkP2pAccess/" class="active">checkP2PAccess</a>
   
 
         </li>
@@ -356,7 +356,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+    <a href="/docs/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
   
 
         </li>
@@ -369,7 +369,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+    <a href="/docs/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
   
 
         </li>
@@ -382,7 +382,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+    <a href="/docs/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
   
 
         </li>
@@ -395,7 +395,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+    <a href="/docs/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
   
 
         </li>
@@ -408,7 +408,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+    <a href="/docs/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
   
 
         </li>
@@ -433,7 +433,7 @@ https://github.com/alex-shpak/hugo-book
   
     <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
     <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
-      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+      <a href="/docs/docs/cfdem/" class="">CFDEM</a>
     </label>
   
 
@@ -447,7 +447,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+    <a href="/docs/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
   
 
         </li>
@@ -460,7 +460,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+    <a href="/docs/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
   
 
         </li>
@@ -494,7 +494,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+    <a href="/docs/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
   
 
         </li>
@@ -507,7 +507,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+    <a href="/docs/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
   
 
         </li>
@@ -520,7 +520,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+    <a href="/docs/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
   
 
         </li>
@@ -547,8 +547,8 @@ https://github.com/alex-shpak/hugo-book
 <ul>
   
   <li>
-    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
-        GitHub
+    <a href="https://github.com/edoyango/GraSPH"  target="_blank" rel="noopener">
+        GraSPH GitHub
       </a>
   </li>
   
@@ -576,14 +576,14 @@ https://github.com/alex-shpak/hugo-book
         
   <div class="flex align-center justify-between">
   <label for="menu-control">
-    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+    <img src="/docs/svg/menu.svg" class="book-icon" alt="Menu" />
   </label>
 
   <strong>checkP2PAccess</strong>
 
   <label for="toc-control">
     
-    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    <img src="/docs/svg/toc.svg" class="book-icon" alt="Table of Contents" />
     
   </label>
 </div>
@@ -730,11 +730,17 @@ https://github.com/alex-shpak/hugo-book
   <div class="flex flex-wrap justify-between">
 
 
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/750a85d3caf52f5ceb6af283c77c5f3938b35696" title='Last modified by Edward Yang | March 19, 2023' target="_blank" rel="noopener">
+      <img src="/docs/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>March 19, 2023</span>
+    </a>
+  </div>
+
 
 
   <div>
     <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/cuda/reference-codes/checkP2pAccess.md" target="_blank" rel="noopener">
-      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <img src="/docs/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>Edit this page</span>
     </a>
   </div>

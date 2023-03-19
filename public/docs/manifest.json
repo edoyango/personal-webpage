@@ -1,6 +1,6 @@
 {
-  "name": "Ed's Space - Notes",
-  "short_name": "Ed's Space - Notes",
+  "name": "GraSPH Docs",
+  "short_name": "GraSPH Docs",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
