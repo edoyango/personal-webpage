@@ -2,7 +2,7 @@
 style: "style1 orient-right content-align-left image-position-center onscroll-image-fade-in"
 id: "first"
 title : "GraSPH"
-content: "Documentation on the use of GraSPH. Smoothed Particle Hydrodynamics simulation of fluids and granular material. I heavily worked on this code during my master's, and continue to develop for fun."
+content: "Documentation on the use of GraSPH. Smoothed Particle Hydrodynamics simulation of fluids and granular material. I heavily worked on this code during my master's, and continue to develop for fun. WORK IN PROGRESS."
 button: 
   label: "See More"
   link: "/docs"
