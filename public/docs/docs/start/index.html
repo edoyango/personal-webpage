@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Getting Started # This page will help you get setup and started to run the GraSPH code. And is aimed at beginners. The instruction assume you are working on an Ubuntu machine. a Virtual Machine (VM) or WSL2 will work fine too. This page assumes you are working in a terminal.
-Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.">
+<meta name="description" content="Getting Started # This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. a Virtual Machine (VM) or WSL2 will work fine too. If you&rsquo;re using a different OS or CPU architecture, you will need modify the package install commands and paths used in the compilation setup.">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:title" content="Getting Started" />
-<meta property="og:description" content="Getting Started # This page will help you get setup and started to run the GraSPH code. And is aimed at beginners. The instruction assume you are working on an Ubuntu machine. a Virtual Machine (VM) or WSL2 will work fine too. This page assumes you are working in a terminal.
-Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page." />
+<meta property="og:description" content="Getting Started # This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. a Virtual Machine (VM) or WSL2 will work fine too. If you&rsquo;re using a different OS or CPU architecture, you will need modify the package install commands and paths used in the compilation setup." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/docs/start/" /><meta property="article:section" content="docs" />
 
@@ -197,7 +195,7 @@ https://github.com/alex-shpak/hugo-book
   Getting Started
   <a class="anchor" href="#getting-started">#</a>
 </h1>
-<p>This page will help you get setup and started to run the GraSPH code. And is aimed at beginners. The instruction assume you are working on an Ubuntu machine. a Virtual Machine (VM) or WSL2 will work fine too. This page assumes you are working in a terminal.</p>
+<p>This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. a Virtual Machine (VM) or WSL2 will work fine too. If you&rsquo;re using a different OS or CPU architecture, you will need modify the package install commands and paths used in the compilation setup. This page assumes you are working in a terminal.</p>
 <p>Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.</p>
 <h2 id="getting-the-grasph-code">
   Getting the GraSPH code
@@ -205,6 +203,7 @@ https://github.com/alex-shpak/hugo-book
 </h2>
 <p>Clone the GraSPH repo with</p>
 <pre tabindex="0"><code>git clone https://github.com/edoyango/GraSPH.git
+cd GraSPH
 </code></pre><h2 id="for-running-in-serial">
   For running in serial
   <a class="anchor" href="#for-running-in-serial">#</a>
@@ -213,7 +212,7 @@ https://github.com/alex-shpak/hugo-book
   Prerequisites
   <a class="anchor" href="#prerequisites">#</a>
 </h3>
-<p>To run the serial version of the code, all you need is a working Fortran compiler, and HDF5. A good compiler to start with is <code>gfortran</code>.</p>
+<p>To run the serial version of the code, all you need is a working Fortran compiler and the HDF5 libraries. A good compiler to start with is <code>gfortran</code>.</p>
 <pre tabindex="0"><code>sudo apt-get install gfortran libhdf5-dev
 </code></pre><h3 id="setting-up-compilation-environment">
   Setting up compilation environment
@@ -238,7 +237,7 @@ make mode=serial -f makefiles/Makefile.caf
   Prerequisites
   <a class="anchor" href="#prerequisites-1">#</a>
 </h3>
-<p>If you wish to run GraSPH in parallel with CPUs, you will need an MPI implementation, the HDF5 MPI libraries, as well as the OpenCoarrays library. All of these are available via APT. However, YUM/DNF does not have the OpenCoarrays library. Below commands use the OpenMPI implementation, but others should work fine too.</p>
+<p>If you wish to run GraSPH in parallel with CPUs, you will need an MPI implementation, the HDF5 MPI libraries, as well as the OpenCoarrays library. All of these are available via APT. Below commands use the OpenMPI implementation, but other MPI implementations should work fine too.</p>
 <pre tabindex="0"><code>sudo apt-get install openmpi-bin libopenmpi-dev libhdf5-dev libhdf5-openmpi-dev libcoarrays-openmpi-dev
 </code></pre><h3 id="setting-up-the-compilation-environment">
   Setting up the compilation environment

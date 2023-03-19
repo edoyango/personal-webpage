@@ -23,6 +23,8 @@ GraSPH uses two files to describe the simulation:
         * ID
         * type index
 
+Note that every time you modify `common/param.f90`, or any of the files in `common`, `src_GPU`, or `src_CAF`, you will need to recompile the code. This is not the case if you change the input HDF5 file however.
+
 ## The input HDF5 file
 The arrangement of the HDF5 file is
 ```
@@ -44,7 +46,7 @@ The arrangement of the HDF5 file is
     ├── v     (dataset)  
     └── x     (dataset)
 ```
-The two groups `real` and `virt` describe the properties of virtual and real particles. The `n` attribute in each group defines how many particles are in each group. The datasets in the groups describe each of the particles' properties. When writing the HDF5 file, ensure the dataset sizes are congruent with `dim` in `common/param.f90` and `n` in each group, or your results won't be as expected or the GraSPH will fail. 
+The two groups, `real` and `virt`, describe the properties of virtual and real particles, respectively. In each group, the `n` attribute tells GraSPH how many particles there are in the corresponding group. The datasets in the groups describe each of the particles' properties. When writing the HDF5 file, ensure the dataset sizes are congruent with `dim` in `common/param.f90` and `n` in each group, or your results won't be as expected or GraSPH will fail. 
 
 ## Examples
 `example/dambreak.h5` is an input file that comes with the GraSPH code. The `common/param.f90` file points to this file via the `input_file` parameter. After installing HDF5, you can inspect the input file with `h5dump`. For example, printing only the `/real/n` and `/virt/n` attributes, i.e., the number of real and virtual particles, respectively:
