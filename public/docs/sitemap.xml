@@ -2,114 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/docs/docs/cuda/cuda-wsl/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/deviceQuery/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/useful/fixed-cutoff-direct-pair-search/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
     <loc>/docs/docs/start/</loc>
+    <lastmod>2023-03-19T17:17:12+11:00</lastmod>
   </url><url>
-    <loc>/docs/docs/pi/trim-jetsonnano/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/pi/webserver/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/pi/slurm-cluster/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cfdem/snappyhexmesh/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/useful/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/useful/fixed-cutoff-cell-lists-pair-search/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/precision_m/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cfdem/liggghts-intel-comp/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cfdem/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/error/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/useful/grid-rows-spatial-hashing/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/pi/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/limitingFactor/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/useful/z-curve-spatial-hashing/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/peakBandwidth/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/bandwidthTest/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/MemCpy/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/testAsync/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/offsetNStride/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/strideTexture/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/sharedExample/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/checkP2pAccess/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/directTransfer/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/p2pBandwidth/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/mpiDevices/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/mpiDeviceUtil/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/reference-codes/transposeMPI/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
-  </url><url>
-    <loc>/docs/docs/cuda/hidden/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
+    <loc>/docs/docs/input/</loc>
   </url><url>
     <loc>/docs/categories/</loc>
   </url><url>
     <loc>/docs/docs/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
+    <lastmod>2023-03-19T17:17:12+11:00</lastmod>
   </url><url>
     <loc>/docs/</loc>
-    <lastmod>2023-03-19T13:46:31+11:00</lastmod>
+    <lastmod>2023-03-19T17:17:12+11:00</lastmod>
   </url><url>
     <loc>/docs/tags/</loc>
   </url>

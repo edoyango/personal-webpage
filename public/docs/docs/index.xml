@@ -15,5 +15,15 @@
 Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.</description>
     </item>
     
+    <item>
+      <title>Inputs</title>
+      <link>/docs/docs/input/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/input/</guid>
+      <description>Inputs # GraSPH uses two files to describe the simulation:
+common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index The input HDF5 file # The arrangement of the HDF5 file is</description>
+    </item>
+    
   </channel>
 </rss>
