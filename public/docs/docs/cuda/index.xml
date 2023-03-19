@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CUDA Programming on GraSPH Docs</title>
+    <link>/docs/docs/cuda/</link>
+    <description>Recent content in CUDA Programming on GraSPH Docs</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/docs/docs/cuda/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CUDA &#43; NVHPC on WSL</title>
+      <link>/docs/docs/cuda/cuda-wsl/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/cuda/cuda-wsl/</guid>
+      <description>Installing CUDA + NVHPC on WSL # This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.
+Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl &amp;ndash;update if accidentally rolled back, follow the instructions here then wsl &amp;ndash;update again check which Linux flavours are available with wsl &amp;ndash;list &amp;ndash;online install the desired flavour by wsl &amp;ndash;install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&amp;gt; x86_64 -&amp;gt; WSL-Ubuntu -&amp;gt; 2.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>/docs/docs/cuda/hidden/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/cuda/hidden/</guid>
+      <description>This page is hidden in menu # Quondam non pater est dignior ille Eurotas # Latent te facies # Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus, frementes, qui in vel. Hippotades Peleus pennas conscia cuiquam Caeneus quas.
+Pater demittere evincitque reddunt Maxime adhuc pressit huc Danaas quid freta Soror ego Luctus linguam saxa ultroque prior Tatiumque inquit Saepe liquitur subita superata dederat Anius sudor Cum honorum Latona # O fallor in sustinui iussorum equidem.</description>
+    </item>
+    
+  </channel>
+</rss>

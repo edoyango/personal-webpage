@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Useful code snippets on GraSPH Docs</title>
+    <link>/docs/docs/useful/</link>
+    <description>Recent content in Useful code snippets on GraSPH Docs</description>
+    <generator>Hugo -- gohugo.io</generator><atom:link href="/docs/docs/useful/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Direct pair search</title>
+      <link>/docs/docs/useful/fixed-cutoff-direct-pair-search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/useful/fixed-cutoff-direct-pair-search/</guid>
+      <description>Point-pairs search with fixed cutoff distance (direct) # Description # I work with point pair searches through particle-based simulations (mostly SPH and DEM). The algorithm here is the most basic way to perform a pair search. It is O(N2) time, so is not useful for any practical applications.
+I use it frequently to server as a reference when investigating other ways to search for pairs. It&amp;rsquo;s simple to code, so is harder to introduce conceptual and coding errors.</description>
+    </item>
+    
+    <item>
+      <title>Cell list pair search</title>
+      <link>/docs/docs/useful/fixed-cutoff-cell-lists-pair-search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/useful/fixed-cutoff-cell-lists-pair-search/</guid>
+      <description>Point-pairs search with fixed cutoff distance (using cell-lists) # Description # This is an improvement to the direct search algorithm for searching for pairs of points within a cutoff distance. It uses a grid of cells whose side-length is equal to the specified cutoff distance.
+This is beneficial to performance since for any given point, all its neighbours are guaranteed to be within its own cell, or in adjacent cells.</description>
+    </item>
+    
+    <item>
+      <title>grid dimension hashing</title>
+      <link>/docs/docs/useful/grid-rows-spatial-hashing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/useful/grid-rows-spatial-hashing/</guid>
+      <description> Hashing grid cell indices based on grid dimensions # Description # Code (Fortran) # Coming soon... </description>
+    </item>
+    
+    <item>
+      <title>Z-curve hashing</title>
+      <link>/docs/docs/useful/z-curve-spatial-hashing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/docs/useful/z-curve-spatial-hashing/</guid>
+      <description> Hashing grid cell indices based on Z-order curve # Description # Code (Fortran) # Coming soon... </description>
+    </item>
+    
+  </channel>
+</rss>

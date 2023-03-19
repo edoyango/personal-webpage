@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Snappy Hex Mesh Basics # This is a summary of meshing in OpenFOAM using the snappyHexMesh tool. I&rsquo;m writing this in detail because I couldn&rsquo;t find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Snappy Hex Mesh Basics" />
+<meta property="og:description" content="Snappy Hex Mesh Basics # This is a summary of meshing in OpenFOAM using the snappyHexMesh tool. I&rsquo;m writing this in detail because I couldn&rsquo;t find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/docs/cfdem/snappyhexmesh/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-03-19T13:46:31+11:00" />
+<title>Snappy Hex Mesh Basics | GraSPH Docs</title>
+<link rel="manifest" href="/docs/manifest.json">
+<link rel="icon" href="/docs/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/docs/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/docs/flexsearch.min.js"></script>
+  <script defer src="/docs/en.search.min.1dc4aeb0ca37d6f601b2ff9faba6ac9a7fb82cb199bd25fed7b7df280f01ad49.js" ></script>
+
+  <script defer src="/docs/sw.min.a126dbd3736712094903d7d2e13a289d1f3f8eddcc1068f145702c048aaa9f61.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/docs/"><span>GraSPH Docs</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/start/" class="">Getting Started</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle" checked />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/docs/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cfdem/snappyhexmesh/" class="active">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango/GraSPH"  target="_blank" rel="noopener">
+        GraSPH GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/docs/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Snappy Hex Mesh Basics</strong>
+
+  <label for="toc-control">
+    
+    <img src="/docs/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#snappy-hex-mesh-basics">Snappy Hex Mesh Basics</a>
+      <ul>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#step-1-defining-the-background-mesh">Step 1: Defining the Background Mesh</a></li>
+        <li><a href="#step-2-creating-an-stl-file">Step 2: Creating an <code>stl</code> file</a>
+          <ul>
+            <li><a href="#step-2a-creating-the-basic-shape">Step 2a: Creating the basic shape</a></li>
+            <li><a href="#step-2b-converting-the-mesh-into-something-nice">Step 2b: Converting the mesh into something nice</a></li>
+            <li><a href="#step-3-surfacefeatureextract">Step 3: <code>surfaceFeatureExtract</code></a></li>
+            <li><a href="#step-4-snappyhexmesh">Step 4: <code>snappyHexMesh</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#running-snappyhexmesh-in-parallel">Running <code>snappyHexMesh</code> in Parallel</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="snappy-hex-mesh-basics">
+  Snappy Hex Mesh Basics
+  <a class="anchor" href="#snappy-hex-mesh-basics">#</a>
+</h1>
+<p>This is a summary of meshing in OpenFOAM using the <code>snappyHexMesh</code> tool. I&rsquo;m writing this in detail because I couldn&rsquo;t find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools. This only covers absolute basics and creating simple geometries. It only covers <code>snappyhexMesh</code> tool as 
+  <a href="https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.4-mesh-generation-with-the-snappyhexmesh-utility">the user guide for the basic tool <code>blockMesh</code></a> is pretty ok.</p>
+<h2 id="background">
+  Background
+  <a class="anchor" href="#background">#</a>
+</h2>
+<p>The high-level of how <code>snappyHexMesh</code> works can be found here.</p>
+<p>The basic steps are to:</p>
+<ol>
+<li>define the background mesh
+The background mesh is where the fluid flow will be simulated.</li>
+<li>create the stl file
+This step is to create the object you wish to insert onto the background mesh.</li>
+<li>run surfaceFeatureExtract
+This requires the system/surfaceFeatureExtractDict to be created, which defines how edges and surfaces of the stl mesh are translated into a mesh.</li>
+<li>run snappyHexMesh
+This will use the inputs created in steps 1-3. Note that setting up for running snappyHexMesh in parallel is different from running in serial (i.e., one CPU core). Both setups will be described here.</li>
+</ol>
+<h2 id="step-1-defining-the-background-mesh">
+  Step 1: Defining the Background Mesh
+  <a class="anchor" href="#step-1-defining-the-background-mesh">#</a>
+</h2>
+<p>This steps assumes that you know how to generate a simple mesh using the <code>blockMesh</code> utility. If you don&rsquo;t follow that guide first, and work through the excercises.</p>
+<p>The background mesh has to satisfy a few requirements:</p>
+<ul>
+<li>cells ought to be approximately cubic within the vicinity of the <code>stl</code> mesh, otherwise <code>snappyHexMesh</code> will fail</li>
+<li>the background mesh must be positioned and sized such that the <code>stl</code> mesh is within it or located on the boundary</li>
+</ul>
+<p>Otherwise defining a mesh in a manner described on the <code>BlockMesh</code> 
+  <a href="https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.3-mesh-generation-with-the-blockmesh-utility">guide</a> is sufficient.</p>
+<h2 id="step-2-creating-an-stl-file">
+  Step 2: Creating an <code>stl</code> file
+  <a class="anchor" href="#step-2-creating-an-stl-file">#</a>
+</h2>
+<p>As noted above, the <code>stl</code> mesh must be created in a way such that it is located inside or on the boundary of the background mesh. In addition to that, the mesh must be structured nicely (the exact requirements I&rsquo;m not sure of). When I first started out, I couldn&rsquo;t find a tool that created nice meshes and was also easy to use. But, instead I found tools that can create crappy meshes, and another tool that can turn these meshes into nice meshes.</p>
+<h3 id="step-2a-creating-the-basic-shape">
+  Step 2a: Creating the basic shape
+  <a class="anchor" href="#step-2a-creating-the-basic-shape">#</a>
+</h3>
+<p>This step requires a Computer Aided Design (CAD) program. I found the following CAD programs to be basic, but free and perfectly fine for basic geometries:</p>
+<ul>
+<li>
+  <a href="https://app.sketchup.com/app">SketchUp free</a> (
+  <a href="https://www.youtube.com/watch?v=qgt2s9RzvKM">tutorial</a>).
+<code>stl</code> files can be exported using the &ldquo;download&rdquo; utility.</li>
+<li>
+  <a href="https://www.freecadweb.org/downloads.php">FreeCad</a> (
+  <a href="https://www.youtube.com/watch?v=FVKhejma69U&amp;list=PL4eMS3gkRNXeggvYq708Cm89Rg0PwAUuJ">tutorial series</a>).
+<code>stl</code> files can be exported using the &ldquo;export&rdquo; utility.</li>
+</ul>
+<h3 id="step-2b-converting-the-mesh-into-something-nice">
+  Step 2b: Converting the mesh into something nice
+  <a class="anchor" href="#step-2b-converting-the-mesh-into-something-nice">#</a>
+</h3>
+<p>The meshes the above tools create are not guaranteed to be nice e.g., meshes produced by the above utilities will have cells that are far from being equilateral.</p>
+<p>The tool that I found pretty easy to use and pickup is 
+  <a href="https://www.meshlab.net/">MeshLab</a>, but I found it to be pretty capable. To make a mesh nicer for use with <code>snappyHexMesh</code>, the &ldquo;filters&rdquo; dropdown list has a few tools that are pretty handy.</p>
+<p>
+  <img src="/worknotes/imgs/baffles-sketchup.png" alt="baffles-sketchup.png" /></p>
+<p><em>Original mesh produced by SketchUp of a baffle array (square columns). <code>snappyHexMesh</code> doesn&rsquo;t like the small angles between lines at the corners</em></p>
+<p>
+  <img src="/worknotes/imgs/baffles-meshlab-quad.png" alt="baffles-meshlab-quad.png" /></p>
+<p><em>Remeshing with MeshLab using Filters → Polygonal and Quad Mesh → Turn into Quad-Dominant mesh. Since the mesh faces are rectangular, a cell can occupy a whole face i.e., cell edges coincide with face edges.</em></p>
+<p>
+  <img src="/worknotes/imgs/baffles-meshlab-isotropic.png" alt="baffles-meshlab-isotropic.png" /></p>
+<p><em>Remeshing with Meshlab using Filters → Remeshing, Simplification and Reconstruction → Remeshing: Isotropic Explicit Remeshing. While looking more complex, this mesh may be more preferred than the second figure above, as the triangles are closer to being equilateral.</em></p>
+<p>To save the remeshed mesh, you go to File → Export Mesh As&hellip; and choose to save it as an <code>stl</code> file. Save this to the project folder in <code>constant/triSurface/</code> with any name you like.</p>
+<h3 id="step-3-surfacefeatureextract">
+  Step 3: <code>surfaceFeatureExtract</code>
+  <a class="anchor" href="#step-3-surfacefeatureextract">#</a>
+</h3>
+<p>Create the file <code>system/surfaceFeatureExtractDict</code> with the contents (modifying the mesh file name):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  =========                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">   \\    /   O peration     | Website:  https://openfoam.org
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    \\  /    A nd           | Version:  6
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">     \\/     M anipulation  |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">FoamFile</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">version</span>     <span style="color:#0000cf;font-weight:bold">2.0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">format</span>      <span style="color:#000">ascii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">class</span>       <span style="color:#000">dictionary</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">object</span>      <span style="color:#000">surfaceFeatureExtractDict</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">Untitled2</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">stl</span> <span style="color:#8f5902;font-style:italic">//change this to match your file name
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// How to obtain raw features (extractFromFile || extractFromSurface)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">extractionMethod</span>    <span style="color:#000">extractFromSurface</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">extractFromSurfaceCoeffs</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// Mark edges whose adjacent surface normals are at an angle less
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// than includedAngle as features
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// - 0  : selects no edges
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// - 180: selects all edges
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000">includedAngle</span>   <span style="color:#0000cf;font-weight:bold">120</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    subsetFeatures
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    {
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">        // Keep nonManifold edges (edges with &gt;2 connected faces)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">        nonManifoldEdges    yes;
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">        // Keep open edges (edges with 1 connected face)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">        openEdges           yes;
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    }
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">*/</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Write options
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// Write features to obj format for postprocessing
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">writeObj</span>    <span style="color:#000">yes</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// ************************************************************************* //
+</span></span></span></code></pre></div><p>After this is saved, run the <code>surfaceFeatureExtract</code> tool in the project root directory, which creates an .emesh file in <code>constant/triSurface</code>.</p>
+<h3 id="step-4-snappyhexmesh">
+  Step 4: <code>snappyHexMesh</code>
+  <a class="anchor" href="#step-4-snappyhexmesh">#</a>
+</h3>
+<p>Create the file <code>system/snappyHexMeshDict</code> with the contents of the file below, modifying it to point to the correct files. See the 
+  <a href="/worknotes/docs/cfdem/snappyhexmesh/#appendix">appendix</a> to see the full file.</p>
+<p>If it&rsquo;s been setup correctly, you can then run <code>snappyHexMesh</code> in the project root directory to create the new mesh. This will create new time-step folders with the mesh created in steps. If you wish for the mesh to be saved into constant/polyMesh, pass the -overwrite option. The alternative is to move it there yourself.</p>
+<h2 id="running-snappyhexmesh-in-parallel">
+  Running <code>snappyHexMesh</code> in Parallel
+  <a class="anchor" href="#running-snappyhexmesh-in-parallel">#</a>
+</h2>
+<p>The <code>system/decomposeParDict</code> file needs to be created. This is the same file to be used for parallel simulation. Example contents of the file (with 4 processors - change this to your desired number of parallel processes):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  =========                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">   \\    /   O peration     | Website:  https://openfoam.org
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    \\  /    A nd           | Version:  6
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">     \\/     M anipulation  |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">FoamFile</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">version</span>     <span style="color:#0000cf;font-weight:bold">2.0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">format</span>      <span style="color:#000">ascii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">class</span>       <span style="color:#000">dictionary</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">object</span>      <span style="color:#000">blockMeshDict</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">numberOfSubdomains</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#8f5902;font-style:italic">//modify this to suit the number of cores
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">method</span> <span style="color:#000">scotch</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// ************************************************************************* //
+</span></span></span></code></pre></div><p>and in the project root directory, run <code>decomposePar</code> which creates <code>processor*</code> folders. snappyHexMesh is then invoked in parallel by</p>
+<pre tabindex="0"><code>mpiexec -n 4 snappyHexMesh -parallel -overwrite
+</code></pre><p>The mesh can then be reconstructed with the command <code>reconstructParMesh</code> in the project root directory.</p>
+<h2 id="appendix">
+  Appendix
+  <a class="anchor" href="#appendix">#</a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c++" data-lang="c++"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  =========                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">   \\    /   O peration     | Website:  https://openfoam.org
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">    \\  /    A nd           | Version:  6
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">     \\/     M anipulation  |
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">FoamFile</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">version</span>     <span style="color:#0000cf;font-weight:bold">2.0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">format</span>      <span style="color:#000">ascii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">class</span>       <span style="color:#000">dictionary</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">object</span>      <span style="color:#000">snappyHexMeshDict</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Which of the steps to run
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">castellatedMesh</span> <span style="color:#204a87">true</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">snap</span>            <span style="color:#204a87">true</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">addLayers</span>       <span style="color:#204a87">false</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Geometry. Definition of all surfaces. All surfaces are of class
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// searchableSurface.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Surfaces are used
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// - to specify refinement for any mesh cell intersecting it
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// - to specify refinement for any mesh cell inside/outside/near
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// - to &#39;snap&#39; the mesh boundary to the surface
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">geometry</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">Untitled2</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">stl</span> <span style="color:#8f5902;font-style:italic">// modify this
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">type</span> <span style="color:#000">triSurfaceMesh</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">name</span> <span style="color:#000">baffles</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#8f5902;font-style:italic">// modify this and use in below
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">PatchInfo</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">type</span> <span style="color:#000">wall</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Settings for the castellatedMesh generation.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">castellatedMeshControls</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Refinement parameters
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// ~~~~~~~~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// If local number of cells is &amp;gr; maxLocalCells on any processor
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// switches from from refinement followed by balancing
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// (current method) to (weighted) balancing before refinement.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxLocalCells</span> <span style="color:#0000cf;font-weight:bold">100000</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Overall cell limit (approximately). Refinement will stop immediately
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// upon reaching this number so a refinement level might not complete.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// Note that this is the number of cells before removing the part which
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// is not &#39;visible&#39; from the keepPoint. The final number of cells might
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// actually be a lot less.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxGlobalCells</span> <span style="color:#0000cf;font-weight:bold">7000000</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// The surface refinement loop might spend lots of iterations refining just a
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// few cells. This setting will cause refinement to stop if &lt;= minimumRefine
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// are selected for refinement. Note: it will at least do one iteration
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// (unless the number of cells to refine is 0)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minRefinementCells</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Allow a certain level of imbalance during refining
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// (since balancing is quite expensive)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// Expressed as fraction of perfect balance (= overall number of cells /
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// nProcs). 0=balance always.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxLoadUnbalance</span> <span style="color:#0000cf;font-weight:bold">0.10</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Number of buffer layers between different levels.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// 1 means normal 2:1 refinement restriction, larger means slower
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// refinement.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nCellsBetweenLevels</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Explicit feature edge refinement
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Specifies a level for any cell intersected by its edges.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// This is a featureEdgeMesh, read from constant/triSurface for now.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">features</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">(</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">file</span> <span style="color:#4e9a06">&#34;Untitled2.eMesh&#34;</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#8f5902;font-style:italic">// modify this
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">level</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Surface based refinement
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// ~~~~~~~~~~~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Specifies two levels for every surface. The first is the minimum level,
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// every cell intersecting a surface gets refined up to the minimum level.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// The second level is the maximum level. Cells that &#39;see&#39; multiple
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// intersections where the intersections make an
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// angle &gt; resolveFeatureAngle get refined up to the maximum level.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">refinementSurfaces</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">baffles</span> <span style="color:#8f5902;font-style:italic">// modify this to match name defined earlier
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// Surface-wise min and max refinement level
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">level</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Resolve sharp angles
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">resolveFeatureAngle</span> <span style="color:#0000cf;font-weight:bold">30</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Region-wise refinement
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// ~~~~~~~~~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Specifies refinement level for cells in relation to a surface. One of
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// three modes
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// - distance. &#39;levels&#39; specifies per distance to the surface the
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//   wanted refinement level. The distances need to be specified in
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//   descending order.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// - inside. &#39;levels&#39; is only one entry and only the level is used. All
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//   cells inside the surface get refined up to the level. The surface
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//   needs to be closed for this to be possible.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// - outside. Same but cells outside.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">refinementRegions</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Mesh selection
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// ~~~~~~~~~~~~~~
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// After refinement patches get added for all refinementSurfaces and
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// all cells intersecting the surfaces get put into these patches. The
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// section reachable from the locationInMesh is kept.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// NOTE: This point should never be on a face, always inside a cell, even
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// after refinement.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">locationInMesh</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#0000cf;font-weight:bold">0.1</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Whether any faceZones (as specified in the refinementSurfaces)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// are only on the boundary of corresponding cellZones or also allow
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// free-standing zone faces. Not used if there are no faceZones.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">allowFreeStandingZoneFaces</span> <span style="color:#204a87">true</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Settings for the snapping.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">snapControls</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Number of patch smoothing iterations before finding correspondence
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  to surface
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSmoothPatch</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Relative distance for points to be attracted by surface feature point
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  or edge. True distance is this factor times local
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  maximum edge length.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">tolerance</span> <span style="color:#0000cf;font-weight:bold">4.0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Number of mesh displacement relaxation iterations.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSolveIter</span> <span style="color:#0000cf;font-weight:bold">100</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Maximum number of snapping relaxation iterations. Should stop
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  before upon reaching a correct mesh.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nRelaxIter</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">nFeatureSnapIter</span> <span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Settings for the layer addition.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">addLayersControls</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Are the thickness parameters below relative to the undistorted
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// size of the refined cell outside layer (true) or absolute sizes (false).
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">relativeSizes</span> <span style="color:#204a87">true</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Per final patch (so not geometry!) the layer information
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">layers</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">baffles</span> <span style="color:#8f5902;font-style:italic">// modify this to match name defined earlier
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">nSurfaceLayers</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Expansion factor for layer mesh
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">expansionRatio</span> <span style="color:#0000cf;font-weight:bold">1.1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Wanted thickness of final added cell layer. If multiple layers
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// is the thickness of the layer furthest away from the wall.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// Relative to undistorted size of cell outside layer.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// See relativeSizes parameter.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">finalLayerThickness</span> <span style="color:#0000cf;font-weight:bold">0.8</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Minimum thickness of cell layer. If for any reason layer
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// cannot be above minThickness do not add layer.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// Relative to undistorted size of cell outside layer.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minThickness</span> <span style="color:#0000cf;font-weight:bold">0.1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// If points get not extruded do nGrow layers of connected faces that are
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// also not grown. This helps convergence of the layer addition process
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// close to features.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nGrow</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Advanced settings
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// When not to extrude surface. 0 is flat surface, 90 is when two faces
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// are perpendicular
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">featureAngle</span> <span style="color:#0000cf;font-weight:bold">60</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Maximum number of snapping relaxation iterations. Should stop
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// before upon reaching a correct mesh.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nRelaxIter</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Number of smoothing iterations of surface normals
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSmoothSurfaceNormals</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Number of smoothing iterations of interior mesh movement direction
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSmoothNormals</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Smooth layer thickness over surface patches
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSmoothThickness</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Stop layer growth on highly warped cells
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxFaceThicknessRatio</span> <span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Reduce layer growth where ratio thickness to medial
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">// distance is large
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxThicknessToMedialRatio</span> <span style="color:#0000cf;font-weight:bold">0.3</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Angle used to pick up medial axis points
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minMedianAxisAngle</span> <span style="color:#0000cf;font-weight:bold">90</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Create buffer region for new layer terminations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nBufferCellsNoExtrude</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Overall max number of layer addition iterations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nLayerIter</span> <span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Generic mesh quality settings. At any undoable phase these determine
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// where to undo.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">meshQualityControls</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Maximum non-orthogonality allowed. Set to 180 to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxNonOrtho</span> <span style="color:#0000cf;font-weight:bold">65</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Max skewness allowed. Set to &lt;0 to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxBoundarySkewness</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">maxInternalSkewness</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Max concaveness allowed. Is angle (in degrees) below which concavity
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  is allowed. 0 is straight face, &lt;0 would be convex face.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  Set to 180 to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">maxConcave</span> <span style="color:#0000cf;font-weight:bold">80</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Minimum projected area v.s. actual area. Set to -1 to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minFlatness</span> <span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Minimum pyramid volume. Is absolute volume of cell pyramid.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  Set to a sensible fraction of the smallest cell volume expected.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  Set to very negative number (e.g. -1E30) to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minVol</span> <span style="color:#0000cf;font-weight:bold">1e-13</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">minTetQuality</span> <span style="color:#0000cf;font-weight:bold">1e-30</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Minimum face area. Set to &lt;0 to disable.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minArea</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Minimum face twist. Set to &lt;-1 to disable. dot product of face normal
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  and face centre triangles normal
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minTwist</span> <span style="color:#0000cf;font-weight:bold">0.02</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Minimum normalised cell determinant
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#8f5902;font-style:italic">//  1 = hex, &lt;= 0 = folded or flattened illegal cell
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minDeterminant</span> <span style="color:#0000cf;font-weight:bold">0.001</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- minFaceWeight (0 -&gt; 0.5)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minFaceWeight</span> <span style="color:#0000cf;font-weight:bold">0.02</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- minVolRatio (0 -&gt; 1)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minVolRatio</span> <span style="color:#0000cf;font-weight:bold">0.01</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// must be &gt;0 for Fluent compatibility
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">minTriangleTwist</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// Advanced
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Number of error distribution iterations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">nSmoothScale</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">//- Amount to scale back displacement at error points
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000">errorReduction</span> <span style="color:#0000cf;font-weight:bold">0.75</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Advanced
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Merge tolerance. Is fraction of overall bounding box of initial mesh.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// Note: the write tolerance needs to be higher than this.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">mergeTolerance</span> <span style="color:#0000cf;font-weight:bold">1E-6</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// ************************************************************************* //
+</span></span></span></code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/750a85d3caf52f5ceb6af283c77c5f3938b35696" title='Last modified by Edward Yang | March 19, 2023' target="_blank" rel="noopener">
+      <img src="/docs/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>March 19, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/cfdem/snappyhexmesh.md" target="_blank" rel="noopener">
+      <img src="/docs/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#snappy-hex-mesh-basics">Snappy Hex Mesh Basics</a>
+      <ul>
+        <li><a href="#background">Background</a></li>
+        <li><a href="#step-1-defining-the-background-mesh">Step 1: Defining the Background Mesh</a></li>
+        <li><a href="#step-2-creating-an-stl-file">Step 2: Creating an <code>stl</code> file</a>
+          <ul>
+            <li><a href="#step-2a-creating-the-basic-shape">Step 2a: Creating the basic shape</a></li>
+            <li><a href="#step-2b-converting-the-mesh-into-something-nice">Step 2b: Converting the mesh into something nice</a></li>
+            <li><a href="#step-3-surfacefeatureextract">Step 3: <code>surfaceFeatureExtract</code></a></li>
+            <li><a href="#step-4-snappyhexmesh">Step 4: <code>snappyHexMesh</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#running-snappyhexmesh-in-parallel">Running <code>snappyHexMesh</code> in Parallel</a></li>
+        <li><a href="#appendix">Appendix</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Inputs # GraSPH uses two files to describe the simulation:
+common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index Note that every time you modify common/param.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Inputs" />
+<meta property="og:description" content="Inputs # GraSPH uses two files to describe the simulation:
+common/param.f90, which defines: numerical precision (single or double) simulation geometry e.g., 2D or 3D, the initial spacing between particles material properties e.g., reference density and mass time-step size algorithm parameters (e.g., artificial viscosity parameters) input and output paths an HDF5 file, which defines: the number of real and virtual particles each real and virtual particles&#39;: position velocity density pressure ID type index Note that every time you modify common/param." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/docs/docs/input/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-03-19T18:27:26+11:00" />
+<title>Inputs | GraSPH Docs</title>
+<link rel="manifest" href="/docs/manifest.json">
+<link rel="icon" href="/docs/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/docs/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/docs/flexsearch.min.js"></script>
+  <script defer src="/docs/en.search.min.1dc4aeb0ca37d6f601b2ff9faba6ac9a7fb82cb199bd25fed7b7df280f01ad49.js" ></script>
+
+  <script defer src="/docs/sw.min.a126dbd3736712094903d7d2e13a289d1f3f8eddcc1068f145702c048aaa9f61.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/docs/"><span>GraSPH Docs</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/start/" class="">Getting Started</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/docs/docs/input/" class="active">Inputs</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango/GraSPH"  target="_blank" rel="noopener">
+        GraSPH GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/docs/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Inputs</strong>
+
+  <label for="toc-control">
+    
+    <img src="/docs/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#inputs">Inputs</a>
+      <ul>
+        <li><a href="#the-input-hdf5-file">The input HDF5 file</a></li>
+        <li><a href="#examples">Examples</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="inputs">
+  Inputs
+  <a class="anchor" href="#inputs">#</a>
+</h1>
+<p>GraSPH uses two files to describe the simulation:</p>
+<ul>
+<li><code>common/param.f90</code>, which defines:
+<ul>
+<li>numerical precision (single or double)</li>
+<li>simulation geometry e.g., 2D or 3D, the initial spacing between particles</li>
+<li>material properties e.g., reference density and mass</li>
+<li>time-step size</li>
+<li>algorithm parameters (e.g., artificial viscosity parameters)</li>
+<li>input and output paths</li>
+</ul>
+</li>
+<li>an HDF5 file, which defines:
+<ul>
+<li>the number of real and virtual particles</li>
+<li>each real and virtual particles':
+<ul>
+<li>position</li>
+<li>velocity</li>
+<li>density</li>
+<li>pressure</li>
+<li>ID</li>
+<li>type index</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Note that every time you modify <code>common/param.f90</code>, or any of the files in <code>common</code>, <code>src_GPU</code>, or <code>src_CAF</code>, you will need to recompile the code. This is not the case if you change the input HDF5 file however.</p>
+<h2 id="the-input-hdf5-file">
+  The input HDF5 file
+  <a class="anchor" href="#the-input-hdf5-file">#</a>
+</h2>
+<p>The arrangement of the HDF5 file is</p>
+<pre tabindex="0"><code>/
+├── real (group) 
+│   ├── n     (attribute)  # number of real particles, size: 1,       type: integer
+│   ├── ind   (dataset)    # particle ID,              size: n,       type: integer
+│   ├── type  (dataset)    # particle type index,      size: n,       type: integer
+│   ├── p     (dataset)    # pressure,                 size: n,       type: float64
+│   ├── rho   (dataset)    # density,                  size: n,       type: float64
+│   ├── v     (dataset)    # velocity,                 size: n x dim, type: float64
+│   └── x     (dataset)    # position,                 size: n x dim, type: float64 
+└── virt (group)
+    ├── n     (attribute)
+    ├── ind   (dataset)  
+    ├── type  (dataset)  
+    ├── p     (dataset)  
+    ├── rho   (dataset)  
+    ├── v     (dataset)  
+    └── x     (dataset)
+</code></pre><p>The two groups, <code>real</code> and <code>virt</code>, describe the properties of virtual and real particles, respectively. In each group, the <code>n</code> attribute tells GraSPH how many particles there are in the corresponding group. The datasets in the groups describe each of the particles&rsquo; properties. When writing the HDF5 file, ensure the dataset sizes are congruent with <code>dim</code> in <code>common/param.f90</code> and <code>n</code> in each group, or your results won&rsquo;t be as expected or GraSPH will fail.</p>
+<h2 id="examples">
+  Examples
+  <a class="anchor" href="#examples">#</a>
+</h2>
+<p><code>example/dambreak.h5</code> is an input file that comes with the GraSPH code. The <code>common/param.f90</code> file points to this file via the <code>input_file</code> parameter. After installing HDF5, you can inspect the input file with <code>h5dump</code>. For example, printing only the <code>/real/n</code> and <code>/virt/n</code> attributes, i.e., the number of real and virtual particles, respectively:</p>
+<pre tabindex="0"><code>$ h5dump -a /real/n -a /virt/n example/dambreak.h5 
+
+HDF5 &#34;/home/edwardy/GraSPH/example/dambreak.h5&#34; {
+ATTRIBUTE &#34;n&#34; {
+   DATATYPE  H5T_STD_I32LE
+   DATASPACE  SCALAR
+   DATA {
+   (0): 62500
+   }
+}
+ATTRIBUTE &#34;n&#34; {
+   DATATYPE  H5T_STD_I32LE
+   DATASPACE  SCALAR
+   DATA {
+   (0): 188112
+   }
+}
+}
+</code></pre><p>we can see that there are 62,500 real particles and 188,112 virtual particles. You can check that they match with the datasets with</p>
+<pre tabindex="0"><code>$ h5dump -H ~/GraSPH/example/dambreak.h5 
+HDF5 &#34;/home/edwardy/GraSPH/example/dambreak.h5&#34; {
+GROUP &#34;/&#34; {
+   GROUP &#34;real&#34; {
+      ATTRIBUTE &#34;n&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SCALAR
+      }
+      DATASET &#34;ind&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 62500 ) / ( 62500 ) }
+      }
+      DATASET &#34;p&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 62500 ) / ( 62500 ) }
+      }
+      DATASET &#34;rho&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 62500 ) / ( 62500 ) }
+      }
+      DATASET &#34;type&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 62500 ) / ( 62500 ) }
+      }
+      DATASET &#34;v&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 62500, 3 ) / ( 62500, 3 ) }
+      }
+      DATASET &#34;x&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 62500, 3 ) / ( 62500, 3 ) }
+      }
+   }
+   GROUP &#34;virt&#34; {
+      ATTRIBUTE &#34;n&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SCALAR
+      }
+      DATASET &#34;ind&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 188112 ) / ( 188112 ) }
+      }
+      DATASET &#34;p&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 188112 ) / ( 188112 ) }
+      }
+      DATASET &#34;rho&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 188112 ) / ( 188112 ) }
+      }
+      DATASET &#34;type&#34; {
+         DATATYPE  H5T_STD_I32LE
+         DATASPACE  SIMPLE { ( 188112 ) / ( 188112 ) }
+      }
+      DATASET &#34;v&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 188112, 3 ) / ( 188112, 3 ) }
+      }
+      DATASET &#34;x&#34; {
+         DATATYPE  H5T_IEEE_F64LE
+         DATASPACE  SIMPLE { ( 188112, 3 ) / ( 188112, 3 ) }
+      }
+   }
+}
+}
+</code></pre><p>which shows that all the datasets in group <code>real</code> are of size 62500 x 3 i.e., 62500 real particles and 3 spatial dimensions; and group &lsquo;virt&rsquo; are of size 118,112 x 3; which both match the <code>n</code> attributes inspected earlier, as well as the <code>dim</code> parameter in <code>common/param.f90</code></p>
+<p>Accompanying this input file are example scripts in Python and Matlab that can be used to generate this input file: <code>dambreak-create-input.py</code> and <code>dambreak-create-input.m</code>. You can modify these scripts to create your own input files. But remember to modify the <code>common/param.f90</code> file to match.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/d5d0f257b4e5e4e02e2ae64bf759f46e007158ff" title='Last modified by Edward Yang | March 19, 2023' target="_blank" rel="noopener">
+      <img src="/docs/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>March 19, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/input.md" target="_blank" rel="noopener">
+      <img src="/docs/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#inputs">Inputs</a>
+      <ul>
+        <li><a href="#the-input-hdf5-file">The input HDF5 file</a></li>
+        <li><a href="#examples">Examples</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
