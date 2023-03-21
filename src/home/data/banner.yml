@@ -8,5 +8,5 @@ content : |
 button:
   label : "About Me"
   link : "/about"
-image : "images/home-photo_cr.jpg"
+image : "images/home-photo_sml.jpg"
 
