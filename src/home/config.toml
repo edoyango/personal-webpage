@@ -2,6 +2,8 @@
 ## Basic Configuration
 ## -----------------------------------------------
 
+title = "Edward Yang"
+copyright = "2023"
 theme = "hugo-story"
 
 ## -----------------------------------------------
@@ -16,23 +18,28 @@ baseURL = "/"
 publishDir = "public"
 
 # Remote
-#baseURL = "http://172.24.87.19/"
+#baseURL = "https://caressofsteel.github.io/demos/hugo/hugo-story/"
 #publishDir = "//centos/sites/hugodev/hugostory/"
-
 
 ## -----------------------------------------------
 ## Hugo Built-in Features
 ## -----------------------------------------------
 
 disableKinds = ["taxonomy", "taxonomyTerm", "section"]
-# googleAnalytics = "your-google-analytics-id"
+# googleAnalytics = "G-XXXXXXXXXX"
 
 ## -----------------------------------------------
 ## Site Parameters
 ## -----------------------------------------------
 
-#[Params]
+[Params]
+  description = "A page to share my things with the world."
+  logo = "images/banner.jpg"
+  favicon = true
 
 [Params.social]
-  github = "https://github.com/edoyango"
+  github = "https://github.com/edoyango/"
   email = "edward_yang_125@hotmail.com"
+  linkedin = "https://www.linkedin.com/in/edward-yang-a0a9941b1/"
+
+[Params.asset]
