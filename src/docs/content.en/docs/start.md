@@ -117,3 +117,7 @@ cd GraSPH
 make -f makefiles/Makefile.cuda
 ./sph 10000 1000 1000
 ```
+
+## Example Video
+This is run with for 10000 steps printing every 50 steps, running in `caf` mode.
+![Dambreak.gif](/docs/imgs/Dambreak.gif)
