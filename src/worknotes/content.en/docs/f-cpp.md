@@ -567,7 +567,7 @@ advantage of years of experience coding).
 However, I should mention that version 3a of the C++ code compiled with the aggressive optimisations was an unexepected
 and interesting result. I hypothesise that when `x` is declared in such a way, that the compiler forces the data to be
 contiguous. I think further optimisations are made by leveraging the fact that the inner dimension (or the column) is constant in
-size. 
+size. It would be interesting to see if I can also leverage this in Fortran.
 
 But before closing I should mention that this experiment handled a rather uncommon case where nearly all the code being
 written cannot leverage the plethora of C/C++ libraries available. I think the difference in how the `dsearch` function
