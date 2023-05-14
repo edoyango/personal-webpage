@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A Basic Comparison of C&#43;&#43; vs Fortran # I&rsquo;m an avid user of Fortran and this is pretty well known in my team. I&rsquo;m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it&rsquo;s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="A Basic Comparison of C&#43;&#43; vs Fortran" />
+<meta property="og:description" content="A Basic Comparison of C&#43;&#43; vs Fortran # I&rsquo;m an avid user of Fortran and this is pretty well known in my team. I&rsquo;m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it&rsquo;s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/f-cpp/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-05-14T22:04:09+10:00" />
+<title>A Basic Comparison of C&#43;&#43; vs Fortran | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.289065163c3f720737165922e5d06dc0eb2a1d836622a1268993f36bb6ea5de8.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="active">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>A Basic Comparison of C&#43;&#43; vs Fortran</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#a-basic-comparison-of-c-vs-fortran">A Basic Comparison of C++ vs Fortran</a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#testing-scheme">Testing scheme</a></li>
+        <li><a href="#the-fortran-code">The Fortran code</a></li>
+        <li><a href="#c-version-1-a-vector-of-structures">C++ version 1: a vector of structures</a></li>
+        <li><a href="#c-version-2-manual-loop-unrolling">C++ version 2: manual loop unrolling</a></li>
+        <li><a href="#c-version-3a-2d-partially-dynamic-arrays">C++ version 3a: 2D (partially) dynamic arrays</a></li>
+        <li><a href="#c-version-3b-2d-fully-dynamic-arrays">C++ version 3b: 2D (fully) dynamic arrays</a></li>
+        <li><a href="#c-version-4-contiguous-2d-partially-dynamic-arrays">C++ version 4: contiguous 2D (partially) dynamic arrays</a>
+          <ul>
+            <li><a href="#aggresive-compiler-optimisations-with-strict-aliasing">Aggresive compiler optimisations with strict aliasing</a></li>
+          </ul>
+        </li>
+        <li><a href="#discussion">Discussion</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="a-basic-comparison-of-c-vs-fortran">
+  A Basic Comparison of C++ vs Fortran
+  <a class="anchor" href="#a-basic-comparison-of-c-vs-fortran">#</a>
+</h1>
+<p>I&rsquo;m an avid user of Fortran and this is pretty well known in my team. I&rsquo;m not particularly evangalistic about using
+Fortran, but I do feel it has its place in modern programming, despite the fact that it&rsquo;s one of the oldest programming
+languages out there. This has kind of been echoed by other Fortran users. For example, in 
+  <a href="https://arxiv.org/pdf/2301.02432.pdf">Matsuoka et al. (2023)</a>,
+They declare that &ldquo;Fortran is dead, long live the DSL!&rdquo; is a HPC myth. They go on to explain that the high performance
+of Fortran is not easily reproduced even in languages like C.</p>
+<p>The first author, Satoshi Matsuoka, is pretty important in the HPC world currently. He is heavily involved in the HPC
+community as a researcher as well as leading the development of multiple supercomputers. One of these supercomputers,
+Fugaku, took the first spot of IO500 upon debut, which notably chose to use custom-built CPUs 
+  <a href="https://www.computer.org/csdl/magazine/mi/2022/02/09658212/1zw1njCTTeU">Sato et al. (2022)</a>
+based on the applications that they intended to run. So, while 
+  <a href="https://arxiv.org/pdf/2301.02432.pdf">Matsuoka et al. (2023)</a>
+is not particularly scientific in how they declare their myths, what it says does carry weight due to the author&rsquo;s
+background and experience.</p>
+<p>My colleague was (and still is) pretty skeptical about the performance advantages of Fortran over other languages (in
+particular C++). I hadn&rsquo;t been able to erase his skepticism due to my naivety on the subject. I had &ldquo;grown up with&rdquo; (in
+a programming sense) Fortran, and had only played with C++. So I figured, that if I was to continue to use Fortran, I
+might as well be aware of how it compares to other languages.</p>
+<p>Here, I use the &ldquo;direct search&rdquo; method of finding pairs of points that lay within a certain distance of eachother. I use
+pair search algorithms within the context of SPH, where each of these pairs have a kernel weight associated with it. So
+the algorithm shown here will also calculating this value for each pair.</p>
+<p>The C++ code I&rsquo;m writing here is supposed to be from the perspective of a beginner. Firstly because I am a beginner C++
+coder, but also because this exercise is supposed to help beginners decide why they want to choose Fortran over C++ when
+starting a new project. This hypothetical beginners knowledge of C++ will come from the 
+  <a href="https://www.learncpp.com/">Learn C++</a>
+website, as it is often recommended for beginners.</p>
+<h2 id="hardware">
+  Hardware
+  <a class="anchor" href="#hardware">#</a>
+</h2>
+<p>Everything on this page is run on the following platform:</p>
+<ul>
+<li>An Inspiron 7501 with
+<ul>
+<li>i7-10750H CPU</li>
+<li>24GB (16GB + 8GB) @ 2933MHz RAM</li>
+<li>Windows 10</li>
+</ul>
+</li>
+<li>WSL2 Ubuntu 20.04</li>
+</ul>
+<p>The <code>g++</code>/<code>gfortran</code> compilers are used here (version 9.4.0).</p>
+<h2 id="testing-scheme">
+  Testing scheme
+  <a class="anchor" href="#testing-scheme">#</a>
+</h2>
+<p>Each version of the code is compiled multiple times with different flags for optimisations:</p>
+<ol>
+<li>no flags i.e., default optimisation</li>
+<li><code>-O0</code> (no optimisation)</li>
+<li><code>-O3</code> (aggressive optimisations)</li>
+<li><code>-fstrict-aliasing</code> (strict aliasing - only for C++ code)</li>
+</ol>
+<p>the strict aliasing optimisation was added because variables in Fortran are strictly &ldquo;aliased&rdquo;, whereas this is
+not the case for C++. This apparently allows for optimisations to be made when compiling all Fortran code. See 
+  <a href="https://stackoverflow.com/questions/13078736/fortran-vs-c-does-fortran-still-hold-any-advantage-in-numerical-analysis-thes">thisstackoverflow discussion</a>
+for more details.</p>
+<h2 id="the-fortran-code">
+  The Fortran code
+  <a class="anchor" href="#the-fortran-code">#</a>
+</h2>
+<p>Without going into too much detail, the <code>dsearch</code> subroutine is really just a nested loop that loops over the points
+twice to find which are within the cutoff distance (<code>scale_k*hsml</code>) of eachother. The loop is written to take advantage
+of symmetry. Consequently, the final list of pairs (<code>pair_i</code>, and <code>pair_j</code>), are unique i.e., given a pair <code>(i, j)</code>, the
+reversed pair <code>(j, i)</code> doesn&rsquo;t exist.</p>
+<p>Note that the points&rsquo; positions are generated randomly rather than deterministicly, so that data accesses are random.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fortran" data-lang="fortran"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">module</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel_and_consts</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">use</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">iso_fortran_env</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">implicit</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">none</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! constants
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">parameter</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">dims</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">parameter</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">scale_k</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">2._real64</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">parameter</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pi</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">3.141592653589793_real64</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">contains</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! --------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">function</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">system_clock_timer</span><span style="color:#000;font-weight:bold">()</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! higher-precision timing function than Fortran&#39;s inbuilt CPU_TIME
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">use</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intrinsic</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ISO_FORTRAN_ENV</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">only</span><span style="color:#000;font-weight:bold">:</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">int64</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">int64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cr</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">SYSTEM_CLOCK</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">cr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">system_clock_timer</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">dble</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#204a87">dble</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cr</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">function</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">system_clock_timer</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! --------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">function</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! scalar function that calculates the kernel weight given a distance
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">in</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">q</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">factor</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">factor</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#0000cf;font-weight:bold">1._real64</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">25</span><span style="color:#0000cf;font-weight:bold">6._real64</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">pi</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">kernel</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">factor</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#204a87">dim</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">scale_k</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">q</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">**</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2._real64</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">q</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1._real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">function</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! --------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">subroutine</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#8f5902;font-style:italic">! the direct pair search algorithm
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">in</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dims</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">in</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">out</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(:),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(:),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">intent</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">out</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">(:)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">r</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">            </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                </span><span style="color:#000">r</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">sum</span><span style="color:#000;font-weight:bold">((</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(:,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(:,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">))</span><span style="color:#ce5c00;font-weight:bold">**</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                </span><span style="color:#204a87;font-weight:bold">if</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">scale_k</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">scale_k</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">then</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                    </span><span style="color:#000">r</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">sqrt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                    </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                    </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                    </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                    </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">                </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">if</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">            </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">subroutine</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">dsearch</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">module</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel_and_consts</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#8f5902;font-style:italic">! ------------------------------------------------------------------------------
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">program</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">main</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">use</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">kernel_and_consts</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">implicit</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">none</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">parameter</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">30</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">40</span><span style="color:#000;font-weight:bold">]</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">)</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">tstart</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">tstop</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">allocatable</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(:,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">:),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">(:)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">integer</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">allocatable</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(:),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(:)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">n</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! define problem size
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">ntotal</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">)</span><span style="color:#ce5c00;font-weight:bold">**</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#f8f8f8;text-decoration:underline">          </span><span style="color:#8f5902;font-style:italic">! number of points
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">maxinter</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">150</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ntotal</span><span style="color:#f8f8f8;text-decoration:underline">      </span><span style="color:#8f5902;font-style:italic">! maximum number of iterations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">dx</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1._real64</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#204a87">dble</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">))</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#8f5902;font-style:italic">! average spacing between points
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">hsml</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">1.5_real64</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dx</span><span style="color:#f8f8f8;text-decoration:underline">       </span><span style="color:#8f5902;font-style:italic">! smoothing length (an SPH term - defines cutoff)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! allocate and initalize data
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">allocate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dims</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">))</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">niac</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">random_number</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! begin direct search
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">tstart</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">system_clock_timer</span><span style="color:#000;font-weight:bold">()</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#000">tstop</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">system_clock_timer</span><span style="color:#000;font-weight:bold">()</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! write times to terminal
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">write</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">output_unit</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;(A, I0)&#34;</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;Size: &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">write</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">output_unit</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;(A, F10.6, A)&#34;</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;Time: &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">tstop</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">tstart</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;s&#34;</span><span style="color:#000;font-weight:bold">;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">write</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">output_unit</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;(A, I0)&#34;</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#4e9a06">&#34;No. of pairs: &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">;</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#8f5902;font-style:italic">! deallocate arrays to be resized
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#f8f8f8;text-decoration:underline">        </span><span style="color:#204a87;font-weight:bold">deallocate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">w</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">    </span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">do</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">end</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">program</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">main</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span></code></pre></div><p>Note that the definition and initialisation of the 2D array, <code>x</code> was contained in 3 (non-consecutive) lines in <code>main</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fortran" data-lang="fortran"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">real</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">real64</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87;font-weight:bold">allocatable</span><span style="color:#204a87;font-weight:bold">::</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(:,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">:)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#000;font-weight:bold">...</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">allocate</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dims</span><span style="color:#000;font-weight:bold">,</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">),</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#000;font-weight:bold">...)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span><span style="display:flex;"><span><span style="color:#f8f8f8;text-decoration:underline"></span><span style="color:#204a87;font-weight:bold">call</span><span style="color:#f8f8f8;text-decoration:underline"> </span><span style="color:#204a87">random_number</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">)</span><span style="color:#f8f8f8;text-decoration:underline">
+</span></span></span></code></pre></div><p>Note that the only &ldquo;import&rdquo; is the <code>iso_fortran_env</code>, which is used only for <code>real64</code> (real number precision), and
+<code>output_unit</code> (writing to <code>stdout</code>).</p>
+<p>When compiling and executing this code, the following times are:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.00351s</td>
+<td>0.00358s</td>
+<td>0.00143s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.15779s</td>
+<td>0.15726s</td>
+<td>0.05317s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>1.71186s</td>
+<td>1.75904s</td>
+<td>0.52538s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>9.71352s</td>
+<td>9.83662s</td>
+<td>2.91456s</td>
+</tr>
+</tbody>
+</table>
+<h2 id="c-version-1-a-vector-of-structures">
+  C++ version 1: a vector of structures
+  <a class="anchor" href="#c-version-1-a-vector-of-structures">#</a>
+</h2>
+<p>A challenge that arises in C++ and scientific computing is storing multi-dimensional data. This is relevant here as we
+need to store the position of the points in a 2D array - one dimension for the coordinates, and one for the points. My
+first version of the C++ code uses a vector of structures, where the structure is just an array of length <code>dim</code> (in
+this case <code>dim</code> = 3). Vectors are often the recommended way to store array data. But for multi-dimensional data, there
+are many ways to store that in a vector e.g., a vector of vectors or a vector of tructs. Here I opt to use a vector of
+structs as it is a fairly common way to organise point data when the point is assocated with many values.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;vector&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;algorithm&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;cmath&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;random&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;iostream&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">#include</span> <span style="color:#8f5902;font-style:italic">&lt;chrono&gt;</span><span style="color:#8f5902;font-style:italic">
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">using</span> <span style="color:#204a87;font-weight:bold">namespace</span> <span style="color:#000">std</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">constexpr</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">dim</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">constexpr</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">scale_k</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">2.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">constexpr</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">pi</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">3.141592653589793</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// declaring position struct which a vector will be made from
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000">position</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">kernel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">q</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">r</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">max02q</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">scale_k</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">q</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">factor</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">21.</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">256.</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">pi</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">factor</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">max02q</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">max02q</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">max02q</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">max02q</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">2.</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">q</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">position</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&amp;</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">dim</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">dx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">pos</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">dx</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">scale_k</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">scale_k</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">i</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">j</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">sqrt</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">w</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">kernel</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">niac</span><span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">main</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">from</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">to</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">random_device</span> <span style="color:#000">dev</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">mt19937</span> <span style="color:#000">generator</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dev</span><span style="color:#000;font-weight:bold">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">uniform_real_distribution</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">distr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">from</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">to</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">constexpr</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">{</span><span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">30</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">40</span><span style="color:#000;font-weight:bold">};</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">ntotal</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">nx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">maxinter</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ntotal</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#0000cf;font-weight:bold">150</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">dx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#204a87;font-weight:bold">static_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">nx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">n</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">hsml</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1.5</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// declaring all vectors
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">position</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">dim</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">distr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">generator</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">auto</span> <span style="color:#000">start</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">chrono</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">high_resolution_clock</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">now</span><span style="color:#000;font-weight:bold">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">pos</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">auto</span> <span style="color:#000">stop</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">chrono</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">high_resolution_clock</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">now</span><span style="color:#000;font-weight:bold">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">time</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">static_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">chrono</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">duration_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">chrono</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">microseconds</span><span style="color:#ce5c00;font-weight:bold">&gt;</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">stop</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">start</span><span style="color:#000;font-weight:bold">).</span><span style="color:#000">count</span><span style="color:#000;font-weight:bold">())</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">1000000.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cout</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;Size: &#34;</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#000">ntotal</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;</span><span style="color:#4e9a06">\n</span><span style="color:#4e9a06">&#34;</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cout</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;Time: &#34;</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#000">time</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;s</span><span style="color:#4e9a06">\n</span><span style="color:#4e9a06">&#34;</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">cout</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;No. of pairs: &#34;</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">&lt;&lt;</span> <span style="color:#4e9a06">&#34;</span><span style="color:#4e9a06">\n</span><span style="color:#4e9a06">&#34;</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span> 
+</span></span></code></pre></div><p>Some comments about this code:</p>
+<ul>
+<li>The structure of the code is kept similar to the Fortran code for comparison purposes.</li>
+<li>There are many more &ldquo;imports&rdquo; needed than the Fortran code. <code>algorithm</code> is needed for <code>max</code>, <code>cmath</code> is needed for
+<code>sqrt</code>, <code>random</code> is needed for the random number generator, <code>iostream</code> is needed for IO, <code>chrono</code> is needed for timing,
+and <code>vector</code> is needed for the <code>vector</code> datatype. I would argue that this is a bit of a barrier to productivity for
+beginners as many functions and types are located in disaparate headers that one needs to lookup or remember.</li>
+<li>The <code>dim</code> function isn&rsquo;t available in the <code>algorithm</code> header.</li>
+<li>The random number generator is more verbose to setup and use compared to the <code>random_number</code> subroutine in Fortran.</li>
+<li>The absence of a <code>sum</code> function that works on arrays requires the manual writing of the calculation of <code>r</code> (inter-point)
+distance.</li>
+<li>the <code>pow</code> function can be slow under default/no optimisations (see 
+  <a href="https://stackoverflow.com/questions/2940367/what-is-more-efficient-using-pow-to-square-or-just-multiply-it-with-itself">this discussion on stackeroverflow</a>), so the quartic power was manually repeated.</li>
+<li>The <code>chrono</code> high precision timers are available without the need to program your own (unlike in the Fortran code).</li>
+</ul>
+<p>When compiling and executing this code, the following times are:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+<th><code>-fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.009426s</td>
+<td>0.008331s</td>
+<td>0.001344s</td>
+<td>0.009052s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.493711s</td>
+<td>0.51553s</td>
+<td>0.06409s</td>
+<td>0.528323s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>5.74999s</td>
+<td>6.02984s</td>
+<td>0.646653</td>
+<td>6.14586s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>32.4458s</td>
+<td>33.8446s</td>
+<td>3.45058s</td>
+<td>34.3546s</td>
+</tr>
+</tbody>
+</table>
+<p>We can see that all but the aggressively optimised version of this code are disgustingly - over 3x the time taken for
+the default optimisations Fortran version! However, the aggressive compiler optimisations bring doown the run time
+significantly - but still slower than the Fortran version.</p>
+<h2 id="c-version-2-manual-loop-unrolling">
+  C++ version 2: manual loop unrolling
+  <a class="anchor" href="#c-version-2-manual-loop-unrolling">#</a>
+</h2>
+<p>Let&rsquo;s look at the loop that calculates the square of the inter-point distance:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">d</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">dim</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">dx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">pos</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">].</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">d</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">r</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">dx</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>We can manually unroll this loop, since we know that <code>dim = 3</code>:</p>
+<pre tabindex="0"><code>r = (pos[i].x[0]-pos[j].x[0])*(pos[i].x[0]-pos[j].x[0]) + 
+    (pos[i].x[1]-pos[j].x[1])*(pos[i].x[1]-pos[j].x[1]) +
+    (pos[i].x[2]-pos[j].x[2])*(pos[i].x[2]-pos[j].x[2]);
+</code></pre><p>Compiling this and running it we get:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+<th><code>-fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.017024s</td>
+<td>0.015104s</td>
+<td>0.001302s</td>
+<td>0.013916s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.7424s</td>
+<td>0.793698s</td>
+<td>0.065268s</td>
+<td>0.805783s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>8.92672s</td>
+<td>9.0975s</td>
+<td>0.590568s</td>
+<td>9.22796s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>50.4143s</td>
+<td>51.6696s</td>
+<td>3.20469s</td>
+<td>52.8981s</td>
+</tr>
+</tbody>
+</table>
+<p>And the aggressive optimisation version reduces in run time by about 10%, at the expense of all the other versions
+almost doubling! The code has also lost some flexibility in that the calculation of <code>r</code> no longer updates as we change
+<code>dim</code>.</p>
+<h2 id="c-version-3a-2d-partially-dynamic-arrays">
+  C++ version 3a: 2D (partially) dynamic arrays
+  <a class="anchor" href="#c-version-3a-2d-partially-dynamic-arrays">#</a>
+</h2>
+<p>Arrays are also an option in C++, and in some cases, like when dealing with matrices, 2D arrays might be more intuitive.</p>
+<p>I make use of one of the ways described in 
+  <a href="https://www.learncpp.com/cpp-tutorial/pointers-to-pointers/">Learn C++&rsquo;s tutorials</a>.</p>
+<p>To make this change, we change:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000">position</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">};</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">...</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">position</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">);</span>
+</span></span></code></pre></div><p>to</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">auto</span> <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">][</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#000">maxinter</span><span style="color:#000;font-weight:bold">];</span>
+</span></span></code></pre></div><p>We also have to update the notation form <code>pos[i].x[d]</code> to <code>x[i][d]</code> as appropriate. The arrays now have to be manually
+deleted, so I add the the following code to just before the loop through the problem sizes ends:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span><span style="color:#000;font-weight:bold">[]</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">;</span>
+</span></span></code></pre></div><p>which are now mandatory to avoid memory leaks. Finally, we have to change the <code>dsearch</code> function declaration from</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#000">position</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pos</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#000">vector</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">&gt;&amp;</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&amp;</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span></code></pre></div><p>to</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[][</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">],</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&amp;</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span></code></pre></div><p>I should note that the Learn C++ tutorial doesn&rsquo;t explain how to pass the 2D array to a function, and I eventually had to
+Google this to figure out that the 2D array would be passed as <code>double x[][dim]</code>.</p>
+<p>I should also note that this declaration only works because <code>dim</code> is a <code>constexpr</code>. One of the less simple approaches in
+the Learn C++ tutorial would have to be used if <code>dim</code> wasn&rsquo;t constant. Fortran wouldn&rsquo;t experience this problem.</p>
+<p>Compiling this and running, we get:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+<th><code>-fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.005682s</td>
+<td>0.006304s</td>
+<td>0.001652s</td>
+<td>0.005846s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.304066s</td>
+<td>0.314797s</td>
+<td>0.046719s</td>
+<td>0.322617s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>3.31205s</td>
+<td>3.53902s</td>
+<td>0.491014s</td>
+<td>3.55314s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>18.8977s</td>
+<td>19.5868s</td>
+<td>2.81262s</td>
+<td>19.5882s</td>
+</tr>
+</tbody>
+</table>
+<p>Which shows the aggressively optimised program is now faster than the Fortran version! However, the other versions are
+still much slower. I think <code>-O3</code> optimisation is safe for most applications, but this result is still meaningful as the
+default optimisations are much safer and easier to debug.</p>
+<h2 id="c-version-3b-2d-fully-dynamic-arrays">
+  C++ version 3b: 2D (fully) dynamic arrays
+  <a class="anchor" href="#c-version-3b-2d-fully-dynamic-arrays">#</a>
+</h2>
+<p>In the current case, the <code>dim</code> variable is a <code>constexpr</code>, so <code>x</code> can be allocated with <code>auto x = new double [ntotal][dim];</code>.
+In the case where <code>dim</code> is a run-time variable, then the declaration changes to:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">**</span> <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>and the corresponding deallocation becomes:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">delete</span><span style="color:#000;font-weight:bold">[]</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span><span style="color:#000;font-weight:bold">[]</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">;</span>
+</span></span></code></pre></div><p>Both the allocation and deallocation statements are pretty gross and unintuitive for beginners. Furthermore, are mandatory
+to avoid memory leaks. The definition of <code>x</code> in the <code>dsearch</code> declaration does become simpler however:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">dsearch</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">**</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">hsml</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">,</span> 
+</span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&amp;</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span></code></pre></div><p>Compiling and running:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+<th><code>-fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.006434s</td>
+<td>0.005638s</td>
+<td>0.001538s</td>
+<td>0.005885s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.295594s</td>
+<td>0.32687s</td>
+<td>0.057452s</td>
+<td>0.299215s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>3.29056s</td>
+<td>3.3863s</td>
+<td>0.58139s</td>
+<td>3.31922s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>18.6892s</td>
+<td>18.9621s</td>
+<td>3.03032s</td>
+<td>19.3092s</td>
+</tr>
+</tbody>
+</table>
+<p>And the speed of the aggresively optimised version has now dropped, although the less-optimised versions appear to have
+gotten faster than version 3a.</p>
+<h2 id="c-version-4-contiguous-2d-partially-dynamic-arrays">
+  C++ version 4: contiguous 2D (partially) dynamic arrays
+  <a class="anchor" href="#c-version-4-contiguous-2d-partially-dynamic-arrays">#</a>
+</h2>
+<p>If you 
+  <a href="https://stackoverflow.com/questions/21943621/how-to-create-a-contiguous-2d-array-in-c">do some digging around</a>,
+you may eventually find out that allocating 2D arrays like in version 3, does not guarantee that data will be
+contiguous when it comes to C++. Consequently, you can change the declaration of the <code>x</code> 2D array to</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">**</span> <span style="color:#000">x</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">xdata</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ntotal</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dim</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">ntotal</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">xdata</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">dim</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">xdata</span><span style="color:#000;font-weight:bold">;</span>
+</span></span></code></pre></div><p>which is honestly pretty gross, but is necessary to ensure that the data is contiguous in memory. The corresponding
+freeing of this array is done by</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">delete</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">;</span>
+</span></span></code></pre></div><p>The definition of <code>x</code> in the <code>dsearch</code> declaration remains the same as version 3b.</p>
+<p>I clear disadvantage beeing the special definitions and deletions that would require some wrapping. It&rsquo;s also not very
+beginner friendly from a conceptual standpoint.</p>
+<p>Now compiling and running:</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th>no flags</th>
+<th><code>-O0</code></th>
+<th><code>-O3</code></th>
+<th><code>-fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.005687s</td>
+<td>0.006379s</td>
+<td>0.001573s</td>
+<td>0.006154s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.294367s</td>
+<td>0.305595s</td>
+<td>0.052221s</td>
+<td>0.316611s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>3.17132s</td>
+<td>3.38158s</td>
+<td>0.537241s</td>
+<td>3.44193s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>18.5441s</td>
+<td>19.2792s</td>
+<td>2.84747s</td>
+<td>19.533s</td>
+</tr>
+</tbody>
+</table>
+<p>The aggresively optimised version is now about as fast as the Fortran version, which is faster than version 3b, but slower
+than 3a.</p>
+<h3 id="aggresive-compiler-optimisations-with-strict-aliasing">
+  Aggresive compiler optimisations with strict aliasing
+  <a class="anchor" href="#aggresive-compiler-optimisations-with-strict-aliasing">#</a>
+</h3>
+<p>So far, the <code>-fstrict-aliasing</code> flag doesn&rsquo;t seem to make a difference when combined with the default optimisations. How
+about combining it with <code>-O3</code>?</p>
+<table>
+<thead>
+<tr>
+<th>no. of points</th>
+<th><code>-O3 -fstrict-aliasing</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>0.00136s</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>0.052659s</td>
+</tr>
+<tr>
+<td>27000</td>
+<td>0.532555s</td>
+</tr>
+<tr>
+<td>64000</td>
+<td>2.8715s</td>
+</tr>
+</tbody>
+</table>
+<p>Combining the <code>-fstrict-aliasing</code> with <code>-O3</code> doesn&rsquo;t seem to make a discernable difference, although it seems to slow
+down version 4 by a trivial amount - consistent with the other versions.</p>
+<h2 id="discussion">
+  Discussion
+  <a class="anchor" href="#discussion">#</a>
+</h2>
+<p>It&rsquo;s clear that C++ can be just as fast as Fortran. However, I would argue that the speed wasn&rsquo;t as easy to arrive to as
+what it was with Fortran. The Fortran code is written in a way not very different from how a beginner would write it and using
+only intrinsics. Furthermore the only import was <code>iso_fortran_env</code> which wasn&rsquo;t mandatory (<code>real(real64)</code> declerations
+could be replaced with <code>double precision</code>, <code>_real64</code> suffixes could be replaced with <code>d0</code>, and <code>output_unit</code> could be
+replaced with <code>*</code>); whereas all the headers for the C++ versions were mandatory. The rather subtle optimisation of the
+calculation of <code>r</code> reduced the C++ code&rsquo;s flexibility, but was necessary to bring down the speed to the level that GNU&rsquo;s
+Fortran compiler&rsquo;s <code>sum</code> function is at. The declaration of either partial or fully dynamic multi-dimensional
+arrays is unintuitive, lengthy (wait until you see even higher dimensions!), and requires caution; whereas Fortran&rsquo;s
+allocation is easy to read and easy to write for higher dimensions. Finally, the important improvement of the code from
+using non-contiguous dynamic arrays to contiguous is not easily found or quick to understand by a beginner (I have the
+advantage of years of experience coding).</p>
+<p>However, I should mention that version 3a of the C++ code compiled with the aggressive optimisations was an unexepected
+and interesting result. I hypothesise that when <code>x</code> is declared in such a way, that the compiler forces the data to be
+contiguous. I think further optimisations are made by leveraging the fact that the inner dimension (or the column) is constant in
+size.</p>
+<p>But before closing I should mention that this experiment handled a rather uncommon case where nearly all the code being
+written cannot leverage the plethora of C/C++ libraries available. I think the difference in how the <code>dsearch</code> function
+was timed is a good illustration of a key difference between Fortran and C++. And that is that C++ has a lot of packages
+(in the form of libraries and header files) that have a lot of high-level functionality that you can utilise, whereas
+this is not the case for Fortran. With Fortran, you will often need to write your own subrouties to achieve certain
+objectives, like how I needed to write my own high-precision timer function when the C++ code could leveragethe <code>chrono</code>
+STL headers. But I should also add that it&rsquo;s not difficult to call C++ code from Fortran, so there is potential to
+mix-and-match (see 
+  <a href="https://fortran-lang.discourse.group/t/calling-c-from-fortran/3402">this relatively simple example</a>).</p>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>Fortran was designed for maths (mainly calculus and linear algebra), and so its syntax favours those applications -
+particularly in the use of arrays. It also has a pretty good collection of mathematical intrinsic functions that you
+don&rsquo;t have to look to hard for. Consequently, if your problem can be expressed in multi-dimensional arrays (or tensors),
+then it will much easier to write fast code.</p>
+<p>This simple expeirment demonstrates that C++ can definitly achieve the same performance for applications that Fortran was designed for. But, it&rsquo;s a <em>general purpose</em> language, so it takes a fair bit of work to apply it to the subset of problems that Fortran targets. For example, strict aliasing and contiguous data in memory are <em>required</em> in Fortran, whereas there is a fair
+bit of effort needed to set that up in C++ when it comes ot multi-dimensional arrays.</p>
+<p>So, I think I&rsquo;ll continue using Fortran, because at the end of the day, I enjoy working with numerical methods and
+simulations, which ultimately was what Fortran was designed for.</p>
+<p>One day I&rsquo;ll have a look at how the new kid on the block, Julia (and maybe Rust?), compares!</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/6f07bb6f6e297f9ab4f663dc7465b80f168a6f6d" title='Last modified by Edward Yang | May 14, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>May 14, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content.en/docs/f-cpp.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#a-basic-comparison-of-c-vs-fortran">A Basic Comparison of C++ vs Fortran</a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#testing-scheme">Testing scheme</a></li>
+        <li><a href="#the-fortran-code">The Fortran code</a></li>
+        <li><a href="#c-version-1-a-vector-of-structures">C++ version 1: a vector of structures</a></li>
+        <li><a href="#c-version-2-manual-loop-unrolling">C++ version 2: manual loop unrolling</a></li>
+        <li><a href="#c-version-3a-2d-partially-dynamic-arrays">C++ version 3a: 2D (partially) dynamic arrays</a></li>
+        <li><a href="#c-version-3b-2d-fully-dynamic-arrays">C++ version 3b: 2D (fully) dynamic arrays</a></li>
+        <li><a href="#c-version-4-contiguous-2d-partially-dynamic-arrays">C++ version 4: contiguous 2D (partially) dynamic arrays</a>
+          <ul>
+            <li><a href="#aggresive-compiler-optimisations-with-strict-aliasing">Aggresive compiler optimisations with strict aliasing</a></li>
+          </ul>
+        </li>
+        <li><a href="#discussion">Discussion</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
