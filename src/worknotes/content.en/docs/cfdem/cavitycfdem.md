@@ -17,7 +17,7 @@ variables have already been setup as per the
 The lid-driven cavity flow example case comes with the OpenFOAM source code. If
 you don't have it already from install OpenFOAM, get it by:
 
-```bash
+```bash {style=tango,linenos=false}
 git clone https://github.com/OpenFOAM/OpenFOAM-5.x.git
 ```
 
@@ -30,7 +30,7 @@ In the directory of your choice, setup the directory structure. You will need a
 "DEM" folder and a "CFD" folder. Initialize the CFD folder with the files from
 the cavity OpenFOAM example.
 
-```bash
+```bash {style=tango,linenos=false}
 # create a cavity-cfdem directory to store all the case files, and the DEM
 # subdirectory
 mkdir -p cavity-cfdem/DEM
@@ -46,7 +46,7 @@ cd cavity-cfdem
 
 From the CFDEM tutorial files, get a `parCFDDEMrun.sh` script.
 
-```bash
+```bash {style=tango,linenos=false}
 cp "$CFDEM_PROJECT_DIR"/tutorials/cfdemSolverIB/twoSpheresGlowinskiMPI/{Allrun.sh,parCFDDEMrun.sh} .
 ```
 
@@ -54,7 +54,7 @@ The `Allrun.sh` script is fine as-is, but we need to modify the `parCFDDEMrun.sh
 script. From the existing file, change the corresponding variables to match
 what's below:
 
-```bash
+```bash {style=tango,linenos=false}
 headerTest=cfdemSolverIB_cavity_CFDEM
 runOctave="false"
 ```
@@ -72,7 +72,7 @@ The cavity example case uses a 2D grid of cells which posesses 20 cells in both
 directions. This is a little course, so we will double the number of cells in
 each direction. Do this by changing the `blocks` dictionary to
 
-```cpp
+```cpp {style=tango,linenos=false}
 blocks
 (
     hex (0 1 2 3 4 5 6 7) (40 40 1) simpleGrading (1 1 1)
@@ -85,7 +85,7 @@ Everything else can remain the same.
 
 Create the `CFD/system/decomposeParDict` file with the contents below:
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 |       o          |                                                          |
 |    o     o       | HELYX-OS                                                  |
@@ -121,7 +121,7 @@ defined. To adapt this for CFDEM, initial boundary conditions for the variables 
  `Us`, and `voidfraction` need to be defined.
 
 ### phiIB
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -165,7 +165,7 @@ boundaryField
 
 ### Us
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -209,7 +209,7 @@ boundaryField
 
 ### voidfraction
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -257,7 +257,7 @@ These are controlled by the `CFD/system/fvSchemes` dictionary. This will exist
 already, but need schemes related to the additional parameters we've added. Do
 so by modifying the file to match below:
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -340,7 +340,7 @@ fluxRequired
 This needs to be modified to ensure solvers are added for the turbulence and
 CFDEM parameters being used with the `cfdemSolverIB` solver.
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -443,7 +443,7 @@ PISO
 
 This will already exist from the original case. Modify it to match below:
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -490,7 +490,7 @@ BirdCarreauCoeffs
 the `cfdemSolverIB` solver needs gravity to be described. We won't apply a
 meaningful gravity here, so we are assigning a value of 0 with the file below.
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -517,7 +517,7 @@ value           (0 0 0);
 
 ### RASProperties
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -547,7 +547,7 @@ printCoeffs     on;
 
 ### turbulenceProperties
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -574,7 +574,7 @@ simulationType      laminar;//OFversion30x
 
 ### couplingProperties
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*---------------------------------------------------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -703,7 +703,7 @@ engineIBProps
 
 ### dynamicMeshDict
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*--------------------------------*- C++ -*----------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -747,7 +747,7 @@ dynamicRefineFvMeshCoeffs
 
 ### liggghtsCommands
 
-```cpp
+```cpp {style=tango,linenos=false}
 /*---------------------------------------------------------------------------*\
 | =========                 |                                                 |
 | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
@@ -783,7 +783,7 @@ liggghtsCommandModels
 
 ## 8. Write the LIGGGHTS input file
 
-```
+``` {style=tango,linenos=false}
 atom_style      granular
 atom_modify     map array
 communicate     single vel yes
