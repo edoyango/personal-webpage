@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Converting the OpenFOAM cavity example for CFDEM # The cavity case is a good one to start with as it forms the beginning of the official OpenFOAM tutorials. These steps assume we&rsquo;re using the PUBLIC version of CFDEM which couples LIGGGHTS-PUBLIC 3.8.0 and OpenFOAM-5.x. It also assumes that your environment variables have already been setup as per the CFDEM insallation instructions.
+Getting the case files # The lid-driven cavity flow example case comes with the OpenFOAM source code.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="OpenFOAM cavity case to CFDEM" />
+<meta property="og:description" content="Converting the OpenFOAM cavity example for CFDEM # The cavity case is a good one to start with as it forms the beginning of the official OpenFOAM tutorials. These steps assume we&rsquo;re using the PUBLIC version of CFDEM which couples LIGGGHTS-PUBLIC 3.8.0 and OpenFOAM-5.x. It also assumes that your environment variables have already been setup as per the CFDEM insallation instructions.
+Getting the case files # The lid-driven cavity flow example case comes with the OpenFOAM source code." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/cfdem/cavitycfdem/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-07-08T22:55:30+10:00" />
+<title>OpenFOAM cavity case to CFDEM | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.289065163c3f720737165922e5d06dc0eb2a1d836622a1268993f36bb6ea5de8.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle" checked />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="active">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>OpenFOAM cavity case to CFDEM</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#converting-the-openfoam-cavity-example-for-cfdem">Converting the OpenFOAM cavity example for CFDEM</a>
+      <ul>
+        <li><a href="#getting-the-case-files">Getting the case files</a></li>
+        <li><a href="#1-set-up-the-directory-structure">1. Set up the directory structure</a></li>
+        <li><a href="#2-copy-a-cfdem-executor-wrapper-script-and-modify">2. Copy a CFDEM executor wrapper script and modify</a></li>
+        <li><a href="#3-update-openfoam-mesh">3. Update OpenFOAM mesh</a>
+          <ul>
+            <li><a href="#3a-make-the-mesh-finer">3a. Make the mesh finer</a></li>
+            <li><a href="#3b-add-the-mesh-decomposition-dictionary">3b. Add the mesh decomposition dictionary</a></li>
+          </ul>
+        </li>
+        <li><a href="#4-update-initial-conditions">4. Update initial conditions</a>
+          <ul>
+            <li><a href="#phiib">phiIB</a></li>
+            <li><a href="#us">Us</a></li>
+            <li><a href="#voidfraction">voidfraction</a></li>
+          </ul>
+        </li>
+        <li><a href="#5-update-solver-schemes">5. Update solver schemes</a></li>
+        <li><a href="#6-update-fvsolution">6. Update fvSolution</a></li>
+        <li><a href="#7-add-constants">7. Add constants</a>
+          <ul>
+            <li><a href="#transportproperties">transportProperties</a></li>
+            <li><a href="#g">g</a></li>
+            <li><a href="#rasproperties">RASProperties</a></li>
+            <li><a href="#turbulenceproperties">turbulenceProperties</a></li>
+            <li><a href="#couplingproperties">couplingProperties</a></li>
+            <li><a href="#dynamicmeshdict">dynamicMeshDict</a></li>
+            <li><a href="#liggghtscommands">liggghtsCommands</a></li>
+          </ul>
+        </li>
+        <li><a href="#8-write-the-liggghts-input-file">8. Write the LIGGGHTS input file</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="converting-the-openfoam-cavity-example-for-cfdem">
+  Converting the OpenFOAM cavity example for CFDEM
+  <a class="anchor" href="#converting-the-openfoam-cavity-example-for-cfdem">#</a>
+</h1>
+<p>The cavity case is a good one to start with as it forms the beginning of the
+
+  <a href="https://www.openfoam.com/documentation/tutorial-guide">official OpenFOAM tutorials</a>.
+These steps assume we&rsquo;re using the PUBLIC version of CFDEM which couples
+LIGGGHTS-PUBLIC 3.8.0 and OpenFOAM-5.x. It also assumes that your environment
+variables have already been setup as per the
+
+  <a href="https://www.cfdem.com/media/CFDEM/docu/CFDEMcoupling_Manual.html#installation">CFDEM insallation instructions</a>.</p>
+<h2 id="getting-the-case-files">
+  Getting the case files
+  <a class="anchor" href="#getting-the-case-files">#</a>
+</h2>
+<p>The lid-driven cavity flow example case comes with the OpenFOAM source code. If
+you don&rsquo;t have it already from install OpenFOAM, get it by:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/OpenFOAM/OpenFOAM-5.x.git
+</span></span></code></pre></div><p>and the cavity tutorial files are located in
+<code>OpenFOAM-5.x/tutorials/incompressible/icoFoam/cavity/cavity</code>.</p>
+<h2 id="1-set-up-the-directory-structure">
+  1. Set up the directory structure
+  <a class="anchor" href="#1-set-up-the-directory-structure">#</a>
+</h2>
+<p>In the directory of your choice, setup the directory structure. You will need a
+&ldquo;DEM&rdquo; folder and a &ldquo;CFD&rdquo; folder. Initialize the CFD folder with the files from
+the cavity OpenFOAM example.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># create a cavity-cfdem directory to store all the case files, and the DEM</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># subdirectory</span>
+</span></span><span style="display:flex;"><span>mkdir -p cavity-cfdem/DEM
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># copy the cavity case into the CFD folder</span>
+</span></span><span style="display:flex;"><span>cp -r OpenFOAM-5.x/tutorials/incompressible/icoFoam/cavity/cavity cavity-cfdem/CFD
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># move into the case folder</span>
+</span></span><span style="display:flex;"><span>cd cavity-cfdem
+</span></span></code></pre></div><h2 id="2-copy-a-cfdem-executor-wrapper-script-and-modify">
+  2. Copy a CFDEM executor wrapper script and modify
+  <a class="anchor" href="#2-copy-a-cfdem-executor-wrapper-script-and-modify">#</a>
+</h2>
+<p>From the CFDEM tutorial files, get a <code>parCFDDEMrun.sh</code> script.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>cp <span style="color:#e6db74">&#34;</span>$CFDEM_PROJECT_DIR<span style="color:#e6db74">&#34;</span>/tutorials/cfdemSolverIB/twoSpheresGlowinskiMPI/<span style="color:#f92672">{</span>Allrun.sh,parCFDDEMrun.sh<span style="color:#f92672">}</span> .
+</span></span></code></pre></div><p>The <code>Allrun.sh</code> script is fine as-is, but we need to modify the <code>parCFDDEMrun.sh</code>
+script. From the existing file, change the corresponding variables to match
+what&rsquo;s below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>headerTest<span style="color:#f92672">=</span>cfdemSolverIB_cavity_CFDEM
+</span></span><span style="display:flex;"><span>runOctave<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;false&#34;</span>
+</span></span></code></pre></div><p>You may also want to set the <code>nrProcs</code> variable to suit your computer. The case
+we will be building is also quite small, so I will choose <code>nrProcs=2</code>.
+The remaining variables can remain the same. Note that we will still be using
+the &ldquo;Immersed Boundary&rdquo; CFDEM solver.</p>
+<h2 id="3-update-openfoam-mesh">
+  3. Update OpenFOAM mesh
+  <a class="anchor" href="#3-update-openfoam-mesh">#</a>
+</h2>
+<h3 id="3a-make-the-mesh-finer">
+  3a. Make the mesh finer
+  <a class="anchor" href="#3a-make-the-mesh-finer">#</a>
+</h3>
+<p>The cavity example case uses a 2D grid of cells which posesses 20 cells in both
+directions. This is a little course, so we will double the number of cells in
+each direction. Do this by changing the <code>blocks</code> dictionary to</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>blocks
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>    hex (<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">3</span> <span style="color:#ae81ff">4</span> <span style="color:#ae81ff">5</span> <span style="color:#ae81ff">6</span> <span style="color:#ae81ff">7</span>) (<span style="color:#ae81ff">40</span> <span style="color:#ae81ff">40</span> <span style="color:#ae81ff">1</span>) simpleGrading (<span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>);
+</span></span></code></pre></div><p>Everything else can remain the same.</p>
+<h3 id="3b-add-the-mesh-decomposition-dictionary">
+  3b. Add the mesh decomposition dictionary
+  <a class="anchor" href="#3b-add-the-mesh-decomposition-dictionary">#</a>
+</h3>
+<p>Create the <code>CFD/system/decomposeParDict</code> file with the contents below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|       o          |                                                          |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    o     o       | HELYX-OS                                                  |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   o   O   o      | Version: v2.4.0                                           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    o     o       | Web:     http://www.engys.com                            |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|       o          |                                                          |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location system;
+</span></span><span style="display:flex;"><span>    object decomposeParDict;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    numberOfSubdomains <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    method simple;
+</span></span><span style="display:flex;"><span>    simpleCoeffs
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        n ( <span style="color:#ae81ff">2</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>        delta <span style="color:#ae81ff">0.001</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></div><p>This ensures the decomposition is done on two processors. Modify this accordingly
+for the number of processors you would like to run this case on.</p>
+<h2 id="4-update-initial-conditions">
+  4. Update initial conditions
+  <a class="anchor" href="#4-update-initial-conditions">#</a>
+</h2>
+<p>In the original cavity example, only initial boundary velocity and pressure needs to be
+defined. To adapt this for CFDEM, initial boundary conditions for the variables <code>phiIB</code>,
+<code>Us</code>, and <code>voidfraction</code> need to be defined.</p>
+<h3 id="phiib">
+  phiIB
+  <a class="anchor" href="#phiib">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  5                                     |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">volScalarField</span>;
+</span></span><span style="display:flex;"><span>    object      phiB;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dimensions      [<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>internalField   uniform <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>boundaryField
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    movingWall
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fixedWalls
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    frontAndBack
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            empty;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="us">
+  Us
+  <a class="anchor" href="#us">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  5                                     |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">volVectorField</span>;
+</span></span><span style="display:flex;"><span>    object      Us;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dimensions      [<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>internalField   <span style="color:#a6e22e">uniform</span> (<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>boundaryField
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    movingWall
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fixedWalls
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    frontAndBack
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            empty;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="voidfraction">
+  voidfraction
+  <a class="anchor" href="#voidfraction">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  5                                     |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">volScalarField</span>;
+</span></span><span style="display:flex;"><span>    object      voidfraction;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dimensions      [<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>internalField   uniform <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>boundaryField
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    movingWall
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    fixedWalls
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            zeroGradient;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    frontAndBack
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        type            empty;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h2 id="5-update-solver-schemes">
+  5. Update solver schemes
+  <a class="anchor" href="#5-update-solver-schemes">#</a>
+</h2>
+<p>These are controlled by the <code>CFD/system/fvSchemes</code> dictionary. This will exist
+already, but need schemes related to the additional parameters we&rsquo;ve added. Do
+so by modifying the file to match below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;system&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      fvSchemes;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>ddtSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         Euler;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>gradSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         Gauss linear;
+</span></span><span style="display:flex;"><span>    grad(p)         Gauss linear;
+</span></span><span style="display:flex;"><span>    grad(U)         Gauss linear;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>divSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         Gauss linear;
+</span></span><span style="display:flex;"><span>    div(phi,U)      Gauss limitedLinearV <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    div(phi,k)      Gauss limitedLinear <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    div(phi,epsilon) Gauss limitedLinear <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    div(phi,R)      Gauss limitedLinear <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    div(R)          Gauss linear;
+</span></span><span style="display:flex;"><span>    div(phi,nuTilda) Gauss limitedLinear <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    div((nuEff<span style="color:#f92672">*</span>dev(grad(U).T()))) Gauss linear;
+</span></span><span style="display:flex;"><span>    div(U)          Gauss linear;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>laplacianSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(nuEff,U) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian((<span style="color:#ae81ff">1</span><span style="color:#f92672">|</span>A(U)),p) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian((voidfraction2<span style="color:#f92672">|</span>A(U)),p) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(DkEff,k) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(DepsilonEff,epsilon) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(DREff,R) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(DnuTildaEff,nuTilda) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(phiIB) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>    laplacian(U) Gauss linear corrected;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>interpolationSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         linear;
+</span></span><span style="display:flex;"><span>    interpolate(U)  linear;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>snGradSchemes
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         corrected;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fluxRequired
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">default</span>         no;
+</span></span><span style="display:flex;"><span>    p               ;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h2 id="6-update-fvsolution">
+  6. Update fvSolution
+  <a class="anchor" href="#6-update-fvsolution">#</a>
+</h2>
+<p>This needs to be modified to ensure solvers are added for the turbulence and
+CFDEM parameters being used with the <code>cfdemSolverIB</code> solver.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;system&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      fvSolution;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>solvers
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    p
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DIC;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0.1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    pFinal
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DIC;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    U
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PBiCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DILU;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-05</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    k
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PBiCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DILU;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-05</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    epsilon
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PBiCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DILU;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-05</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    R
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PBiCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DILU;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-05</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    nuTilda
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PBiCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DILU;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-05</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    phiIB
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        solver          PCG;
+</span></span><span style="display:flex;"><span>        preconditioner  DIC;
+</span></span><span style="display:flex;"><span>        tolerance       <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>        relTol          <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PISO
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    nCorrectors     <span style="color:#ae81ff">4</span>;
+</span></span><span style="display:flex;"><span>    nNonOrthogonalCorrectors <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    pRefCell        <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    pRefValue       <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h2 id="7-add-constants">
+  7. Add constants
+  <a class="anchor" href="#7-add-constants">#</a>
+</h2>
+<h3 id="transportproperties">
+  transportProperties
+  <a class="anchor" href="#transportproperties">#</a>
+</h3>
+<p>This will already exist from the original case. Modify it to match below:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;constant&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      transportProperties;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>transportModel  Newtonian;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>nu              nu [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">0.01</span>;<span style="color:#75715e">//0.111426;//1.875e-03;//7.5e-03;//0.265883;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>CrossPowerLawCoeffs
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    nu0             nu0 [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>    nuInf           nuInf [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>    m               m [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    n               n [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>BirdCarreauCoeffs
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    nu0             nu0 [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>    nuInf           nuInf [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1e-06</span>;
+</span></span><span style="display:flex;"><span>    k               k [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    n               n [ <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> ] <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="g">
+  g
+  <a class="anchor" href="#g">#</a>
+</h3>
+<p>the <code>cfdemSolverIB</code> solver needs gravity to be described. We won&rsquo;t apply a
+meaningful gravity here, so we are assigning a value of 0 with the file below.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">uniformDimensionedVectorField</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;constant&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      g;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dimensions      [<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">2</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>];
+</span></span><span style="display:flex;"><span>value           (<span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span> <span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//value           (0 0 0);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="rasproperties">
+  RASProperties
+  <a class="anchor" href="#rasproperties">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;constant&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      RASProperties;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>RASModel        laminar;<span style="color:#75715e">//kEpsilon;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>turbulence      on;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>printCoeffs     on;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="turbulenceproperties">
+  turbulenceProperties
+  <a class="anchor" href="#turbulenceproperties">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;constant&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      turbulenceProperties;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//simulationType  RASModel;//OFversion24x
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>simulationType      laminar;<span style="color:#75715e">//OFversion30x
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="couplingproperties">
+  couplingProperties
+  <a class="anchor" href="#couplingproperties">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*---------------------------------------------------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.4                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version         <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format          ascii;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    root            <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span>            <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    instance        <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    local           <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>           <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    object          couplingProperties;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//===========================================================================//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// sub-models &amp; settings
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>modelType none;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>couplingInterval <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>depth <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>voidFractionModel IB;<span style="color:#75715e">//bigParticle;//centre; //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>locateModel engineIB;<span style="color:#75715e">//standard;//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>meshMotionModel noMeshMotion;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dataExchangeModel twoWayMPI;<span style="color:#75715e">//twoWayFiles;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>IOModel basicIO;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>probeModel off;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>averagingModel dilute;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>clockModel off;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>smoothingModel off;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>forceModels
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>    ShirgaonkarIB
+</span></span><span style="display:flex;"><span>    ArchimedesIB
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>momCoupleModels
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//turbulenceModelType RASProperties;//LESProperties; //OFversion24x
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>turbulenceModelType turbulenceProperties; <span style="color:#75715e">//OFversion30x
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//===========================================================================//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">// sub-model properties
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>ShirgaonkarIBProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    velFieldName <span style="color:#e6db74">&#34;U&#34;</span>;
+</span></span><span style="display:flex;"><span>    pressureFieldName <span style="color:#e6db74">&#34;p&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>ArchimedesIBProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    gravityFieldName <span style="color:#e6db74">&#34;g&#34;</span>;
+</span></span><span style="display:flex;"><span>    voidfractionFieldName <span style="color:#e6db74">&#34;voidfractionNext&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>twoWayFilesProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    maxNumberOfParticles <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    DEMts <span style="color:#ae81ff">0.0002</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>twoWayMPIProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    maxNumberOfParticles <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    liggghtsPath <span style="color:#e6db74">&#34;../DEM/in.liggghts_run&#34;</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>IBProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    maxCellsPerParticle <span style="color:#ae81ff">1000</span>;
+</span></span><span style="display:flex;"><span>    alphaMin <span style="color:#ae81ff">0.30</span>;
+</span></span><span style="display:flex;"><span>    scaleUpVol <span style="color:#ae81ff">1.0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bigParticleProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    maxCellsPerParticle <span style="color:#ae81ff">1000</span>;
+</span></span><span style="display:flex;"><span>    alphaMin <span style="color:#ae81ff">0.30</span>;
+</span></span><span style="display:flex;"><span>    scaleUpVol <span style="color:#ae81ff">1.0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>centreProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    alphaMin <span style="color:#ae81ff">0.30</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>dividedProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    alphaMin <span style="color:#ae81ff">0.05</span>;
+</span></span><span style="display:flex;"><span>    scaleUpVol <span style="color:#ae81ff">1.2</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>engineIBProps
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    treeSearch false;
+</span></span><span style="display:flex;"><span>    zSplit <span style="color:#ae81ff">8</span>;
+</span></span><span style="display:flex;"><span>    xySplit <span style="color:#ae81ff">16</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="dynamicmeshdict">
+  dynamicMeshDict
+  <a class="anchor" href="#dynamicmeshdict">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*--------------------------------*- C++ -*----------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.6                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version     <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format      ascii;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>       <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    location    <span style="color:#e6db74">&#34;constant&#34;</span>;
+</span></span><span style="display:flex;"><span>    object      dynamicMeshDict;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dynamicFvMesh   dynamicRefineFvMesh;<span style="color:#75715e">//staticFvMesh;//
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>dynamicRefineFvMeshCoeffs
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    refineInterval  <span style="color:#ae81ff">1</span>;<span style="color:#75715e">//refine every refineInterval timesteps
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    field           interFace;
+</span></span><span style="display:flex;"><span>    lowerRefineLevel <span style="color:#ae81ff">.0001</span>;
+</span></span><span style="display:flex;"><span>    upperRefineLevel <span style="color:#ae81ff">0.99</span>;
+</span></span><span style="display:flex;"><span>    unrefineLevel   <span style="color:#ae81ff">10</span>;
+</span></span><span style="display:flex;"><span>    nBufferLayers   <span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    maxRefinement   <span style="color:#ae81ff">1</span>;<span style="color:#75715e">//maximum refinement level (starts from 0)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    maxCells        <span style="color:#ae81ff">1000000</span>;
+</span></span><span style="display:flex;"><span>    correctFluxes
+</span></span><span style="display:flex;"><span>    (
+</span></span><span style="display:flex;"><span>        (phi    U)
+</span></span><span style="display:flex;"><span>        (phi_0  U)
+</span></span><span style="display:flex;"><span>    );
+</span></span><span style="display:flex;"><span>    dumpLevel       false;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h3 id="liggghtscommands">
+  liggghtsCommands
+  <a class="anchor" href="#liggghtscommands">#</a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">/*---------------------------------------------------------------------------*\
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| =========                 |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|  \\    /   O peration     | Version:  1.4                                   |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|   \\  /    A nd           | Web:      http://www.openfoam.org               |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">|    \\/     M anipulation  |                                                 |
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">\*---------------------------------------------------------------------------*/</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>FoamFile
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    version         <span style="color:#ae81ff">2.0</span>;
+</span></span><span style="display:flex;"><span>    format          ascii;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    root            <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">case</span>            <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    instance        <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>    local           <span style="color:#e6db74">&#34;&#34;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">class</span>           <span style="color:#a6e22e">dictionary</span>;
+</span></span><span style="display:flex;"><span>    object          liggghtsCommands;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>liggghtsCommandModels
+</span></span><span style="display:flex;"><span>(
+</span></span><span style="display:flex;"><span>   runLiggghts
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// ************************************************************************* //
+</span></span></span></code></pre></div><h2 id="8-write-the-liggghts-input-file">
+  8. Write the LIGGGHTS input file
+  <a class="anchor" href="#8-write-the-liggghts-input-file">#</a>
+</h2>
+<pre tabindex="0"><code>atom_style      granular
+atom_modify     map array
+communicate     single vel yes
+
+boundary        f f f
+newton          off
+
+units           si
+processors      * * 1
+
+region          reg block -0.01 0.11 -.01 0.11 -.01 0.03 units box
+create_box      1 reg
+
+neigh_modify    delay 0 binsize 0.0
+
+
+# Material properties required for new pair styles
+
+fix             m1 all property/global youngsModulus peratomtype 5.e7
+fix             m2 all property/global poissonsRatio peratomtype 0.45
+fix             m3 all property/global coefficientRestitution peratomtypepair 1 0.9
+fix             m4 all property/global coefficientFriction peratomtypepair 1 0.5
+
+# pair style
+pair_style      gran model hertz tangential history #Hertzian without cohesion
+pair_coeff      * *
+
+# timestep, gravity
+timestep        0.0002
+
+fix             gravi all gravity 0 vector 0.0 0.0 -1.0
+
+# walls
+fix     xwalls1 all wall/gran model hertz tangential history primitive type 1 xplane 0.
+fix     xwalls2 all wall/gran model hertz tangential history primitive type 1 xplane 0.1
+fix     ywalls1 all wall/gran model hertz tangential history primitive type 1 yplane 0.
+fix     ywalls2 all wall/gran model hertz tangential history primitive type 1 yplane 0.1 shear x 1
+fix     zwalls1 all wall/gran model hertz tangential history primitive type 1 zplane 0.
+fix     zwalls2 all wall/gran model hertz tangential history primitive type 1 zplane 0.1
+
+# cfd coupling
+fix     cfd  all couple/cfd couple_every 10 mpi
+fix     cfd2 all couple/cfd/force
+
+
+# create single partciles
+create_atoms 1 single .05 .025 0.01
+create_atoms 1 single .05 .075 0.01
+set atom 1 diameter 0.005 density 2600 vx 0 vy 0 vz 0
+set atom 2 diameter 0.005 density 2600 vx 0 vy 0 vz 0
+
+# apply nve integration to all particles that are inserted as single particles
+fix             integr all nve/sphere #wenn das ausgeblendet, dann kein vel update
+
+# screen output
+compute         rke all erotate/sphere
+thermo_style    custom step atoms ke c_rke vol
+thermo          1000
+thermo_modify   lost ignore norm no
+compute_modify  thermo_temp dynamic yes
+
+# insert the first particles so that dump is not empty
+dump		    dmp2 all custom/vtk 50 post/dump*.vtk id type type x y z vx vy vz radius
+
+run             1
+</code></pre></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/39e629daaf5df8ce0d3babb2cc14e685e5cba55b" title='Last modified by Edward Yang | July 8, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>July 8, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/cfdem/cavitycfdem.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#converting-the-openfoam-cavity-example-for-cfdem">Converting the OpenFOAM cavity example for CFDEM</a>
+      <ul>
+        <li><a href="#getting-the-case-files">Getting the case files</a></li>
+        <li><a href="#1-set-up-the-directory-structure">1. Set up the directory structure</a></li>
+        <li><a href="#2-copy-a-cfdem-executor-wrapper-script-and-modify">2. Copy a CFDEM executor wrapper script and modify</a></li>
+        <li><a href="#3-update-openfoam-mesh">3. Update OpenFOAM mesh</a>
+          <ul>
+            <li><a href="#3a-make-the-mesh-finer">3a. Make the mesh finer</a></li>
+            <li><a href="#3b-add-the-mesh-decomposition-dictionary">3b. Add the mesh decomposition dictionary</a></li>
+          </ul>
+        </li>
+        <li><a href="#4-update-initial-conditions">4. Update initial conditions</a>
+          <ul>
+            <li><a href="#phiib">phiIB</a></li>
+            <li><a href="#us">Us</a></li>
+            <li><a href="#voidfraction">voidfraction</a></li>
+          </ul>
+        </li>
+        <li><a href="#5-update-solver-schemes">5. Update solver schemes</a></li>
+        <li><a href="#6-update-fvsolution">6. Update fvSolution</a></li>
+        <li><a href="#7-add-constants">7. Add constants</a>
+          <ul>
+            <li><a href="#transportproperties">transportProperties</a></li>
+            <li><a href="#g">g</a></li>
+            <li><a href="#rasproperties">RASProperties</a></li>
+            <li><a href="#turbulenceproperties">turbulenceProperties</a></li>
+            <li><a href="#couplingproperties">couplingProperties</a></li>
+            <li><a href="#dynamicmeshdict">dynamicMeshDict</a></li>
+            <li><a href="#liggghtscommands">liggghtsCommands</a></li>
+          </ul>
+        </li>
+        <li><a href="#8-write-the-liggghts-input-file">8. Write the LIGGGHTS input file</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
