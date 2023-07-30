@@ -46,6 +46,15 @@ I use it frequently to server as a reference when investigating other ways to se
     </item>
     
     <item>
+      <title>Exploring Manual Vectorization For SPH</title>
+      <link>/worknotes/docs/manual-vec/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/manual-vec/</guid>
+      <description>Exploring Manual Vectorization For SPH # SPH is a continuum particle method that is often used for simulations. Typically, the most time consuming part of codes that aim to perform SPH simulations, is finding the pairs of SPH particles that are within a fixed-cutoff of each other (the pair-search step from herein), and calculating the contribution to particles&amp;rsquo; motion, due to its corresponding pair (the force calculation sweep step from herein).</description>
+    </item>
+    
+    <item>
       <title>OpenFOAM cavity case to CFDEM</title>
       <link>/worknotes/docs/cfdem/cavitycfdem/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
