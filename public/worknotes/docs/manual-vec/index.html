@@ -10,13 +10,13 @@
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/worknotes/docs/manual-vec/" /><meta property="article:section" content="docs" />
 
-
+<meta property="article:modified_time" content="2023-07-30T19:31:21+10:00" />
 <title>Exploring Manual Vectorization For SPH | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.3f8336303c24137f8385dfad1e7705119ff0730f17b2f0f1fa659f902b327e8a.js" ></script>
+  <script defer src="/worknotes/en.search.min.ca57447693434a9078395b3334718e00e5b6e47b552e72cbf86c1b4464f46105.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 <!--
@@ -645,6 +645,19 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
           </ul>
         </li>
+        <li><a href="#improving-simd-performance-by-aligning-memory">Improving SIMD Performance By Aligning Memory</a>
+          <ul>
+            <li><a href="#migrating-the-existing-code-to-use-aligned-data">Migrating the existing code to use aligned data</a></li>
+            <li><a href="#performance-of-aligned-vs-unaligned-data-for-simd-instructions">Performance of aligned vs unaligned data for SIMD instructions</a></li>
+            <li><a href="#effect-of-stdaligned_malloc">Effect of <code>std::aligned_malloc</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#adding-compiler-optimisations">Adding compiler optimisations</a>
+          <ul>
+            <li></li>
+            <li><a href="#effects-of-adding-compiler-optimisation">Effects of adding compiler optimisation</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
   </ul>
@@ -670,19 +683,19 @@ pair (the force calculation sweep step from herein). These steps can be combined
 but it&rsquo;s useful to seperate them when needing to re-use the pair list.</p>
 <p>The pattern that the force calculation sweep looks like, can be illustrated with code (in C++) to calculate the
 rate-of-change of density due to the continuity equation (<code>drho/dt = div(v)</code>):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> num_pairs; <span style="color:#f92672">++</span>k) {
-</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> pair_i[k];
-</span></span><span style="display:flex;"><span>    j <span style="color:#f92672">=</span> pair_j[k];
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">k</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">k</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">num_pairs</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">];</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    dvx <span style="color:#f92672">=</span> vx[i] <span style="color:#f92672">-</span> vx[j];
-</span></span><span style="display:flex;"><span>    dvy <span style="color:#f92672">=</span> vy[i] <span style="color:#f92672">-</span> vy[j];
-</span></span><span style="display:flex;"><span>    dvz <span style="color:#f92672">=</span> vz[i] <span style="color:#f92672">-</span> vz[j];
+</span></span><span style="display:flex;"><span>    <span style="color:#000">dvx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">vx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">vx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">dvy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">vy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">vy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">dvz</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">vz</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">vz</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">];</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    vcc <span style="color:#f92672">=</span> mass<span style="color:#f92672">*</span>(dvx<span style="color:#f92672">*</span>dwdx[k] <span style="color:#f92672">+</span> dvy<span style="color:#f92672">*</span>dwdy[k] <span style="color:#f92672">+</span> dvz<span style="color:#f92672">*</span>dwdz[k]);
+</span></span><span style="display:flex;"><span>    <span style="color:#000">vcc</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">mass</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">dvx</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dwdx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">dvy</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dwdy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">dvz</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">dwdz</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">k</span><span style="color:#000;font-weight:bold">]);</span>
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>    drhodt[i] <span style="color:#f92672">+=</span> vcc;
-</span></span><span style="display:flex;"><span>    drhodt[j] <span style="color:#f92672">+=</span> vcc;
-</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>    <span style="color:#000">drhodt</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">vcc</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">drhodt</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">vcc</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>where <code>v_</code> stores the velocity of each particle in <code>x</code>, <code>y</code>, and <code>z</code> directions; <code>drho_dt</code> stores the rate of change of
 density; and <code>dwd_x</code> stores the spatial gradient of the kernel function in the <code>x</code>, <code>y</code>, and <code>z</code> directions.</p>
 <p>This pattern is not automatically vectorized by compilers, due to the non-sequential memory access pattern in the
@@ -709,25 +722,26 @@ algorithm. Consequently, I wanted to invetigate manually vectorizing this loop, 
   <a href="https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html">Intel&rsquo;s SIMD Intrinsics</a>.
 A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array
 (from herein, ABC addition):</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_base_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span>) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; <span style="color:#f92672">++</span>i) {
-</span></span><span style="display:flex;"><span>        c[i] <span style="color:#f92672">=</span> a[i] <span style="color:#f92672">+</span> b[i];
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">abc_base_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">c</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>In the benchmarking code, the arrays are created with <code>new</code>.</p>
+<h3 id="vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">
   Vectorizing the ABC function with 128-bit vectors (SSE instructions)
   <a class="anchor" href="#vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">#</a>
 </h3>
 <p>This function, manually vectorized, looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 128bit width (SSE)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_128_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> c) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> v1 <span style="color:#f92672">=</span> _mm_loadu_ps(<span style="color:#f92672">&amp;</span>a[i]);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> v2 <span style="color:#f92672">=</span> _mm_loadu_ps(<span style="color:#f92672">&amp;</span>b[i]);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> res <span style="color:#f92672">=</span> _mm_add_ps(v1, v2);
-</span></span><span style="display:flex;"><span>        _mm_storeu_ps(<span style="color:#f92672">&amp;</span>c[i], res);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// 128bit width (SSE)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">abc_128_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">c</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">res</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_storeu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">res</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>Note that this requires <code>#include &lt;immintrin.h&gt;</code> to make use of the types and functions.</p>
 <p>The <code>_mm_loadu_ps</code> function name can be broken down as:</p>
 <ul>
@@ -745,15 +759,15 @@ add operation on two 128-bit vectors. The add operation will operate on each ele
 this case, <code>&amp;c[i]</code>).</p>
 <p><code>__m128</code> is the 128-bit wide vector for single precision floating point numbers.</p>
 <p>The double precision version looks similar:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 128bit width (SSE)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_128_dbl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> c) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2</span>) {
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> v1 <span style="color:#f92672">=</span> _mm_loadu_pd(<span style="color:#f92672">&amp;</span>a[i]);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> v2 <span style="color:#f92672">=</span> _mm_loadu_pd(<span style="color:#f92672">&amp;</span>b[i]);
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> res <span style="color:#f92672">=</span> _mm_add_pd(v1, v2);
-</span></span><span style="display:flex;"><span>        _mm_storeu_pd(<span style="color:#f92672">&amp;</span>c[i], res);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// 128bit width (SSE)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">abc_128_dbl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">c</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">res</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">res</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>There are 3 main differences in this version. Two of them are that <code>ps</code> is replaced by <code>pd</code> everywhere, and <code>d</code> is added
 to the end of the <code>__m128</code> types. These ensure that the equivalent functions and types for double precision floating
 point numbers are used. The 3rd change is that the loop counter is incremented by two instead of 4 every iteration. This
@@ -765,27 +779,27 @@ SIMD vector.</p>
 </h3>
 <p>The AVX instruction set adds new instructions to the collection of SIMD instructions, as well as allowing for 256-bit
 vectors. For this example, the code looks pretty similar. The single precision code looks like:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 256bit width (AVX)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_256_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> c) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">8</span>) {
-</span></span><span style="display:flex;"><span>        __m256 v1 <span style="color:#f92672">=</span> _mm256_loadu_ps(<span style="color:#f92672">&amp;</span>a[i]);
-</span></span><span style="display:flex;"><span>        __m256 v2 <span style="color:#f92672">=</span> _mm256_loadu_ps(<span style="color:#f92672">&amp;</span>b[i]);
-</span></span><span style="display:flex;"><span>        __m256 res <span style="color:#f92672">=</span> _mm256_add_ps(v1, v2);
-</span></span><span style="display:flex;"><span>        _mm256_storeu_ps(<span style="color:#f92672">&amp;</span>c[i], res);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// 256bit width (AVX)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">abc_256_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">c</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256</span> <span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256</span> <span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256</span> <span style="color:#000">res</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_add_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm256_storeu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">res</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><p>Where <code>mm</code> has been changed to <code>mm256</code>, to indicate these instructions are part of the 256-bit wide vector instructions,
 and the incrememnt has been doubled from 4 to 8, due to the doubling in width of the vectors. The same changes are true
 for the double precision version:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 256bit width (AVX)
-</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_256_dbl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> c) {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
-</span></span><span style="display:flex;"><span>        __m256d v1 <span style="color:#f92672">=</span> _mm256_loadu_pd(<span style="color:#f92672">&amp;</span>a[i]);
-</span></span><span style="display:flex;"><span>        __m256d v2 <span style="color:#f92672">=</span> _mm256_loadu_pd(<span style="color:#f92672">&amp;</span>b[i]);
-</span></span><span style="display:flex;"><span>        __m256d res <span style="color:#f92672">=</span> _mm256_add_pd(v1, v2);
-</span></span><span style="display:flex;"><span>        _mm256_storeu_pd(<span style="color:#f92672">&amp;</span>c[i], res);
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// 256bit width (AVX)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">abc_256_dbl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">double</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">c</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256d</span> <span style="color:#000">v1</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256d</span> <span style="color:#000">v2</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m256d</span> <span style="color:#000">res</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_add_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v2</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm256_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">c</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">res</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
 </span></span></code></pre></div><h3 id="performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">
   Performance of the SINGLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)
   <a class="anchor" href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">#</a>
@@ -793,21 +807,21 @@ for the double precision version:</p>
 <p>Here, I make use of 
   <a href="https://github.com/google/benchmark">Google&rsquo;s benchmark tool</a>. Each array, <code>a</code>, <code>b</code>, and <code>c</code>, are
 between 4,096 and 16,777,216 elements long. The program compilation command:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx2 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx2 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
 </span></span></code></pre></div><p>First, the single precision data and using the benchmark comparison tool:</p>
 <pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_128_sgl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_sgl vs. abc_128_sgl]/4096        -0.5372       -0.5372         12619          5841         12590          5827
-[abc_base_sgl vs. abc_128_sgl]/32768       -0.5164       -0.5164        100548         48628        100314         48514
-[abc_base_sgl vs. abc_128_sgl]/262144      -0.5091       -0.5093        802916        394148        801042        393099
-[abc_base_sgl vs. abc_128_sgl]/2097152     -0.5027       -0.5027       6484863       3225174       6469666       3217643
-[abc_base_sgl vs. abc_128_sgl]/16777216    -0.5172       -0.5172      54029226      26084896      53902545      26023999
-OVERALL_GEOMEAN                            -0.5166       -0.5167             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_128_sgl]/4096        -0.5372    -0.5372       12619        5841       12590        5827
+[abc_base_sgl vs. abc_128_sgl]/32768       -0.5164    -0.5164      100548       48628      100314       48514
+[abc_base_sgl vs. abc_128_sgl]/262144      -0.5091    -0.5093      802916      394148      801042      393099
+[abc_base_sgl vs. abc_128_sgl]/2097152     -0.5027    -0.5027     6484863     3225174     6469666     3217643
+[abc_base_sgl vs. abc_128_sgl]/16777216    -0.5172    -0.5172    54029226    26084896    53902545    26023999
+OVERALL_GEOMEAN                            -0.5166    -0.5167           0           0           0           0
 </code></pre><p>In this results, the &ldquo;Old&rdquo; is the non-manually vectorized loop, and the &ldquo;New&rdquo; is the vectorized loop. The comparison
 shows at least (1-0.5166)^-1 = 2x speedup by manually vectorization for all array sizes tested here! To compare the manually
 vectorized code to compiler&rsquo;s automatic vectorization, we can compile the code again with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
 </span></span></code></pre></div><p>which</p>
 <ul>
 <li>replaces <code>-mavx2</code> with <code>-msse</code>, enabling only 128-bit wide vectors and SSE instructions,</li>
@@ -819,14 +833,14 @@ and the manually vectorized code, but they will also enable automatic vectorizat
 Comparing the results performance of the now automatically vectorized function (<code>abc_base_sgl</code>), with the manually
 vectorized function (<code>abc_128_sgl</code>), I get:</p>
 <pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_128_sgl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_sgl vs. abc_128_sgl]/4096        -0.0001       +0.0002           630           630           629           629
-[abc_base_sgl vs. abc_128_sgl]/32768       -0.0021       -0.0021          6345          6332          6330          6317
-[abc_base_sgl vs. abc_128_sgl]/262144      +0.0162       +0.0163        104701        106392        104437        106144
-[abc_base_sgl vs. abc_128_sgl]/2097152     +0.0023       +0.0027        908528        910590        906019        908466
-[abc_base_sgl vs. abc_128_sgl]/16777216    +0.0225       +0.0230      14303786      14625654      14263831      14591516
-OVERALL_GEOMEAN                            +0.0077       +0.0080             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_128_sgl]/4096        -0.0001    +0.0002         630         630         629         629
+[abc_base_sgl vs. abc_128_sgl]/32768       -0.0021    -0.0021        6345        6332        6330        6317
+[abc_base_sgl vs. abc_128_sgl]/262144      +0.0162    +0.0163      104701      106392      104437      106144
+[abc_base_sgl vs. abc_128_sgl]/2097152     +0.0023    +0.0027      908528      910590      906019      908466
+[abc_base_sgl vs. abc_128_sgl]/16777216    +0.0225    +0.0230    14303786    14625654    14263831    14591516
+OVERALL_GEOMEAN                            +0.0077    +0.0080           0           0           0           0
 </code></pre><p>which shows that at worst, the manually vectorized code is approx. 2% slower than the automatically vectorized loop.</p>
 <h3 id="performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">
   Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)
@@ -834,14 +848,14 @@ OVERALL_GEOMEAN                            +0.0077       +0.0080             0  
 </h3>
 <p>Using the same test method as the 128-bit version, using no compiler optimisations, I get:</p>
 <pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_256_sgl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
------------------------------------------- -----------------------------------------------------------------------------
-[abc_base_sgl vs. abc_256_sgl]/4096        -0.7394       -0.7395         12390          3229         12361          3221
-[abc_base_sgl vs. abc_256_sgl]/32768       -0.7276       -0.7277         99812         27192         99579         27118
-[abc_base_sgl vs. abc_256_sgl]/262144      -0.7242       -0.7243        802667        221387        800794        220789
-[abc_base_sgl vs. abc_256_sgl]/2097152     -0.7151       -0.7152       6437792       1834148       6422769       1829137
-[abc_base_sgl vs. abc_256_sgl]/16777216    -0.6711       -0.6713      53525278      17602131      53399838      17553344
-OVERALL_GEOMEAN                            -0.7164       -0.7165             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------ ------------------------------------------------------------------
+[abc_base_sgl vs. abc_256_sgl]/4096        -0.7394    -0.7395       12390        3229       12361        3221
+[abc_base_sgl vs. abc_256_sgl]/32768       -0.7276    -0.7277       99812       27192       99579       27118
+[abc_base_sgl vs. abc_256_sgl]/262144      -0.7242    -0.7243      802667      221387      800794      220789
+[abc_base_sgl vs. abc_256_sgl]/2097152     -0.7151    -0.7152     6437792     1834148     6422769     1829137
+[abc_base_sgl vs. abc_256_sgl]/16777216    -0.6711    -0.6713    53525278    17602131    53399838    17553344
+OVERALL_GEOMEAN                            -0.7164    -0.7165           0           0           0           0
 </code></pre><p>Which shows a further speedup over the 128-bit version. Over the base version, the speedup is approximately
 (1-0.7164)^-1 = 3.5x. You may notice that the speedup obtained decreases slightly with the size of test, which I suspect
 is due to the size of cache being used on the CPU. The 4,096 element test (4096 elements * 4 bytes * 2 arrays = ~33kB),
@@ -882,16 +896,16 @@ and the final test (16, 777, 216 * 4 bytes * 2 arrays = ~134MB) must go to RAM. 
 </tbody>
 </table>
 <p>Confirming similarity of manual vectorization to automatic vectorization:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
 </span></span></code></pre></div><pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_256_sgl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_sgl vs. abc_256_sgl]/4096        +0.0010       +0.0012           633           633           631           632
-[abc_base_sgl vs. abc_256_sgl]/32768       +0.0012       +0.0016          6097          6104          6080          6090
-[abc_base_sgl vs. abc_256_sgl]/262144      +0.0009       +0.0013        105703        105800        105417        105551
-[abc_base_sgl vs. abc_256_sgl]/2097152     -0.0020       -0.0016        910727        908903        908205        906771
-[abc_base_sgl vs. abc_256_sgl]/16777216    +0.0281       +0.0286      14356772      14760474      14316874      14725833
-OVERALL_GEOMEAN                            +0.0058       +0.0062             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_256_sgl]/4096        +0.0010    +0.0012         633         633         631         632
+[abc_base_sgl vs. abc_256_sgl]/32768       +0.0012    +0.0016        6097        6104        6080        6090
+[abc_base_sgl vs. abc_256_sgl]/262144      +0.0009    +0.0013      105703      105800      105417      105551
+[abc_base_sgl vs. abc_256_sgl]/2097152     -0.0020    -0.0016      910727      908903      908205      906771
+[abc_base_sgl vs. abc_256_sgl]/16777216    +0.0281    +0.0286    14356772    14760474    14316874    14725833
+OVERALL_GEOMEAN                            +0.0058    +0.0062           0           0           0           0
 </code></pre><p>I see a similarly small variation in performance between the the automatically vectorized base function and the
 manually vectorized version.</p>
 <p>The code shown here achieves far less than ideal speedup e.g., ~2x achieved for 128-bit vectors, when 4x is ideal; and
@@ -902,33 +916,33 @@ but I think it is due to memory latency and bandwidth.</p>
   <a class="anchor" href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">#</a>
 </h3>
 <p>Using the compilation command with no compiler options:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
 </span></span></code></pre></div><p>We get the results between the non-vectorized base function and the manually vectorized function:</p>
 <pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_128_dbl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_dbl vs. abc_128_dbl]/4096        -0.0514       -0.0516         12544         11899         12515         11869
-[abc_base_dbl vs. abc_128_dbl]/32768       -0.0230       -0.0230        101078         98749        100842         98518
-[abc_base_dbl vs. abc_128_dbl]/262144      -0.0429       -0.0431        812827        777929        810929        775969
-[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0112       -0.0116       6743898       6668566       6728128       6650022
-[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0746       -0.0748      56644964      52418793      56512720      52284069
-OVERALL_GEOMEAN                            -0.0409       -0.0411             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+---------------------------------------------------------------------------------------------------- --------
+[abc_base_dbl vs. abc_128_dbl]/4096        -0.0514    -0.0516       12544       11899       12515       11869
+[abc_base_dbl vs. abc_128_dbl]/32768       -0.0230    -0.0230      101078       98749      100842       98518
+[abc_base_dbl vs. abc_128_dbl]/262144      -0.0429    -0.0431      812827      777929      810929      775969
+[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0112    -0.0116     6743898     6668566     6728128     6650022
+[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0746    -0.0748    56644964    52418793    56512720    52284069
+OVERALL_GEOMEAN                            -0.0409    -0.0411           0           0           0           0
 </code></pre><p>Which shows very modest improvement of approx 4%. Furthermore, only the largest test is determined by the comparison
 tool to be statistically significant. This is not surprising, given the results from the single precision manually
 vectorized code. The single precision code obtained a speedup of approximately 2x, despite being able to combine 4
 add operations into one. However, the double precision code can only combine 2 add operations, which is apparently
 insufficient to offset the memory latency/bandwidth.</p>
 <p>Checking the manually vectorized code against automatic vectorization:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
 </span></span></code></pre></div><pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_128_dbl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_dbl vs. abc_128_dbl]/4096        +0.0233       +0.0237          1532          1568          1528          1565
-[abc_base_dbl vs. abc_128_dbl]/32768       -0.0313       -0.0309         13050         12641         13014         12612
-[abc_base_dbl vs. abc_128_dbl]/262144      +0.0126       +0.0128        212077        214751        211534        214245
-[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0357       -0.0353       2723765       2626471       2716242       2620327
-[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0097       -0.0095      30242092      29949972      30165349      29880070
-OVERALL_GEOMEAN                            -0.0084       -0.0081             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------
+[abc_base_dbl vs. abc_128_dbl]/4096        +0.0233    +0.0237        1532        1568        1528        1565
+[abc_base_dbl vs. abc_128_dbl]/32768       -0.0313    -0.0309       13050       12641       13014       12612
+[abc_base_dbl vs. abc_128_dbl]/262144      +0.0126    +0.0128      212077      214751      211534      214245
+[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0357    -0.0353     2723765     2626471     2716242     2620327
+[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0097    -0.0095    30242092    29949972    30165349    29880070
+OVERALL_GEOMEAN                            -0.0084    -0.0081           0           0           0           0
 </code></pre><p>Which again, shows minimal difference between the manually and automatically vectorized code.</p>
 <h3 id="performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">
   Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)
@@ -936,16 +950,221 @@ OVERALL_GEOMEAN                            -0.0084       -0.0081             0  
 </h3>
 <p>Comparison results:</p>
 <pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_256_dbl (from ./abc.x)
-Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------
-[abc_base_dbl vs. abc_256_dbl]/4096        -0.4700       -0.4699         12537          6644         12506          6629
-[abc_base_dbl vs. abc_256_dbl]/32768       -0.4609       -0.4606        101533         54741        101257         54613
-[abc_base_dbl vs. abc_256_dbl]/262144      -0.4548       -0.4546        814199        443934        811995        442898
-[abc_base_dbl vs. abc_256_dbl]/2097152     -0.3759       -0.3758       6699499       4180956       6682306       4171199
-[abc_base_dbl vs. abc_256_dbl]/16777216    -0.3386       -0.3385      56663574      37476558      56520373      37388836
-OVERALL_GEOMEAN                            -0.4224       -0.4222             0             0             0             0
+Benchmark                                     Time        CPU    Time Old    Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------
+[abc_base_dbl vs. abc_256_dbl]/4096        -0.4700    -0.4699       12537        6644       12506        6629
+[abc_base_dbl vs. abc_256_dbl]/32768       -0.4609    -0.4606      101533       54741      101257       54613
+[abc_base_dbl vs. abc_256_dbl]/262144      -0.4548    -0.4546      814199      443934      811995      442898
+[abc_base_dbl vs. abc_256_dbl]/2097152     -0.3759    -0.3758     6699499     4180956     6682306     4171199
+[abc_base_dbl vs. abc_256_dbl]/16777216    -0.3386    -0.3385    56663574    37476558    56520373    37388836
+OVERALL_GEOMEAN                            -0.4224    -0.4222           0           0           0           0
 </code></pre><p>Like the single precision 256-bit results, we can see a decreasing speedup as the tests increase in size. The best
 speedup achieved is ~1.9x and slowest is ~1.5x.</p>
+<h2 id="improving-simd-performance-by-aligning-memory">
+  Improving SIMD Performance By Aligning Memory
+  <a class="anchor" href="#improving-simd-performance-by-aligning-memory">#</a>
+</h2>
+<p>When explaining the <code>_mm_storeu_px</code> and <code>_mm_loadu_px</code> functions, I mentioned that these, respectively, store and load
+data to/from &ldquo;aligned&rdquo; memory. When using the &ldquo;classic&rdquo; <code>malloc</code> or <code>new</code> functions to allocate memory for arrays, these
+arrays may be &ldquo;unaligned&rdquo;. This means its integer address is the computer&rsquo;s memory, is not divisible by its size (in
+bytes). I&rsquo;m not sure of the details of why, but this means that accessing this memory can be more expensive. It may also
+negatively affect caching behaviour.</p>
+<p>Because of this unalignment, we must use the <code>storeu</code> and <code>loadu</code> functions so that they can properly store and load
+data to/from locations that are unaligned. However, there are <code>store</code> and <code>load</code> functions that can be used on aligned
+data, which can be more performant.</p>
+<h3 id="migrating-the-existing-code-to-use-aligned-data">
+  Migrating the existing code to use aligned data
+  <a class="anchor" href="#migrating-the-existing-code-to-use-aligned-data">#</a>
+</h3>
+<p>The existing code allocates memory for our arrays using:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">float</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">b</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">c</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">new</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">];</span>
+</span></span></code></pre></div><p>for single precision data (replace <code>float</code> with <code>double</code> for the double precision version). To ensure the arrays are
+aligned, you must use the <code>std::aligned_alloc</code> function, which comes with the <code>cstdlib</code> header. Our allocation becomes:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#000">size_t</span> <span style="color:#000">size</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">sizeof</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">float</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">alignment</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">32</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">float</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">static_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*&gt;</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">std</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">aligned_alloc</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">alignment</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">size</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">float</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">b</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">static_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*&gt;</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">std</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">aligned_alloc</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">alignment</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">size</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">float</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">c</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#204a87;font-weight:bold">static_cast</span><span style="color:#ce5c00;font-weight:bold">&lt;</span><span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*&gt;</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">std</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">aligned_alloc</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">alignment</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">size</span><span style="color:#000;font-weight:bold">));</span>
+</span></span></code></pre></div><p>Replace <code>float</code> with double and <code>32</code> with <code>64</code>, and you have the double precision version. These arrays also have to be
+deallocated with <code>free</code> instead of <code>delete</code>.</p>
+<p>Then, you need to replace all instances of <code>storeu</code> and <code>loadu</code> with <code>store</code> and <code>load</code>.</p>
+<h3 id="performance-of-aligned-vs-unaligned-data-for-simd-instructions">
+  Performance of aligned vs unaligned data for SIMD instructions
+  <a class="anchor" href="#performance-of-aligned-vs-unaligned-data-for-simd-instructions">#</a>
+</h3>
+<p>The results below compare run times between the unaligned and aligned versions of each code for each of the datatypes
+and vector sizes.</p>
+<h4 id="aligned-memory-single-precision-128-bit">
+  Aligned memory: single precision 128-bit
+  <a class="anchor" href="#aligned-memory-single-precision-128-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_128_sgl (from ./abc.x) to abc_128_sgl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_128_sgl vs. abc_128_sgl_aligned]/4096        -0.0639    -0.0635        5807        5436        5792        5424
+[abc_128_sgl vs. abc_128_sgl_aligned]/32768       -0.0965    -0.0963       50260       45408       50129       45302
+[abc_128_sgl vs. abc_128_sgl_aligned]/262144      -0.0604    -0.0600      390059      366517      389004      365662
+[abc_128_sgl vs. abc_128_sgl_aligned]/2097152     -0.0609    -0.0605     3161569     2968982     3152943     2962053
+[abc_128_sgl vs. abc_128_sgl_aligned]/16777216    +0.0281    +0.0285    25573480    26291967    25502874    26230381
+OVERALL_GEOMEAN                                   -0.0247    -0.0244           0           0           0           0
+</code></pre><h4 id="aligned-memory-single-precision-256-bit">
+  Aligned memory: single precision 256-bit
+  <a class="anchor" href="#aligned-memory-single-precision-256-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_256_sgl (from ./abc.x) to abc_256_sgl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_256_sgl vs. abc_256_sgl_aligned]/4096        -0.1635    -0.1634        3312        2770        3303        2764
+[abc_256_sgl vs. abc_256_sgl_aligned]/32768       -0.1261    -0.1260       27567       24090       27497       24034
+[abc_256_sgl vs. abc_256_sgl_aligned]/262144      -0.1344    -0.1342      225293      195017      224719      194562
+[abc_256_sgl vs. abc_256_sgl_aligned]/2097152     -0.1191    -0.1191     1833080     1614842     1828802     1611060
+[abc_256_sgl vs. abc_256_sgl_aligned]/16777216    -0.0395    -0.0392    18248268    17528127    18201311    17487204
+OVERALL_GEOMEAN                                   -0.0699    -0.0697           0           0           0           0
+</code></pre><h4 id="aligned-memory-double-precision-128-bit">
+  Aligned memory: double precision 128-bit
+  <a class="anchor" href="#aligned-memory-double-precision-128-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_128_dbl (from ./abc.x) to abc_128_dbl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_128_dbl vs. abc_128_dbl_aligned]/4096        -0.0647    -0.0647       12000       11224       11972       11198
+[abc_128_dbl vs. abc_128_dbl_aligned]/32768       -0.0703    -0.0705       97467       90611       97240       90383
+[abc_128_dbl vs. abc_128_dbl_aligned]/262144      -0.0627    -0.0631      780496      731551      778675      729556
+[abc_128_dbl vs. abc_128_dbl_aligned]/2097152     -0.0579    -0.0583     6742195     6351631     6726466     6334012
+[abc_128_dbl vs. abc_128_dbl_aligned]/16777216    +0.0270    +0.0270    52430133    53845667    52307789    53719950
+OVERALL_GEOMEAN                                   -0.0234    -0.0236           0           0           0           0
+</code></pre><h4 id="aligned-memory-double-precision-256-bit">
+  Aligned memory: double precision 256-bit
+  <a class="anchor" href="#aligned-memory-double-precision-256-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_256_dbl (from ./abc.x) to abc_256_dbl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_256_dbl vs. abc_256_dbl_aligned]/4096        -0.0969    -0.0968        6658        6012        6641        5998
+[abc_256_dbl vs. abc_256_dbl_aligned]/32768       -0.0931    -0.0927       54958       49842       54809       49726
+[abc_256_dbl vs. abc_256_dbl_aligned]/262144      -0.1182    -0.1179      448770      395737      447559      394813
+[abc_256_dbl vs. abc_256_dbl_aligned]/2097152     -0.0735    -0.0735     4322564     4004882     4312476     3995495
+[abc_256_dbl vs. abc_256_dbl_aligned]/16777216    -0.0479    -0.0475    38081022    36256189    37975969    36171577
+OVERALL_GEOMEAN                                   -0.0436    -0.0434           0           0           0           0
+</code></pre><h3 id="effect-of-stdaligned_malloc">
+  Effect of <code>std::aligned_malloc</code>
+  <a class="anchor" href="#effect-of-stdaligned_malloc">#</a>
+</h3>
+<p>Almost all test sizes perform better than the unaligned counterparts. The only exceptions are the largest tests for the
+128-bit vector code - these seem to perform almost 3% worse. This probably is related to the fact that the <code>a</code> and <code>b</code>
+arrays are entirely on RAM. This is also consistent with the 256-bit vector tests where the largest tests perform the
+worst when compared to their unaligned conterparts.</p>
+<p>The 256-bit vector codes have the most increased performance - espcially for the tests that can fit in L1 and L2 cache.
+For example, the biggest improvement is seen in the single precision 128-bit vector code, for the problem size of 4,096
+elements. The 16% reduction in run time makes it ~2.3 faster than its corresponding base code (up from ~2x).</p>
+<p>Most of the other tests gain at least 4% from its unaligned counterpart.</p>
+<h2 id="adding-compiler-optimisations">
+  Adding compiler optimisations
+  <a class="anchor" href="#adding-compiler-optimisations">#</a>
+</h2>
+<p>Compiling the code with <code>-O2</code> and rerunning the tests with aligned memory:</p>
+<h4 id="aligned-memory--lvl-2-optimisations-single-precision-128-bit">
+  Aligned memory + lvl 2 optimisations: single precision 128-bit
+  <a class="anchor" href="#aligned-memory--lvl-2-optimisations-single-precision-128-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_128_sgl (from ./abc.x) to abc_128_sgl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_128_sgl vs. abc_128_sgl_aligned]/4096        +0.0099    +0.0103         630         636         628         635
+[abc_128_sgl vs. abc_128_sgl_aligned]/32768       +0.0474    +0.0476        6316        6616        6300        6600
+[abc_128_sgl vs. abc_128_sgl_aligned]/262144      +0.0001    +0.0001      105151      105166      104905      104919
+[abc_128_sgl vs. abc_128_sgl_aligned]/2097152     -0.0035    -0.0033      907374      904171      905084      902062
+[abc_128_sgl vs. abc_128_sgl_aligned]/16777216    +0.0273    +0.0275    14132072    14517526    14096031    14483670
+OVERALL_GEOMEAN                                   +0.0190    +0.0192           0           0           0           0
+</code></pre><h4 id="aligned-memory--lvl-2-optimisations-single-precision-256-bit">
+  Aligned memory + lvl 2 optimisations: single precision 256-bit
+  <a class="anchor" href="#aligned-memory--lvl-2-optimisations-single-precision-256-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_256_sgl (from ./abc.x) to abc_256_sgl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_256_sgl vs. abc_256_sgl_aligned]/4096        -0.4919    -0.4921         632         321         631         320
+[abc_256_sgl vs. abc_256_sgl_aligned]/32768       -0.2773    -0.2774        6209        4488        6195        4476
+[abc_256_sgl vs. abc_256_sgl_aligned]/262144      +0.0066    +0.0064      104733      105426      104488      105162
+[abc_256_sgl vs. abc_256_sgl_aligned]/2097152     +0.0063    +0.0059      908430      914187      906310      911683
+[abc_256_sgl vs. abc_256_sgl_aligned]/16777216    +0.0078    +0.0073    14697929    14812229    14663625    14771162
+OVERALL_GEOMEAN                                   -0.0882    -0.0885           0           0           0           0
+</code></pre><h4 id="aligned-memory--lvl-2-optimisations-double-precision-128-bit">
+  Aligned memory + lvl 2 optimisations: double precision 128-bit
+  <a class="anchor" href="#aligned-memory--lvl-2-optimisations-double-precision-128-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_128_dbl (from ./abc.x) to abc_128_dbl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_128_dbl vs. abc_128_dbl_aligned]/4096        +0.0612    +0.0617        1567        1663        1563        1660
+[abc_128_dbl vs. abc_128_dbl_aligned]/32768       +0.0766    +0.0770       12643       13611       12608       13579
+[abc_128_dbl vs. abc_128_dbl_aligned]/262144      -0.0037    -0.0033      211424      210649      210844      210148
+[abc_128_dbl vs. abc_128_dbl_aligned]/2097152     +0.0810    +0.0815     2597400     2807846     2590158     2801291
+[abc_128_dbl vs. abc_128_dbl_aligned]/16777216    +0.0345    +0.0299    30125298    31163848    30049063    30948143
+OVERALL_GEOMEAN                                   +0.0411    +0.0405           0           0           0           0
+</code></pre><h4 id="aligned-memory--lvl-2-optimisations-double-precision-256-bit">
+  Aligned memory + lvl 2 optimisations: double precision 256-bit
+  <a class="anchor" href="#aligned-memory--lvl-2-optimisations-double-precision-256-bit">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing abc_256_dbl (from ./abc.x) to abc_256_dbl_aligned (from ./abc.x)
+Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
+--------------------------------------------------------------------------------------------------------------------
+[abc_256_dbl vs. abc_256_dbl_aligned]/4096        -0.2838    -0.2839        1558        1116        1555        1113
+[abc_256_dbl vs. abc_256_dbl_aligned]/32768       -0.2637    -0.2640       12501        9205       12472        9180
+[abc_256_dbl vs. abc_256_dbl_aligned]/262144      -0.0077    -0.0081      213428      211785      212930      211203
+[abc_256_dbl vs. abc_256_dbl_aligned]/2097152     +0.0229    +0.0224     2699745     2761498     2693422     2753700
+[abc_256_dbl vs. abc_256_dbl_aligned]/16777216    +0.0322    +0.0320    30455778    31437745    30384702    31356069
+OVERALL_GEOMEAN                                   -0.0423    -0.0427           0           0           0           0
+</code></pre><h3 id="effects-of-adding-compiler-optimisation">
+  Effects of adding compiler optimisation
+  <a class="anchor" href="#effects-of-adding-compiler-optimisation">#</a>
+</h3>
+<p>Quite interestingly, the <code>-O2</code> compiler optimisations amplify the performance of SIMD instructions for
+the tests that fit within L1 and L2 cache. The 128-bit tests are brought much closer to ideal performance for those
+small problem sizes. The 128-bit tests do not seem to perform very differently with or without aligned memory. Aligning
+the data allocations even seem to cause the 128-bit tests to  perform worse by a little bit! In contrast, the 256-bit
+vector instructions apparently require aligned memory to benefit form <code>-O2</code> optimisations in terms of speedup.</p>
+<table>
+<thead>
+<tr>
+<th>Test ID</th>
+<th>Best speedup over base</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>abc_128_sgl</code></td>
+<td>4.18x</td>
+</tr>
+<tr>
+<td><code>abc_128_sgl_aligned</code></td>
+<td>3.97x</td>
+</tr>
+<tr>
+<td><code>abc_256_sgl</code></td>
+<td>3.97x</td>
+</tr>
+<tr>
+<td><code>abc_256_sgl_aligned</code></td>
+<td>5.62x</td>
+</tr>
+<tr>
+<td><code>abc_128_dbl</code></td>
+<td>1.78x</td>
+</tr>
+<tr>
+<td><code>abc_128_dbl_aligned</code></td>
+<td>1.74x</td>
+</tr>
+<tr>
+<td><code>abc_256_dbl</code></td>
+<td>1.92x</td>
+</tr>
+<tr>
+<td><code>abc_256_dbl_aligned</code></td>
+<td>2.6x</td>
+</tr>
+</tbody>
+</table>
 </article>
  
       
@@ -954,6 +1173,12 @@ speedup achieved is ~1.9x and slowest is ~1.5x.</p>
         
   <div class="flex flex-wrap justify-between">
 
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/5968668d92865af0523cbd0226023bb41c980870" title='Last modified by Edward Yang | July 30, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>July 30, 2023</span>
+    </a>
+  </div>
 
 
 
@@ -1005,6 +1230,19 @@ speedup achieved is ~1.9x and slowest is ~1.5x.</p>
             <li><a href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
             <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)</a></li>
             <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
+          </ul>
+        </li>
+        <li><a href="#improving-simd-performance-by-aligning-memory">Improving SIMD Performance By Aligning Memory</a>
+          <ul>
+            <li><a href="#migrating-the-existing-code-to-use-aligned-data">Migrating the existing code to use aligned data</a></li>
+            <li><a href="#performance-of-aligned-vs-unaligned-data-for-simd-instructions">Performance of aligned vs unaligned data for SIMD instructions</a></li>
+            <li><a href="#effect-of-stdaligned_malloc">Effect of <code>std::aligned_malloc</code></a></li>
+          </ul>
+        </li>
+        <li><a href="#adding-compiler-optimisations">Adding compiler optimisations</a>
+          <ul>
+            <li></li>
+            <li><a href="#effects-of-adding-compiler-optimisation">Effects of adding compiler optimisation</a></li>
           </ul>
         </li>
       </ul>
