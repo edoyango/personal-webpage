@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Exploring Manual Vectorization For SPH # SPH is a continuum particle method that is often used for simulations. Typically, the most time consuming part of codes that aim to perform SPH simulations, is finding the pairs of SPH particles that are within a fixed-cutoff of each other (the pair-search step from herein), and calculating the contribution to particles&rsquo; motion, due to its corresponding pair (the force calculation sweep step from herein).">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Exploring Manual Vectorization For SPH" />
+<meta property="og:description" content="Exploring Manual Vectorization For SPH # SPH is a continuum particle method that is often used for simulations. Typically, the most time consuming part of codes that aim to perform SPH simulations, is finding the pairs of SPH particles that are within a fixed-cutoff of each other (the pair-search step from herein), and calculating the contribution to particles&rsquo; motion, due to its corresponding pair (the force calculation sweep step from herein)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/manual-vec/" /><meta property="article:section" content="docs" />
+
+
+<title>Exploring Manual Vectorization For SPH | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.3f8336303c24137f8385dfad1e7705119ff0730f17b2f0f1fa659f902b327e8a.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vec/" class="active">Exploring Manual Vectorization For SPH</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Exploring Manual Vectorization For SPH</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#exploring-manual-vectorization-for-sph">Exploring Manual Vectorization For SPH</a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#basic-vectorization">Basic Vectorization</a>
+          <ul>
+            <li><a href="#vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">Vectorizing the ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#vectorizing-the-abc-function-with-256-bit-vectors-avx-instructions">Vectorizing the ABC function with 256-bit vectors (AVX instructions)</a></li>
+            <li><a href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">Performance of the SINGLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
+            <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="exploring-manual-vectorization-for-sph">
+  Exploring Manual Vectorization For SPH
+  <a class="anchor" href="#exploring-manual-vectorization-for-sph">#</a>
+</h1>
+<p>SPH is a continuum particle method that is often used for simulations. Typically, the most time consuming part of codes
+that aim to perform SPH simulations, is finding the pairs of SPH particles that are within a fixed-cutoff of each other
+(the pair-search step from herein), and calculating the contribution to particles&rsquo; motion, due to its corresponding
+pair (the force calculation sweep step from herein). These steps can be combined together when organising the code,
+but it&rsquo;s useful to seperate them when needing to re-use the pair list.</p>
+<p>The pattern that the force calculation sweep looks like, can be illustrated with code (in C++) to calculate the
+rate-of-change of density due to the continuity equation (<code>drho/dt = div(v)</code>):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> k <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; k <span style="color:#f92672">&lt;</span> num_pairs; <span style="color:#f92672">++</span>k) {
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> pair_i[k];
+</span></span><span style="display:flex;"><span>    j <span style="color:#f92672">=</span> pair_j[k];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    dvx <span style="color:#f92672">=</span> vx[i] <span style="color:#f92672">-</span> vx[j];
+</span></span><span style="display:flex;"><span>    dvy <span style="color:#f92672">=</span> vy[i] <span style="color:#f92672">-</span> vy[j];
+</span></span><span style="display:flex;"><span>    dvz <span style="color:#f92672">=</span> vz[i] <span style="color:#f92672">-</span> vz[j];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    vcc <span style="color:#f92672">=</span> mass<span style="color:#f92672">*</span>(dvx<span style="color:#f92672">*</span>dwdx[k] <span style="color:#f92672">+</span> dvy<span style="color:#f92672">*</span>dwdy[k] <span style="color:#f92672">+</span> dvz<span style="color:#f92672">*</span>dwdz[k]);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    drhodt[i] <span style="color:#f92672">+=</span> vcc;
+</span></span><span style="display:flex;"><span>    drhodt[j] <span style="color:#f92672">+=</span> vcc;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>where <code>v_</code> stores the velocity of each particle in <code>x</code>, <code>y</code>, and <code>z</code> directions; <code>drho_dt</code> stores the rate of change of
+density; and <code>dwd_x</code> stores the spatial gradient of the kernel function in the <code>x</code>, <code>y</code>, and <code>z</code> directions.</p>
+<p>This pattern is not automatically vectorized by compilers, due to the non-sequential memory access pattern in the
+algorithm. Consequently, I wanted to invetigate manually vectorizing this loop, to see if I could reduce run times.</p>
+<h2 id="hardware">
+  Hardware
+  <a class="anchor" href="#hardware">#</a>
+</h2>
+<p>Everything on this page is run on the following platform:</p>
+<ul>
+<li>Cluster with
+<ul>
+<li>Xeon Gold 6342 CPU (Icelake)</li>
+<li>CentOS 7</li>
+</ul>
+</li>
+</ul>
+<p>The <code>g++</code> compiler is used here (version 9.4.0).</p>
+<h2 id="basic-vectorization">
+  Basic Vectorization
+  <a class="anchor" href="#basic-vectorization">#</a>
+</h2>
+<p>x86 CPUs have a long list of assembly instructions that can be accessed in C/C++ via 
+  <a href="https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html">Intel&rsquo;s SIMD Intrinsics</a>.
+A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array
+(from herein, ABC addition):</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_base_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span>) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; <span style="color:#f92672">++</span>i) {
+</span></span><span style="display:flex;"><span>        c[i] <span style="color:#f92672">=</span> a[i] <span style="color:#f92672">+</span> b[i];
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">
+  Vectorizing the ABC function with 128-bit vectors (SSE instructions)
+  <a class="anchor" href="#vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">#</a>
+</h3>
+<p>This function, manually vectorized, looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 128bit width (SSE)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_128_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> c) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> v1 <span style="color:#f92672">=</span> _mm_loadu_ps(<span style="color:#f92672">&amp;</span>a[i]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> v2 <span style="color:#f92672">=</span> _mm_loadu_ps(<span style="color:#f92672">&amp;</span>b[i]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> res <span style="color:#f92672">=</span> _mm_add_ps(v1, v2);
+</span></span><span style="display:flex;"><span>        _mm_storeu_ps(<span style="color:#f92672">&amp;</span>c[i], res);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Note that this requires <code>#include &lt;immintrin.h&gt;</code> to make use of the types and functions.</p>
+<p>The <code>_mm_loadu_ps</code> function name can be broken down as:</p>
+<ul>
+<li><code>mm</code>: MultiMedia (Intel instructions intended for media). <code>mm</code> alone, usually indicates 128-bit width vectors.</li>
+<li><code>loadu</code>: Load data into SIMD vectors. This is specifically for &ldquo;unaligned&rdquo; data. More on this later.</li>
+<li><code>ps</code>: Packed Single precision data.</li>
+</ul>
+<p>Hence, this function loads single precision floats from a <code>float</code> pointer/array, to a packed SIMD single precision
+vector. This load operation takes the supplied pointer, and loads the next 4 elements following the address. It knows to
+load 4 elements, as single precision data is 32 bits. Loading 4 elements at a time, is the reason why the loop counter
+is incremented by 4 every iteration.</p>
+<p><code>_mm_add_ps</code> is part of the same MultiMedia extensions, and works with single precision floats, but performs an
+add operation on two 128-bit vectors. The add operation will operate on each element on each vector.</p>
+<p><code>_mm_storeu_ps</code> takes the <code>res</code> vector, and places back at the position specified by the supplied pointer (in
+this case, <code>&amp;c[i]</code>).</p>
+<p><code>__m128</code> is the 128-bit wide vector for single precision floating point numbers.</p>
+<p>The double precision version looks similar:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 128bit width (SSE)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_128_dbl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> c) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">2</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> v1 <span style="color:#f92672">=</span> _mm_loadu_pd(<span style="color:#f92672">&amp;</span>a[i]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> v2 <span style="color:#f92672">=</span> _mm_loadu_pd(<span style="color:#f92672">&amp;</span>b[i]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> res <span style="color:#f92672">=</span> _mm_add_pd(v1, v2);
+</span></span><span style="display:flex;"><span>        _mm_storeu_pd(<span style="color:#f92672">&amp;</span>c[i], res);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>There are 3 main differences in this version. Two of them are that <code>ps</code> is replaced by <code>pd</code> everywhere, and <code>d</code> is added
+to the end of the <code>__m128</code> types. These ensure that the equivalent functions and types for double precision floating
+point numbers are used. The 3rd change is that the loop counter is incremented by two instead of 4 every iteration. This
+is because double precision floating point data is stored using 64 bits, so only two of them can fit into an 128-bit
+SIMD vector.</p>
+<h3 id="vectorizing-the-abc-function-with-256-bit-vectors-avx-instructions">
+  Vectorizing the ABC function with 256-bit vectors (AVX instructions)
+  <a class="anchor" href="#vectorizing-the-abc-function-with-256-bit-vectors-avx-instructions">#</a>
+</h3>
+<p>The AVX instruction set adds new instructions to the collection of SIMD instructions, as well as allowing for 256-bit
+vectors. For this example, the code looks pretty similar. The single precision code looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 256bit width (AVX)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_256_sgl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> c) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">8</span>) {
+</span></span><span style="display:flex;"><span>        __m256 v1 <span style="color:#f92672">=</span> _mm256_loadu_ps(<span style="color:#f92672">&amp;</span>a[i]);
+</span></span><span style="display:flex;"><span>        __m256 v2 <span style="color:#f92672">=</span> _mm256_loadu_ps(<span style="color:#f92672">&amp;</span>b[i]);
+</span></span><span style="display:flex;"><span>        __m256 res <span style="color:#f92672">=</span> _mm256_add_ps(v1, v2);
+</span></span><span style="display:flex;"><span>        _mm256_storeu_ps(<span style="color:#f92672">&amp;</span>c[i], res);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>Where <code>mm</code> has been changed to <code>mm256</code>, to indicate these instructions are part of the 256-bit wide vector instructions,
+and the incrememnt has been doubled from 4 to 8, due to the doubling in width of the vectors. The same changes are true
+for the double precision version:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#75715e">// 256bit width (AVX)
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">abc_256_dbl</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> c) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
+</span></span><span style="display:flex;"><span>        __m256d v1 <span style="color:#f92672">=</span> _mm256_loadu_pd(<span style="color:#f92672">&amp;</span>a[i]);
+</span></span><span style="display:flex;"><span>        __m256d v2 <span style="color:#f92672">=</span> _mm256_loadu_pd(<span style="color:#f92672">&amp;</span>b[i]);
+</span></span><span style="display:flex;"><span>        __m256d res <span style="color:#f92672">=</span> _mm256_add_pd(v1, v2);
+</span></span><span style="display:flex;"><span>        _mm256_storeu_pd(<span style="color:#f92672">&amp;</span>c[i], res);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">
+  Performance of the SINGLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)
+  <a class="anchor" href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">#</a>
+</h3>
+<p>Here, I make use of 
+  <a href="https://github.com/google/benchmark">Google&rsquo;s benchmark tool</a>. Each array, <code>a</code>, <code>b</code>, and <code>c</code>, are
+between 4,096 and 16,777,216 elements long. The program compilation command:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx2 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+</span></span></code></pre></div><p>First, the single precision data and using the benchmark comparison tool:</p>
+<pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_128_sgl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_128_sgl]/4096        -0.5372       -0.5372         12619          5841         12590          5827
+[abc_base_sgl vs. abc_128_sgl]/32768       -0.5164       -0.5164        100548         48628        100314         48514
+[abc_base_sgl vs. abc_128_sgl]/262144      -0.5091       -0.5093        802916        394148        801042        393099
+[abc_base_sgl vs. abc_128_sgl]/2097152     -0.5027       -0.5027       6484863       3225174       6469666       3217643
+[abc_base_sgl vs. abc_128_sgl]/16777216    -0.5172       -0.5172      54029226      26084896      53902545      26023999
+OVERALL_GEOMEAN                            -0.5166       -0.5167             0             0             0             0
+</code></pre><p>In this results, the &ldquo;Old&rdquo; is the non-manually vectorized loop, and the &ldquo;New&rdquo; is the vectorized loop. The comparison
+shows at least (1-0.5166)^-1 = 2x speedup by manually vectorization for all array sizes tested here! To compare the manually
+vectorized code to compiler&rsquo;s automatic vectorization, we can compile the code again with:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+</span></span></code></pre></div><p>which</p>
+<ul>
+<li>replaces <code>-mavx2</code> with <code>-msse</code>, enabling only 128-bit wide vectors and SSE instructions,</li>
+<li>add <code>-O2</code>, which enables level 2 compiler optimisations, and</li>
+<li>add <code>-ftree-vectorize</code>, which enables automatic vectorization of loops.</li>
+</ul>
+<p>These options will make the code faster through compiler optimisations, which should benefit both the original base code
+and the manually vectorized code, but they will also enable automatic vectorization on the original loop only.
+Comparing the results performance of the now automatically vectorized function (<code>abc_base_sgl</code>), with the manually
+vectorized function (<code>abc_128_sgl</code>), I get:</p>
+<pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_128_sgl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_128_sgl]/4096        -0.0001       +0.0002           630           630           629           629
+[abc_base_sgl vs. abc_128_sgl]/32768       -0.0021       -0.0021          6345          6332          6330          6317
+[abc_base_sgl vs. abc_128_sgl]/262144      +0.0162       +0.0163        104701        106392        104437        106144
+[abc_base_sgl vs. abc_128_sgl]/2097152     +0.0023       +0.0027        908528        910590        906019        908466
+[abc_base_sgl vs. abc_128_sgl]/16777216    +0.0225       +0.0230      14303786      14625654      14263831      14591516
+OVERALL_GEOMEAN                            +0.0077       +0.0080             0             0             0             0
+</code></pre><p>which shows that at worst, the manually vectorized code is approx. 2% slower than the automatically vectorized loop.</p>
+<h3 id="performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">
+  Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)
+  <a class="anchor" href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">#</a>
+</h3>
+<p>Using the same test method as the 128-bit version, using no compiler optimisations, I get:</p>
+<pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_256_sgl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------ -----------------------------------------------------------------------------
+[abc_base_sgl vs. abc_256_sgl]/4096        -0.7394       -0.7395         12390          3229         12361          3221
+[abc_base_sgl vs. abc_256_sgl]/32768       -0.7276       -0.7277         99812         27192         99579         27118
+[abc_base_sgl vs. abc_256_sgl]/262144      -0.7242       -0.7243        802667        221387        800794        220789
+[abc_base_sgl vs. abc_256_sgl]/2097152     -0.7151       -0.7152       6437792       1834148       6422769       1829137
+[abc_base_sgl vs. abc_256_sgl]/16777216    -0.6711       -0.6713      53525278      17602131      53399838      17553344
+OVERALL_GEOMEAN                            -0.7164       -0.7165             0             0             0             0
+</code></pre><p>Which shows a further speedup over the 128-bit version. Over the base version, the speedup is approximately
+(1-0.7164)^-1 = 3.5x. You may notice that the speedup obtained decreases slightly with the size of test, which I suspect
+is due to the size of cache being used on the CPU. The 4,096 element test (4096 elements * 4 bytes * 2 arrays = ~33kB),
+is enough to sit within L1 cache. The next test moves to L2 cache as 32,768 elements * 4 bytes * 2 arrays = ~262kB moves
+to L2 unified cache. The next test (2,097,152 elements * 4 bytes * 2 arrays = ~16.8MB) must move to L3 unified cache,
+and the final test (16, 777, 216 * 4 bytes * 2 arrays = ~134MB) must go to RAM. This behaviour isn&rsquo;t observed with
+128-bit width registers, as the smaller vectors means less data needing to be fetched per transaction.</p>
+<p>The minimum speedup is ~3x, and the best is ~3.8x - neither of which is 2x that observed with the 128-bit vectors.</p>
+<table>
+<thead>
+<tr>
+<th>Memory type</th>
+<th>Capacity</th>
+<th>Capacity (single precision elements)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1 cache</td>
+<td>48KiB</td>
+<td>12,288</td>
+</tr>
+<tr>
+<td>L2 cache (unified)</td>
+<td>1280KiB</td>
+<td>327,680</td>
+</tr>
+<tr>
+<td>L3 cache (unified)</td>
+<td>36864KiB</td>
+<td>9,437,184</td>
+</tr>
+<tr>
+<td>RAM</td>
+<td>500GiB</td>
+<td>lots</td>
+</tr>
+</tbody>
+</table>
+<p>Confirming similarity of manual vectorization to automatic vectorization:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -mavx -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
+</span></span></code></pre></div><pre tabindex="0"><code>Comparing abc_base_sgl (from ./abc.x) to abc_256_sgl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_sgl vs. abc_256_sgl]/4096        +0.0010       +0.0012           633           633           631           632
+[abc_base_sgl vs. abc_256_sgl]/32768       +0.0012       +0.0016          6097          6104          6080          6090
+[abc_base_sgl vs. abc_256_sgl]/262144      +0.0009       +0.0013        105703        105800        105417        105551
+[abc_base_sgl vs. abc_256_sgl]/2097152     -0.0020       -0.0016        910727        908903        908205        906771
+[abc_base_sgl vs. abc_256_sgl]/16777216    +0.0281       +0.0286      14356772      14760474      14316874      14725833
+OVERALL_GEOMEAN                            +0.0058       +0.0062             0             0             0             0
+</code></pre><p>I see a similarly small variation in performance between the the automatically vectorized base function and the
+manually vectorized version.</p>
+<p>The code shown here achieves far less than ideal speedup e.g., ~2x achieved for 128-bit vectors, when 4x is ideal; and
+~3.5x achieved for 256-bit vectors, when 8x is ideal. I have yet to understand the details of the mechanism behind this,
+but I think it is due to memory latency and bandwidth.</p>
+<h3 id="performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">
+  Performance of the DOUBLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)
+  <a class="anchor" href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">#</a>
+</h3>
+<p>Using the compilation command with no compiler options:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread
+</span></span></code></pre></div><p>We get the results between the non-vectorized base function and the manually vectorized function:</p>
+<pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_128_dbl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_dbl vs. abc_128_dbl]/4096        -0.0514       -0.0516         12544         11899         12515         11869
+[abc_base_dbl vs. abc_128_dbl]/32768       -0.0230       -0.0230        101078         98749        100842         98518
+[abc_base_dbl vs. abc_128_dbl]/262144      -0.0429       -0.0431        812827        777929        810929        775969
+[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0112       -0.0116       6743898       6668566       6728128       6650022
+[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0746       -0.0748      56644964      52418793      56512720      52284069
+OVERALL_GEOMEAN                            -0.0409       -0.0411             0             0             0             0
+</code></pre><p>Which shows very modest improvement of approx 4%. Furthermore, only the largest test is determined by the comparison
+tool to be statistically significant. This is not surprising, given the results from the single precision manually
+vectorized code. The single precision code obtained a speedup of approximately 2x, despite being able to combine 4
+add operations into one. However, the double precision code can only combine 2 add operations, which is apparently
+insufficient to offset the memory latency/bandwidth.</p>
+<p>Checking the manually vectorized code against automatic vectorization:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2 -ftree-vectorize
+</span></span></code></pre></div><pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_128_dbl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_dbl vs. abc_128_dbl]/4096        +0.0233       +0.0237          1532          1568          1528          1565
+[abc_base_dbl vs. abc_128_dbl]/32768       -0.0313       -0.0309         13050         12641         13014         12612
+[abc_base_dbl vs. abc_128_dbl]/262144      +0.0126       +0.0128        212077        214751        211534        214245
+[abc_base_dbl vs. abc_128_dbl]/2097152     -0.0357       -0.0353       2723765       2626471       2716242       2620327
+[abc_base_dbl vs. abc_128_dbl]/16777216    -0.0097       -0.0095      30242092      29949972      30165349      29880070
+OVERALL_GEOMEAN                            -0.0084       -0.0081             0             0             0             0
+</code></pre><p>Which again, shows minimal difference between the manually and automatically vectorized code.</p>
+<h3 id="performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">
+  Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)
+  <a class="anchor" href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">#</a>
+</h3>
+<p>Comparison results:</p>
+<pre tabindex="0"><code>Comparing abc_base_dbl (from ./abc.x) to abc_256_dbl (from ./abc.x)
+Benchmark                                     Time           CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------
+[abc_base_dbl vs. abc_256_dbl]/4096        -0.4700       -0.4699         12537          6644         12506          6629
+[abc_base_dbl vs. abc_256_dbl]/32768       -0.4609       -0.4606        101533         54741        101257         54613
+[abc_base_dbl vs. abc_256_dbl]/262144      -0.4548       -0.4546        814199        443934        811995        442898
+[abc_base_dbl vs. abc_256_dbl]/2097152     -0.3759       -0.3758       6699499       4180956       6682306       4171199
+[abc_base_dbl vs. abc_256_dbl]/16777216    -0.3386       -0.3385      56663574      37476558      56520373      37388836
+OVERALL_GEOMEAN                            -0.4224       -0.4222             0             0             0             0
+</code></pre><p>Like the single precision 256-bit results, we can see a decreasing speedup as the tests increase in size. The best
+speedup achieved is ~1.9x and slowest is ~1.5x.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vec.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#exploring-manual-vectorization-for-sph">Exploring Manual Vectorization For SPH</a>
+      <ul>
+        <li><a href="#hardware">Hardware</a></li>
+        <li><a href="#basic-vectorization">Basic Vectorization</a>
+          <ul>
+            <li><a href="#vectorizing-the-abc-function-with-128-bit-vectors-sse-instructions">Vectorizing the ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#vectorizing-the-abc-function-with-256-bit-vectors-avx-instructions">Vectorizing the ABC function with 256-bit vectors (AVX instructions)</a></li>
+            <li><a href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">Performance of the SINGLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-single-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
+            <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-128-bit-vectors-sse-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-double-precision-manually-vectorized-abc-function-with-256-bit-vectors-avx-instructions">Performance of the DOUBLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
