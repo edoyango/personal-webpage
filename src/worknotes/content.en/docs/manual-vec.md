@@ -529,7 +529,7 @@ non-vectorized.
 
 One way to perform the force calculation sweep in SPH, is to use a double loop like:
 
-```cpp
+```cpp {style=tango,linenos=false}
 for (int i = 0; i < nelem-1; ++i) {
     for (int j = i < nelem; ++j) {
         // compare particle i and j
@@ -543,7 +543,7 @@ with the square of the number of particles. But it's useful for playing around w
 
 The base case we will use is this:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void sweep_base_sgl(const int nelem, float* a, float* b) {
     int k = 0
     for (int i = 0; i < nelem-1; i += 8) {
@@ -607,6 +607,10 @@ Now this code looks more complicated than the ABC addition example used earlier.
 6. `_mm_storeu_ps(&b[j], vbj);` takes the calculates vector and places it back in the location at `b[j]`.
 7. `_mm_storeu_ps(tmp, vdiff);` stores the calculated difference vector in a temporary array of 4 elements. This is so that the elements of the vector can be serially added to `b[i]`.
 8. `b[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];` serially adds the 4 elements of the difference vector to `b[i]`. This is equivalent to `b[i] += tmp;` in the base code.
+
+The 256-bit vector version can be obtained by replacing `__m128` types with `__m256`, and `_mm` function prefixes with 
+`_mm256`. Double precision versions are obtained by adding `d` to the vector types, and replacing `ps` with `pd` in the
+function suffixes.
 
 ### Performance of the manually vectorized sweep function:  with `-O3` optimizations
 
