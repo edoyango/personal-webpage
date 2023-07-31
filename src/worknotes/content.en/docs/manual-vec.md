@@ -204,7 +204,8 @@ Benchmark                                     Time        CPU    Time Old    Tim
 OVERALL_GEOMEAN                            +0.0077    +0.0080           0           0           0           0
 ```
 
-which shows that at worst, the manually vectorized code is approx. 2% slower than the automatically vectorized loop.
+which shows that at worst, the manually vectorized code is approx. 2% slower than the automatically vectorized loop and
+none of the differences are statistically significant.
 
 ### Performance of the SINGLE PRECISION manually vectorized ABC function with 256-bit vectors (AVX instructions)
 
@@ -262,7 +263,8 @@ manually vectorized version.
 
 The code shown here achieves far less than ideal speedup e.g., ~2x achieved for 128-bit vectors, when 4x is ideal; and
 ~3.5x achieved for 256-bit vectors, when 8x is ideal. I have yet to understand the details of the mechanism behind this,
-but I think it is due to memory latency and bandwidth.
+but I think there are many factors that go into this, like the ordering of instructions or whether the data is
+prefetched.
 
 ### Performance of the DOUBLE PRECISION manually vectorized ABC function with 128-bit vectors (SSE instructions)
 
@@ -513,8 +515,12 @@ vector instructions apparently require aligned memory to benefit form `-O2` opti
 | `abc_128_sgl` | 4.18x |
 | `abc_128_sgl_aligned` | 3.97x |
 | `abc_256_sgl` | 3.97x |
-| `abc_256_sgl_aligned` | 5.62x |
+| `abc_256_sgl_aligned` | 5.84x |
 | `abc_128_dbl` | 1.78x |
 | `abc_128_dbl_aligned` | 1.74x | 
 | `abc_256_dbl` | 1.92x |
 | `abc_256_dbl_aligned` | 2.6x |
+
+Note that the non-vectorized code also benefits from using aligned data, so the best speedups shown above, comparing 
+like-for-like i.e., aligned vectorized, with aligned non-vectorized; and non-aligned vectorized, with non-aligned 
+non-vectorized.
