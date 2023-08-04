@@ -9,7 +9,7 @@ One way to perform the force calculation sweep in SPH, is to use a double loop l
 
 ```cpp {style=tango,linenos=false}
 for (int i = 0; i < nelem-1; ++i) {
-    for (int j = i < nelem; ++j) {
+    for (int j = i+1; j < nelem; ++j) {
         // compare particle i and j
         // calculate forces
     }
