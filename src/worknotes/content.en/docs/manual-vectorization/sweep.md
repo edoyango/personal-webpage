@@ -53,6 +53,16 @@ Which explains that the compiler missed the vectorization of these loops because
 * the inner loop looping variable, `j`, is not constant for every loop.
 Hence, this is a meaningful candidate to vectorize.
 
+## Why aligned `store` and `load` functions can't be used
+
+Recalling what is required for the `store` and `load` functions to work: that the memory address being accessed must be
+aligned on vector-width boundaries. In the nested loop considered here, `i` starts at element 0, but `j` starts at 
+`i + 1`, which would be `j = 1` when `i = 0`. So while the address of `a[0]` would be aligned to a vector width, the
+next element, `a[1]`, would not be. Consequently, once the inner loop starts, the load/store functions would fail with a
+`segmentation fault` error.
+
+## Doing the Vectorization
+
 ###  Vectorizing the direct pair sweep with 128-bit vectors (SSE instructions)
 
 This attempt to vectorize the loop will turn the outer loop into a vector of all the same variable, and then the inner
@@ -154,3 +164,4 @@ OVERALL_GEOMEAN                             -0.7470    -0.7470            0     
 
 While not shown here, without the compiler optimisations, the 128-bit double precision manually vectorized code is
 up to 30% slower with 128-bit vectors, and at best, 1.62x faster with 256-bit vectors.
+
