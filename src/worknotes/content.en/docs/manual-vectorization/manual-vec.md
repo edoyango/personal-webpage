@@ -5,8 +5,6 @@ weight: 2
 
 # Vectorizing Array Addition
 
-## Basic Vectorization
-
 A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array
 (from herein, ABC addition):
 
@@ -315,21 +313,44 @@ for single precision data (replace `float` with `double` for the double precisio
 aligned, you must use the `std::aligned_alloc` function, which comes with the `cstdlib` header. Our allocation becomes:
 
 ```cpp {style=tango,linenos=false}
-const size_t size = sizeof(float) * nelem, alignment = 32;
+const size_t size = sizeof(float) * nelem, alignment = 64;
 float *a = static_cast<float*>(std::aligned_alloc(alignment, size));
 float *b = static_cast<float*>(std::aligned_alloc(alignment, size));
 float *c = static_cast<float*>(std::aligned_alloc(alignment, size));
 ```
 
-Replace `float` with double and `32` with `64`, and you have the double precision version. These arrays also have to be
-deallocated with `free` instead of `delete`.
+Replace `float` with double and you have the double precision version. These arrays also have to be deallocated with 
+`free` instead of `delete`.
 
-Then, you need to replace all instances of `storeu` and `loadu` with `store` and `load`.
+Aligning data ensures that your allocated memory begins at a memory address that is a multiple of a power of 2. This
+could matter for performance because of how caching works. When the CPU pulls data from the main memory (RAM) into
+cache, it does so in chunk sizes, which depend on the CPU. This chunk size is known as a "cache line", and is commonly
+64 bytes, but can also be 32 or 128 bytes as well. Cache lines that are pulled into cache, are aligned with cache line
+chunks. So, if your array begins and ends at a cache-line boundary, it mitigates the possibility of the CPU pulling in
+unneeded data to the cache. 
+
+Another reason, more relevant to vectorization, is that when the program is loading or storing data from/to data that is
+aligned to vector register widths, the `store` and `load` functions can be used. `store` and `load` are faster than 
+their unaligned equivalents, `storeu` and `loadu`, as they do not need to do extra work to check for alignment.
+
+Alligned memory may not be useful when allocating lots of small bits of information e.g., allocating 4 2-element arrays
+that are aligned on 64-byte boundaries will have them look like:
+
+```
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+|a1|a2|  |  |  |  |  |  |b1|b2|  |  |  |  |  |  |c1|c2|  |  |  |  |  |  |d1|d2|  |  |  |  |  |  |
+|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|--|
+```
+
+where each block is an 8-byte element. Aligning these 4 two-element double arrays on 64-byte boundaries causes them to 
+be spread out in memory. This could be undesirable as your program might use more memory, and they would be pulled into 
+the cache in seperate cache lines - meaning your program may run slower between accesses of the arrays.
 
 ### Performance of aligned vs unaligned data for SIMD instructions
 
 The results below compare run times between the unaligned and aligned versions of each code for each of the datatypes
-and vector sizes.
+and vector sizes. These tests use the `std::aligned_alloc` to align the arrays to 64-byte boundaries, and all `loadu`
+and `storeu` functions are swapped with `load` and `store`
 
 #### Aligned memory: single precision 128-bit
 
@@ -482,3 +503,20 @@ vector instructions apparently require aligned memory to benefit form `-O2` opti
 Note that the non-vectorized code also benefits from using aligned data, so the best speedups shown above, comparing 
 like-for-like i.e., aligned vectorized, with aligned non-vectorized; and non-aligned vectorized, with non-aligned 
 non-vectorized.
+
+## Conclusion
+
+Hopefully it's clear here how manual vectorization works. The main takeaways are:
+
+* `_mm_storeu_xx` and `_mm_loadu_xx` are used to load contiguous 128-bit chunks into vector registers (`xx` is `pd` or
+`ps` for floating point data)
+    * 256-bit and 512-bit equivalents use the `_mm256_` and `_mm512_` prefix instead of `_mm_`.
+* If the data is aligned i.e., allocated with `std::aligned_alloc`, or with the `alignas` keyword, `storeu` and `loadu`
+can be replaced with `store` and `load` respectively.
+    * I demonstrate a meaningful performance gain when using aligned memory with manual vectorization
+    * In later pages, I'll show an example where aligned array allocation is unsuitable
+* Once loaded, vectors are added with `_mm_add_xx` function.
+    * While not shown here, there are equivalent functions for subtraction (`sub`), multiplication `mul`, division
+    (`div`), min/max (`min`/`max`) and others.
+* For the array addition example used here, it's not *too complicated* to achieve the same performance as the compilers
+auto-vectorization (assuming other compiler optimisations as used in tandem).
