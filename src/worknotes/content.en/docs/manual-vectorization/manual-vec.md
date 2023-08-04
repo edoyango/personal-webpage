@@ -18,6 +18,8 @@ void abc_base_sgl(const int nelem, float* a, float* b, float*) {
 
 In the benchmarking code, the arrays are created with `new`.
 
+## Doing the Vectorization
+
 ### Vectorizing the ABC function with 128-bit vectors (SSE instructions)
 
 This function, manually vectorized, looks like:
