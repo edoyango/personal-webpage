@@ -1,5 +1,5 @@
 ---
 weight: 1
 bookCollapseSection: true
-title: Useful code snippets
+title: Investigating Manual Vectorization for SPH
 ---
