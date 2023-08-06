@@ -118,6 +118,9 @@ greater the closer the data is to the CPU core.
 
 ## Double precision, SSE instructions (Didn't end up being faster)
 
+I found this code from the same source above, and it was *claimed* to be faster. Unfortunately, that didn't happen for
+me, perhaps due to the newer CPU and compiler being used. However, it's included here for future reference anyway. 
+
 This algorithm tricks the compiler to produce optimal code. I don't understand it, but will explain the specific
 functions used.
 
@@ -222,3 +225,5 @@ Benchmark                                               Time       CPU    Time O
 [reduce_128_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0186   -0.0186   108369477   106349711   108088106   106080057
 OVERALL_GEOMEAN                                      +0.0755   +0.0754           0           0           0           0
 ```
+
+Performance appears to be worse than the base case!
