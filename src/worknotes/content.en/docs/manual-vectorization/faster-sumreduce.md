@@ -18,7 +18,7 @@ instructions.
 After loading the vector `va`, a new vector is created using `_mm_movehdup_ps`, using `a` as an input. This function
 duplicates the second and fourth elements, and duplicates them to one element lower.
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128 va = _mm_set_ps(a0, a1, a2, a3);
 
 __m128 shuf = _mm_movehdup_ps(va);
@@ -28,7 +28,7 @@ __m128 shuf = _mm_movehdup_ps(va);
 
 The resultant vector is then added back to `va`:
 
-```cpp
+```cpp {style=tango,linenos=false}
 __m128 sums = _mm_add_ps(va, shuf);
 
 // sums = [a0+a1, a1+a1, a2+a3, a3+a3]
@@ -37,7 +37,7 @@ __m128 sums = _mm_add_ps(va, shuf);
 `shuf` and `sums` are combined together with `_mm_movehl_ps`. This function replaces the lower two elements of the first
 input vector, with the upper two elements of the second vector.
 
-```cpp
+```cpp {style=tango,linenos=false}
 shuf = _mm_movehl_ps(shuf, sums);
 
 // shuf = [sums2, sum3, shuf2, shuf3]
@@ -47,7 +47,7 @@ shuf = _mm_movehl_ps(shuf, sums);
 We finally add the lowermost element of `shuf` and `sums` to get the reduced sum in the lowermost element of the `sums`
 vector, and the remaing elements can be ignored.
 
-```cpp
+```cpp {style=tango,linenos=false}
 sums = _mm_add_ss(sums, shuf);
 
 // sums = [sums0+shuf0, sums1, sums2, sums3]
@@ -56,7 +56,7 @@ sums = _mm_add_ss(sums, shuf);
 
 Implemented into our previous example:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_128_sgl_SSE3(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -78,13 +78,13 @@ void reduce_128_sgl_SSE3(const int nelem, float* a, float* b) {
 
 Compilation command:
 
-```
+```bash {style=tango,linenos=false}
 g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std=c++17 -O2
 ```
 
 Comparison with base case:
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_sgl (from ./reduce.x) to reduce_128_sgl_SSE3 (from ./reduce.x)
 Benchmark                                                Time       CPU   Time Old   Time New    CPU Old    CPU New
 -------------------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ OVERALL_GEOMEAN                                       -0.6361   -0.6361         
 
 Comparison with horizontal add strategy:
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_128_sgl (from ./reduce.x) to reduce_128_sgl_SSE3 (from ./reduce.x)
 Benchmark                                               Time       CPU   Time Old   Time New    CPU Old    CPU New
 ------------------------------------------------------------------------------------------------------------------
@@ -121,7 +121,7 @@ other example, performance gains are greater, the closer the data is to the CPU 
 This algorithm tricks the compiler to produce optimal code. I don't understand it, but will explain the specific
 functions used.
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128d va = _mm_set_pd(a0, a1);
 
 __m128 undef = _mm_undefined_ps();
@@ -132,7 +132,7 @@ __m128 undef = _mm_undefined_ps();
 This function call simply creates a 128-bit *single precision* vector with undefined values. Explicitly saying the
 vector is undefined apparently helps the compiler optimise the code better.
 
-```cpp
+```cpp {style=tango,linenos=false}
 __m128 shuftmp = _mm_movehl_ps(undef, _mm_castpd_ps(va));
 
 // _mm_castpd_ps(va) = [a0, a0.5, a1, a1.5]
@@ -151,7 +151,7 @@ for double precision data. What happens here is:
 This effectively moves the 2nd element of `va` into the first place of `undef`, despite not having an equivalent
 `movehl` function for double precision. This will be converted back into a double precision vector next.
 
-```cpp
+```cpp {style=tango,linenos=false}
 __m128d shuf = _mm_castps_pd(shuftmp)
 
 // shuf = [a1, ?]
@@ -159,7 +159,7 @@ __m128d shuf = _mm_castps_pd(shuftmp)
 
 `_mm_castps_pd` converts `shuftmp` back into a double precision vector, which is saved as `shuf`.
 
-```cpp
+```cpp {style=tango,linenos=false}
 va = _mm_add_sd(va, shuf)
 
 // va = [a0+a1, ?]
@@ -167,7 +167,7 @@ va = _mm_add_sd(va, shuf)
 
 which has the reduced sum in the lower value of `va`. Implemented into the previous example:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_128_sgl_SSE2(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -189,13 +189,13 @@ void reduce_128_sgl_SSE2(const int nelem, float* a, float* b) {
 
 Compilation command:
 
-```
+```bash {style=tango,linenos=false}
 g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std=c++17 -O2
 ```
 
 Comparison with base case:
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_dbl (from ./reduce.x) to reduce_128_dbl_SSE2 (from ./reduce.x)
 Comparing reduce_base_sgl (from reduce_base_sgl.json) to reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3.json)
 Benchmark                                                Time       CPU   Time Old   Time New    CPU Old    CPU New
@@ -211,7 +211,7 @@ OVERALL_GEOMEAN                                       -0.4997   -0.4996         
 
 Comparison with horizontal add strategy:
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_dbl (from reduce_base_dbl.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2.json)
 Benchmark                                                Time       CPU    Time Old    Time New     CPU Old     CPU New
 -----------------------------------------------------------------------------------------------------------------------
