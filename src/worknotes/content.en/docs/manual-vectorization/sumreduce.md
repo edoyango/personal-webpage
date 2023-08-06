@@ -16,7 +16,7 @@ with 128-bit and 256-bit vectors the approach is different for each vector width
 
 We'll assume a 1D array that has every 8 elements reduced into an element of another array:
 
-```cpp
+```cpp {style=tango,linenos=false} 
 void reduce_base_sgl(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -35,7 +35,7 @@ The loop tries to mimick cases where many small sum-reductions are performed.
 In the first demonstration of vectorizing the sumreduction loop above, we'll make use of a few new
 functions:
 
-```cpp
+```cpp {style=tango,linenos=false}
 __m128 v = _mm_set_ss(val);      // creates a vector where the lowermost element is val, and the rest are 0
 __m128 v = _mm_add_ss(a, b);     // adds only the lowermost elements of a and b. The rest are same as a.
 __m128 v = _mm_hadd_ps(a, b);    // performs a "horizontal" add (see explanation below)
@@ -47,7 +47,7 @@ adds pairs from each half of both vectors. The first element will be the sum of 
 first vector, `a2+a3`. The second element will be the first half of the first vector, `a0+a1`. The third
 and fourth elements will be the same, but for the second input vector. 
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128 a = _mm_set_ps(a0, a1, a2, a3);   
 // __m128 b = _mm_set_ps(b0, b1, b2, b3);
 
@@ -59,7 +59,7 @@ _mm128 v = _mm_hadd_ps(a, b);
 Because `hadd` adds two vectors in this manner, it can be executed twice in a row to sum all elements of
 an `__m128` vector:
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128 a = _mm_set_ps(a0, a1, a2, a3);
 
 // first horizontal add
@@ -77,7 +77,7 @@ v = _mm_hadd_ps(v, v);
 The double `hadd` functions reduces the number of sum operations by half, compared to a serial sum of all the elements
 int the vector. Implementing these new functions to vectorize our loop:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_128_sgl(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -104,13 +104,13 @@ doesn't reduce the number of additions. Consequently, there shouldn't be much di
 
 Compilation command (using the Google benchmark framework):
 
-```bash
+```bash {style=tango,linenos=false}
 g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std=c++17 -O2
 ```
 
 #### Single precision
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_128_sgl (from ./reduce_128_sgl.json)
 Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
 --------------------------------------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ The tests that fit on L1-L3 cache benefit the most with about 2.2x speedup. The 
 
 #### Double Precision
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_128_dbl (from ./reduce_128_dbl.json)
 Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
 ------------------------------------------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ desktop CPU (Intel i7-10750H).
 256-bit vectors double the vector width before. This means 8 elements in a single precisoin (`__m128`) vector, and 4
 elements in a double precision vector. For single precision data, the `_mm256_hadd_ps` function works like:
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
 // __m128 b = _mm_set_ps(b0, b1, b2, b3, b4, b5, b6, b7);
 
@@ -166,7 +166,7 @@ _mm256 v = _mm256_hadd_ps(a, b);
 
 If we were to apply this three times, in an attempt to apply the `hadd` strategy to perform the reduction:
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
 
 // first horizontal add
@@ -194,7 +194,7 @@ in a row would not be possible to perform our reduction, at least for 8 elements
 A similar problem occurs when performing two consecutive `hadd` operations on double precision data. The
 `_mm256_hadd_pd` function works like:
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128d a = _mm256_set_pd(a0, a1, a2, a3);
 // __m128d b = _mm256_set_pd(b0, b1, b2, b3);
 
@@ -205,7 +205,7 @@ _mm256 v = _mm256_hadd_pd(a, b);
 
 And so trying to apply this twice for the purposes of reduction:
 
-```cpp
+```cpp {style=tango,linenos=false}
 // __m128d a = _mm256_set_pd(a0, a1, a2, a3);
 
 // first horizontal add
@@ -227,7 +227,7 @@ halves.
 `__m256` vectors can be reduced by first splitting the vector into two `__m128` vectors, adding the two halves together
 and then performing the 128-bit vector reduction shown previously. For example, for single precision:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_256_sgl(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -264,13 +264,13 @@ like when performing the reduction with 128-bit double precision vectors.
 
 Compilation command (using the Google benchmark framework):
 
-```bash
+```bash {style=tango,linenos=false} 
 g++ -o reduce.x reduce.cpp -mavx -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std=c++17 -O2
 ```
 
 #### Single precision
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_256_sgl (from ./reduce_256_sgl.json)
 Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
 --------------------------------------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ equivalent 128-bit vector version.
 
 #### Double precision
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_256_dbl (from ./reduce_256_dbl.json)
 Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
 ------------------------------------------------------------------------------------------------------------------
