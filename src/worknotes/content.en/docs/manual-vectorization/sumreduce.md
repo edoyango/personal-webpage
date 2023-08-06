@@ -48,8 +48,8 @@ first vector, `a2+a3`. The second element will be the first half of the first ve
 and fourth elements will be the same, but for the second input vector. 
 
 ```cpp
-// float a[4] {a0, a1, a2, a3};   
-// float b[4] {b0, b1, b2, b3};
+// __m128 a = _mm_set_ps(a0, a1, a2, a3);   
+// __m128 b = _mm_set_ps(b0, b1, b2, b3);
 
 _mm128 v = _mm_hadd_ps(a, b);
 
@@ -60,7 +60,7 @@ Because `hadd` adds two vectors in this manner, it can be executed twice in a ro
 an `__m128` vector:
 
 ```cpp
-// float a[4] {a0, a1, a2, a3};
+// __m128 a = _mm_set_ps(a0, a1, a2, a3);
 
 // first horizontal add
 _mm128 v = _mm_hadd_ps(a, a);
@@ -111,16 +111,16 @@ g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/s
 #### Single precision
 
 ```
-Comparing reduce_base_sgl (from ./reduce.x) to reduce_128_sgl (from ./reduce.x)
-Benchmark                                            Time        CPU     Time Old     Time New      CPU Old    CPU New
-----------------------------------------------------------------------------------------------------------------------
-[reduce_base_sgl vs. reduce_128_sgl]/4096         -0.5562    -0.5562         2810         1247         2802       1244
-[reduce_base_sgl vs. reduce_128_sgl]/32768        -0.5555    -0.5555        22439         9973        22383       9950
-[reduce_base_sgl vs. reduce_128_sgl]/262144       -0.5546    -0.5545       179534        79961       179048      79775
-[reduce_base_sgl vs. reduce_128_sgl]/2097152      -0.5547    -0.5545      1437233       640012      1433349     638519
-[reduce_base_sgl vs. reduce_128_sgl]/16777216     -0.4209    -0.4207     12413446      7188664     12379323    7171888
-[reduce_base_sgl vs. reduce_128_sgl]/134217728    -0.3994    -0.3993    100100389     60117657     99844433    9977347
-OVERALL_GEOMEAN                                   -0.6329    -0.6328            0            0            0          0
+Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_128_sgl (from ./reduce_128_sgl.json)
+Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
+--------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_128_sgl]/4096        -0.2329   -0.2329       1625       1247       1621       1243
+[reduce_base_sgl vs. reduce_128_sgl]/32768       -0.2644   -0.2644      13565       9978      13531       9953
+[reduce_base_sgl vs. reduce_128_sgl]/262144      -0.2627   -0.2625     108413      79935     108135      79748
+[reduce_base_sgl vs. reduce_128_sgl]/2097152     -0.2669   -0.2669     872616     639709     870408     638091
+[reduce_base_sgl vs. reduce_128_sgl]/16777216    -0.1476   -0.1478    8405297    7164522    8385642    7146262
+[reduce_base_sgl vs. reduce_128_sgl]/134217728   -0.1198   -0.1197   68570641   60358462   68394712   60204987
+OVERALL_GEOMEAN                                  -0.2179   -0.2179          0          0          0          0
 ```
 
 The tests that fit on L1-L3 cache benefit the most with about 2.2x speedup. The largest test shows the worst speedup, at
@@ -130,16 +130,16 @@ The tests that fit on L1-L3 cache benefit the most with about 2.2x speedup. The 
 #### Double Precision
 
 ```
-Comparing reduce_base_dbl (from ./reduce.x) to reduce_128_dbl (from ./reduce.x)
-Benchmark                                            Time        CPU     Time Old     Time New      CPU Old    CPU New
-----------------------------------------------------------------------------------------------------------------------
-[reduce_base_dbl vs. reduce_128_dbl]/4096         -0.1113    -0.1109         1625         1444         1621       1441
-[reduce_base_dbl vs. reduce_128_dbl]/32768        -0.0930    -0.0926        13207        11979        13171      11951
-[reduce_base_dbl vs. reduce_128_dbl]/262144       -0.0288    -0.0285       110962       107761       110662     107510
-[reduce_base_dbl vs. reduce_128_dbl]/2097152      -0.0254    -0.0252      1072861      1045634      1070112    1043194
-[reduce_base_dbl vs. reduce_128_dbl]/16777216     -0.0052    -0.0051     13032581     12964964     12998883    2933011
-[reduce_base_dbl vs. reduce_128_dbl]/134217728    +0.0069    +0.0071    107110710    107847148    106838485    7594330
-OVERALL_GEOMEAN                                   -0.0447    -0.0444            0            0            0          0
+Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_128_dbl (from ./reduce_128_dbl.json)
+Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_dbl vs. reduce_128_dbl]/4096        -0.1052   -0.1050        1627        1456        1623        1452
+[reduce_base_dbl vs. reduce_128_dbl]/32768       -0.1106   -0.1106       13462       11973       13431       11945
+[reduce_base_dbl vs. reduce_128_dbl]/262144      -0.0369   -0.0370      112035      107906      111772      107633
+[reduce_base_dbl vs. reduce_128_dbl]/2097152     -0.0386   -0.0386      934021      898008      931648      895718
+[reduce_base_dbl vs. reduce_128_dbl]/16777216    +0.0122   +0.0122    12864721    13022105    12831738    12988742
+[reduce_base_dbl vs. reduce_128_dbl]/134217728   +0.0102   +0.0102   107276227   108369477   107002000   108088106
+OVERALL_GEOMEAN                                  -0.0461   -0.0461           0           0           0           0
 ```
 
 As expected, the performance difference is minimal, although there appears to be some meaningful improvements to the
@@ -156,8 +156,8 @@ desktop CPU (Intel i7-10750H).
 elements in a double precision vector. For single precision data, the `_mm256_hadd_ps` function works like:
 
 ```cpp
-// float a[8] {a0, a1, a2, a3, a4, a5, a6, a7};
-// float b[8] {b0, b1, b2, b3, b4, b5, b6, b7};
+// __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
+// __m128 b = _mm_set_ps(b0, b1, b2, b3, b4, b5, b6, b7);
 
 _mm256 v = _mm256_hadd_ps(a, b);
 
@@ -167,7 +167,7 @@ _mm256 v = _mm256_hadd_ps(a, b);
 If we were to apply this three times, in an attempt to apply the `hadd` strategy to perform the reduction:
 
 ```cpp
-// float a[8] {a0, a1, a2, a3, a4, a5, a6, a7};
+// __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
 
 // first horizontal add
 _mm256 v = _mm256_hadd_ps(a, a);
@@ -195,8 +195,8 @@ A similar problem occurs when performing two consecutive `hadd` operations on do
 `_mm256_hadd_pd` function works like:
 
 ```cpp
-// float a[4] {a0, a1, a2, a3};
-// float b[4] {b0, b1, b2, b3};
+// __m128d a = _mm256_set_pd(a0, a1, a2, a3);
+// __m128d b = _mm256_set_pd(b0, b1, b2, b3);
 
 _mm256 v = _mm256_hadd_pd(a, b);
 
@@ -206,7 +206,7 @@ _mm256 v = _mm256_hadd_pd(a, b);
 And so trying to apply this twice for the purposes of reduction:
 
 ```cpp
-// float a[4] {a0, a1, a2, a3};
+// __m128d a = _mm256_set_pd(a0, a1, a2, a3);
 
 // first horizontal add
 _mm256 v = _mm256_hadd_pd(a, a);
@@ -271,16 +271,16 @@ g++ -o reduce.x reduce.cpp -mavx -isystem benchmark/include -Lbenchmark/build/sr
 #### Single precision
 
 ```
-Comparing reduce_base_sgl (from ./reduce.x) to reduce_256_sgl (from ./reduce.x)
-Benchmark                                            Time        CPU    Time Old    Time New     CPU Old     CPU New
---------------------------------------------------------------------------------------------------------------------
-[reduce_base_sgl vs. reduce_256_sgl]/4096         -0.6599    -0.6598        2351         800        2345         798
-[reduce_base_sgl vs. reduce_256_sgl]/32768        -0.6597    -0.6596       18800        6398       18752        6383
-[reduce_base_sgl vs. reduce_256_sgl]/262144       -0.6538    -0.6538      150427       52078      150075       51955
-[reduce_base_sgl vs. reduce_256_sgl]/2097152      -0.6308    -0.6308     1217060      449307     1214213      448256
-[reduce_base_sgl vs. reduce_256_sgl]/16777216     -0.4012    -0.4011    10883815     6517219    10856018     6501927
-[reduce_base_sgl vs. reduce_256_sgl]/134217728    -0.3710    -0.3709    89385959    56219686    89156887    56087815
-OVERALL_GEOMEAN                                   -0.5810    -0.5810           0           0           0           0
+Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_256_sgl (from ./reduce_256_sgl.json)
+Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
+--------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_256_sgl]/4096        -0.5072   -0.5072       1625        801       1621        799
+[reduce_base_sgl vs. reduce_256_sgl]/32768       -0.5265   -0.5264      13565       6423      13531       6408
+[reduce_base_sgl vs. reduce_256_sgl]/262144      -0.5155   -0.5155     108413      52526     108135      52393
+[reduce_base_sgl vs. reduce_256_sgl]/2097152     -0.4869   -0.4868     872616     447734     870408     446687
+[reduce_base_sgl vs. reduce_256_sgl]/16777216    -0.2345   -0.2345    8405297    6434629    8385642    6419522
+[reduce_base_sgl vs. reduce_256_sgl]/134217728   -0.1776   -0.1776   68570641   56392320   68394712   56245917
+OVERALL_GEOMEAN                                  -0.4240   -0.4240          0          0          0          0
 ```
 
 Best speedup obtained is now ~2.9x and worst is ~1.6x. Given that for every 8 elements added, there are three addition
@@ -292,16 +292,16 @@ equivalent 128-bit vector version.
 #### Double precision
 
 ```
-Comparing reduce_base_dbl (from ./reduce.x) to reduce_256_dbl (from ./reduce.x)
-Benchmark                                            Time        CPU     Time Old     Time New      CPU Old      CPU New
-------------------------------------------------------------------------------------------------------------------------
-[reduce_base_dbl vs. reduce_256_dbl]/4096         -0.4205    -0.4205         1658          961         1655          959
-[reduce_base_dbl vs. reduce_256_dbl]/32768        -0.3905    -0.3904        13779         8398        13744         8378
-[reduce_base_dbl vs. reduce_256_dbl]/262144       -0.1923    -0.1922       113466        91645       113180        91431
-[reduce_base_dbl vs. reduce_256_dbl]/2097152      -0.1299    -0.1297      1037855       903028      1035202       900907
-[reduce_base_dbl vs. reduce_256_dbl]/16777216     -0.0097    -0.0094     12856464     12732138     12823510     12702366
-[reduce_base_dbl vs. reduce_256_dbl]/134217728    -0.0087    -0.0085    107383159    106447126    107107940    106198075
-OVERALL_GEOMEAN                                   -0.2097    -0.2095            0            0            0            0
+Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_256_dbl (from ./reduce_256_dbl.json)
+Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_dbl vs. reduce_256_dbl]/4096        -0.4083   -0.4083        1627         963        1623         960
+[reduce_base_dbl vs. reduce_256_dbl]/32768       -0.3764   -0.3765       13462        8395       13431        8374
+[reduce_base_dbl vs. reduce_256_dbl]/262144      -0.1858   -0.1857      112035       91225      111772       91011
+[reduce_base_dbl vs. reduce_256_dbl]/2097152     -0.1667   -0.1665      934021      778325      931648      776501
+[reduce_base_dbl vs. reduce_256_dbl]/16777216    -0.0118   -0.0116    12864721    12712606    12831738    12682778
+[reduce_base_dbl vs. reduce_256_dbl]/134217728   -0.0017   -0.0017   107276227   107096199   107002000   106821947
+OVERALL_GEOMEAN                                  -0.2079   -0.2079           0           0           0           0
 ```
 
 Here, the speedup is between ~1x and ~1.7x. The maximum speedup is significantly better than the equivalent for 128-bit
