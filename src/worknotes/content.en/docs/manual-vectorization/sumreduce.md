@@ -327,3 +327,5 @@ correspond with the upper end of the ranges.
 In contrast, double precision vectorization attempts with 128-bit vectors only achieved 1.1x at best, for problems
 that fit in cache, and did not obtain any speedup for tests that could only fit in RAM. The 256-bit vectorization
 attempt improved the upper end to 1.7x, but still failed to improve the speed for tests in RAM.
+
+Faster sum-reduction examples are shown on [this page](faster-sumreduce.md).
