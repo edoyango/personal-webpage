@@ -74,8 +74,9 @@ v = _mm_hadd_ps(v, v);
 //   = [a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1]
 ```
 
-The double `hadd` functions reduces the number of sum operations by half, compared to a serial sum of all the elements
-int the vector. Implementing these new functions to vectorize our loop:
+The double `hadd` functions results in 3 adds for every 4 elements (the two horizontal adds, and an add to the reduction
+variable), compared to 8 adds in the serial sum of all the elements in the vector. Implementing these new functions to 
+vectorize our loop:
 
 ```cpp {style=tango,linenos=false}
 void reduce_128_sgl(const int nelem, float* a, float* b) {
@@ -123,9 +124,9 @@ Benchmark                                           Time       CPU   Time Old   
 OVERALL_GEOMEAN                                  -0.2179   -0.2179          0          0          0          0
 ```
 
-The tests that fit on L1-L3 cache benefit the most with about 2.2x speedup. The largest test shows the worst speedup, at
- ~1.7x speedup. The ~2x speedup obtained in these tests are inline with expectations as the SIMD reduction shown here 
- only reduces adds by half.
+The tests that fit on L1-L3 cache benefit the most with about 1.3x speedup. The largest test shows the worst speedup, at
+ ~1.1x speedup. A 1.3x speedup is about in line with rough estimates, based on the ratios of adds per 8 elements
+ (8/6 = 1.33).
 
 #### Double Precision
 
@@ -152,7 +153,7 @@ desktop CPU (Intel i7-10750H).
 
 ### 256-bit vectorization (AVX)
 
-256-bit vectors double the vector width before. This means 8 elements in a single precisoin (`__m128`) vector, and 4
+256-bit vectors double the vector width before. This means 8 elements in a single precision (`__m128`) vector, and 4
 elements in a double precision vector. For single precision data, the `_mm256_hadd_ps` function works like:
 
 ```cpp {style=tango,linenos=false}
@@ -283,11 +284,11 @@ Benchmark                                           Time       CPU   Time Old   
 OVERALL_GEOMEAN                                  -0.4240   -0.4240          0          0          0          0
 ```
 
-Best speedup obtained is now ~2.9x and worst is ~1.6x. Given that for every 8 elements added, there are three addition
-operations (2 horizontal, 1 normal), a would hope to expect that this implementation would achieve around 8/3 ~= 2.7x
-speedup over the non-vectorized base version. The better performance for smaller problems might be because normal adds
-are cheaper than horizontal adds. The minimum speedup of ~1.6x is actually worse than that achieved by the 
-equivalent 128-bit vector version. 
+Best speedup obtained is now ~2.1x and worst is ~1.2x. Given that for every 8 elements added, there are 4 addition
+operations (2 horizontal, 1 normal, and 1 to update the reduction variable), you would expect that this implementation
+would achieve around (8)/4 ~= 2x. speedup over the non-vectorized base version. The better performance for smaller 
+problems might be because normal adds are cheaper than horizontal adds. The minimum speedup of ~1.6x is actually worse 
+than that achieved by the equivalent 128-bit vector version. 
 
 #### Double precision
 
@@ -321,8 +322,8 @@ correspond with the upper end of the ranges.
 
 |    |Single | Double |
 | --- | --- | --- |
-| 128-bit | 1.7x-2.2x | 1x-1.1x |
-| 256-bit | 1.6x-2.9x | 1x-1.7x |
+| 128-bit | 1.1x-1.3x | 1x-1.1x |
+| 256-bit | 1.2x-2.4x | 1x-1.7x |
 
 In contrast, double precision vectorization attempts with 128-bit vectors only achieved 1.1x at best, for problems
 that fit in cache, and did not obtain any speedup for tests that could only fit in RAM. The 256-bit vectorization
