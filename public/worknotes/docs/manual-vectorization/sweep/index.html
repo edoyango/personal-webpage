@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
+for (int i = 0; i &lt; nelem-1; &#43;&#43;i) { for (int j = i&#43;1; j &lt; nelem; &#43;&#43;j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Vectorizing A Simple Pair Sweep" />
+<meta property="og:description" content="Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
+for (int i = 0; i &lt; nelem-1; &#43;&#43;i) { for (int j = i&#43;1; j &lt; nelem; &#43;&#43;j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/manual-vectorization/sweep/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-08-04T17:15:42+10:00" />
+<title>Vectorizing A Simple Pair Sweep | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.d3c69b4ac6fb05842fd19ed75852dedda8f7a9749c62862dc0b47b19f5c8aebd.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="toggle" checked />
+    <label for="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="flex justify-between">
+      <a role="button" class="">Investigating Manual Vectorization for SPH</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/motivation/" class="">Motivation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/addition/" class="">Vectorizing Array Addition</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sumreduce/" class="">Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/" class="">Faster Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="active">Vectorizing A Simple Pair Sweep</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Vectorizing A Simple Pair Sweep</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vectorizing-a-simple-pair-sweep">Vectorizing A Simple Pair Sweep</a>
+      <ul>
+        <li><a href="#why-aligned-store-and-load-functions-cant-be-used">Why aligned <code>store</code> and <code>load</code> functions can&rsquo;t be used</a></li>
+        <li><a href="#doing-the-vectorization">Doing the Vectorization</a>
+          <ul>
+            <li><a href="#vectorizing-the-direct-pair-sweep-with-128-bit-vectors-sse-instructions">Vectorizing the direct pair sweep with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-manually-vectorized-sweep-function-with--o3-optimizations">Performance of the manually vectorized sweep function: with <code>-O3</code> optimizations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="vectorizing-a-simple-pair-sweep">
+  Vectorizing A Simple Pair Sweep
+  <a class="anchor" href="#vectorizing-a-simple-pair-sweep">#</a>
+</h1>
+<p>One way to perform the force calculation sweep in SPH, is to use a double loop like:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// compare particle i and j
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#8f5902;font-style:italic">// calculate forces
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales
+with the square of the number of particles. But it&rsquo;s useful for playing around with manual vectorization.</p>
+<p>The base case we will use is this:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">sweep_base_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">k</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">tmp</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-=</span> <span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p><code>i</code> is incremented by 8 to simplify vectorization. Swap out <code>float</code> with <code>double</code>, to get the double precision version.</p>
+<p>Important to note here, is that this loop cannot automatically be vectorized by the compiler. For example, if we compile
+our code with <code>-O3 -fopt-info-vec-missed</code>, <code>-O3</code> will try to vectorize the loop, and the other option will let you know
+when it cannot vectorize a given loop. At compilation, I get some important info in the output:</p>
+<pre tabindex="0"><code>sweep.cpp:51:27: missed: couldn&#39;t vectorize loop
+sweep.cpp:51:27: missed: not vectorized: multiple nested loops.
+sweep.cpp:51:27: missed: couldn&#39;t vectorize loop
+sweep.cpp:51:27: missed: not vectorized: inner-loop count not invariant.
+sweep.cpp:52:31: missed: couldn&#39;t vectorize loop
+</code></pre><p>Which explains that the compiler missed the vectorization of these loops because:</p>
+<ul>
+<li>the loops are nested, and</li>
+<li>the inner loop looping variable, <code>j</code>, is not constant for every loop.
+Hence, this is a meaningful candidate to vectorize.</li>
+</ul>
+<h2 id="why-aligned-store-and-load-functions-cant-be-used">
+  Why aligned <code>store</code> and <code>load</code> functions can&rsquo;t be used
+  <a class="anchor" href="#why-aligned-store-and-load-functions-cant-be-used">#</a>
+</h2>
+<p>Recalling what is required for the <code>store</code> and <code>load</code> functions to work: that the memory address being accessed must be
+aligned on vector-width boundaries. In the nested loop considered here, <code>i</code> starts at element 0, but <code>j</code> starts at
+<code>i + 1</code>, which would be <code>j = 1</code> when <code>i = 0</code>. So while the address of <code>a[0]</code> would be aligned to a vector width, the
+next element, <code>a[1]</code>, would not be. Consequently, once the inner loop starts, the load/store functions would fail with a
+<code>segmentation fault</code> error.</p>
+<h2 id="doing-the-vectorization">
+  Doing the Vectorization
+  <a class="anchor" href="#doing-the-vectorization">#</a>
+</h2>
+<h3 id="vectorizing-the-direct-pair-sweep-with-128-bit-vectors-sse-instructions">
+  Vectorizing the direct pair sweep with 128-bit vectors (SSE instructions)
+  <a class="anchor" href="#vectorizing-the-direct-pair-sweep-with-128-bit-vectors-sse-instructions">#</a>
+</h3>
+<p>This attempt to vectorize the loop will turn the outer loop into a vector of all the same variable, and then the inner
+loop will load multiple sequential elements to operate the outer-loop vector. This looks like:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">sweep_128_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">float</span> <span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vi</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set1_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vdiff</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_sub_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vi</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vj</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vbj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">vbj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_sub_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vbj</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdiff</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm_storeu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vbj</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm_storeu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdiff</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">tmp</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>Now this code looks more complicated than the ABC addition example used earlier.</p>
+<ol>
+<li><code>__m128 vi = _mm_set1_ps(a[i]);</code> is creating a 128-bit vector to hold 4 single precision elements. These elements are all initialized with the value at <code>a[i]</code>. This vector is used for the entire duration of the inner loop.</li>
+<li><code>__m128 vj = _mm_loadu_ps(&amp;a[j]);</code> loads the 4 following single precision elements at the location of <code>a[j]</code>.</li>
+<li><code>__m128 vdiff = _mm_sub_ps(vi, vj);</code> subtracts the <code>vj</code> vector from the <code>vi</code> vector and stores it in the <code>vdiff</code> vector. This is equivalent to the <code>tmp = a[i]-a[j];</code> step in the base code.</li>
+<li><code>__m128 vbj = _mm_loadu_ps(&amp;b[j]);</code> loads the 4 following elements at the location of <code>b[j]</code>. This is so that the <code>vdiff</code> vector can be subtracted.</li>
+<li><code>vbj = _mm_sub_ps(vbj, vdiff);</code> subtracts <code>vdiff</code> from <code>vbj</code>. This is equivalent to <code>b[j] -= tmp;</code> in the base code.</li>
+<li><code>_mm_storeu_ps(&amp;b[j], vbj);</code> takes the calculates vector and places it back in the location at <code>b[j]</code>.</li>
+<li><code>_mm_storeu_ps(tmp, vdiff);</code> stores the calculated difference vector in a temporary array of 4 elements. This is so that the elements of the vector can be serially added to <code>b[i]</code>.</li>
+<li><code>b[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];</code> serially adds the 4 elements of the difference vector to <code>b[i]</code>. This is equivalent to <code>b[i] += tmp;</code> in the base code.</li>
+</ol>
+<p>The 256-bit vector version can be obtained by replacing <code>__m128</code> types with <code>__m256</code>, and <code>_mm</code> function prefixes with
+<code>_mm256</code>. Double precision versions are obtained by adding <code>d</code> to the vector types, and replacing <code>ps</code> with <code>pd</code> in the
+function suffixes.</p>
+<h3 id="performance-of-the-manually-vectorized-sweep-function-with--o3-optimizations">
+  Performance of the manually vectorized sweep function: with <code>-O3</code> optimizations
+  <a class="anchor" href="#performance-of-the-manually-vectorized-sweep-function-with--o3-optimizations">#</a>
+</h3>
+<p>Here, compiler optimizations are used as it has been established that automatic vectorization doesn&rsquo;t work for this
+code, and these optimizations are needed to get the best out of the manual vectorization. The tests used here are much
+smaller due to the long duration of this sweep algorithm. At worst, the loaded arrays are stored within L2 cache.</p>
+<pre tabindex="0"><code>Comparing sweep_base_sgl (from ./sweep.x) to sweep_128_sgl (from ./sweep.x)
+Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_128_sgl]/4096     -0.7510    -0.7510      2839589      706938      2832949      705285
+[sweep_base_sgl vs. sweep_128_sgl]/8192     -0.7503    -0.7503     11420092     2851359     11393386     2844676
+[sweep_base_sgl vs. sweep_128_sgl]/16384    -0.7492    -0.7492     45814773    11488096     45707635    11461231
+[sweep_base_sgl vs. sweep_128_sgl]/32768    -0.7490    -0.7490    183477650    46046978    183048596    45938907
+OVERALL_GEOMEAN                             -0.7499    -0.7499            0           0            0           0
+</code></pre><p>The manual vectorization with the compiler optimizations are about 4x faster than the code without the manual
+vectorization for 128-bit vectors. The results are the same with or without aligned data, similar to the results from
+the ABC test with 128-bit vectors. Near-optimal speedup is gained for 256-bit vectors with a speedup of ~7.7x. These
+results are shown in the table below. Again, results are similar with aligned data.</p>
+<pre tabindex="0"><code>Comparing sweep_base_sgl (from ./sweep.x) to sweep_256_sgl (from ./sweep.x)
+Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_sgl]/4096     -0.8704    -0.8704      2838588      367947      2831950      367085
+[sweep_base_sgl vs. sweep_256_sgl]/8192     -0.8710    -0.8710     11421675     1473129     11394899     1469684
+[sweep_base_sgl vs. sweep_256_sgl]/16384    -0.8703    -0.8703     45804432     5940806     45696865     5925814
+[sweep_base_sgl vs. sweep_256_sgl]/32768    -0.8703    -0.8703    183489696    23804857    183059879    23744846
+OVERALL_GEOMEAN                             -0.8705    -0.8705            0           0            0           0
+</code></pre><p>Although not shown here, without the compiler optimizations, the speedup of the manually vectorized code with 128-bit
+vectors is at best, ~1.5x faster; and ~2.7x faster for 256-bit vectors.</p>
+<p>The double precision versions of the code also obtain optimal performance gain the 128-bit vectors. But unlike the
+single precision version, which didn&rsquo;t obtain optimal performance for 256-bit vectors, the double precision data
+managed to obtain very close to optimal (3.97x).</p>
+<pre tabindex="0"><code>Comparing sweep_base_dbl (from ./sweep.x) to sweep_128_dbl (from ./sweep.x)
+Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------
+[sweep_base_dbl vs. sweep_128_dbl]/4096     -0.5008    -0.5008      2839639     1417415      2832999     1414100
+[sweep_base_dbl vs. sweep_128_dbl]/8192     -0.4996    -0.4997     11420212     5714520     11393505     5700021
+[sweep_base_dbl vs. sweep_128_dbl]/16384    -0.4995    -0.4996     45816958    22930231     45709819    22872302
+[sweep_base_dbl vs. sweep_128_dbl]/32768    -0.4798    -0.4799    183502279    95457124    183073179    95216351
+OVERALL_GEOMEAN                             -0.4949    -0.4949            0           0           0           0
+</code></pre><pre tabindex="0"><code>Comparing sweep_base_dbl (from ./sweep.x) to sweep_256_dbl (from ./sweep.x)
+Benchmark                                      Time        CPU     Time Old    Time New     CPU Old     CPU New
+---------------------------------------------------------------------------------------------------------------
+[sweep_base_dbl vs. sweep_256_dbl]/4096     -0.7478    -0.7479      2841982      716732     2835337      714913
+[sweep_base_dbl vs. sweep_256_dbl]/8192     -0.7470    -0.7470     11418812     2889162    11392066     2881874
+[sweep_base_dbl vs. sweep_256_dbl]/16384    -0.7426    -0.7426     45815691    11794693    45708548    11767115
+[sweep_base_dbl vs. sweep_256_dbl]/32768    -0.7508    -0.7508    186231849    46409514   185796344    46292393
+OVERALL_GEOMEAN                             -0.7470    -0.7470            0           0           0           0
+</code></pre><p>While not shown here, without the compiler optimisations, the 128-bit double precision manually vectorized code is
+up to 30% slower with 128-bit vectors, and at best, 1.62x faster with 256-bit vectors.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/975f0bb922f132beda53554047335d90fb17e78f" title='Last modified by Edward Yang | August 4, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 4, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/sweep.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vectorizing-a-simple-pair-sweep">Vectorizing A Simple Pair Sweep</a>
+      <ul>
+        <li><a href="#why-aligned-store-and-load-functions-cant-be-used">Why aligned <code>store</code> and <code>load</code> functions can&rsquo;t be used</a></li>
+        <li><a href="#doing-the-vectorization">Doing the Vectorization</a>
+          <ul>
+            <li><a href="#vectorizing-the-direct-pair-sweep-with-128-bit-vectors-sse-instructions">Vectorizing the direct pair sweep with 128-bit vectors (SSE instructions)</a></li>
+            <li><a href="#performance-of-the-manually-vectorized-sweep-function-with--o3-optimizations">Performance of the manually vectorized sweep function: with <code>-O3</code> optimizations</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
