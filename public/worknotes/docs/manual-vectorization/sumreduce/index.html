@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vector Sum Reduction # We now we can add two SIMD vectors together element-by-element. However, I&rsquo;m sure you can imagine scenarios where you might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with 512-bit vectors, but I don&rsquo;t have a CPU with AVX512 instructions handy.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Vector Sum Reduction" />
+<meta property="og:description" content="Vector Sum Reduction # We now we can add two SIMD vectors together element-by-element. However, I&rsquo;m sure you can imagine scenarios where you might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with 512-bit vectors, but I don&rsquo;t have a CPU with AVX512 instructions handy." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/manual-vectorization/sumreduce/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-08-06T21:56:17+10:00" />
+<title>Vector Sum Reduction | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.d3c69b4ac6fb05842fd19ed75852dedda8f7a9749c62862dc0b47b19f5c8aebd.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="toggle" checked />
+    <label for="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="flex justify-between">
+      <a role="button" class="">Investigating Manual Vectorization for SPH</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/motivation/" class="">Motivation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/addition/" class="">Vectorizing Array Addition</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sumreduce/" class="active">Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/" class="">Faster Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="">Vectorizing A Simple Pair Sweep</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Vector Sum Reduction</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vector-sum-reduction">Vector Sum Reduction</a>
+      <ul>
+        <li><a href="#reducing-4-floats">Reducing 4 floats</a>
+          <ul>
+            <li><a href="#base-case">base case</a></li>
+            <li><a href="#128-bit-vectorization-sse">128-bit vectorization (SSE)</a></li>
+            <li><a href="#performance-128-bit">Performance (128-bit)</a></li>
+            <li><a href="#256-bit-vectorization-avx">256-bit vectorization (AVX)</a></li>
+            <li><a href="#performance-256-bit">Performance (256-bit)</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="vector-sum-reduction">
+  Vector Sum Reduction
+  <a class="anchor" href="#vector-sum-reduction">#</a>
+</h1>
+<p>We now we can add two SIMD vectors together element-by-element. However, I&rsquo;m sure you can imagine scenarios where you
+might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this
+with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with
+512-bit vectors, but I don&rsquo;t have a CPU with AVX512 instructions handy.</p>
+<h2 id="reducing-4-floats">
+  Reducing 4 floats
+  <a class="anchor" href="#reducing-4-floats">#</a>
+</h2>
+<h3 id="base-case">
+  base case
+  <a class="anchor" href="#base-case">#</a>
+</h3>
+<p>We&rsquo;ll assume a 1D array that has every 8 elements reduced into an element of another array:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_base_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#8f5902;font-style:italic">// assume b is already zeroed
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>The loop tries to mimick cases where many small sum-reductions are performed.</p>
+<h3 id="128-bit-vectorization-sse">
+  128-bit vectorization (SSE)
+  <a class="anchor" href="#128-bit-vectorization-sse">#</a>
+</h3>
+<p>In the first demonstration of vectorizing the sumreduction loop above, we&rsquo;ll make use of a few new
+functions:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">val</span><span style="color:#000;font-weight:bold">);</span>      <span style="color:#8f5902;font-style:italic">// creates a vector where the lowermost element is val, and the rest are 0
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">);</span>     <span style="color:#8f5902;font-style:italic">// adds only the lowermost elements of a and b. The rest are same as a.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">);</span>    <span style="color:#8f5902;font-style:italic">// performs a &#34;horizontal&#34; add (see explanation below)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm_store_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">);</span>             <span style="color:#8f5902;font-style:italic">// stores the lower-most value in the vector
+</span></span></span></code></pre></div><p>The <code>_mm_hadd_xx</code> function will be the workhorse of the vectorized reduction. It takes two vectors and
+adds pairs from each half of both vectors. The first element will be the sum of the second half of the
+first vector, <code>a2+a3</code>. The second element will be the first half of the first vector, <code>a0+a1</code>. The third
+and fourth elements will be the same, but for the second input vector.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 a = _mm_set_ps(a0, a1, a2, a3);   
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 b = _mm_set_ps(b0, b1, b2, b3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">_mm128</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a2+a3, a0+a1, b2+b3, b0+b1];
+</span></span></span></code></pre></div><p>Because <code>hadd</code> adds two vectors in this manner, it can be executed twice in a row to sum all elements of
+an <code>__m128</code> vector:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 a = _mm_set_ps(a0, a1, a2, a3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// first horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm128</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a2+a3, a0+a1, a2+a3, a0+a1]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// second horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [v2+v3, v0+v1, v2+v3, v0+v1] 
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">//   = [a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1]
+</span></span></span></code></pre></div><p>The double <code>hadd</code> functions results in 3 adds for every 4 elements (the two horizontal adds, and an add to the reduction
+variable), compared to 8 adds in the serial sum of all the elements in the vector. Implementing these new functions to
+vectorize our loop:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_128_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span> <span style="color:#8f5902;font-style:italic">// initializes a vector with the sum-reduction variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#8f5902;font-style:italic">// start the reduction loop
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span> <span style="color:#8f5902;font-style:italic">// load the data
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span>    <span style="color:#8f5902;font-style:italic">// first horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span>    <span style="color:#8f5902;font-style:italic">// second horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>     <span style="color:#8f5902;font-style:italic">// add result to the sum-reduction vector variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_store_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>       <span style="color:#8f5902;font-style:italic">// store the left-most value in the sum-reduction variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>The use of the <code>__m128 vb</code> vector helps speed up the loop slightly by mitigating the need to increment
+the <code>float *b</code> array directly in the inner loop. In this case, it reduces the number of stores by one.</p>
+<p>In the double precision version, it would reduce the stores by 3, since the inner loop would have 4
+iterations instead of only 2. Note that with the double precision version, reducing a 128-bit double vector to one value
+doesn&rsquo;t reduce the number of additions. Consequently, there shouldn&rsquo;t be much difference between codes.</p>
+<h3 id="performance-128-bit">
+  Performance (128-bit)
+  <a class="anchor" href="#performance-128-bit">#</a>
+</h3>
+<p>Compilation command (using the Google benchmark framework):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std<span style="color:#ce5c00;font-weight:bold">=</span>c++17 -O2
+</span></span></code></pre></div><h4 id="single-precision">
+  Single precision
+  <a class="anchor" href="#single-precision">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_128_sgl (from ./reduce_128_sgl.json)
+Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
+--------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_128_sgl]/4096        -0.2329   -0.2329       1625       1247       1621       1243
+[reduce_base_sgl vs. reduce_128_sgl]/32768       -0.2644   -0.2644      13565       9978      13531       9953
+[reduce_base_sgl vs. reduce_128_sgl]/262144      -0.2627   -0.2625     108413      79935     108135      79748
+[reduce_base_sgl vs. reduce_128_sgl]/2097152     -0.2669   -0.2669     872616     639709     870408     638091
+[reduce_base_sgl vs. reduce_128_sgl]/16777216    -0.1476   -0.1478    8405297    7164522    8385642    7146262
+[reduce_base_sgl vs. reduce_128_sgl]/134217728   -0.1198   -0.1197   68570641   60358462   68394712   60204987
+OVERALL_GEOMEAN                                  -0.2179   -0.2179          0          0          0          0
+</code></pre><p>The tests that fit on L1-L3 cache benefit the most with about 1.3x speedup. The largest test shows the worst speedup, at
+~1.1x speedup. A 1.3x speedup is about in line with rough estimates, based on the ratios of adds per 8 elements
+(8/6 = 1.33).</p>
+<h4 id="double-precision">
+  Double Precision
+  <a class="anchor" href="#double-precision">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_128_dbl (from ./reduce_128_dbl.json)
+Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_dbl vs. reduce_128_dbl]/4096        -0.1052   -0.1050        1627        1456        1623        1452
+[reduce_base_dbl vs. reduce_128_dbl]/32768       -0.1106   -0.1106       13462       11973       13431       11945
+[reduce_base_dbl vs. reduce_128_dbl]/262144      -0.0369   -0.0370      112035      107906      111772      107633
+[reduce_base_dbl vs. reduce_128_dbl]/2097152     -0.0386   -0.0386      934021      898008      931648      895718
+[reduce_base_dbl vs. reduce_128_dbl]/16777216    +0.0122   +0.0122    12864721    13022105    12831738    12988742
+[reduce_base_dbl vs. reduce_128_dbl]/134217728   +0.0102   +0.0102   107276227   108369477   107002000   108088106
+OVERALL_GEOMEAN                                  -0.0461   -0.0461           0           0           0           0
+</code></pre><p>As expected, the performance difference is minimal, although there appears to be some meaningful improvements to the
+test sizes that fit within L1 and L2 cache (i.e., the 4,096 and 32,768 element tests). I&rsquo;m not sure on this, but I am
+guessing that the improvements are due to SIMD vectors being used to store the intermediate reduction data.</p>
+<p>Another interesting observation is that the double precision version base version performs faster on the smallest case
+than the equivalent for the single precision version. This is probably CPU-specific, as I don&rsquo;t observe this on my
+desktop CPU (Intel i7-10750H).</p>
+<h3 id="256-bit-vectorization-avx">
+  256-bit vectorization (AVX)
+  <a class="anchor" href="#256-bit-vectorization-avx">#</a>
+</h3>
+<p>256-bit vectors double the vector width before. This means 8 elements in a single precision (<code>__m128</code>) vector, and 4
+elements in a double precision vector. For single precision data, the <code>_mm256_hadd_ps</code> function works like:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 b = _mm_set_ps(b0, b1, b2, b3, b4, b5, b6, b7);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a0+a1, a2+a3, b0+b1, b2+b3, a4+a5, a6+a7, b4+b5, b6+b7];
+</span></span></span></code></pre></div><p>If we were to apply this three times, in an attempt to apply the <code>hadd</code> strategy to perform the reduction:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 a = _mm_set_ps(a0, a1, a2, a3, a4, a5, a6, a7);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// first horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a0+a1, a2+a3, a0+a1, a2+a3, a4+a5, a6+a7, a4+a5, a6+a7];
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// second horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [v0+v1,       v2+v3,       v0+v1,       v2+v3,       v4+v5,       v6+v7,       v4+v5,       v6+v7];
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a0+a1+a2+a3, a0+a1+a2+a3, a0+a1+a2+a3, a0+a1+a2+a3, a4+a5+a6+a7, a4+a5+a6+a7, a4+a5+a6+a7, a4+a5+a6+a7]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// third horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [v0+v1,                   v2+v3, v0+v1, v2+v3, v4+v5,                   v6+v7, v4+v5, v6+v7];
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v   [a0+a1+a2+a3+a0+a1+a2+a3, ...  , ...  , ...  , a4+a5+a6+a7+a4+a5+a6+a7, ...  , ...  , ...]
+</span></span></span></code></pre></div><p>Where the repeated entries are skipped in the last addition. Each element of the bottom 128 bits of the vector have
+<code>2*(a0+a1+a2+a3)</code> and the top 128 bits have <code>2*(a4+a5+a6+a7)</code>. Hopefully it&rsquo;s clear that simply performing three <code>hadd</code>s
+in a row would not be possible to perform our reduction, at least for 8 elements of single precision data.</p>
+<p>A similar problem occurs when performing two consecutive <code>hadd</code> operations on double precision data. The
+<code>_mm256_hadd_pd</code> function works like:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128d a = _mm256_set_pd(a0, a1, a2, a3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128d b = _mm256_set_pd(b0, b1, b2, b3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a0+a1, b0+b1, a2+a3, b2+b3];
+</span></span></span></code></pre></div><p>And so trying to apply this twice for the purposes of reduction:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128d a = _mm256_set_pd(a0, a1, a2, a3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// first horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// v = [a0+a1, a0+a1, b2+b3, b2+b3]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// second horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">_mm256</span> <span style="color:#000">v</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_hadd_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">v</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">v</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">//v = [v0+v1,       v0+v1, v2+v3,       v2+v3]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">//  = [a0+a1+a0+a1, ...,   a2+a3+a2+a3, ...]
+</span></span></span></code></pre></div><p>Which should illustrate that double <code>_mm256_hadd_pd</code> has the same limitation as <code>_mm256_hadd_ps</code>, as the two halves of
+the resultant 256-bit vector merely contains double of the sum of all elements in each of the corresponding 128-bit
+halves.</p>
+<p><code>__m256</code> vectors can be reduced by first splitting the vector into two <code>__m128</code> vectors, adding the two halves together
+and then performing the 128-bit vector reduction shown previously. For example, for single precision:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_256_sgl</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span> <span style="color:#8f5902;font-style:italic">// initializes a vector with the sum-reduction variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span> <span style="color:#8f5902;font-style:italic">// start the reduction loop
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">__m256</span> <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span> <span style="color:#8f5902;font-style:italic">// load the data
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va_low</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_castps256_ps128</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#8f5902;font-style:italic">// &#34;truncate&#34; the 256-bit vector to get the lower 128-bit vector
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va_hi</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_extractf128_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#8f5902;font-style:italic">// extract the upper 128-bit vector
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">va_low</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va_hi</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#8f5902;font-style:italic">// add the two halves together
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">va_low</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">);</span>    <span style="color:#8f5902;font-style:italic">// first horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">va_low</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_hadd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">);</span>    <span style="color:#8f5902;font-style:italic">// second horizontal add
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va_low</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>     <span style="color:#8f5902;font-style:italic">// add result to the sum-reduction vector variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_store_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>       <span style="color:#8f5902;font-style:italic">// store the left-most value in the sum-reduction variable
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>Note that in this verison, 8 elements are loaded at a time into the 256-bit vector, which removes the need for the inner
+loop. But, the inner loop is kept so that it is more comparable to the base and 128-bit versions.</p>
+<p>To extract the lower 128-bit part of the 256-bit vector, the <code>_mm256_castps256_ps128</code> function is used. This function
+casts an <code>__m256</code> vector to a <code>__m128</code> vector by truncating the upper 128-bits from the input vector. The upper half
+is extracted using <code>_mm256_extractf128_ps</code>. The second argument being <code>1</code>, is asking for the second 128-bit part of the
+vector. Passing <code>0</code> would provide the first half, and could also be used to extract the lower 128-bit half, but
+<code>_mm256_castps256_ps128</code> is apparently faster. The next step is to add these two halves using the <code>_mm_add_ps</code> function
+as used previously. The remainder of the reduction follows the same double <code>hadd</code> idiom used to reduce the 128-bit
+single precision vectors.</p>
+<p>The same strategy can be employed with double precision 256-bit vectors, except that only one <code>_mm_hadd_pd</code> is used,
+like when performing the reduction with 128-bit double precision vectors.</p>
+<h3 id="performance-256-bit">
+  Performance (256-bit)
+  <a class="anchor" href="#performance-256-bit">#</a>
+</h3>
+<p>Compilation command (using the Google benchmark framework):</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o reduce.x reduce.cpp -mavx -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std<span style="color:#ce5c00;font-weight:bold">=</span>c++17 -O2
+</span></span></code></pre></div><h4 id="single-precision-1">
+  Single precision
+  <a class="anchor" href="#single-precision-1">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing reduce_base_sgl (from ./reduce_base_sgl.json) to reduce_256_sgl (from ./reduce_256_sgl.json)
+Benchmark                                           Time       CPU   Time Old   Time New    CPU Old    CPU New
+--------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_256_sgl]/4096        -0.5072   -0.5072       1625        801       1621        799
+[reduce_base_sgl vs. reduce_256_sgl]/32768       -0.5265   -0.5264      13565       6423      13531       6408
+[reduce_base_sgl vs. reduce_256_sgl]/262144      -0.5155   -0.5155     108413      52526     108135      52393
+[reduce_base_sgl vs. reduce_256_sgl]/2097152     -0.4869   -0.4868     872616     447734     870408     446687
+[reduce_base_sgl vs. reduce_256_sgl]/16777216    -0.2345   -0.2345    8405297    6434629    8385642    6419522
+[reduce_base_sgl vs. reduce_256_sgl]/134217728   -0.1776   -0.1776   68570641   56392320   68394712   56245917
+OVERALL_GEOMEAN                                  -0.4240   -0.4240          0          0          0          0
+</code></pre><p>Best speedup obtained is now ~2.1x and worst is ~1.2x. Given that for every 8 elements added, there are 4 addition
+operations (2 horizontal, 1 normal, and 1 to update the reduction variable), you would expect that this implementation
+would achieve around (8)/4 ~= 2x. speedup over the non-vectorized base version. The better performance for smaller
+problems might be because normal adds are cheaper than horizontal adds. The minimum speedup of ~1.6x is actually worse
+than that achieved by the equivalent 128-bit vector version.</p>
+<h4 id="double-precision-1">
+  Double precision
+  <a class="anchor" href="#double-precision-1">#</a>
+</h4>
+<pre tabindex="0"><code>Comparing reduce_base_dbl (from ./reduce_base_dbl.json) to reduce_256_dbl (from ./reduce_256_dbl.json)
+Benchmark                                           Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_dbl vs. reduce_256_dbl]/4096        -0.4083   -0.4083        1627         963        1623         960
+[reduce_base_dbl vs. reduce_256_dbl]/32768       -0.3764   -0.3765       13462        8395       13431        8374
+[reduce_base_dbl vs. reduce_256_dbl]/262144      -0.1858   -0.1857      112035       91225      111772       91011
+[reduce_base_dbl vs. reduce_256_dbl]/2097152     -0.1667   -0.1665      934021      778325      931648      776501
+[reduce_base_dbl vs. reduce_256_dbl]/16777216    -0.0118   -0.0116    12864721    12712606    12831738    12682778
+[reduce_base_dbl vs. reduce_256_dbl]/134217728   -0.0017   -0.0017   107276227   107096199   107002000   106821947
+OVERALL_GEOMEAN                                  -0.2079   -0.2079           0           0           0           0
+</code></pre><p>Here, the speedup is between ~1x and ~1.7x. The maximum speedup is significantly better than the equivalent for 128-bit
+vectors, but of course, gets worse as data gets more distant from the CPU due to the test sizes. The ~1.7x speedup
+achieved falls short of the 2x expected, probably because of the extractions of the 128-bit vectors from the 256-bit
+vector, as well as the relatively more expensive horizontal add operation.</p>
+<p>Like with the single precision version, the test sizes that are in RAM, do not show any meaningful speedup over the
+128-bit equivalent. Although it seems that this one is at least not any worse.</p>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The horizontal add intrinsics were introduced here, as well as other needed, to perform vectorized reductions of chunks
+of data in an array. With single precision data, the speedups achieved for all tests were meaningful. For tests that fit
+within cache, the achieved speedup was around expectations of using the horizontal add strategy. These results
+correspond with the upper end of the ranges.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Single</th>
+<th>Double</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>128-bit</td>
+<td>1.1x-1.3x</td>
+<td>1x-1.1x</td>
+</tr>
+<tr>
+<td>256-bit</td>
+<td>1.2x-2.4x</td>
+<td>1x-1.7x</td>
+</tr>
+</tbody>
+</table>
+<p>In contrast, double precision vectorization attempts with 128-bit vectors only achieved 1.1x at best, for problems
+that fit in cache, and did not obtain any speedup for tests that could only fit in RAM. The 256-bit vectorization
+attempt improved the upper end to 1.7x, but still failed to improve the speed for tests in RAM.</p>
+<p>Faster sum-reduction examples are shown on 
+  <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/">this page</a>.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/09ab19506539f7f9a077055fa619bb24c8f32eca" title='Last modified by Edward Yang | August 6, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 6, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/sumreduce.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vector-sum-reduction">Vector Sum Reduction</a>
+      <ul>
+        <li><a href="#reducing-4-floats">Reducing 4 floats</a>
+          <ul>
+            <li><a href="#base-case">base case</a></li>
+            <li><a href="#128-bit-vectorization-sse">128-bit vectorization (SSE)</a></li>
+            <li><a href="#performance-128-bit">Performance (128-bit)</a></li>
+            <li><a href="#256-bit-vectorization-avx">256-bit vectorization (AVX)</a></li>
+            <li><a href="#performance-256-bit">Performance (256-bit)</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

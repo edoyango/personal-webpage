@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Faster Vector Sum Reduce # In my page introducing vectorized reductions, I show how to use horizontal adds (hadd) functions to perform the reduction. However, this doesn&rsquo;t produce optimal assembly, so isn&rsquo;t the fastest way to do things.
+This page will demonstrate a faster version to do each of the examples shown previously.
+Single precision, SSE instructions # This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE instructions.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Faster Vector Sum Reduction" />
+<meta property="og:description" content="Faster Vector Sum Reduce # In my page introducing vectorized reductions, I show how to use horizontal adds (hadd) functions to perform the reduction. However, this doesn&rsquo;t produce optimal assembly, so isn&rsquo;t the fastest way to do things.
+This page will demonstrate a faster version to do each of the examples shown previously.
+Single precision, SSE instructions # This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE instructions." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/manual-vectorization/faster-sumreduce/" /><meta property="article:section" content="docs" />
+
+<meta property="article:modified_time" content="2023-08-06T22:07:00+10:00" />
+<title>Faster Vector Sum Reduction | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.d3c69b4ac6fb05842fd19ed75852dedda8f7a9749c62862dc0b47b19f5c8aebd.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="toggle" checked />
+    <label for="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="flex justify-between">
+      <a role="button" class="">Investigating Manual Vectorization for SPH</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/motivation/" class="">Motivation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/addition/" class="">Vectorizing Array Addition</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sumreduce/" class="">Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/" class="active">Faster Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="">Vectorizing A Simple Pair Sweep</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Faster Vector Sum Reduction</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faster-vector-sum-reduce">Faster Vector Sum Reduce</a>
+      <ul>
+        <li><a href="#single-precision-sse-instructions">Single precision, SSE instructions</a>
+          <ul>
+            <li><a href="#performance">Performance</a></li>
+          </ul>
+        </li>
+        <li><a href="#double-precision-sse-instructions-didnt-end-up-being-faster">Double precision, SSE instructions (Didn&rsquo;t end up being faster)</a>
+          <ul>
+            <li><a href="#performance-1">Performance</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="faster-vector-sum-reduce">
+  Faster Vector Sum Reduce
+  <a class="anchor" href="#faster-vector-sum-reduce">#</a>
+</h1>
+<p>In 
+  <a href="/worknotes/docs/manual-vectorization/sumreduce/">my page introducing vectorized reductions</a>, I show how to use horizontal adds (<code>hadd</code>) functions to
+perform the reduction. However, this 
+  <a href="https://stackoverflow.com/questions/6996764/fastest-way-to-do-horizontal-sse-vector-sum-or-other-reduction/35270026">doesn&rsquo;t produce optimal assembly</a>, so isn&rsquo;t the fastest way to do things.</p>
+<p>This page will demonstrate a faster version to do each of the examples shown previously.</p>
+<h2 id="single-precision-sse-instructions">
+  Single precision, SSE instructions
+  <a class="anchor" href="#single-precision-sse-instructions">#</a>
+</h2>
+<p>This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE
+instructions.</p>
+<p>After loading the vector <code>va</code>, a new vector is created using <code>_mm_movehdup_ps</code>, using <code>a</code> as an input. This function
+duplicates the second and fourth elements, and duplicates them to one element lower.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128 va = _mm_set_ps(a0, a1, a2, a3);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehdup_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// shuf = [a1, a1, a3, a3]
+</span></span></span></code></pre></div><p>The resultant vector is then added back to <code>va</code>:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">sums</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// sums = [a0+a1, a1+a1, a2+a3, a3+a3]
+</span></span></span></code></pre></div><p><code>shuf</code> and <code>sums</code> are combined together with <code>_mm_movehl_ps</code>. This function replaces the lower two elements of the first
+input vector, with the upper two elements of the second vector.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehl_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">sums</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// shuf = [sums2, sum3, shuf2, shuf3]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">//      = [a2+a3, a3+a3, a3, a3]
+</span></span></span></code></pre></div><p>We finally add the lowermost element of <code>shuf</code> and <code>sums</code> to get the reduced sum in the lowermost element of the <code>sums</code>
+vector, and the remaing elements can be ignored.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000">sums</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">sums</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// sums = [sums0+shuf0, sums1, sums2, sums3]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">//      = [a0+a1+a2+a3, a1+a1, a2+a3, a3+a3]
+</span></span></span></code></pre></div><p>Implemented into our previous example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_128_sgl_SSE3</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehdup_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">sums</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehl_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">sums</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sums</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">sums</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vb</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">sums</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_store_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><h3 id="performance">
+  Performance
+  <a class="anchor" href="#performance">#</a>
+</h3>
+<p>Compilation command:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std<span style="color:#ce5c00;font-weight:bold">=</span>c++17 -O2
+</span></span></code></pre></div><p>Comparison with base case:</p>
+<pre tabindex="0"><code>Comparing reduce_base_sgl (from reduce_base_sgl.json) to reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3.json)
+Benchmark                                                Time       CPU   Time Old   Time New    CPU Old    CPU New
+-------------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/4096        -0.6108   -0.6107       1625        633       1621        631
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/32768       -0.6270   -0.6271      13565       5059      13531       5046
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/262144      -0.5984   -0.5983     108413      43541     108135      43439
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/2097152     -0.5380   -0.5379     872616     403151     870408     402208
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/16777216    -0.2613   -0.2613    8405297    6209082    8385642    6194461
+[reduce_base_sgl vs. reduce_128_sgl_SSE3]/134217728   -0.2114   -0.2114   68570641   54072282   68394712   53933850
+OVERALL_GEOMEAN                                       -0.4997   -0.4996          0          0          0          0
+</code></pre><p>Comparison with horizontal add strategy:</p>
+<pre tabindex="0"><code>Comparing reduce_128_sgl (from reduce_128_sgl.json) to reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3.json)
+Benchmark                                               Time       CPU   Time Old   Time New    CPU Old    CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/4096        -0.4926   -0.4925       1247        633       1243        631
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/32768       -0.4930   -0.4930       9978       5059       9953       5046
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/262144      -0.4553   -0.4553      79935      43541      79748      43439
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/2097152     -0.3698   -0.3697     639709     403151     638091     402208
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/16777216    -0.1334   -0.1332    7164522    6209082    7146262    6194461
+[reduce_128_sgl vs. reduce_128_sgl_SSE3]/134217728   -0.1041   -0.1042   60358462   54072282   60204987   53933850
+OVERALL_GEOMEAN                                      -0.3602   -0.3602          0          0          0          0
+</code></pre><p>The new vectorized reduction is between 1.1x to 2x faster than the previous attempt using horizontal adds. This brings
+up the speedup compared to the original to ~1.3x to ~2.6x times. Like every other example, performance gains are
+greater the closer the data is to the CPU core.</p>
+<h2 id="double-precision-sse-instructions-didnt-end-up-being-faster">
+  Double precision, SSE instructions (Didn&rsquo;t end up being faster)
+  <a class="anchor" href="#double-precision-sse-instructions-didnt-end-up-being-faster">#</a>
+</h2>
+<p>I found this code from the same source above, and it was <em>claimed</em> to be faster. Unfortunately, that didn&rsquo;t happen for
+me, perhaps due to the newer CPU and compiler being used. However, it&rsquo;s included here for future reference anyway.</p>
+<p>This algorithm tricks the compiler to produce optimal code. I don&rsquo;t understand it, but will explain the specific
+functions used.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128d va = _mm_set_pd(a0, a1);
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">undef</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_undefined_ps</span><span style="color:#000;font-weight:bold">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// undef = [?, ?, ?, ?]
+</span></span></span></code></pre></div><p>This function call simply creates a 128-bit <em>single precision</em> vector with undefined values. Explicitly saying the
+vector is undefined apparently helps the compiler optimise the code better.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">shuftmp</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehl_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">undef</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_mm_castpd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// _mm_castpd_ps(va) = [a0, a0.5, a1, a1.5]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// shuftmp = [a1, a1.5, ?, ?]
+</span></span></span></code></pre></div><p>I found this pretty clever when I saw it. The motivation for this trick is that there is no <code>_mm_movehl_ps</code> equivalent
+for double precision data. What happens here is:</p>
+<ol>
+<li><code>va</code> is cast to a single precision vector.
+<ul>
+<li>This doesn&rsquo;t change the data itself. It only changes how functions interepret it.</li>
+<li>i.e., the 128 bits in the vector are still the same.</li>
+</ul>
+</li>
+<li>The upper 64 bits of <code>va</code> (i.e., the second element), is placed in the first element position of <code>undef</code>.</li>
+<li>The resultant vector is stored in <code>shuftmp</code>.</li>
+</ol>
+<p>This effectively moves the 2nd element of <code>va</code> into the first place of <code>undef</code>, despite not having an equivalent
+<code>movehl</code> function for double precision. This will be converted back into a double precision vector next.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_castps_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">shuftmp</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// shuf = [a1, ?]
+</span></span></span></code></pre></div><p><code>_mm_castps_pd</code> converts <code>shuftmp</code> back into a double precision vector, which is saved as <code>shuf</code>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// va = [a0+a1, ?]
+</span></span></span></code></pre></div><p>which has the reduced sum in the lower value of <code>va</code>. Implemented into the previous example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_128_sgl_SSE2</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">undef</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_undefined_ps</span><span style="color:#000;font-weight:bold">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">shuftmp</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_movehl_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">undef</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_mm_castpd_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">shuf</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_castps_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">shuftmp</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">va</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">shuf</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_add_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vb</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">va</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_store_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><h3 id="performance-1">
+  Performance
+  <a class="anchor" href="#performance-1">#</a>
+</h3>
+<p>Compilation command:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std<span style="color:#ce5c00;font-weight:bold">=</span>c++17 -O2
+</span></span></code></pre></div><p>Comparison with base case:</p>
+<pre tabindex="0"><code>Comparing reduce_base_dbl (from reduce_base_dbl.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2.json)
+Benchmark                                                Time       CPU    Time Old    Time New     CPU Old     CPU New
+-----------------------------------------------------------------------------------------------------------------------
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/4096        +0.0555   +0.0555        1627        1717        1623        1713
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/32768       +0.0168   +0.0166       13462       13689       13431       13654
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/262144      -0.0095   -0.0097      112035      110972      111772      110691
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/2097152     +0.1208   +0.1208      934021     1046876      931648     1044201
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0130   -0.0130    12864721    12697055    12831738    12664523
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0086   -0.0086   107276227   106349711   107002000   106080057
+OVERALL_GEOMEAN                                       +0.0259   +0.0258           0           0           0           0
+</code></pre><p>Comparison with horizontal add strategy:</p>
+<pre tabindex="0"><code>Comparing reduce_128_dbl (from reduce_128_dbl.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2.json)
+Benchmark                                               Time       CPU    Time Old    Time New     CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/4096        +0.1796   +0.1794        1456        1717        1452        1713
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/32768       +0.1433   +0.1431       11973       13689       11945       13654
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/262144      +0.0284   +0.0284      107906      110972      107633      110691
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/2097152     +0.1658   +0.1658      898008     1046876      895718     1044201
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0250   -0.0250    13022105    12697055    12988742    12664523
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0186   -0.0186   108369477   106349711   108088106   106080057
+OVERALL_GEOMEAN                                      +0.0755   +0.0754           0           0           0           0
+</code></pre><p>Performance appears to be worse than the base case!</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/98aded51523da225e6224b2b1b48904fddf47d2d" title='Last modified by Edward Yang | August 6, 2023' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>August 6, 2023</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/faster-sumreduce.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faster-vector-sum-reduce">Faster Vector Sum Reduce</a>
+      <ul>
+        <li><a href="#single-precision-sse-instructions">Single precision, SSE instructions</a>
+          <ul>
+            <li><a href="#performance">Performance</a></li>
+          </ul>
+        </li>
+        <li><a href="#double-precision-sse-instructions-didnt-end-up-being-faster">Double precision, SSE instructions (Didn&rsquo;t end up being faster)</a>
+          <ul>
+            <li><a href="#performance-1">Performance</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
