@@ -185,6 +185,46 @@ costly than an `_mm_hadd_ps` function call.
 Ultimately, from this test, it's probably not worth implementing vector reduction with 256-bit vectors compared to the
 fast 128-bit version.
 
+### Performance with LLVM compiler (`clang++`)
+
+The LLVM compilers are a different family of compilers form the GNU compilers and can translate the C++ code to assembly
+differently. In the case of C++, we use the `clang++` compiler. Let's compare the performance of our test programs using
+`clang++`.
+
+The compilation command is:
+
+```bash
+clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
+```
+
+```
+Comparing reduce_base_sgl (from reduce_base_sgl-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
+Benchmark                                               Time       CPU   Time Old   Time New    CPU Old    CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/4096        -0.7450   -0.7450       1247        318       1244        317
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/32768       -0.7494   -0.7494       9970       2499       9947       2493
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/262144      -0.7505   -0.7505      79935      19943      79749      19896
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/2097152     -0.7506   -0.7506     639364     159451     637869     159080
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/16777216    -0.8318   -0.8318    7581972    1275520    7564185    1272545
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/134217728   -0.8375   -0.8375   62785954   10205195   62639140   10181392
+OVERALL_GEOMEAN                                      -0.7815   -0.7815          0          0          0          0
+```
+
+```
+Comparing reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
+Benchmark                                                   Time       CPU   Time Old   Time New    CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/4096        -0.4445   -0.4445        572        318        571        317
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/32768       -0.4693   -0.4693       4708       2499       4697       2493
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/262144      -0.4916   -0.4916      39230      19943      39138      19896
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/2097152     -0.5283   -0.5283     338017     159451     337229     159080
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/16777216    -0.8006   -0.8006    6395979    1275520    6381010    1272545
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/134217728   -0.8162   -0.8162   55513176   10205195   55383675   10181392
+OVERALL_GEOMEAN                                          -0.6294   -0.6294          0          0          0          0
+```
+
+
+
 ## Double precision, SSE instructions (Didn't end up being faster)
 
 I found this code from the same source above, and it was *claimed* to be faster. Unfortunately, that didn't happen for
@@ -243,7 +283,7 @@ which has the reduced sum in the lower value of `va`. Implemented into the previ
 void reduce_128_sgl_SSE2(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
-        __m128d vb = _mm_set_ss(b[i/8]);
+        __m128d vb = _mm_set_sd(b[i/8]);
         for (int j = 0; j < 8; j += 2) {
             __m128 va = _mm_loadu_ps(&a[i+j]);
             __m128 undef = _mm_undefined_ps();
