@@ -116,6 +116,75 @@ The new vectorized reduction is between 1.1x to 2x faster than the previous atte
 up the speedup compared to the original to ~1.3x to ~2.6x times. Like every other example, performance gains are 
 greater the closer the data is to the CPU core.
 
+## Single precision, AVX instructions
+
+This implementation is not much different from the previous version, in that the reduction using a 256-bit vector is
+performed by splitting the 256-bit vector into 2 128-bit vectors, adding them, and performing the same reduction
+algorithm for 128-bit vectors:
+
+```cpp
+void reduce_256_sgl_AVX(const int nelem, float* a, float* b) {
+
+    for (int i = 0; i < nelem; i += 8) {
+        __m128 vb = _mm_set_ss(b[i/8]);
+        for (int j = 0; j < 8; j += 8) {
+            __m256 va = _mm256_loadu_ps(&a[i+j]);
+            __m128 va_lo = _mm256_castps256_ps128(va);
+            __m128 va_hi = _mm256_extractf128_ps(va, 1);
+            va_lo = _mm_add_ps(va_lo, va_hi);
+            __m128 shuf = _mm_movehdup_ps(va_lo);
+            __m128 sums = _mm_add_ps(va_lo, shuf);
+            shuf = _mm_movehl_ps(shuf, sums);
+            sums = _mm_add_ss(sums, shuf);
+            vb = _mm_add_ss(sums, vb);
+        }
+        _mm_store_ss(&b[i/8], vb);
+    }
+}
+```
+
+### Performance
+
+First comparing this new version to the first 256-bit vectorized version:
+
+``` {style=tango,linenos=false}
+Comparing reduce_256_sgl (from reduce_256_sgl.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX.json)
+Benchmark                                              Time       CPU   Time Old   Time New    CPU Old    CPU New
+-----------------------------------------------------------------------------------------------------------------
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/4096        -0.1999   -0.2001        800        640        798        638
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/32768       -0.1937   -0.1935       6419       5175       6401       5162
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/262144      -0.1721   -0.1723      52211      43227      52079      43108
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/2097152     -0.0966   -0.0966     446301     403176     445074     402074
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/16777216    -0.0417   -0.0417    6538546    6266122    6520420    6248835
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/134217728   -0.0436   -0.0436   57544865   55037665   57385371   54886129
+OVERALL_GEOMEAN                                     -0.1271   -0.1272          0          0          0          0
+``` 
+
+The performance has definitely improved, albeit marginally for the test sizes in RAM. But compared to the 128-bit
+version, it actually performs very similarly (perhaps even a bit worse):
+
+``` {style=tango,linenos=false}
+Comparing reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX.json)
+Benchmark                                                   Time       CPU   Time Old   Time New    CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/4096        +0.0101   +0.0102        634        640        632        638
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/32768       +0.0233   +0.0236       5057       5175       5043       5162
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/262144      +0.0210   +0.0208      42337      43227      42231      43108
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/2097152     +0.0043   +0.0041     401449     403176     400435     402074
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/16777216    +0.0047   +0.0045    6236505    6266122    6220706    6248835
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/134217728   -0.0041   -0.0043   55265558   55037665   55122733   54886129
+OVERALL_GEOMEAN                                          +0.0099   +0.0098          0          0          0          0
+```
+
+I'm not 100% sure why this happens. Firstly, there's an additional `_mm_add_ps` function call, which eats into potential
+gains from using 256-bit vectors. And I believe the additional memory operations eat into the remaining gains. The 
+`_mm256_castps256_ps128` should be low cost or free as it doesn't move any data around. However, `_mm256_extractf128_ps` 
+has to copy the data from the top half of the  original `va` vector into a different register. Which, I think, is more
+costly than an `_mm_hadd_ps` function call.
+
+Ultimately, from this test, it's probably not worth implementing vector reduction with 256-bit vectors compared to the
+fast 128-bit version.
+
 ## Double precision, SSE instructions (Didn't end up being faster)
 
 I found this code from the same source above, and it was *claimed* to be faster. Unfortunately, that didn't happen for
