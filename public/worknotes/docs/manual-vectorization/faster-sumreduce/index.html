@@ -14,13 +14,13 @@ Single precision, SSE instructions # This section will show a faster sum-reduce 
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/worknotes/docs/manual-vectorization/faster-sumreduce/" /><meta property="article:section" content="docs" />
 
-<meta property="article:modified_time" content="2023-08-06T22:07:00+10:00" />
+<meta property="article:modified_time" content="2023-08-11T23:41:26+10:00" />
 <title>Faster Vector Sum Reduction | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.d3c69b4ac6fb05842fd19ed75852dedda8f7a9749c62862dc0b47b19f5c8aebd.js" ></script>
+  <script defer src="/worknotes/en.search.min.3c8816a84139ddd5975814c1b8dff4ae608f9cd087460651b11fec5f1e73a404.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 <!--
@@ -716,11 +716,24 @@ https://github.com/alex-shpak/hugo-book
             <li><a href="#performance">Performance</a></li>
           </ul>
         </li>
-        <li><a href="#double-precision-sse-instructions-didnt-end-up-being-faster">Double precision, SSE instructions (Didn&rsquo;t end up being faster)</a>
+        <li><a href="#single-precision-avx-instructions">Single precision, AVX instructions</a>
           <ul>
             <li><a href="#performance-1">Performance</a></li>
+            <li><a href="#performance-with-llvm-compiler-clang">Performance with LLVM compiler (<code>clang++</code>)</a></li>
           </ul>
         </li>
+        <li><a href="#double-precision-sse-instructions">Double precision, SSE instructions</a>
+          <ul>
+            <li><a href="#performance-2">Performance</a></li>
+            <li><a href="#performance-with-llvm-compiler-clang-1">Performance with LLVM compiler (<code>clang++</code>)</a></li>
+          </ul>
+        </li>
+        <li><a href="#double-precision-avx-instructions">Double precision, AVX instructions</a>
+          <ul>
+            <li><a href="#performance-3">Performance</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </li>
   </ul>
@@ -820,12 +833,107 @@ OVERALL_GEOMEAN                                      -0.3602   -0.3602          
 </code></pre><p>The new vectorized reduction is between 1.1x to 2x faster than the previous attempt using horizontal adds. This brings
 up the speedup compared to the original to ~1.3x to ~2.6x times. Like every other example, performance gains are
 greater the closer the data is to the CPU core.</p>
-<h2 id="double-precision-sse-instructions-didnt-end-up-being-faster">
-  Double precision, SSE instructions (Didn&rsquo;t end up being faster)
-  <a class="anchor" href="#double-precision-sse-instructions-didnt-end-up-being-faster">#</a>
+<h2 id="single-precision-avx-instructions">
+  Single precision, AVX instructions
+  <a class="anchor" href="#single-precision-avx-instructions">#</a>
 </h2>
-<p>I found this code from the same source above, and it was <em>claimed</em> to be faster. Unfortunately, that didn&rsquo;t happen for
-me, perhaps due to the newer CPU and compiler being used. However, it&rsquo;s included here for future reference anyway.</p>
+<p>This implementation is not much different from the previous version, in that the reduction using a 256-bit vector is
+performed by splitting the 256-bit vector into 2 128-bit vectors, adding them, and performing the same reduction
+algorithm for 128-bit vectors:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce_256_sgl_AVX</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">float</span><span style="color:#f92672">*</span> b) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">8</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128</span> vb <span style="color:#f92672">=</span> _mm_set_ss(b[i<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; j <span style="color:#f92672">+=</span> <span style="color:#ae81ff">8</span>) {
+</span></span><span style="display:flex;"><span>            __m256 va <span style="color:#f92672">=</span> _mm256_loadu_ps(<span style="color:#f92672">&amp;</span>a[i<span style="color:#f92672">+</span>j]);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> va_lo <span style="color:#f92672">=</span> _mm256_castps256_ps128(va);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> va_hi <span style="color:#f92672">=</span> _mm256_extractf128_ps(va, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            va_lo <span style="color:#f92672">=</span> _mm_add_ps(va_lo, va_hi);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> shuf <span style="color:#f92672">=</span> _mm_movehdup_ps(va_lo);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> sums <span style="color:#f92672">=</span> _mm_add_ps(va_lo, shuf);
+</span></span><span style="display:flex;"><span>            shuf <span style="color:#f92672">=</span> _mm_movehl_ps(shuf, sums);
+</span></span><span style="display:flex;"><span>            sums <span style="color:#f92672">=</span> _mm_add_ss(sums, shuf);
+</span></span><span style="display:flex;"><span>            vb <span style="color:#f92672">=</span> _mm_add_ss(sums, vb);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        _mm_store_ss(<span style="color:#f92672">&amp;</span>b[i<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>], vb);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="performance-1">
+  Performance
+  <a class="anchor" href="#performance-1">#</a>
+</h3>
+<p>First comparing this new version to the first 256-bit vectorized version:</p>
+<pre tabindex="0"><code>Comparing reduce_256_sgl (from reduce_256_sgl.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX.json)
+Benchmark                                              Time       CPU   Time Old   Time New    CPU Old    CPU New
+-----------------------------------------------------------------------------------------------------------------
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/4096        -0.1999   -0.2001        800        640        798        638
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/32768       -0.1937   -0.1935       6419       5175       6401       5162
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/262144      -0.1721   -0.1723      52211      43227      52079      43108
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/2097152     -0.0966   -0.0966     446301     403176     445074     402074
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/16777216    -0.0417   -0.0417    6538546    6266122    6520420    6248835
+[reduce_256_sgl vs. reduce_256_sgl_AVX]/134217728   -0.0436   -0.0436   57544865   55037665   57385371   54886129
+OVERALL_GEOMEAN                                     -0.1271   -0.1272          0          0          0          0
+</code></pre><p>The performance has definitely improved, albeit marginally for the test sizes in RAM. But compared to the 128-bit
+version, it actually performs very similarly (perhaps even a bit worse):</p>
+<pre tabindex="0"><code>Comparing reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX.json)
+Benchmark                                                   Time       CPU   Time Old   Time New    CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/4096        +0.0101   +0.0102        634        640        632        638
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/32768       +0.0233   +0.0236       5057       5175       5043       5162
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/262144      +0.0210   +0.0208      42337      43227      42231      43108
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/2097152     +0.0043   +0.0041     401449     403176     400435     402074
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/16777216    +0.0047   +0.0045    6236505    6266122    6220706    6248835
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/134217728   -0.0041   -0.0043   55265558   55037665   55122733   54886129
+OVERALL_GEOMEAN                                          +0.0099   +0.0098          0          0          0          0
+</code></pre><p>I&rsquo;m not 100% sure why this happens. Firstly, there&rsquo;s an additional <code>_mm_add_ps</code> function call, which eats into potential
+gains from using 256-bit vectors. And I believe the additional memory operations eat into the remaining gains. The
+<code>_mm256_castps256_ps128</code> should be low cost or free as it doesn&rsquo;t move any data around. However, <code>_mm256_extractf128_ps</code>
+has to copy the data from the top half of the  original <code>va</code> vector into a different register. Which, I think, is more
+costly than an <code>_mm_hadd_ps</code> function call.</p>
+<p>Ultimately, from this test, it&rsquo;s probably not worth implementing vector reduction with 256-bit vectors compared to the
+fast 128-bit version.</p>
+<h3 id="performance-with-llvm-compiler-clang">
+  Performance with LLVM compiler (<code>clang++</code>)
+  <a class="anchor" href="#performance-with-llvm-compiler-clang">#</a>
+</h3>
+<p>The LLVM compilers are a different family of compilers form the GNU compilers and can translate the C++ code to assembly
+differently. In the case of C++, we use the <code>clang++</code> compiler. Let&rsquo;s compare the performance of our test programs using
+<code>clang++</code>.</p>
+<p>The compilation command for the manually vectorized code is:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
+</span></span></code></pre></div><p>The base case needed additional options to ensure no SSE/AVX instructions were introdued:</p>
+<pre tabindex="0"><code>-mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
+</code></pre><p>First comparing the faster version of the 256-bit vector code with the faster version of the 128-bit vector code.</p>
+<pre tabindex="0"><code>Comparing reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
+Benchmark                                                   Time       CPU   Time Old   Time New    CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/4096        -0.4445   -0.4445        572        318        571        317
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/32768       -0.4693   -0.4693       4708       2499       4697       2493
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/262144      -0.4916   -0.4916      39230      19943      39138      19896
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/2097152     -0.5283   -0.5283     338017     159451     337229     159080
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/16777216    -0.8006   -0.8006    6395979    1275520    6381010    1272545
+[reduce_128_sgl_SSE3 vs. reduce_256_sgl_AVX]/134217728   -0.8162   -0.8162   55513176   10205195   55383675   10181392
+OVERALL_GEOMEAN                                          -0.6294   -0.6294          0          0          0          0
+</code></pre><p>The AVX code is significantly faster for all the test sizes. For the smallest problem sizes, the AVX code is 1.8x faster
+than the new SSE code. Furthermore, the larger the problem gets and further away the data is located from the CPU, the
+speedups also increase (up to 5.4x at the largest test size!). Comparing to the base case:</p>
+<pre tabindex="0"><code>Comparing reduce_base_sgl (from reduce_base_sgl-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
+Benchmark                                               Time       CPU   Time Old   Time New    CPU Old    CPU New
+------------------------------------------------------------------------------------------------------------------
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/4096        -0.7450   -0.7450       1247        318       1244        317
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/32768       -0.7494   -0.7494       9970       2499       9947       2493
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/262144      -0.7505   -0.7505      79935      19943      79749      19896
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/2097152     -0.7506   -0.7506     639364     159451     637869     159080
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/16777216    -0.8318   -0.8318    7581972    1275520    7564185    1272545
+[reduce_base_sgl vs. reduce_256_sgl_AVX]/134217728   -0.8375   -0.8375   62785954   10205195   62639140   10181392
+OVERALL_GEOMEAN                                      -0.7815   -0.7815          0          0          0          0
+</code></pre><p>We now get a speedup of between 3.9x and 6.2x. The lesson here, is that it is important to benchmark your manually
+vectorized code with other compilers, as the translation to assembly and the heuristics used to automatically optimise
+the code can vary.</p>
+<h2 id="double-precision-sse-instructions">
+  Double precision, SSE instructions
+  <a class="anchor" href="#double-precision-sse-instructions">#</a>
+</h2>
 <p>This algorithm tricks the compiler to produce optimal code. I don&rsquo;t understand it, but will explain the specific
 functions used.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// __m128d va = _mm_set_pd(a0, a1);
@@ -864,7 +972,7 @@ for double precision data. What happens here is:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">void</span> <span style="color:#000">reduce_128_sgl_SSE2</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">const</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">float</span><span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">b</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">nelem</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
-</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_ss</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">__m128d</span> <span style="color:#000">vb</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">]);</span>
 </span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">j</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">va</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_loadu_ps</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">a</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#000">j</span><span style="color:#000;font-weight:bold">]);</span>
 </span></span><span style="display:flex;"><span>            <span style="color:#204a87;font-weight:bold">__m128</span> <span style="color:#000">undef</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_undefined_ps</span><span style="color:#000;font-weight:bold">();</span>
@@ -876,9 +984,9 @@ for double precision data. What happens here is:</p>
 </span></span><span style="display:flex;"><span>        <span style="color:#000">_mm_store_sd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">b</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">vb</span><span style="color:#000;font-weight:bold">);</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
 </span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
-</span></span></code></pre></div><h3 id="performance-1">
+</span></span></code></pre></div><h3 id="performance-2">
   Performance
-  <a class="anchor" href="#performance-1">#</a>
+  <a class="anchor" href="#performance-2">#</a>
 </h3>
 <p>Compilation command:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>g++ -o reduce.x reduce.cpp -msse4 -isystem benchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -std<span style="color:#ce5c00;font-weight:bold">=</span>c++17 -O2
@@ -886,25 +994,100 @@ for double precision data. What happens here is:</p>
 <pre tabindex="0"><code>Comparing reduce_base_dbl (from reduce_base_dbl.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2.json)
 Benchmark                                                Time       CPU    Time Old    Time New     CPU Old     CPU New
 -----------------------------------------------------------------------------------------------------------------------
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/4096        +0.0555   +0.0555        1627        1717        1623        1713
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/32768       +0.0168   +0.0166       13462       13689       13431       13654
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/262144      -0.0095   -0.0097      112035      110972      111772      110691
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/2097152     +0.1208   +0.1208      934021     1046876      931648     1044201
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0130   -0.0130    12864721    12697055    12831738    12664523
-[reduce_base_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0086   -0.0086   107276227   106349711   107002000   106080057
-OVERALL_GEOMEAN                                       +0.0259   +0.0258           0           0           0           0
-</code></pre><p>Comparison with horizontal add strategy:</p>
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/4096        -0.1979   -0.1978        1627        1305        1623        1302
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/32768       -0.1842   -0.1843       13462       10982       13431       10956
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/262144      -0.1666   -0.1667      112035       93353      111772       93135
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/2097152     -0.1767   -0.1765      934021      768984      931648      767179
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0174   -0.0172    12864721    12640848    12831738    12611107
+[reduce_base_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0080   -0.0078   107276227   106417505   107002000   106168603
+OVERALL_GEOMEAN                                       -0.0729   -0.0724           0           0           0           0
+</code></pre><p>The gains are modest, with a speedup of 1.2x at most. Comparison with horizontal add strategy:</p>
 <pre tabindex="0"><code>Comparing reduce_128_dbl (from reduce_128_dbl.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2.json)
 Benchmark                                               Time       CPU    Time Old    Time New     CPU Old     CPU New
 ----------------------------------------------------------------------------------------------------------------------
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/4096        +0.1796   +0.1794        1456        1717        1452        1713
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/32768       +0.1433   +0.1431       11973       13689       11945       13654
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/262144      +0.0284   +0.0284      107906      110972      107633      110691
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/2097152     +0.1658   +0.1658      898008     1046876      895718     1044201
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0250   -0.0250    13022105    12697055    12988742    12664523
-[reduce_128_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0186   -0.0186   108369477   106349711   108088106   106080057
-OVERALL_GEOMEAN                                      +0.0755   +0.0754           0           0           0           0
-</code></pre><p>Performance appears to be worse than the base case!</p>
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/4096        -0.1037   -0.1033        1456        1305        1452        1302
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/32768       -0.0828   -0.0828       11973       10982       11945       10956
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/262144      -0.1349   -0.1347      107906       93353      107633       93135
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/2097152     -0.1437   -0.1435      898008      768984      895718      767179
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0293   -0.0291    13022105    12640848    12988742    12611107
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0180   -0.0178   108369477   106417505   108088106   106168603
+OVERALL_GEOMEAN                                      -0.0667   -0.0991           0           0           0           0
+</code></pre><p>Which shows that this faster version is 1.1-1.4x faster than the horizontal add version.</p>
+<h3 id="performance-with-llvm-compiler-clang-1">
+  Performance with LLVM compiler (<code>clang++</code>)
+  <a class="anchor" href="#performance-with-llvm-compiler-clang-1">#</a>
+</h3>
+<p>Like with the single precision AVX code, we can see whether using <code>clang++</code> changes performance. The compiler options
+remain the same for the manually vectorized code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
+</span></span></code></pre></div><p>The base case needed additional options to ensure no SSE/AVX instructions were introdued:</p>
+<pre tabindex="0"><code>-mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
+</code></pre><pre tabindex="0"><code>Comparing reduce_128_dbl (from reduce_128_dbl-clang.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2-clang.json)
+Benchmark                                               Time       CPU    Time Old    Time New     CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------------
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/4096        -0.4131   -0.4131        1247         732        1244         730
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/32768       -0.0490   -0.0490        9970        9482        9946        9459
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/262144      +0.0132   +0.0132       84054       85161       83857       84962
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/2097152     +0.0415   +0.0416      692974      721728      691305      720034
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/16777216    -0.0231   -0.0230    12876249    12578212    12844822    12548782
+[reduce_128_dbl vs. reduce_128_dbl_SSE2]/134217728   -0.0154   -0.0154   108116751   106446645   107853527   106196771
+OVERALL_GEOMEAN                                      -0.0904   -0.0903           0           0           0           0
+</code></pre><p>And now it looks like the state of things have improved! This new version, compiled with <code>clang++</code>, shows an
+improvement, at least for the smallest test size. The others show a minor change, again demonstrating that it&rsquo;s
+important to test your code with multiple compilers!</p>
+<h2 id="double-precision-avx-instructions">
+  Double precision, AVX instructions
+  <a class="anchor" href="#double-precision-avx-instructions">#</a>
+</h2>
+<p>Like the 256-bit vectorized code so far, the pattern is to split the 256-bit vector into two 128-bit vectors, add the
+two halves together, and then perform a 128-bit sum reduction. Using the faster version of the single precision 128-bit
+reduction, the code looks like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">reduce_256_dbl_AVX</span>(<span style="color:#66d9ef">const</span> <span style="color:#66d9ef">int</span> nelem, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> a, <span style="color:#66d9ef">double</span><span style="color:#f92672">*</span> b) {
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; i <span style="color:#f92672">&lt;</span> nelem; i <span style="color:#f92672">+=</span> <span style="color:#ae81ff">8</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">__m128d</span> vb <span style="color:#f92672">=</span> _mm_set_sd(b[i<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>]);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> j <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; j <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span>; j <span style="color:#f92672">+=</span> <span style="color:#ae81ff">4</span>) {
+</span></span><span style="display:flex;"><span>            __m256d va <span style="color:#f92672">=</span> _mm256_loadu_pd(<span style="color:#f92672">&amp;</span>a[i<span style="color:#f92672">+</span>j]);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128d</span> va_low <span style="color:#f92672">=</span> _mm256_castpd256_pd128(va);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128d</span> va_hi <span style="color:#f92672">=</span> _mm256_extractf128_pd(va, <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>            va_low <span style="color:#f92672">=</span> _mm_add_pd(va_low, va_hi);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> undef <span style="color:#f92672">=</span> _mm_undefined_ps();
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128</span> shuftmp <span style="color:#f92672">=</span> _mm_movehl_ps(undef, _mm_castpd_ps(va_low));
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">__m128d</span> shuf <span style="color:#f92672">=</span> _mm_castps_pd(shuftmp);
+</span></span><span style="display:flex;"><span>            va_low <span style="color:#f92672">=</span> _mm_add_sd(va_low, shuf);
+</span></span><span style="display:flex;"><span>            vb <span style="color:#f92672">=</span> _mm_add_sd(vb, va_low);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        _mm_store_sd(<span style="color:#f92672">&amp;</span>b[i<span style="color:#f92672">/</span><span style="color:#ae81ff">8</span>], vb);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h3 id="performance-3">
+  Performance
+  <a class="anchor" href="#performance-3">#</a>
+</h3>
+<pre tabindex="0"><code>Comparing reduce_256_dbl (from reduce_256_dbl.json) to reduce_256_dbl_AVX (from reduce_256_dbl_AVX.json)
+Benchmark                                                           Time             CPU      Time Old      Time New       CPU Old       CPU New
+------------------------------------------------------------------------------------------------------------------------------------------------
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/4096                     -0.1645         -0.1645           956           799           954           797
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/32768                    -0.1435         -0.1435          8371          7170          8351          7153
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/262144                   -0.0466         -0.0466         78961         75280         78776         75103
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/2097152                  -0.0662         -0.0662        659969        616299        658426        614846
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/16777216                 -0.0201         -0.0201      12603210      12350490      12573727      12321468
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/134217728                -0.0169         -0.0169     106022048     104234811     105773315     103990081
+OVERALL_GEOMEAN                                                  -0.0781         -0.0781             0             0             0             0
+</code></pre><p>The improvement here is meaningful - up to ~16% for smaller problems. When compiled with <code>clang++</code>, the performance increase is more modest.</p>
+<h2 id="conclusion">
+  Conclusion
+  <a class="anchor" href="#conclusion">#</a>
+</h2>
+<p>The horizontal add strategy for reducing vectors is acceptable, but by using more subtle choices in vectorization, the
+sum reduction can be improved significantly. This was most evident in the 128-bit single precision sum reduction shown
+here. The improved algorithm shown on this page, was better than the horizontal add version by up to 2x!</p>
+<p>The improved 256-bit version, obtained better performance over the horizontal add version, but only if the <code>clang++</code>
+compiler is used. With <code>clang++</code>, the new 256-bit version is approximately between 2x and 5x faster than even the
+updated 128-bit sum reduction.</p>
+<p>In contrast, the double precision 128-bit and 256-bit improved versions showed here showed modest improvements compared
+to the previous vectorized version. Both versions seemed to be a lot faster for the smallest test size when compiled
+with <code>clang++</code> (around 2x faster).</p>
 </article>
  
       
@@ -914,9 +1097,9 @@ OVERALL_GEOMEAN                                      +0.0755   +0.0754          
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/98aded51523da225e6224b2b1b48904fddf47d2d" title='Last modified by Edward Yang | August 6, 2023' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/94026ffead1092a7375540cc75f298c4ffd7adeb" title='Last modified by Edward Yang | August 11, 2023' target="_blank" rel="noopener">
       <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 6, 2023</span>
+      <span>August 11, 2023</span>
     </a>
   </div>
 
@@ -966,11 +1149,24 @@ OVERALL_GEOMEAN                                      +0.0755   +0.0754          
             <li><a href="#performance">Performance</a></li>
           </ul>
         </li>
-        <li><a href="#double-precision-sse-instructions-didnt-end-up-being-faster">Double precision, SSE instructions (Didn&rsquo;t end up being faster)</a>
+        <li><a href="#single-precision-avx-instructions">Single precision, AVX instructions</a>
           <ul>
             <li><a href="#performance-1">Performance</a></li>
+            <li><a href="#performance-with-llvm-compiler-clang">Performance with LLVM compiler (<code>clang++</code>)</a></li>
           </ul>
         </li>
+        <li><a href="#double-precision-sse-instructions">Double precision, SSE instructions</a>
+          <ul>
+            <li><a href="#performance-2">Performance</a></li>
+            <li><a href="#performance-with-llvm-compiler-clang-1">Performance with LLVM compiler (<code>clang++</code>)</a></li>
+          </ul>
+        </li>
+        <li><a href="#double-precision-avx-instructions">Double precision, AVX instructions</a>
+          <ul>
+            <li><a href="#performance-3">Performance</a></li>
+          </ul>
+        </li>
+        <li><a href="#conclusion">Conclusion</a></li>
       </ul>
     </li>
   </ul>
