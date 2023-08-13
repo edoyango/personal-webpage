@@ -101,7 +101,7 @@ The 256-bit vector version can be obtained by replacing `__m128` types with `__m
 `_mm256`. Double precision versions are obtained by adding `d` to the vector types, and replacing `ps` with `pd` in the
 function suffixes.
 
-### Performance of the manually vectorized sweep function: with `-O3` optimizations
+### Performance of the manually vectorized sweep function: with `-O2` optimizations
 
 Here, compiler optimizations are used as it has been established that automatic vectorization doesn't work for this 
 code, and these optimizations are needed to get the best out of the manual vectorization. The tests used here are much
@@ -170,3 +170,180 @@ assembly using SIMD instructions. I couldn't figure out a way to prevent the com
 making the intel intrinsic functions unavailable as well. In principle, the serializations of the update of `b[i]` would
 prevent optimal performance, and the manually vectorized reductions [discussed here](sumreduction.md) and [here](faster-sumreduce.md)
 would be needed to improve performance. 
+
+## 2D version
+
+A meaningful version of this sweep function would require at least 2 dimensions as few engineering problems occur in 1D.
+Updating the sweep function to work in 2D:
+
+```cpp {style=tango,linenos=false}
+void sweep_base_sgl(const int nelem, float* ax, float*, ay, float* bx, float* by) {
+    int k = 0
+    for (int i = 0; i < nelem-1; i += 8) {
+        for (int j = i+1; j < nelem; ++j) {
+            tmp = ax[i]-ax[j];
+            bx[i] += tmp;
+            bx[j] -= tmp;
+            tmp = ay[i]-ay[j];
+            by[i] += tmp;
+            by[j] -= tmp;
+        }
+    }
+}
+```
+
+And the corresponding manually vectorized version (128-bit vectors, single precision data): 
+
+```cpp {style=tango,linenos=false}
+void sweep_128_sgl(const int nelem, float* ax, float *ay, float* bx, float* by,) {
+    float tmp[4];
+    for (int i = 0; i < nelem-1; i += 8) {
+        __m128 vix = _mm_set1_ps(ax[i]);
+        __m128 viy = _mm_set1_ps(ay[i]);
+        for (int j = i+1; j < nelem; j += 4) {
+            __m128 vj = _mm_loadu_ps(&ax[j]);
+            __m128 vdiff = _mm_sub_ps(vix, vj);
+            __m128 vbj = _mm_loadu_ps(&bx[j]);
+            vbj = _mm_sub_ps(vbj, vdiff);
+            _mm_storeu_ps(&bx[j], vbj);
+            _mm_storeu_ps(tmp, vdiff);
+            bx[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];
+
+            vj = _mm_loadu_ps(&ay[j]);
+            vdiff = _mm_sub_ps(viy, vj);
+            vbj = _mm_loadu_ps(&by[j]);
+            vbj = _mm_sub_ps(vbj, vdiff);
+            _mm_storeu_ps(&by[j], vbj);
+            _mm_storeu_ps(tmp, vdiff);
+            by[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];
+        }
+    }
+}
+```
+
+Which differs from the 1D version by basically duplicating the code to work on both `ax/bx` and `ay/by`.
+
+### Performance of the 2D version
+
+Performance of the 128-bit, single precision version:
+
+``` {style=tango,linenos=false}
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_128_sgl (from results/sweep2d_128_sgl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_128_sgl]/4096    -0.7374   -0.7374     2872377     754223     2865660     752460
+[sweep_base_sgl vs. sweep_128_sgl]/8192    -0.7342   -0.7342    11506013    3057812    11479107    3050661
+[sweep_base_sgl vs. sweep_128_sgl]/16384   -0.7311   -0.7311    46017767   12372116    45909943   12343182
+[sweep_base_sgl vs. sweep_128_sgl]/32768   -0.7296   -0.7296   184173481   49800358   183742778   49683899
+OVERALL_GEOMEAN                            -0.7331   -0.7331           0          0           0          0
+```
+
+and the double precision version:
+
+``` {style=tango,linenos=false}
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_128_dbl (from results/sweep2d_128_dbl.json)
+Benchmark                                     Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_128_dbl]/4096    -0.4732   -0.4732     2872377     1513260     2865660     1509721
+[sweep_base_sgl vs. sweep_128_dbl]/8192    -0.4439   -0.4439    11506013     6397967    11479107     6383008
+[sweep_base_sgl vs. sweep_128_dbl]/16384   -0.4514   -0.4514    46017767    25243093    45909943    25184062
+[sweep_base_sgl vs. sweep_128_dbl]/32768   -0.4497   -0.4497   184173481   101358663   183742778   101121153
+OVERALL_GEOMEAN                            -0.4547   -0.4547           0           0           0           0
+```
+
+The single precision version gets a max speedup of 3.8x and the double precision version gets 1.9x which are both pretty
+close to optimal! Now what about the 256-bit version?
+
+single precision:
+
+```
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_sgl (from results/sweep2d_256_sgl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_sgl]/4096    -0.7104   -0.7104     2872377     831729     2865660     829784
+[sweep_base_sgl vs. sweep_256_sgl]/8192    -0.7079   -0.7079    11506013    3361005    11479107    3353127
+[sweep_base_sgl vs. sweep_256_sgl]/16384   -0.7016   -0.7016    46017767   13732233    45909943   13700120
+[sweep_base_sgl vs. sweep_256_sgl]/32768   -0.6624   -0.6624   184173481   62176512   183742778   62031113
+OVERALL_GEOMEAN                            -0.6962   -0.6962           0          0           0          0
+```
+
+and double precision:
+
+```
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_dbl (from results/sweep2d_256_dbl.json)
+Benchmark                                     Time       CPU    Time Old    Time New     CPU Old     CPU New
+------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_dbl]/4096    -0.4926   -0.4926     2872377     1457335     2865660     1453927
+[sweep_base_sgl vs. sweep_256_dbl]/8192    -0.4868   -0.4868    11506013     5905197    11479107     5891388
+[sweep_base_sgl vs. sweep_256_dbl]/16384   -0.4857   -0.4857    46017767    23664846    45909943    23609391
+[sweep_base_sgl vs. sweep_256_dbl]/32768   -0.4381   -0.4381   184173481   103495512   183742778   103253479
+OVERALL_GEOMEAN                            -0.4762   -0.4762           0           0           0           0
+```
+
+Now the speedup has barely changed, and has, in fact, gotten slower for the single precision version! Profiling this
+code reveals that a big chunk of time is spent on the loading of the `vdiff` vector to the `tmp` variable and then
+adding 8 (single precision) or 4 (double precision) elements to `bx/by[i]`. 
+
+Swapping out the code would change the load and add combination:
+
+```cpp
+_mm_storeu_ps(tmp, vdiff);
+bx[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];
+```
+
+and replacing it with something like
+
+```cpp
+bx[i] += reduce_256_sgl(vdiff);
+```
+
+where `reduce_256_sgl`, uses the function definitions:
+
+```cpp
+static inline __attribute__((always_inline))
+float reduce_128_sgl(__m128 a) {
+    __m128 shuf = _mm_movehdup_ps(a);
+    __m128 sums = _mm_add_ps(a, shuf);
+    shuf = _mm_movehl_ps(shuf, sums);
+    sums = _mm_add_ss(sums, shuf);
+    return _mm_cvtss_f32(sums);
+}
+
+static inline __attribute__((always_inline))
+float reduce_256_sgl(__m256 a) {
+    __m128 a_lo = _mm256_castps256_ps128(a);
+    __m128 a_hi = _mm256_extractf128_ps(a, 1);
+    a_lo = _mm_add_ps(a_lo, a_hi);
+    return reduce_128_sgl(a_lo);
+}
+```
+
+where `inline __attribute__((always_inline))` ensures that the compiler inlines the function no matter what. The double
+precision version would be that described in [the faster sum reductions page](faster-sumreduce.md). The performance
+results from using these functions for the single precision version:
+
+```
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_sgl_reduce2 (from results/sweep2d_256_sgl_reduce2.json)
+Benchmark                                             Time       CPU    Time Old   Time New     CPU Old     CPU New
+-------------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_sgl_reduce2]/4096    -0.8014   -0.8014     2872377     570401     2865660      569065
+[sweep_base_sgl vs. sweep_256_sgl_reduce2]/8192    -0.7940   -0.7940    11506013    2370599    11479107     2365055
+[sweep_base_sgl vs. sweep_256_sgl_reduce2]/16384   -0.7642   -0.7642    46017767   10848874    45909943    10823504
+[sweep_base_sgl vs. sweep_256_sgl_reduce2]/32768   -0.7883   -0.7883   184173481   38997633   183742778    38906450
+OVERALL_GEOMEAN                                    -0.7874   -0.7874           0          0           0           0
+```
+
+which raises the performance from ~3.5x to ~5x! Not optimal, but a big improvement, and potentially providing sufficient
+motivation for the 256-bit manual vectorisation. The double precision performance results also show a similar
+improvement, raising the speedup from ~2x to ~2.4x.
+
+```
+Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_dbl_reduce2 (from results/sweep2d_256_dbl_reduce2.json)
+Benchmark                                             Time       CPU    Time Old   Time New     CPU Old    CPU New
+------------------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_dbl_reduce2]/4096    -0.5912   -0.5912     2872377    1174242     2865660    1171496
+[sweep_base_sgl vs. sweep_256_dbl_reduce2]/8192    -0.5372   -0.5372    11506013    5324447    11479107    5311997
+[sweep_base_sgl vs. sweep_256_dbl_reduce2]/16384   -0.5334   -0.5334    46017767   21473573    45909943   21423354
+[sweep_base_sgl vs. sweep_256_dbl_reduce2]/32768   -0.5680   -0.5680   184173481   79555471   183742778   79369428
+OVERALL_GEOMEAN                                    -0.5581   -0.5581           0          0           0          0
+```
