@@ -122,7 +122,7 @@ This implementation is not much different from the previous version, in that the
 performed by splitting the 256-bit vector into 2 128-bit vectors, adding them, and performing the same reduction
 algorithm for 128-bit vectors:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_256_sgl_AVX(const int nelem, float* a, float* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -193,19 +193,19 @@ differently. In the case of C++, we use the `clang++` compiler. Let's compare th
 
 The compilation command for the manually vectorized code is:
 
-```bash
+```bash {style=tango,linenos=false}
 clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
 ```
 
 The base case needed additional options to ensure no SSE/AVX instructions were introdued:
 
-```
+``` {style=tango,linenos=false}
 -mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
 ```
 
 First comparing the faster version of the 256-bit vector code with the faster version of the 128-bit vector code.
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_128_sgl_SSE3 (from reduce_128_sgl_SSE3-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
 Benchmark                                                   Time       CPU   Time Old   Time New    CPU Old    CPU New
 ----------------------------------------------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ The AVX code is significantly faster for all the test sizes. For the smallest pr
 than the new SSE code. Furthermore, the larger the problem gets and further away the data is located from the CPU, the
 speedups also increase (up to 5.4x at the largest test size!). Comparing to the base case:
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_base_sgl (from reduce_base_sgl-clang.json) to reduce_256_sgl_AVX (from reduce_256_sgl_AVX-clang.json)
 Benchmark                                               Time       CPU   Time Old   Time New    CPU Old    CPU New
 ------------------------------------------------------------------------------------------------------------------
@@ -353,17 +353,17 @@ Which shows that this faster version is 1.1-1.4x faster than the horizontal add 
 Like with the single precision AVX code, we can see whether using `clang++` changes performance. The compiler options
 remain the same for the manually vectorized code:
 
-```bash
+```bash {style=tango,linenos=false}
 clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
 ```
 
 The base case needed additional options to ensure no SSE/AVX instructions were introdued:
 
-```
+``` {style=tango,linenos=false}
 -mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
 ```
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_128_dbl (from reduce_128_dbl-clang.json) to reduce_128_dbl_SSE2 (from reduce_128_dbl_SSE2-clang.json)
 Benchmark                                               Time       CPU    Time Old    Time New     CPU Old     CPU New
 ----------------------------------------------------------------------------------------------------------------------
@@ -386,7 +386,7 @@ Like the 256-bit vectorized code so far, the pattern is to split the 256-bit vec
 two halves together, and then perform a 128-bit sum reduction. Using the faster version of the single precision 128-bit
 reduction, the code looks like:
 
-```cpp
+```cpp {style=tango,linenos=false}
 void reduce_256_dbl_AVX(const int nelem, double* a, double* b) {
 
     for (int i = 0; i < nelem; i += 8) {
@@ -409,20 +409,21 @@ void reduce_256_dbl_AVX(const int nelem, double* a, double* b) {
 
 ### Performance
 
-```
+``` {style=tango,linenos=false}
 Comparing reduce_256_dbl (from reduce_256_dbl.json) to reduce_256_dbl_AVX (from reduce_256_dbl_AVX.json)
-Benchmark                                                           Time             CPU      Time Old      Time New       CPU Old       CPU New
-------------------------------------------------------------------------------------------------------------------------------------------------
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/4096                     -0.1645         -0.1645           956           799           954           797
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/32768                    -0.1435         -0.1435          8371          7170          8351          7153
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/262144                   -0.0466         -0.0466         78961         75280         78776         75103
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/2097152                  -0.0662         -0.0662        659969        616299        658426        614846
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/16777216                 -0.0201         -0.0201      12603210      12350490      12573727      12321468
-[reduce_256_dbl vs. reduce_256_dbl_AVX]/134217728                -0.0169         -0.0169     106022048     104234811     105773315     103990081
-OVERALL_GEOMEAN                                                  -0.0781         -0.0781             0             0             0             0
+Benchmark                                              Time       CPU    Time Old    Time New     CPU Old     CPU New
+---------------------------------------------------------------------------------------------------------------------
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/4096        -0.1645   -0.1645         956         799         954         797
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/32768       -0.1435   -0.1435        8371        7170        8351        7153
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/262144      -0.0466   -0.0466       78961       75280       78776       75103
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/2097152     -0.0662   -0.0662      659969      616299      658426      614846
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/16777216    -0.0201   -0.0201    12603210    12350490    12573727    12321468
+[reduce_256_dbl vs. reduce_256_dbl_AVX]/134217728   -0.0169   -0.0169   106022048   104234811   105773315   103990081
+OVERALL_GEOMEAN                                     -0.0781   -0.0781           0           0           0           0
 ```
 
-The improvement here is meaningful - up to ~16% for smaller problems. When compiled with `clang++`, the performance increase is more modest.
+The improvement here is meaningful - up to ~16% for smaller problems. When compiled with `clang++`, the performance 
+increase is more modest.
 
 ## Conclusion
 
