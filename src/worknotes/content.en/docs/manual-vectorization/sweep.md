@@ -36,11 +36,11 @@ void sweep_base_sgl(const int nelem, float* a, float* b) {
 
 `i` is incremented by 8 to simplify vectorization. Swap out `float` with `double`, to get the double precision version.
 
-Important to note here, is that this loop cannot automatically be vectorized by the compiler. For example, if we compile
+Important to note here, is that this loop cannot automatically be vectorized by `g++`. For example, if we compile
 our code with `-O3 -fopt-info-vec-missed`, `-O3` will try to vectorize the loop, and the other option will let you know
 when it cannot vectorize a given loop. At compilation, I get some important info in the output:
 
-```
+``` {style=tango,linenos=false}
 sweep.cpp:51:27: missed: couldn't vectorize loop
 sweep.cpp:51:27: missed: not vectorized: multiple nested loops.
 sweep.cpp:51:27: missed: couldn't vectorize loop
@@ -59,7 +59,8 @@ Recalling what is required for the `store` and `load` functions to work: that th
 aligned on vector-width boundaries. In the nested loop considered here, `i` starts at element 0, but `j` starts at 
 `i + 1`, which would be `j = 1` when `i = 0`. So while the address of `a[0]` would be aligned to a vector width, the
 next element, `a[1]`, would not be. Consequently, once the inner loop starts, the load/store functions would fail with a
-`segmentation fault` error.
+`segmentation fault` error. More generally, the outer loop would typically be incrementing by 1, which would mean
+accesses to `a` would mostly be unaligned.
 
 ## Doing the Vectorization
 
@@ -106,60 +107,58 @@ Here, compiler optimizations are used as it has been established that automatic 
 code, and these optimizations are needed to get the best out of the manual vectorization. The tests used here are much
 smaller due to the long duration of this sweep algorithm. At worst, the loaded arrays are stored within L2 cache.
 
-```
-Comparing sweep_base_sgl (from ./sweep.x) to sweep_128_sgl (from ./sweep.x)
-Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
-----------------------------------------------------------------------------------------------------------------
-[sweep_base_sgl vs. sweep_128_sgl]/4096     -0.7510    -0.7510      2839589      706938      2832949      705285
-[sweep_base_sgl vs. sweep_128_sgl]/8192     -0.7503    -0.7503     11420092     2851359     11393386     2844676
-[sweep_base_sgl vs. sweep_128_sgl]/16384    -0.7492    -0.7492     45814773    11488096     45707635    11461231
-[sweep_base_sgl vs. sweep_128_sgl]/32768    -0.7490    -0.7490    183477650    46046978    183048596    45938907
-OVERALL_GEOMEAN                             -0.7499    -0.7499            0           0            0           0
+``` {style=tango,linenos=false}
+Comparing sweep_base_sgl (from results/sweep1d_base_sgl.json) to sweep_128_sgl (from results/sweep1d_128_sgl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_128_sgl]/4096    -0.7448   -0.7448     2837605     724074     2830970     722381
+[sweep_base_sgl vs. sweep_128_sgl]/8192    -0.7433   -0.7433    11412353    2929379    11385665    2922530
+[sweep_base_sgl vs. sweep_128_sgl]/16384   -0.7411   -0.7411    45808257   11859336    45701186   11831605
+[sweep_base_sgl vs. sweep_128_sgl]/32768   -0.7412   -0.7412   183443120   47483586   183014137   47372294
+OVERALL_GEOMEAN
 ```
 
-The manual vectorization with the compiler optimizations are about 4x faster than the code without the manual
-vectorization for 128-bit vectors. The results are the same with or without aligned data, similar to the results from
-the ABC test with 128-bit vectors. Near-optimal speedup is gained for 256-bit vectors with a speedup of ~7.7x. These
-results are shown in the table below. Again, results are similar with aligned data.
+The manual vectorization with the compiler optimizations are about 3.9x faster than the code without the manual
+vectorization for 128-bit vectors. Near-optimal speedup is gained for 256-bit vectors with a speedup of ~7.3x (see table
+below).
 
-```
-Comparing sweep_base_sgl (from ./sweep.x) to sweep_256_sgl (from ./sweep.x)
-Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
-----------------------------------------------------------------------------------------------------------------
-[sweep_base_sgl vs. sweep_256_sgl]/4096     -0.8704    -0.8704      2838588      367947      2831950      367085
-[sweep_base_sgl vs. sweep_256_sgl]/8192     -0.8710    -0.8710     11421675     1473129     11394899     1469684
-[sweep_base_sgl vs. sweep_256_sgl]/16384    -0.8703    -0.8703     45804432     5940806     45696865     5925814
-[sweep_base_sgl vs. sweep_256_sgl]/32768    -0.8703    -0.8703    183489696    23804857    183059879    23744846
-OVERALL_GEOMEAN                             -0.8705    -0.8705            0           0            0           0
+``` {style=tango,linenos=false}
+Comparing sweep_base_sgl (from results/sweep1d_base_sgl.json) to sweep_256_sgl (from results/sweep1d_256_sgl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_sgl vs. sweep_256_sgl]/4096    -0.8603   -0.8603     2837605     396449     2830970     395517
+[sweep_base_sgl vs. sweep_256_sgl]/8192    -0.8623   -0.8623    11412353    1571707    11385665    1568032
+[sweep_base_sgl vs. sweep_256_sgl]/16384   -0.8589   -0.8589    45808257    6462080    45701186    6446971
+[sweep_base_sgl vs. sweep_256_sgl]/32768   -0.8454   -0.8454   183443120   28365528   183014137   28299199
+OVERALL_GEOMEAN                            -0.8569   -0.8569           0          0           0          0
 ```
 
 Although not shown here, without the compiler optimizations, the speedup of the manually vectorized code with 128-bit
 vectors is at best, ~1.5x faster; and ~2.7x faster for 256-bit vectors.
 
-The double precision versions of the code also obtain optimal performance gain the 128-bit vectors. But unlike the
-single precision version, which didn't obtain optimal performance for 256-bit vectors, the double precision data
-managed to obtain very close to optimal (3.97x).
+The double precision versions of the code also obtain close to optimal performance gain using 128-bit vectors. Like the
+single precision version,the double precision data managed to obtain very close to optimal (3.78x).
 
-```
-Comparing sweep_base_dbl (from ./sweep.x) to sweep_128_dbl (from ./sweep.x)
-Benchmark                                      Time        CPU     Time Old    Time New      CPU Old     CPU New
-----------------------------------------------------------------------------------------------------------------
-[sweep_base_dbl vs. sweep_128_dbl]/4096     -0.5008    -0.5008      2839639     1417415      2832999     1414100
-[sweep_base_dbl vs. sweep_128_dbl]/8192     -0.4996    -0.4997     11420212     5714520     11393505     5700021
-[sweep_base_dbl vs. sweep_128_dbl]/16384    -0.4995    -0.4996     45816958    22930231     45709819    22872302
-[sweep_base_dbl vs. sweep_128_dbl]/32768    -0.4798    -0.4799    183502279    95457124    183073179    95216351
-OVERALL_GEOMEAN                             -0.4949    -0.4949            0           0           0           0
+``` {style=tango,linenos=false}
+Comparing sweep_base_dbl (from results/sweep1d_base_dbl.json) to sweep_128_dbl (from results/sweep1d_128_dbl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_dbl vs. sweep_128_dbl]/4096    -0.4898   -0.4898     2837990    1448083     2831355    1444697
+[sweep_base_dbl vs. sweep_128_dbl]/8192    -0.4868   -0.4868    11418819    5860700    11392117    5846937
+[sweep_base_dbl vs. sweep_128_dbl]/16384   -0.4857   -0.4857    45805303   23556194    45698184   23501027
+[sweep_base_dbl vs. sweep_128_dbl]/32768   -0.4882   -0.4882   184497440   94427345   184065995   94206550
+OVERALL_GEOMEAN                            -0.4876   -0.4876           0          0           0          0
 ```
 
-```
-Comparing sweep_base_dbl (from ./sweep.x) to sweep_256_dbl (from ./sweep.x)
-Benchmark                                      Time        CPU     Time Old    Time New     CPU Old     CPU New
----------------------------------------------------------------------------------------------------------------
-[sweep_base_dbl vs. sweep_256_dbl]/4096     -0.7478    -0.7479      2841982      716732     2835337      714913
-[sweep_base_dbl vs. sweep_256_dbl]/8192     -0.7470    -0.7470     11418812     2889162    11392066     2881874
-[sweep_base_dbl vs. sweep_256_dbl]/16384    -0.7426    -0.7426     45815691    11794693    45708548    11767115
-[sweep_base_dbl vs. sweep_256_dbl]/32768    -0.7508    -0.7508    186231849    46409514   185796344    46292393
-OVERALL_GEOMEAN                             -0.7470    -0.7470            0           0           0           0
+``` {style=tango,linenos=false}
+Comparing sweep_base_dbl (from results/sweep1d_base_dbl.json) to sweep_256_dbl (from results/sweep1d_256_dbl.json)
+Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
+----------------------------------------------------------------------------------------------------------
+[sweep_base_dbl vs. sweep_256_dbl]/4096    -0.7354   -0.7354     2837990     750796     2831355     749041
+[sweep_base_dbl vs. sweep_256_dbl]/8192    -0.7337   -0.7337    11418819    3040832    11392117    3033721
+[sweep_base_dbl vs. sweep_256_dbl]/16384   -0.7331   -0.7331    45805303   12227361    45698184   12198775
+[sweep_base_dbl vs. sweep_256_dbl]/32768   -0.7253   -0.7253   184497440   50679024   184065995   50560536
+OVERALL_GEOMEAN                            -0.7319   -0.7319           0          0           0          0
 ```
 
 While not shown here, without the compiler optimisations, the 128-bit double precision manually vectorized code is
