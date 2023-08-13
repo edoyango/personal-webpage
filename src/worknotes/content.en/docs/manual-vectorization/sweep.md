@@ -169,3 +169,4 @@ obtained in the tests. This is because `g++` and `clang++` will automatically co
 assembly using SIMD instructions. I couldn't figure out a way to prevent the compilers from doing this without also
 making the intel intrinsic functions unavailable as well. In principle, the serializations of the update of `b[i]` would
 prevent optimal performance, and the manually vectorized reductions [discussed here](sumreduction.md) and [here](faster-sumreduce.md)
+would be needed to improve performance. 
