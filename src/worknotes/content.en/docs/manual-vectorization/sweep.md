@@ -111,7 +111,7 @@ smaller due to the long duration of this sweep algorithm. At worst, the loaded a
 Comparing sweep_base_sgl (from results/sweep1d_base_sgl.json) to sweep_128_sgl (from results/sweep1d_128_sgl.json)
 Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
 ----------------------------------------------------------------------------------------------------------
-[sweep_base_sgl vs. sweep_128_sgl]/4096    -0.7448   -0.7448     2837605     724074     2830970     722381
+[sweep_base_sgl vs. sweep_128_sgl]/4096    -0.7448   -0.7448     2837605     724git074     2830970     722381
 [sweep_base_sgl vs. sweep_128_sgl]/8192    -0.7433   -0.7433    11412353    2929379    11385665    2922530
 [sweep_base_sgl vs. sweep_128_sgl]/16384   -0.7411   -0.7411    45808257   11859336    45701186   11831605
 [sweep_base_sgl vs. sweep_128_sgl]/32768   -0.7412   -0.7412   183443120   47483586   183014137   47372294
@@ -164,3 +164,8 @@ OVERALL_GEOMEAN                            -0.7319   -0.7319           0        
 While not shown here, without the compiler optimisations, the 128-bit double precision manually vectorized code is
 up to 30% slower with 128-bit vectors, and at best, 1.62x faster with 256-bit vectors.
 
+You may have noticed that the incrementing of `b[i]` looks like it's serialized, but near-optimal performance is
+obtained in the tests. This is because `g++` and `clang++` will automatically convert `b[i] += tmp[0] + ...;` to
+assembly using SIMD instructions. I couldn't figure out a way to prevent the compilers from doing this without also
+making the intel intrinsic functions unavailable as well. In principle, the serializations of the update of `b[i]` would
+prevent optimal performance, and the manually vectorized reductions [discussed here](sumreduction.md) and [here](faster-sumreduce.md)
