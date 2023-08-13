@@ -256,7 +256,7 @@ close to optimal! Now what about the 256-bit version?
 
 single precision:
 
-```
+``` {style=tango,linenos=false}
 Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_sgl (from results/sweep2d_256_sgl.json)
 Benchmark                                     Time       CPU    Time Old   Time New     CPU Old    CPU New
 ----------------------------------------------------------------------------------------------------------
@@ -269,7 +269,7 @@ OVERALL_GEOMEAN                            -0.6962   -0.6962           0        
 
 and double precision:
 
-```
+``` {style=tango,linenos=false}
 Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_dbl (from results/sweep2d_256_dbl.json)
 Benchmark                                     Time       CPU    Time Old    Time New     CPU Old     CPU New
 ------------------------------------------------------------------------------------------------------------
@@ -286,20 +286,20 @@ adding 8 (single precision) or 4 (double precision) elements to `bx/by[i]`.
 
 Swapping out the code would change the load and add combination:
 
-```cpp
+```cpp {style=tango,linenos=false}
 _mm_storeu_ps(tmp, vdiff);
 bx[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];
 ```
 
 and replacing it with something like
 
-```cpp
+```cpp {style=tango,linenos=false}
 bx[i] += reduce_256_sgl(vdiff);
 ```
 
 where `reduce_256_sgl`, uses the function definitions:
 
-```cpp
+```cpp {style=tango,linenos=false}
 static inline __attribute__((always_inline))
 float reduce_128_sgl(__m128 a) {
     __m128 shuf = _mm_movehdup_ps(a);
@@ -322,7 +322,7 @@ where `inline __attribute__((always_inline))` ensures that the compiler inlines 
 precision version would be that described in [the faster sum reductions page](faster-sumreduce.md). The performance
 results from using these functions for the single precision version:
 
-```
+``` {style=tango,linenos=false}
 Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_sgl_reduce2 (from results/sweep2d_256_sgl_reduce2.json)
 Benchmark                                             Time       CPU    Time Old   Time New     CPU Old     CPU New
 -------------------------------------------------------------------------------------------------------------------
@@ -337,7 +337,7 @@ which raises the performance from ~3.5x to ~5x! Not optimal, but a big improveme
 motivation for the 256-bit manual vectorisation. The double precision performance results also show a similar
 improvement, raising the speedup from ~2x to ~2.4x.
 
-```
+``` {style=tango,linenos=false}
 Comparing sweep_base_sgl (from results/sweep2d_base_sgl.json) to sweep_256_dbl_reduce2 (from results/sweep2d_256_dbl_reduce2.json)
 Benchmark                                             Time       CPU    Time Old   Time New     CPU Old    CPU New
 ------------------------------------------------------------------------------------------------------------------
