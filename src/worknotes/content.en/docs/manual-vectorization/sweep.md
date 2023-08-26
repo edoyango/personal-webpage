@@ -347,3 +347,107 @@ Benchmark                                             Time       CPU    Time Old
 [sweep_base_sgl vs. sweep_256_dbl_reduce2]/32768   -0.5680   -0.5680   184173481   79555471   183742778   79369428
 OVERALL_GEOMEAN                                    -0.5581   -0.5581           0          0           0          0
 ```
+
+### Performance of 3D version
+
+For the sake of completeness, we'll include the 3D performance numbers too. Hopefully, from the 2D version,
+you'll understand that this is just duplicating some code a second time. The results are summarized below for
+the sake of brevity.
+
+| Case | Min Speedup Over Base (`g++ 10.3`) | Max Speedup Over Base (`g++ 10.3`) | Min Speedup Over Base (`clang++ 12.0.1`) | Max Speedup Over Base (`clang++ 12.0.1`) |
+| --- | --- | --- | --- | --- | --- |
+| 128_sgl_reduce0 | 2.24 | 2.61 | 2.66 | 3.24 |
+| 128_sgl_reduce1 | 2.35 | 2.59 | 2.69 | 3.24 |
+| 128_sgl_reduce2 | 2.43 | 2.68 | 2.76 | 3.35 |
+| 128_dbl_reduce0 | 1.32 | 1.38 | 1.42 | 1.69 |
+| 128_dbl_reduce1 | 1.33 | 1.38 | 1.48 | 1.68 |
+| 128_dbl_reduce2 | 1.34 | 1.38 | 1.42 | 1.53 |
+| 256_sgl_reduce0 | 1.97 | 2.18 | 2.55 | 2.80 |
+| 256_sgl_reduce1 | 2.56 | 2.79 | 3.05 | 3.49 |
+| 256_sgl_reduce2 | 2.59 | 2.87 | 2.94 | 3.64 |
+| 256_dbl_reduce0 | 1.44 | 1.49 | 1.49 | 1.76 |
+| 256_dbl_reduce1 | 1.45 | 1.50 | 1.69 | 1.85 |
+| 256_dbl_reduce2 | 1.45 | 1.49 | 1.75 | 1.91 |
+
+The 3D version shows significantly less speedup compared its 2D and 1D counterparts using both `g++` and
+`clang++` compilers. The best speedup obtained speedups are ~3.6x and ~1.9x for the single and double
+precision versions, respectively. The speedup of using 256-bit vectors is comparable to using 128-bit
+vectors. But, despite the lesser performance of the 3D version, it is still probably worth manually 
+vectorizing this algorith, given the inability of the Clang and GNU compilers from automatically vectorizing 
+the nested loop (at the time of writing).
+
+## Completing the Sweep
+
+The Sweep algorithm discussed so far, takes shortcuts to mitigate the discussion of dealing with "residuals" -
+the leftover itrations. Just for reference, the double precision 256-bit manually vectorized version of a full
+sweep, taking care of the residuals, is shown below:
+
+```cpp {style=tango,linenos=false}
+void sweep_256_dbl_reduce2(const int nelem, double* ax, double *ay, double* az, double* bx, double* by, double* bz) {
+    for (int i = 0; i < nelem-1; i += 8) {
+        // loading ith value into vector
+        __m256d vix = _mm256_set1_pd(ax[i]);
+        __m256d viy = _mm256_set1_pd(ay[i]);
+        __m256d viz = _mm256_set1_pd(az[i]);
+        int len = nelem-(i+1); // number of iterations in inner loop
+        int end = (len % 4 == 0) ? nelem : nelem - 4; // truncating inner loop
+        int j; // declaring counter variable
+        for (j = i+1; j < nelem; j += 4) {
+            __m256d vj = _mm256_loadu_pd(&ax[j]);
+            __m256d vdiff = _mm256_sub_pd(vix, vj);
+            __m256d vbj = _mm256_loadu_pd(&bx[j]);
+            vbj = _mm256_sub_pd(vbj, vdiff);
+            _mm256_storeu_pd(&bx[j], vbj);
+            bx[i] += reduce_256_dbl(vdiff);
+
+            vj = _mm256_loadu_pd(&ay[j]);
+            vdiff = _mm256_sub_pd(viy, vj);
+            vbj = _mm256_loadu_pd(&by[j]);
+            vbj = _mm256_sub_pd(vbj, vdiff);
+            _mm256_storeu_pd(&by[j], vbj);
+            by[i] += reduce_256_dbl(vdiff);
+
+            vj = _mm256_loadu_pd(&az[j]);
+            vdiff = _mm256_sub_pd(viz, vj);
+            vbj = _mm256_loadu_pd(&bz[j]);
+            vbj = _mm256_sub_pd(vbj, vdiff);
+            _mm256_storeu_pd(&bz[j], vbj);
+            bz[i] += reduce_256_dbl(vdiff);
+        }
+
+        // taking care of residual iterations from inner loop
+        for (; j < nelem; ++j) {
+            double tmp = ax[i]-ax[j];
+            bx[i] += tmp;
+            bx[j] -= tmp;
+            tmp = ay[i]-ay[j];
+            by[i] += tmp;
+            by[j] -= tmp;
+            tmp = az[i]-az[j];
+            bz[i] += tmp;
+            bz[j] -= tmp;   
+        }
+    }
+}
+```
+
+The approach to dealing with the residual iterations is intentionally naive as SIMD intrinsics are a little tricky to
+implement efficiently using blend instructions. And, given that at most, only a few iterations in the inner loop will 
+make use of the simple, it's probably not really worth the added complexity for a likely modest performance gain.
+
+The corresponding performance (compiled with `g++`):
+
+```
+Comparing sweep_base_dbl (from results/sweep3dfull_base_dbl.json) to sweep_256_dbl_reduce2 (from results/sweep3dfull_256_dbl_reduce2.json)
+Benchmark                                             Time       CPU     Time Old    Time New      CPU Old     CPU New
+----------------------------------------------------------------------------------------------------------------------
+[sweep_base_dbl vs. sweep_256_dbl_reduce2]/4096    -0.3532   -0.3530     23663467    15305544     23599375    15269741
+[sweep_base_dbl vs. sweep_256_dbl_reduce2]/8192    -0.2939   -0.2936    102167385    72144190    101891762    71975441
+[sweep_base_dbl vs. sweep_256_dbl_reduce2]/16384   -0.3422   -0.3421    411281918   270557558    410259459   269924670
+[sweep_base_dbl vs. sweep_256_dbl_reduce2]/32768   -0.4680   -0.4678   1838934215   978258653   1833970828   975969961
+OVERALL_GEOMEAN                                    -0.3677   -0.3675            0           0            0           0
+```
+
+The speedup varies significantly, but is roughly similar to the simplified 3D version shown previously. Interestingly,
+the speedup of the largest test case is quite good for reasons unnknown to me. This effect is present with both `g++`
+and `clang++`. 
