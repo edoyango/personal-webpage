@@ -143,8 +143,11 @@ program main
    integer, parameter:: n = 100, dim = 3, maxnpair = 60*n ! estimated using
    ! 2x the coaxial spacing if the points were arranged in a square
    real(f), parameter:: cutoff = 2*n**(-1.d0/dim)
-   real(f):: x(dim, n)
-   integer:: pair_i(maxnpair), pair_j(maxnpair), npairs, startpos, i, j, k, endpos(n)
+   integer:: npairs, k
+   real(f), allocatable:: x(:, :)
+   integer, allocatable:: pair_i(:), pair_j(:)
+
+   allocate(x(dim, n), pair_i(maxnpair), pair_j(maxnpair))
 
    ! initialize positions with pseudo-random numbers
    call random_number(x)
