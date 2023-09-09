@@ -27,6 +27,16 @@ This is beneficial to performance since for any given point, all its neighbours 
     </item>
     
     <item>
+      <title>Cell list pair search - reducing search space</title>
+      <link>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</guid>
+      <description>Cell-lists point-pairs search with fixed cutoff - reducing search space # Description # The naive cell-list pair search, is a good start. But a drawback of that implementation is that it searches through all adjacent cells, and uses an if statement to avoid duplicate checks. However, looping over all adjacent cells still takes time, and the if statement can be expensive by introducing branching.
+However, to eliminate duplicate checks, we only need to compare particles in the current cell with particles in half of the adjacent cells.</description>
+    </item>
+    
+    <item>
       <title>grid dimension hashing</title>
       <link>/worknotes/docs/useful/grid-rows-spatial-hashing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

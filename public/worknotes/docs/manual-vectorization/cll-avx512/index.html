@@ -10,9 +10,9 @@ for (int i = 0; i &lt; nelem-1; &#43;&#43;i) { for (int j = i&#43;1; j &lt; nele
 <meta property="og:description" content="Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
 for (int i = 0; i &lt; nelem-1; &#43;&#43;i) { for (int j = i&#43;1; j &lt; nelem; &#43;&#43;j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/worknotes/docs/manual-vectorization/sweep/" /><meta property="article:section" content="docs" />
+<meta property="og:url" content="/worknotes/docs/manual-vectorization/cll-avx512/" /><meta property="article:section" content="docs" />
 
-<meta property="article:modified_time" content="2023-08-26T10:52:10+10:00" />
+
 <title>Vectorizing A Simple Pair Sweep | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
@@ -153,7 +153,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/manual-vectorization/cll-avx512/" class="">Vectorizing A Simple Pair Sweep</a>
+    <a href="/worknotes/docs/manual-vectorization/cll-avx512/" class="active">Vectorizing A Simple Pair Sweep</a>
   
 
         </li>
@@ -166,7 +166,7 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <a href="/worknotes/docs/manual-vectorization/sweep/" class="active">Vectorizing A Simple Pair Sweep</a>
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="">Vectorizing A Simple Pair Sweep</a>
   
 
         </li>
@@ -1242,16 +1242,10 @@ and <code>clang++</code>.</p>
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/9c784fc6710ff7f8069e418c0c29859b5d2a8ed9" title='Last modified by Edward Yang | August 26, 2023' target="_blank" rel="noopener">
-      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>August 26, 2023</span>
-    </a>
-  </div>
-
 
 
   <div>
-    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/sweep.md" target="_blank" rel="noopener">
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/cll-avx512.md" target="_blank" rel="noopener">
       <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
       <span>Edit this page</span>
     </a>

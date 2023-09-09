@@ -159,6 +159,16 @@ Doing the Vectorization # Vectorizing the ABC function with 128-bit vectors (SSE
     </item>
     
     <item>
+      <title>Cell list pair search - reducing search space</title>
+      <link>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</guid>
+      <description>Cell-lists point-pairs search with fixed cutoff - reducing search space # Description # The naive cell-list pair search, is a good start. But a drawback of that implementation is that it searches through all adjacent cells, and uses an if statement to avoid duplicate checks. However, looping over all adjacent cells still takes time, and the if statement can be expensive by introducing branching.
+However, to eliminate duplicate checks, we only need to compare particles in the current cell with particles in half of the adjacent cells.</description>
+    </item>
+    
+    <item>
       <title>Error Handling</title>
       <link>/worknotes/docs/cuda/reference-codes/error/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -207,6 +217,16 @@ Single precision, SSE instructions # This section will show a faster sum-reduce 
       <description>limitingFactor # Description # Code to test whether computation or memory transfer is the bottleneck. Compiled program intended to be run with nvprof.
 The book demonstrates the effect of compiling with -Mcuda=fastmath, which shows a significant speedup in the &amp;ldquo;base&amp;rdquo; and &amp;ldquo;math&amp;rdquo; kernels (note they use very old C2050 and K20 GPUs).
 Code (C++) # #include &amp;lt;stdio.h&amp;gt; __global__ void base(float *a, float *b) { int i = blockIdx.x * blockDim.</description>
+    </item>
+    
+    <item>
+      <title>Vectorizing A Simple Pair Sweep</title>
+      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
+      <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
+for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
     </item>
     
     <item>
