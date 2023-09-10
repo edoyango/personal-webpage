@@ -48,22 +48,21 @@ Single precision, SSE instructions # This section will show a faster sum-reduce 
     
     <item>
       <title>Vectorizing A Simple Pair Sweep</title>
-      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
-      <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
-for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
-    </item>
-    
-    <item>
-      <title>Vectorizing A Simple Pair Sweep</title>
       <link>/worknotes/docs/manual-vectorization/sweep/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/worknotes/docs/manual-vectorization/sweep/</guid>
       <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
 for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
+    </item>
+    
+    <item>
+      <title>Vectorizing Cell-base Pair Search with AVX512</title>
+      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
+      <description>Vectorizing Cell-base Pair Search with AVX512 # A step that all SPH codes must perform, is finding the pairs of interacting particles within the simulation domain. In the context of a uniform kernel radius (most common in weakly-compressible CFD schemes), this amounts to finding pairs of points that are within a fixed cutoff of eachother. If you&amp;rsquo;re familiar with the SciPy suite of tools, the scipy.spatial.cKDTree.query_pairs ( docs) function can be used here.</description>
     </item>
     
   </channel>
