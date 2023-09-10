@@ -118,20 +118,23 @@ contains
                                                          0, -1,  1, &
                                                          0,  0, -1], [3, 13])
 
+      ! determine grid min-max coordinates, with concessions made for dim=2 case
       minx(1:dim) = minval(x, dim=2)
       if (dim == 2) minx(3) = 0.d0
       maxx(1:dim) = maxval(x, dim=2)
       if (dim == 2) maxx(3) = 0.d0
+      
+      ! creating buffer layers
       minx(:) = minx(:) - 2.d0*cutoff
       maxx(:) = maxx(:) + 2.d0*cutoff
-      ngridx(:) = int((maxx(:) - minx(:))/cutoff) + 1
-      maxx(:) = maxx(:) + ngridx(:)*cutoff
 
+      ! initializing grid arrays
       allocate (pincell(ngridx(1), ngridx(2), ngridx(3)), &
                 cells(maxpercell, ngridx(1), ngridx(2), ngridx(3)))
 
       pincell(:, :, :) = 0
 
+      ! populating grid with point information
       do i = 1, npoints
          icell = coordsToCell(dim, x(:, i), minx, cutoff)
          pincell(icell(1), icell(2), icell(3)) = &

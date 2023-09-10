@@ -50,6 +50,8 @@ contains
 
    !---------------------------------------------------------------------------
    subroutine dsearch_dp(dim, npoints, x, cutoff, maxnpair, npairs, pair_i, pair_j)
+      ! subroutine to find pairs of points using direct search. Output is 
+      ! two lists describing which points are in the pair
 
       implicit none
       integer, intent(in):: dim, npoints, maxnpair
@@ -75,6 +77,8 @@ contains
 
    !---------------------------------------------------------------------------
    subroutine dsearch_compact_dp(dim, npoints, x, cutoff, maxnpair, npairs, endpos, pair_j)
+      ! subroutine to find pairs using direct search. Output is two lists. One
+      ! list describes the last pair with point `i` as the "left-sided" point.
 
       implicit none
       integer, intent(in):: dim, npoints, maxnpair
@@ -93,6 +97,7 @@ contains
                pair_j(npairs) = j
             end if
          end do
+         ! update end position when done with point i
          endpos(i) = npairs
       end do
 
