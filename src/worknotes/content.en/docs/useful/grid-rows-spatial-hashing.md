@@ -40,7 +40,7 @@ Another benefit is the lower memory usage by the algorithm. This is because it d
 
 Save the C++ file as `sort.cpp`, and Fortran code as `cll3.F90`. Compile the code with
 
-```bash
+```bash {linenos=false,style=tango}
 g++ -c sort.cpp
 gfortran -o cll3.x cll3.F90 sort.o -lstdc++
 ```
