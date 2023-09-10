@@ -83,8 +83,6 @@
     <loc>/worknotes/docs/cuda/reference-codes/limitingFactor/</loc>
     <lastmod>2023-03-18T01:36:43+11:00</lastmod>
   </url><url>
-    <loc>/worknotes/docs/manual-vectorization/cll-avx512/</loc>
-  </url><url>
     <loc>/worknotes/docs/manual-vectorization/sweep/</loc>
     <lastmod>2023-08-26T10:52:10+10:00</lastmod>
   </url><url>
@@ -93,6 +91,8 @@
   </url><url>
     <loc>/worknotes/docs/cuda/reference-codes/peakBandwidth/</loc>
     <lastmod>2023-03-18T01:36:43+11:00</lastmod>
+  </url><url>
+    <loc>/worknotes/docs/manual-vectorization/cll-avx512/</loc>
   </url><url>
     <loc>/worknotes/docs/cuda/reference-codes/bandwidthTest/</loc>
     <lastmod>2023-03-18T01:36:43+11:00</lastmod>

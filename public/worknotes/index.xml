@@ -185,7 +185,7 @@ Code (Fortran) # ! the cuda GetErrorString function can be used to obtain error 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/worknotes/docs/useful/grid-rows-spatial-hashing/</guid>
-      <description> Hashing grid cell indices based on grid dimensions # Description # Code (Fortran) # Coming soon... </description>
+      <description>Hashing grid cell indices based on grid dimensions # Description # This strategy is based on this NVIDIA article. The idea being that instead of storing indices of particles in a grid data structure, you can convert these 3-valued indices to single hashes. These hashes can then be used to sort the particle data so that the particle data is ordered based on their grid cell hash index. This is beneficial for GPUs, which is why it&amp;rsquo;s mentioned in the above article, but is also useful for CPUs as it iterating over the particle pairs more cache-friendly.</description>
     </item>
     
     <item>
@@ -221,16 +221,6 @@ Code (C++) # #include &amp;lt;stdio.h&amp;gt; __global__ void base(float *a, flo
     
     <item>
       <title>Vectorizing A Simple Pair Sweep</title>
-      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
-      <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
-for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
-    </item>
-    
-    <item>
-      <title>Vectorizing A Simple Pair Sweep</title>
       <link>/worknotes/docs/manual-vectorization/sweep/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -258,6 +248,15 @@ for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; +
 Effective bandwidth can be obtained with
 \[bw_e = (r_B &amp;#43; w_B)/(t\cdot10^9)\] where \(bw_e\) is the effective bandiwdth, \(r_B\) is the number of Bytes read, \(w_B\) is the number of Bytes written, and \(t\) is elapsed wall time in seconds.
 The wall time of the simple memory kernel written in the limitingFactor code can be used.</description>
+    </item>
+    
+    <item>
+      <title>Vectorizing Cell-base Pair Search with AVX512</title>
+      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
+      <description>Vectorizing Cell-base Pair Search with AVX512 # A step that all SPH codes must perform, is finding the pairs of interacting particles within the simulation domain. In the context of a uniform kernel radius (most common in weakly-compressible CFD schemes), this amounts to finding pairs of points that are within a fixed cutoff of eachother. If you&amp;rsquo;re familiar with the SciPy suite of tools, the scipy.spatial.cKDTree.query_pairs ( docs) function can be used here.</description>
     </item>
     
     <item>
