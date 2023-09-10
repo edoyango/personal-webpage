@@ -180,15 +180,6 @@ Code (Fortran) # ! the cuda GetErrorString function can be used to obtain error 
     </item>
     
     <item>
-      <title>grid dimension hashing</title>
-      <link>/worknotes/docs/useful/grid-rows-spatial-hashing/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/worknotes/docs/useful/grid-rows-spatial-hashing/</guid>
-      <description>Hashing grid cell indices based on grid dimensions # Description # This strategy is based on this NVIDIA article. The idea being that instead of storing indices of particles in a grid data structure, you can convert these 3-valued indices to single hashes. These hashes can then be used to sort the particle data so that the particle data is ordered based on their grid cell hash index. This is beneficial for GPUs, which is why it&amp;rsquo;s mentioned in the above article, but is also useful for CPUs as it iterating over the particle pairs more cache-friendly.</description>
-    </item>
-    
-    <item>
       <title>Vector Sum Reduction</title>
       <link>/worknotes/docs/manual-vectorization/sumreduce/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -206,6 +197,15 @@ Code (Fortran) # ! the cuda GetErrorString function can be used to obtain error 
       <description>Faster Vector Sum Reduce # In my page introducing vectorized reductions, I show how to use horizontal adds (hadd) functions to perform the reduction. However, this doesn&amp;rsquo;t produce optimal assembly, so isn&amp;rsquo;t the fastest way to do things.
 This page will demonstrate a faster version to do each of the examples shown previously.
 Single precision, SSE instructions # This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE instructions.</description>
+    </item>
+    
+    <item>
+      <title>grid dimension hashing</title>
+      <link>/worknotes/docs/useful/grid-rows-spatial-hashing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/useful/grid-rows-spatial-hashing/</guid>
+      <description>Hashing grid cell indices based on grid dimensions # Description # This strategy is based on this NVIDIA article. The idea being that instead of storing indices of particles in a grid data structure, you can convert these 3-valued indices to single hashes. These hashes can then be used to sort the particle data so that the particle data is ordered based on their grid cell hash index. This is beneficial for GPUs, which is why it&amp;rsquo;s mentioned in the above article, but is also useful for CPUs as it iterating over the particle pairs more cache-friendly.</description>
     </item>
     
     <item>
@@ -230,12 +230,12 @@ for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; +
     </item>
     
     <item>
-      <title>Z-curve hashing</title>
-      <link>/worknotes/docs/useful/z-curve-spatial-hashing/</link>
+      <title>Cell lists pair search without &#34;if&#34;</title>
+      <link>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/worknotes/docs/useful/z-curve-spatial-hashing/</guid>
-      <description> Hashing grid cell indices based on Z-order curve # Description # Code (Fortran) # Coming soon... </description>
+      <guid>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</guid>
+      <description>Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if&amp;rsquo;s are undesirable because they introduce branching and harms performance. I&amp;rsquo;ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed.</description>
     </item>
     
     <item>
@@ -267,6 +267,15 @@ The wall time of the simple memory kernel written in the limitingFactor code can
       <guid>/worknotes/docs/cuda/reference-codes/bandwidthTest/</guid>
       <description>bandwidthTest # Description # Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal &amp;ldquo;pageable&amp;rdquo; memory.
 Code (C++) # #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;cstdlib&amp;gt; int main() { const int nElements = 4*1024*1024; size_t nbytes = nElements*sizeof(float); float *a_pageable, *b_pageable; float *a_pinned, *b_pinned; float *a_d; int ierr_a, ierr_b; cudaDeviceProp prop; cudaEvent_t startEvent, stopEvent; float time = 0.0; // pageable host memory a_pageable = (float*)malloc(nbytes); b_pageable = (float*)malloc(nbytes); // pinned host memory ierr_a = cudaMallocHost((void**)&amp;amp;a_pinned, nbytes); ierr_b = cudaMallocHost((void**)&amp;amp;b_pinned, nbytes); if (ierr_a !</description>
+    </item>
+    
+    <item>
+      <title>Z-curve hashing</title>
+      <link>/worknotes/docs/useful/z-curve-spatial-hashing/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/useful/z-curve-spatial-hashing/</guid>
+      <description> Hashing grid cell indices based on Z-order curve # Description # Code (Fortran) # Coming soon... </description>
     </item>
     
     <item>

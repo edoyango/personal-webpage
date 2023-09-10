@@ -47,7 +47,7 @@ Subsequent pages will demonstrate how this algorithmic optimisation can still be
 
 Save the code as `cll2.F90`, and compile it with:
 
-```bash
+```bash {linenos=false,style=tango}
 gfortran -o cll2.x cll2.F90
 ```
 

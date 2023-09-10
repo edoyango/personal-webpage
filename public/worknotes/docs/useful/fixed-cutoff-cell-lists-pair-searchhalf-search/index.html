@@ -12,13 +12,13 @@ However, to eliminate duplicate checks, we only need to compare particles in the
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/" /><meta property="article:section" content="docs" />
 
-<meta property="article:modified_time" content="2023-09-09T12:42:53+10:00" />
+<meta property="article:modified_time" content="2023-09-10T15:26:00+10:00" />
 <title>Cell list pair search - reducing search space | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.c7e0237ad85bf0edc4423653a6946844778e5633aa3fa9785d2dab3a945175fe.js" ></script>
+  <script defer src="/worknotes/en.search.min.8e3f6cbb3f1c997475aa28bb8409b6b7b318589ec000739154f717e51ebd7efa.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 <!--
@@ -240,6 +240,19 @@ https://github.com/alex-shpak/hugo-book
 
   
     <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/" class="">Cell lists pair search without &#34;if&#34;</a>
   
 
         </li>
@@ -775,7 +788,7 @@ vanishes if compiling with <code>-O1</code> and above.</p>
   <a class="anchor" href="#code-fortran">#</a>
 </h2>
 <p>Save the code as <code>cll2.F90</code>, and compile it with:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gfortran -o cll2.x cll2.F90
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>gfortran -o cll2.x cll2.F90
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fortran" data-lang="fortran"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">! Module to perform direct search for pairs of points within a fixed cutoff.
 </span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">! cellList subroutine
 </span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">!   dim:      An integer defining dimension of the coordinates.
@@ -952,9 +965,9 @@ vanishes if compiling with <code>-O1</code> and above.</p>
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/f9b6b4304e0f29dbae2852dc0d677bbf4b28ee90" title='Last modified by Edward Yang | September 9, 2023' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/18ae5a0d1de238428b2af1d1f50f416839fccd73" title='Last modified by Edward Yang | September 10, 2023' target="_blank" rel="noopener">
       <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>September 9, 2023</span>
+      <span>September 10, 2023</span>
     </a>
   </div>
 

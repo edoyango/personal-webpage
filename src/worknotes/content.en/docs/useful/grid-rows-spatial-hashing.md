@@ -1,6 +1,6 @@
 ---
 title: grid dimension hashing
-weight: 3
+weight: 4
 ---
 
 # Hashing grid cell indices based on grid dimensions
