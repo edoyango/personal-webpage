@@ -46,6 +46,15 @@ However, to eliminate duplicate checks, we only need to compare particles in the
     </item>
     
     <item>
+      <title>Cell lists pair search without &#34;if&#34;</title>
+      <link>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</guid>
+      <description>Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if&amp;rsquo;s are undesirable because they introduce branching and harms performance. I&amp;rsquo;ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed.</description>
+    </item>
+    
+    <item>
       <title>Z-curve hashing</title>
       <link>/worknotes/docs/useful/z-curve-spatial-hashing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

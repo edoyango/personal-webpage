@@ -1,6 +1,6 @@
 ---
 title: Z-curve hashing
-weight: 4
+weight: 6
 bookToc: false
 ---
 
