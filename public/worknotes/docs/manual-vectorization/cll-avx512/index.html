@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Vectorizing Cell-based Pair Search # To calculate the acceleration of SPH particles, one must first find the pairs. In the case where incompressible or weakly-compressible assumptions are used, and where particles&rsquo; kernel radius is fixed, the cell-linked list strategy is often employed. The basis of the algorithm is that described on one of my other pages written in Fortran. Below is the C&#43;&#43; version of the main sweep code.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:title" content="Vectorizing Cell-based Pair Search" />
+<meta property="og:description" content="Vectorizing Cell-based Pair Search # To calculate the acceleration of SPH particles, one must first find the pairs. In the case where incompressible or weakly-compressible assumptions are used, and where particles&rsquo; kernel radius is fixed, the cell-linked list strategy is often employed. The basis of the algorithm is that described on one of my other pages written in Fortran. Below is the C&#43;&#43; version of the main sweep code." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/worknotes/docs/manual-vectorization/cll-avx512/" /><meta property="article:section" content="docs" />
+
+
+<title>Vectorizing Cell-based Pair Search | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.f0e3b5e54a43b10018cc50d951b58a165309c743739763774f51cfbbc9d12fcb.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="toggle" checked />
+    <label for="section-1e05fd9c6b307b91aa54d0af1f21fd2d" class="flex justify-between">
+      <a role="button" class="">Investigating Manual Vectorization for SPH</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/motivation/" class="">Motivation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/addition/" class="">Vectorizing Array Addition</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sumreduce/" class="">Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/" class="">Faster Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="">Vectorizing A Simple Pair Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/cll-avx512/" class="active">Vectorizing Cell-based Pair Search</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-e119a32310022f62d4c06c8f517eac24" class="toggle"  />
+    <label for="section-e119a32310022f62d4c06c8f517eac24" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/" class="">Cell list pair search - reducing search space</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/" class="">Cell lists pair search without &#34;if&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c8691a4179c494de8628c8e1b64ba030" class="toggle"  />
+    <label for="section-c8691a4179c494de8628c8e1b64ba030" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-51c3f533883c549c0f1c5f4960205a5e" class="toggle"  />
+    <label for="section-51c3f533883c549c0f1c5f4960205a5e" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-c720b4cbfe3c820847227813f65aa57d" class="toggle"  />
+    <label for="section-c720b4cbfe3c820847227813f65aa57d" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Vectorizing Cell-based Pair Search</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vectorizing-cell-based-pair-search">Vectorizing Cell-based Pair Search</a>
+      <ul>
+        <li><a href="#vectorizing-the-code-with-avx512-instructions">Vectorizing the code with AVX512 instructions</a></li>
+        <li><a href="#performance-relative-to-base">Performance relative to base</a></li>
+        <li><a href="#possible-future-improvements">Possible future improvements</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="vectorizing-cell-based-pair-search">
+  Vectorizing Cell-based Pair Search
+  <a class="anchor" href="#vectorizing-cell-based-pair-search">#</a>
+</h1>
+<p>To calculate the acceleration of SPH particles, one must first find the pairs. In the case where incompressible or
+weakly-compressible assumptions are used, and where particles&rsquo; kernel radius is fixed, 
+  <a href="https://en.wikipedia.org/wiki/Cell_lists">the cell-linked list</a>
+strategy is often employed. The basis of the algorithm is that described on one of 
+  <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/">my other pages</a>
+written in Fortran. Below is the C++ version of the main sweep code.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">npairs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">hashi</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">gridhash</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">hashi</span> <span style="color:#ce5c00;font-weight:bold">&lt;=</span> <span style="color:#000">gridhash</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">nelem</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">hashi</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ii</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">ii</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">dr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">jj</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">kh</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">hashbotleft</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">ngridy</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">dr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">jj</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">kh</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>Some distinctions between this code and the Fortran code is that the positions are seperated into two <code>std::vector</code>, and
+distance vectors and magnitudes are stored in <code>std::vectors</code>, as opposed to being discarded immediately (the calculation
+is performed in <code>sph::dr</code> function). This is useful because these values can be reused lated to calculate kernel values,
+gradients, and particles&rsquo; acceleration.</p>
+<h2 id="vectorizing-the-code-with-avx512-instructions">
+  Vectorizing the code with AVX512 instructions
+  <a class="anchor" href="#vectorizing-the-code-with-avx512-instructions">#</a>
+</h2>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/* NB: cutoff is selected as being 2.4x the average particle spacing 
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">and particles are arranged randomly in a unit square */</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">npairs</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">__m512d</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#8f5902;font-style:italic">// initializing 128-bit vectors for relative position vectors and magnitude
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// declare vector to store relative positions of each element in an 8-element vector
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m256i</span> <span style="color:#000">zero2seven</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_set_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// outer loop, iterating over each grid cell
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">hashi</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">gridhash</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">hashi</span> <span style="color:#ce5c00;font-weight:bold">&lt;=</span> <span style="color:#000">gridhash</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">nelem</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">hashi</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#8f5902;font-style:italic">// inner loop, iterating over particles in the given grid cell
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>    <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">ii</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">ii</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// initializing particle i&#39;s position
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#000">__m512d</span> <span style="color:#000">vix</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">__m512d</span> <span style="color:#000">viy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// calculating where vectorized loop should end
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">len</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">ii</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">end</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">len</span> <span style="color:#ce5c00;font-weight:bold">%</span> <span style="color:#0000cf;font-weight:bold">8</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">?</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">:</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">jj</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// looping over j particles (vectorized)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">end</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// load j particles&#39; positions
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">__m512d</span> <span style="color:#000">vjx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__m512d</span> <span style="color:#000">vjy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// calculate relative position vectors and magnitude
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">vdr_512</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vix</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">viy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// mask to determine which elements in the __m128d vdr vector are less than the cutoff
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">__mmask8</span> <span style="color:#000">umask</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_cmp_pd_mask</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_mm512_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cutoff</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">_CMP_LT_OQ</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// use the mask to &#34;compress&#34; the vdr/vdx/vdy values into the lower elements of the vector
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// storing pair_i and pair_j using similar compress
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">_mm256_storeu_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm256_set1_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__m256i</span> <span style="color:#000">vjdx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_add_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm256_set1_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">zero2seven</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#8f5902;font-style:italic">// translate relative index vector by jj
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">_mm256_storeu_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm256_mask_compress_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm256_setzero_si256</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjdx</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#8f5902;font-style:italic">// increment npairs by summing the umask bits
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>            <span style="color:#000">npairs</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">__builtin_popcount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">umask</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// perform residual calculations
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">dr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">jj</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">kh</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#8f5902;font-style:italic">// repeat above process for adjacent cells
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>        <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000">hashbotleft</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">hashi</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#000">ngridy</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">len</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000">end</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">len</span> <span style="color:#ce5c00;font-weight:bold">%</span> <span style="color:#0000cf;font-weight:bold">8</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">?</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">:</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">end</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__m512d</span> <span style="color:#000">vjx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__m512d</span> <span style="color:#000">vjy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_loadu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">vdr_512</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vix</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">viy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__mmask8</span> <span style="color:#000">umask</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_cmp_pd_mask</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_mm512_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cutoff</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">_CMP_LT_OQ</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm256_storeu_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm256_set1_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">__m256i</span> <span style="color:#000">vjdx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm256_add_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm256_set1_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">zero2seven</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">_mm256_storeu_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">_mm256_mask_compress_epi32</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm256_setzero_si256</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjdx</span><span style="color:#000;font-weight:bold">));</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">__builtin_popcount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">umask</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>        
+</span></span><span style="display:flex;"><span>        <span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000;font-weight:bold">(;</span> <span style="color:#000">jj</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">starts</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">hashbotleft</span><span style="color:#ce5c00;font-weight:bold">+</span><span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">];</span> <span style="color:#ce5c00;font-weight:bold">++</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">sph</span><span style="color:#ce5c00;font-weight:bold">::</span><span style="color:#000">dr</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">x</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">ii</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">y</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">jj</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dx</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">dy</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">],</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_i</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">ii</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">pair_j</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">jj</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#000">niac</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">niac</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">&lt;</span> <span style="color:#000">kh</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000;font-weight:bold">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">}</span>
+</span></span></code></pre></div><p>Here, I make use of the 512-bit vectors to find pairs of particles and requires AVX512f instructions. In addition to the
+use of 512-bit vectors, AVX512f is needed for the <code>_mm*_cmp_*_mask</code> and <code>_mm*_mask_compress_*</code> instructions.
+The latter function compresses elements into the lower elements of the resultant vector, based on a mask. <em>That mask can
+be determined at runtime</em>, which is not the case fo SSE*/AVX2 shuffle and blend instructions.</p>
+<p>The calculation of <code>vdx/vdy/vdr</code> follows a straightforward pattern, where data is loaded from each of the i particles
+and the relative position vector and magnitude is calculated for each of the j particles. <code>pair_i</code> is stored using the
+constant (relative to the iteration) <code>ii</code> value, and <code>pair_j</code> is stored using a similar mask and compress pattern.</p>
+<p><code>_mm_cmp_pd_mask</code> compares the values of the first argument (in this case, the <code>__m128d</code> vector of relative distance),
+and compares it with the second argument, another vector (in this case, created by <code>_mm_set1_pd(cutoff)</code>). The
+comparison function is determined by the third argument, which is <code>_CMP_LT_OQ</code> which is less than or equal to. In other
+words, each element of the <code>vdr</code> vector is checked whether it is less than or equal to <code>cutoff</code>. The result is stored in
+the mask <code>umask</code>.</p>
+<p>To illustrate this a bit better, consider the below simplied example of an iteration:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// define cutoff
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">cutoff</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// define i particle&#39;s position (0., 0.)
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m512d</span> <span style="color:#000">vix</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">__m512d</span> <span style="color:#000">viy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0.</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// define j particle&#39;s position
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m512d</span> <span style="color:#000">vjx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_set_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.75</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.25</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.25</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.75</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">__m512d</span> <span style="color:#000">vjy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_set_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.75</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">-</span><span style="color:#0000cf;font-weight:bold">0.25</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.25</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">0.75</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1.</span><span style="color:#000;font-weight:bold">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// calculate dx, dy, dr
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m512d</span> <span style="color:#000">vdx</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_sub_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vix</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjx</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic">// vdx = [1., 0.75, 0.5, 0.25, -0.25, -0.5, -0.75, -1.]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m512d</span> <span style="color:#000">vdy</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_sub_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">viy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vjy</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic">// vdy = [1., 0.75, 0.5, 0.25, -0.25, -0.5, -0.75, -1.]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">__m512d</span> <span style="color:#000">vdr</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_add_pd</span><span style="color:#000;font-weight:bold">(</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">_mm512_mul_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdx</span><span style="color:#000;font-weight:bold">),</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#000">_mm512_mul_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdy</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#000;font-weight:bold">)</span>                                     <span style="color:#8f5902;font-style:italic">// vdr = [2., 1.125, 0.5, 0.125, 0.125, 0.5, 1.125, 2.]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">vdr</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm512_sqrt_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">)</span>             <span style="color:#8f5902;font-style:italic">// vdr = [1.414, 1.061, 0.707, 0.353, 0.353, 0.707, 1.061, 1.414]
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">/* calculate mask
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">the mask is 8 bits, each &#34;1&#34; bit means the corresponding index satistfies the comparison.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">Below results in 0b00111100
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">__mmask8</span> <span style="color:#000">umask</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">_mm_cmp_pd_mask</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_mm_set1_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">cutoff</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">_CMP_LT_OQ</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic">// &#34;compress&#34; elements of vdr using mask and then store into r, and set other values to 0.
+</span></span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">vdr</span> <span style="color:#ce5c00;font-weight:bold">=</span>  <span style="color:#000">_mm512_mask_compress_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">_mm512_setzero_pd</span><span style="color:#000;font-weight:bold">(),</span> <span style="color:#000">umask</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87;font-weight:bold">double</span> <span style="color:#000">r</span><span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">];</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">_mm512_storeu_pd</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">r</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">vdr</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#8f5902;font-style:italic">// this should result in r = [0.707, 0.353, 0.353, 0.707, 0., 0., 0., 0.]
+</span></span></span></code></pre></div><h2 id="performance-relative-to-base">
+  Performance relative to base
+  <a class="anchor" href="#performance-relative-to-base">#</a>
+</h2>
+<pre tabindex="0"><code>Comparing pair_search (from results/pairsearch2D-avx512.json) to pair_search_avx512_512 (from results/pairsearch2D-avx512.json)
+Benchmark                                            Time       CPU   Time Old   Time New    CPU Old    CPU New
+---------------------------------------------------------------------------------------------------------------
+[pair_search vs. pair_search_avx512_512]/4096     -0.4131   -0.4131     460838     270454     459760     269821
+[pair_search vs. pair_search_avx512_512]/16384    -0.3575   -0.3575    2282786    1466726    2277422    1463294
+[pair_search vs. pair_search_avx512_512]/65536    -0.3265   -0.3265    9946220    6698604    9922961    6682938
+[pair_search vs. pair_search_avx512_512]/131072   -0.3073   -0.3073   20956765   14516657   20907746   14482700
+OVERALL_GEOMEAN                                   -0.4177   -0.4177          0          0          0          0
+</code></pre><p>From the results above, we get a meaningful speedup of about 1.4-1.7x, albeit far from an ideal 8x speedup. A possible
+reason for the far-from-ideal speedup is high ratio of residual to vectorized iterations. This is relevant because here,
+inner loops are vectorized and there are residual iterations for every time an inner loop is executed. In this case,
+where the cutoff is set as 2.4x the average particle spacing, that means that on average, and ignoring edges of the
+square that hte particles are contained in, each cell has only <code>2.4*2.4 = 5.76</code> particles. This implies that the first
+inner (non-vectorized) loop will have only <code>2 * 5.76 - 1 = 10.52</code> iterations on average. The second loop will
+have <code>3 * 5.76 = 17.28</code> iterations on average. These are estimates, and the real averages are probably lower since
+cells near at the edge of the domain will not have as many particles in them.</p>
+<p>It&rsquo;s also important to note that <code>_mm*_mask_compress_*</code> is very expensive relative to all the other intrinsics used
+here.</p>
+<p>If I use 256-bit vectors instead, but maintain the same overall algorithm, I get speedups slightly better than when
+using 512-bit vectors (see comparison below), which somewhat supports the view that residual iterations are relevant
+(using smaller vectors reduces residual iterations). Note that the code will need AVX512VL instructions to make use of
+the 256-bit compress instructions.</p>
+<pre tabindex="0"><code>Comparing pair_search (from results/pairsearch2D-avx512.json) to pair_search_avx512_256 (from results/pairsearch2D-avx512.json)
+Benchmark                                            Time       CPU   Time Old   Time New    CPU Old    CPU New
+---------------------------------------------------------------------------------------------------------------
+[pair_search vs. pair_search_avx512_256]/4096     -0.4218   -0.4218     460838     266450     459760     265827
+[pair_search vs. pair_search_avx512_256]/16384    -0.3588   -0.3588    2282786    1463624    2277422    1460201
+[pair_search vs. pair_search_avx512_256]/65536    -0.3186   -0.3186    9946220    6776961    9922961    6761108
+[pair_search vs. pair_search_avx512_256]/131072   -0.3183   -0.3183   20956765   14285855   20907746   14252428
+OVERALL_GEOMEAN                                   -0.4208   -0.4208          0          0          0          0
+</code></pre><p>Note that using 128-bit vectors reduces speedup in this case to below that of using 512-bit vectors. I find that the
+256-bit vectors provides the most consistent speedups, regardless of cutoff.</p>
+<h2 id="possible-future-improvements">
+  Possible future improvements
+  <a class="anchor" href="#possible-future-improvements">#</a>
+</h2>
+<p>Ideally, there would be a way to remove the need for using the <code>compress</code> instructions altogether. This could
+potentially be circumvented by calculating distances of all <em>potential</em> pairs, and then perhaps sorting (e.g., with
+
+  <a href="https://github.com/intel/x86-simd-sort">Intel&rsquo;s avx512 sort</a>), or filtering; although I&rsquo;m unsure if there are any
+SIMD implementations of the latter.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/manual-vectorization/cll-avx512.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#vectorizing-cell-based-pair-search">Vectorizing Cell-based Pair Search</a>
+      <ul>
+        <li><a href="#vectorizing-the-code-with-avx512-instructions">Vectorizing the code with AVX512 instructions</a></li>
+        <li><a href="#performance-relative-to-base">Performance relative to base</a></li>
+        <li><a href="#possible-future-improvements">Possible future improvements</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
