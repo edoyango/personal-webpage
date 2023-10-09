@@ -230,6 +230,15 @@ for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; +
     </item>
     
     <item>
+      <title>Vectorizing Cell-based Pair Search</title>
+      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
+      <description>Vectorizing Cell-based Pair Search # To calculate the acceleration of SPH particles, one must first find the pairs. In the case where incompressible or weakly-compressible assumptions are used, and where particles&amp;rsquo; kernel radius is fixed, the cell-linked list strategy is often employed. The basis of the algorithm is that described on one of my other pages written in Fortran. Below is the C++ version of the main sweep code.</description>
+    </item>
+    
+    <item>
       <title>Cell lists pair search without &#34;if&#34;</title>
       <link>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -248,15 +257,6 @@ for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; +
 Effective bandwidth can be obtained with
 \[bw_e = (r_B &amp;#43; w_B)/(t\cdot10^9)\] where \(bw_e\) is the effective bandiwdth, \(r_B\) is the number of Bytes read, \(w_B\) is the number of Bytes written, and \(t\) is elapsed wall time in seconds.
 The wall time of the simple memory kernel written in the limitingFactor code can be used.</description>
-    </item>
-    
-    <item>
-      <title>Vectorizing Cell-base Pair Search with AVX512</title>
-      <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
-      <description>Vectorizing Cell-base Pair Search with AVX512 # A step that all SPH codes must perform, is finding the pairs of interacting particles within the simulation domain. In the context of a uniform kernel radius (most common in weakly-compressible CFD schemes), this amounts to finding pairs of points that are within a fixed cutoff of eachother. If you&amp;rsquo;re familiar with the SciPy suite of tools, the scipy.spatial.cKDTree.query_pairs ( docs) function can be used here.</description>
     </item>
     
     <item>
