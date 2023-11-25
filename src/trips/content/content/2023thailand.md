@@ -185,3 +185,26 @@ men experiencing these issues could be drawn into and taken advantage of by righ
 
 3. Sightseeing by Rattawut Lapcharoensap
 
+I chose to read this book because I wanted to read a book about Thailand without being about tourism. It was also my
+fiction/easy read break in between reading the above two books. Importantly, this book was written by a Thai person
+(US born, Bangkok raised), which was special because all other English books I could find were written by westerners and
+paid a lot of attention to Bangkok's sex trade for some reason.
+
+The book has 6 short stories and a novella - all based in Thailand, and mostly from the perspective of a Thai person.
+But the settings were different each time, offering different slices of life in different places, at different times.
+
+Most of these stories were quite perplexing to me - not because of their somber tone, but because of how tragic the
+characters' circumstances are. They're mostly low socio-economic status and their environment is just so different from
+the one I grew up in - in the stories financial insecurity was pervasive, single parenthood was in a couple, early
+sexualisation and harrassment, racism, and the list goes on. But each of the stories, these adversities are viewed
+through a lense of naivete - which made me wonder: how common are these issues in Thailand really?
+
+But I thought the books were interesting for another reason - they portray viewpoints from different "kinds" of Thai
+people. In the first story, Farang, the show how local Thai people living on a tourist island view the western tourists, 
+which, in the story, is with infatuation (the protagonist's feelings), or with hesitation and resentment (some of the
+other local's feelings). In the last story (the novella), more interactions between characters in a town are fleshed
+out, highlighting the complex dynamic in a small town with limited opportunity and law enforcement.
+
+Overall, as a fan of somber slice of life's, I really enjoyed the book. I'm not sure how common stories like the ones
+told in the book are (although ChatGPT4 tells me it's very authentic to Thai's experience), but I would recommend it for
+anyone looking to experience Thailand from a more local and realistic lense.
