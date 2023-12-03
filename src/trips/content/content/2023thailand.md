@@ -160,7 +160,7 @@ occasionally come up to say hi (apparently they like sneaking up on the visitors
 ![DSC_0395.jpg](/trips/img/trips-thailand2023/DSC_0395.jpg "gallery")
 ![DSC_0408.jpg](/trips/img/trips-thailand2023/DSC_0408.jpg "gallery")
 
-#### Food
+#### Food we liked in Chiang Mai
 
 Our favourite places we ate at in Chiang Mai:
 
@@ -182,6 +182,229 @@ Our favourite places we ate at in Chiang Mai:
     * Best coffee of the handful of places I tried in Chiang Mai
     * Offers western staples (e.g., Latte, Long black, Cappucino etc.), and Thai staples (e.g., long black with yuzu)
     * Pleasant and quiet indoor ambience
+
+### Phuket
+
+Due to various ailments, we only really spent a couple days doing things in Phuket. But we tried to make the most of
+the time we had where we were healthy!
+
+We stayed opposite Rawai Beach, at [the Title - West Wing](https://www.airbnb.com.au/rooms/16129143), near the 
+southern-most tip of the main Phuket Island. Rawai beach itself is fairly mediocre as the beach is used by the 
+locals to dock their boats. It's also a little awkward to get to - it's the last stop on the Phuket Smart Bus from
+the airport, which takes two hours! Taking a more direct route via taxi is half that. But the main advantages are 
+that it is far less touristy (although apparently becoming more gentrified), and serves as a great base to island 
+hop from, since you can ask any of the long-tail boat drivers on the road parallel to the beach front. There is also Yanui beach, which is a 15-ish minute scooter ride from Rawai beach. Generally, I would recommend this place to
+stay if you planned to stay for awhile, wanted time away from the busier areas, and want to island hop.
+
+The accomodation itself was good value and comfortable (about $40 AUD per night), but not for those who want views
+and privacy.
+
+#### James Bond Island, Phang Nga Bay, and Hong Island by canoe
+
+The day after arriving, we booked [a Klook tour](https://www.klook.com/en-AU/activity/3227-james-bond-day-tour-big-boat-longtail-speedboat)
+to explore Phang Nga Bay and Hong Island by canoe. It also made a stopover at James Bond Island although sightseeing
+was done by foot. The canoeing would be done by guides, as the tour navigates through narrow caves and in between
+jagged rocks, so it does take a bit of skill! Either way, it frees up your hands to take photos. On both our canoe
+tours, we were guided by a local named Maricky (that's probably not the correct spelling, and we called him Ricky),
+who did a great job pointing out interesting features (albeit in broken English), and made us an origami rose and
+ring made with a reed leaf. We were ferried around on the big boat as my partner gets seasick. I would highly
+recommend this tour for those who don't want to be in the water, and the big boat was great for avoiding getting
+seasick.
+
+{{< video src="/trips/img/trips-thailand2023/VID_37141002_190335_665.mp4" type="video/mp4" preload="auto" maxwidth="360" float="none" padding="16px" >}}
+
+#### Bon Island and Coral Island
+
+The other island hopping adventure we got to go on, is to Bon Island and Coral Island. Bon Island is a small island near
+Rawai Beach and only takes 20 minutes or so by longtail boat to get to. Banana Beach is only a bit further out in the
+same direction and takes around half an hour. We visited Coral Island first, and then Bon island on the way back. But I
+would probably skip Bon Island altogether next time since the beach is smaller and not as great for snorkelling.
+
+To arrange a boat, we simply talked to one of the guys standing next to the boat/island hopping signs sitting along
+the road adjacent to Rawai beach. We talked to a guy at around 8am and asked for an 8:30 pickup from our accomodation,
+which wasn't an issue, although such short notice was probably only possible because we were staying a 5 minute walk
+from where he was posted. The return trip to Banana Beach and Bon Island cost us 1800 THB for the whole day (Banana
+Beach alone would've been 1500 THB). The boat trip also comes with snorkels to use. When you get to Banana Beach, using
+the beach chairs and toilets requires a 100 THB per-person fee (more if you want to use the beds).
+
+Because we left so early, we were one of the first to get to banana beach. We later also learnt that early is better 
+because the tide tends to be higher in the morning, and drops in the afternoon - making it more difficult to snorkel. We
+spent most of the morning snorkelling and lounging in the chairs on banana beach. The snorkelling was surprisingly 
+really good! There was coral almost at the water front with a pretty good variety of fishes. But some of those fish will
+bite you if you stay still or step on the coral (their homes)! We arrived around 9am and the place stayed pretty empty
+until 10am.
+
+Bon island didn't have nearly as good snorkelling, but while banana bay got pretty busy by the afternoon, Bon Island was
+almost empty. On Bon Island, we mostly lazed around, explored the rockpools, and played with the hermit crabs on the
+beach.
+
+![DSC_0061.jpg](/trips/img/trips-thailand2023/DSC_0061.jpg "gallery")
+![DSC_0080.jpg](/trips/img/trips-thailand2023/DSC_0080.jpg "gallery")
+![IMG20231124105732.jpg](/trips/img/trips-thailand2023/IMG20231124105732.jpg "gallery")
+![DSC_0099.jpg](/trips/img/trips-thailand2023/DSC_0099.jpg "gallery")
+![DSC_0115.jpg](/trips/img/trips-thailand2023/DSC_0115.jpg "gallery")
+![IMG20231124144231.jpg](/trips/img/trips-thailand2023/IMG20231124144231.jpg "gallery")
+
+Gastronomy-wise, Phuket was a little lacklustre for us so there aren't any great food places we can recommend. Although,
+if you're near Rawai beach, Sabai Massage was a pretty good experience if you're after a Thai massage.
+
+### Bangkok
+
+To make up for lost time, and thanks to the big basket of opportunities, we were quite busy in our time at Bangkok!
+While in Bangkok, we stayed in the same area as last time - mainly because it was affordable and close to the Very
+Festival we had tickets for. We stayed in an [AirBnb pretty close to Asok station](https://www.airbnb.com.au/rooms/928540985570442404),
+which was spacious compared to the last time we were in Asok. Our host kindly let us check in early, so we didn't have
+to faff around with finding somewhere to store our luggage.
+
+#### Very Festival
+
+On the day of our arrival, we attended the Very Festival - a festival with a collection of mostly international artists,
+with Joji being the headlining act. The festival ran across two days (starting from 12pm) in Queen Sirikit National
+Convention Center (the man-made lake is a nice walk, if you're in the area!). Although it ran for two days, we only got
+tickets for the second day. Even then, we decided that we only had the energy to see the last few acts which turned out 
+to be (in order):
+
+1. Bloc Party
+2. Nothing But Thieves
+3. Joji
+
+Bloc Party was bit ordinary - the lead singer had a bit of a bored look (admittedly, it was the last show of their
+tour). It also doesn't help that their music is not really my taste. Nothing But Thieves were not bad - some of the
+sounds in their songs reminded me of bands I listen to at least semi-regularly, like: Muse, Radiohead, and Maroon 5. My
+partner also seemed to really like them. They also had really cool light and smoke effects going on, and the band had
+good energy. A band I might explore more in the future. But, despite being the headline act, Joji was super
+disappointing. The sound of the speakers weren't balanced, so instruments were drowning out voices (this was an issue
+for all the acts, and probably depended on where you were standing); and he had this stupid supporting DJ (?) that would
+inject "ay ay ay" in the middle of Joji's singing and make really bad jokes. We ended up leaving a couple songs into his
+show. 
+
+But all in all, a fun experience (but hopefully not all concerts are this loud).
+
+![IMG20231126174040.jpg](/trips/img/trips-thailand2023/IMG20231126174040.jpg "gallery")
+![IMG20231126191530.jpg](/trips/img/trips-thailand2023/IMG20231126191530.jpg "gallery")
+![IMG20231126204847.jpg](/trips/img/trips-thailand2023/IMG20231126204847.jpg "gallery")
+
+#### Getting Some Nice Silk Clothing
+
+One of my goals for Bangkok, was to get some nice Silk shirts, since Thailand is apparently well-known for their silk. I
+thought having a silk shirt would be great for the upcoming summer in Melbourne. Our first attempt was to look around
+Terminal 21, since that was nearby. But most of the stuff there was fast-fashion-esque, so definitely didn't have any
+nice silk clothing.
+
+Our next search spot was Old Siam Square. As the name suggests, Old Siam Square has a lot of "legacy" shops - including
+the "Silk Zone", apparently all reliable shops and tailors dealing in silk. But after strolling around and looking at
+the available clothing they had. It was clear that they catered more toward [formal wear](https://www.etsy.com/au/listing/1288468173/2set-thai-traditional-silkset-for)
+or [older style shirts](https://www.ebay.com.au/itm/175286147112) which wasn't what I was after. Apparently they can
+tailor, given a reference, but we only had a few days left and wasn't sure that the shirts would be done in time.
+
+While in the area, we also had stopped by two Bib Gourmand places - Sae Phun for stewed pork, and Kor Panit's Sticky 
+Rice for mango sticky rice.
+
+My last choice was to go to Jim Thompson. This brand is apparently more popular with westerners, but not locals as the
+clothing is apparently deemed too expensive (even for silk). But we decided to go to the outlet, which apparently has
+much better deals than the main stores. The outlet is quite large, spanning 4 floors. I found the silk shirts on the 3rd
+floor at a pretty good price and with nice patterns. But note that the silk stuff was mixed in with a lot of linen and
+cotton stuff (which I thought was too expensive). My partner also managed to score a couple nice silk and linen dresses
+for a pretty good price too.
+
+![IMG20231127100335.jpg](/trips/img/trips-thailand2023/IMG20231127100335.jpg "gallery")
+![IMG20231127103139.jpg](/trips/img/trips-thailand2023/IMG20231127103139.jpg "gallery")
+![IMG20231127144442.jpg](/trips/img/trips-thailand2023/IMG20231127144442.jpg "gallery")
+
+#### Loy Krathong Festival and Spectrum Sky Bar
+
+After a successful haul of silk goods, we made a visit back to the lake next to Queen Sirikit National Convention Center
+for the annual Loy Krathong Festival. For the Loy Krathong Festival, festival goers buy a bundle of [corn puff arrangements](https://www.google.com/search?q=loy+krathong+arrangement&client=firefox-b-d&sca_esv=587427479&tbm=isch&sxsrf=AM9HkKkjVF8n63CExlRP2dH9eqFxgt8itA:1701599898411&source=lnms&sa=X&ved=2ahUKEwjE-PnLifOCAxV4TmwGHSHvDfgQ_AUoAXoECAUQAw&biw=1536&bih=711&dpr=1.25) 
+with a candle and incense. They light the candle and incense, and release it into the waters of a nearby river or lake
+to thank the Goddess of Water and River, Goddess Khongkha. We realised that the arrangements are made from corn puffs so
+that they eventually disintegrate into the water, and the body of water isn't completely covered with these
+arrangements. We saw a large number of people come to the lake to release and to watch and it was a cool thing to see.
+
+We finally ended the night by making a visit to Spectrum sky bar that sits atop the Grand Hyatt Sukhumvit. It was a 
+monday night at around 6:30pm when we got there, so it was completely dead - we were the only people in the bar. The 
+vibe was clearly a little dull, but the views were amazing.
+
+![IMG20231127181232.jpg](/trips/img/trips-thailand2023/IMG20231127181232.jpg "gallery")
+![DSC_0028.jpg](/trips/img/trips-thailand2023/DSC_0028.jpg "gallery")
+![DSC_0058.jpg](/trips/img/trips-thailand2023/DSC_0058.jpg "gallery")
+
+#### Studio Ghibli Exhibit in CentralwOrld
+
+Something we had to do when we came back to Bangkok was to visit the Studio Ghibli Exhibit on the top floor of the 
+CentralwOrld shopping mall. Each room in the exhibit consisted of life-sized diarama of scenes from 7 Ghibli films, some
+of which were setup so you could pose and take pictures.
+
+The end of the exhibit showed Studio Ghibli's animation process, using real storyboards used when creating My Neighbour
+Totoro. Apparently, a unique aspect of Ghibli films is that dialogue is created after storyboards are drawn, when
+animation studios usually do it the other way round.
+
+![IMG20231128134738.jpg](/trips/img/trips-thailand2023/IMG20231128134738.jpg "gallery")
+![DSC_0107.jpg](/trips/img/trips-thailand2023/DSC_0107.jpg "gallery")
+![DSC_0156.jpg](/trips/img/trips-thailand2023/DSC_0156.jpg "gallery")
+![IMG20231128141614.jpg](/trips/img/trips-thailand2023/IMG20231128141614.jpg "gallery")
+![IMG20231128142511.jpg](/trips/img/trips-thailand2023/IMG20231128142511.jpg "gallery")
+![DSC_0169.jpg](/trips/img/trips-thailand2023/DSC_0169.jpg "gallery")
+
+While in the area, we took the opportunity to look around The Platinum Fashion Mall (apparently popular with young
+people, probably because of the inexpensive and large variety of clothing and accessories), Samyan Mitrtown (another
+mall), and a relatively inexpensive Omakase restaurant ([Kozue Omakase, Samyan branch](https://www.google.com/maps/place/Kozue+Omakase+Samyan/@13.7348603,100.5250895,17z/data=!3m1!4b1!4m6!3m5!1s0x30e2995bf3fbf0ad:0x1a63c80db27191bc!8m2!3d13.7348551!4d100.5276644!16s%2Fg%2F11nxpynlk1?entry=ttu) - book by Facebook).
+
+#### Happy Bird's Day
+
+We stumbled across this bird cafe near Ekkamai station and it was the cutest thing ever! It cost 350 THB which includes
+food to feed the birds and other animals, a drink, and a printed photo (as a polaroid). A warning - you're best off
+wearing a moderately thick long sleeve (cut-resistant gloves may also come in handy) and no loose accessories, because
+the birds will try to rip them off!
+
+When you walk in, you're immediately greeted by birds eager to jump onto you for food, but beware the Cockatoos! They
+seem to love ripping things off your clothing - they ripped off a button off my partners hat, and tried to rip off one
+of my piercings! If it becomes too much, you can make your way into the next room which has cushions to sit on and is
+devoid of animals. The backyard has ducks, fluffy chickens, bunnies, hamsters, and the entrance to another bird
+enclosure. The minders are very kind and helpful, and will help you catch the ducks to take a photo with, and to also
+help you take photos. The bird enclosure has many colourful (with varying degrees of agressiveness), who will happily
+perch on you for photos (one hung out in my hair for awhile).
+
+A highly recommended experience if you love animals! Across the road also has a dog cafe, although it was empty at the
+time.
+
+![IMG20231129135450.jpg](/trips/img/trips-thailand2023/IMG20231129135450.jpg "gallery")
+![IMG20231129135930.jpg](/trips/img/trips-thailand2023/IMG20231129135930.jpg "gallery")
+![IMG20231129140921.jpg](/trips/img/trips-thailand2023/IMG20231129140921.jpg "gallery")
+![IMG20231129141738.jpg](/trips/img/trips-thailand2023/IMG20231129141738.jpg "gallery")
+![IMG20231129145756.jpg](/trips/img/trips-thailand2023/IMG20231129145756.jpg "gallery")
+![IMG20231129150857.jpg](/trips/img/trips-thailand2023/IMG20231129150857.jpg "gallery")
+
+#### Food we liked in Bangkok
+
+We ate a lot of different food in Bangkok, so I'll keep the selection limited.
+
+* Kozue Omakase (Samyan)
+    * Very affordable Omakase (999 THB per person which is ~$40 AUD)
+    * Very professional staff, who modified the menu based on my allergy to shellfish
+    * Emphasised a show, using fancy ingredients (otoro, gold flecks, truffle) and tools
+    * Past Omakase's I've been to tended to focus more on interesting ingredients or flavours, so that was a little lacking
+    * Both my favourite course was the squid nigiri with yuzu salt
+    * Only seats 10 or so people, so quite intimate (there was only 4 of us when we went)
+* Sae Phun
+    * Very affordable, hole in the wall restaurant
+    * Awarded Michelin Bib Gourmand
+    * Well-known for the pork stew
+    * We found the stew quite mild (which my partner appreciated), but tasty
+    * The dumplings were also quite good
+    * 350 THB for a set (with 4 dishes, for two people)
+* Wattana Panich
+    * Catering more to tourists nowadays, but still local-style food
+    * Previously awarded Michelin Bib Gourmand
+    * Well-known for beef soup noodles
+    * The soups and noodle soups were very tasty and had interesting flavours
+    * A little more expensive than expected
+    * 650 THB for 4 dishes
+* Tenjo Yakiniku Buffet
+    * A chain of Yakiniku/sushi buffet restaurants
+    * We really liked it mainly because it was an affordable buffet
+    * Varying degrees of meat/sushi quality (we got the lowest)
+    * Super satisfying and unlimited bubble tea and ice cream
+    * A bit less than 1000 THB for two of us
 
 ### My Reading list (in order of completion)
 
