@@ -80,6 +80,109 @@ last 2 of 3 tickets which were only top bunks. But, last minute travellers who b
 Additionally, if travelling in two's, I might go in first class, which lets you share a cabin (still a bunk bed) with
 two people, avoiding the noise and light issue, and at least one of you gets the window.
 
+### Chiang Mai
+
+After a surprisingly comfortable ride on the overnight train, we arrived in Chiang Mai at around 7:30am - greeted by
+Tuk Tuk and taxi drivers trying to get tourists' business. We opted (as many other did) to order a Bolt to minimize the
+need for haggling and for a more comfortable and inexpensive ride. Throughout our stay in Chiang Mai, We stayed at an
+AirBnB in the [Astra Condo](https://www.airbnb.com.au/rooms/39219424), which we liked because it was away from the
+Chiang Mai old city, and consequently away from the noise; and because of the space. The pool was quite nice too.
+
+Because of our goal to take it easy on this holiday, we generally did a couple things during the day, and left the 
+nights free - usually enjoying cheap delivery (via Food Panda) and beers from the nearby 7-eleven.
+
+An unexpected trend we noticed in Chiang Mai, was that many locals could speak Chinese. Somewhat unexpected, given that
+Thailand doesn't share a border with China; but convenient if you know Chinese.
+
+#### Old city
+
+The Chiang Mai old city is a classic destination for tourists, with heaps of Wats (temples) within walking distance,
+coupled with tourist accomodation and eclectic restaurants/bars - all surrounded by a moat and remnants of the wall that
+used to surround the city. We spent a couple mornings exploring the area and seeings Wats on Prapokkloa Rd - starting
+from the Chiang Mai Gate. Those mornings, we grabbed breakfast from Chiang Mai Gate Market - experimenting with the 
+available local cuisine. 
+
+![DSC_0020.jpg](/trips/img/trips-thailand2023/DSC_0020.jpg "gallery")
+![DSC_0024.jpg](/trips/img/trips-thailand2023/DSC_0024.jpg "gallery")
+![DSC_0032.jpg](/trips/img/trips-thailand2023/DSC_0032.jpg "gallery")
+![DSC_0091.jpg](/trips/img/trips-thailand2023/DSC_0091.jpg "gallery")
+![DSC_0124.jpg](/trips/img/trips-thailand2023/DSC_0124.jpg "gallery")
+![DSC_0146.jpg](/trips/img/trips-thailand2023/DSC_0146.jpg "gallery")
+
+Besides eating the local cuisine, we also learnt to make it! We signed up for a cooking class on AirBnB experiences with
+[Aromdii Cooking School](https://aromdiicooking.com/) where we learnt how to make classic Thai soup, entree, main, and
+dessert. They were great for teaching us about the ingredients that go into Thai cooking (a lot of spices), and how
+sticky rice is made. The recipes are very forgiving, so great for beginners.
+
+![IMG20231115172148.jpg](/trips/img/trips-thailand2023/IMG20231115172148.jpg "gallery")
+![IMG20231115180845.jpg](/trips/img/trips-thailand2023/IMG20231115180845.jpg "gallery")
+![IMG20231115191743.jpg](/trips/img/trips-thailand2023/IMG20231115191743.jpg "gallery")
+
+#### Doi Inthanon
+
+On our third day in Chiang Mai, we hit the mountains on a rented scooter. To get our scooter, we originally planned on
+getting one at [D2 Bike](https://www.google.com/maps/place/D2+Bike+Changklan+Motorcycle/@18.7740557,98.9962704,17z/data=!3m1!4b1!4m6!3m5!1s0x30da3008bc0b0a0b:0x2928799a1c0b574f!8m2!3d18.7740506!4d98.9988453!16s%2Fg%2F11b76dncdz?entry=ttu),
+since it was recommended by our AirBnB host. But, their inexpensive bikes were all rented out when we wanted one, so we
+instead went to a place across the road. It cost us 250 THB per day, with a 1,000 THB deposit, and we needed to cover
+our own petrol. This price and deposit amount seemed standard for scooter rentals. Our newfound independence enabled us
+to visit [Baan Kaang Wat](https://www.google.com/maps/place/Baan+Kang+Wat/@18.7763307,98.9461536,17z/data=!3m1!4b1!4m6!3m5!1s0x30da3135abcf1377:0x5b0f6ce47286ce9f!8m2!3d18.7763256!4d98.9487285!16s%2Fg%2F11c1plybwt?entry=ttu) - 
+a village, located at the base of Doi Inthanon, that provides accomodation for craftsman and artists and a space for 
+them to sell their products; and Doi Suthep - a temple atop the mountain. The artists' village had funny and fashionable
+art pieces, postcards, jewellery, clothing, and more that would make a great place to buy souvenirs. Doi Suthep was
+pretty crowded because of all the school kids on an excursion. In hinsdight, it would've been good to visit a couple
+more places on the mountainside like Doi Kham, and Huay Tueng Thao Resevoir. But we felt like we crossed off the main
+items on our agenda for that day. We spent the rest of the day around MAYA shopping centre, getting a manicure, and 
+exploring shops around Chiang Mai Night Bazaar.
+
+![IMG20231116105524.jpg](/trips/img/trips-thailand2023/IMG20231116105524.jpg "gallery")
+![IMG20231116103347.jpg](/trips/img/trips-thailand2023/IMG20231116103347.jpg "gallery")
+![DSC_0168.jpg](/trips/img/trips-thailand2023/DSC_0168.jpg "gallery")
+![IMG20231116114757.jpg](/trips/img/trips-thailand2023/IMG20231116114757.jpg "gallery")
+![IMG20231116115847.jpg](/trips/img/trips-thailand2023/IMG20231116115847.jpg "gallery")
+![IMG20231116154240.jpg](/trips/img/trips-thailand2023/IMG20231116154240.jpg "gallery")
+
+#### Elephant Nature Park
+
+Day four was spent entirely at Elephant Nature Park - selected because it claims to be the most ethical elephant park
+and because it hosts other animals like water buffalo, dogs, and cows. It's unique in that Elephants are largely left to
+roam the park and viewing is done from a distance. This is in contrast to other parks, which force elephants to be 
+ridden or to be bathed by tourists. The elephants adopted in the nature park are often elephants that previous owners
+can no longer afford to take care of, or have been injured, rendering them unable to work. We did the skywalk day trip
+which picked us up from our accomodation and took us around the main park in the morning, and showed us their other area
+where new and/or young elephants are kept prior to being brought into the main park. We would highly recommend this park
+as you know that the elephants are treated well. And while the intention is to let the elephants roam free, they do
+occasionally come up to say hi (apparently they like sneaking up on the visitors!).
+
+![IMG20231117111820.jpg](/trips/img/trips-thailand2023/IMG20231117111820.jpg "gallery")
+![DSC_0286.jpg](/trips/img/trips-thailand2023/DSC_0286.jpg "gallery")
+![DSC_0300.jpg](/trips/img/trips-thailand2023/DSC_0300.jpg "gallery")
+![DSC_0384.jpg](/trips/img/trips-thailand2023/DSC_0384.jpg "gallery")
+![DSC_0395.jpg](/trips/img/trips-thailand2023/DSC_0395.jpg "gallery")
+![DSC_0408.jpg](/trips/img/trips-thailand2023/DSC_0408.jpg "gallery")
+
+#### Food
+
+Our favourite places we ate at in Chiang Mai:
+
+* Fern Forest Cafe
+    * Caters for tourists, and is more expensive than surrounding food
+    * Pleasant, forest-like ambience, with low-volume music playing in the background
+    * tasty western and local food, and a great place to sit and read
+* Ginger Farm Kitchen
+    * Also quite touristy and expensive
+    * Busier, with the focus being more on the food
+    * different takes on local dishes and interesting flavours
+    * Awarded Michelin Bib Gourmand
+* Rote Yiam Beef Noodle
+    * Local dishes at a local price point and conveniently located (for us)
+    * We went for dinner (takeaway), and it was completely empty
+    * Interestingly flavoured soup noodles
+    * Awarded Michelin Bib Gourmand
+* Pause on the Hill
+    * Best coffee of the handful of places I tried in Chiang Mai
+    * Offers western staples (e.g., Latte, Long black, Cappucino etc.), and Thai staples (e.g., long black with yuzu)
+    * Pleasant and quiet indoor ambience
+
 ### My Reading list (in order of completion)
 
 1. Career and Family by Claudia Goldin
