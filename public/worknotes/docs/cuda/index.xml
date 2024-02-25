@@ -5,26 +5,28 @@
     <link>/worknotes/docs/cuda/</link>
     <description>Recent content in CUDA Programming on Ed&#39;s Space - Notes</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="/worknotes/docs/cuda/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="/worknotes/docs/cuda/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CUDA &#43; NVHPC on WSL</title>
       <link>/worknotes/docs/cuda/cuda-wsl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/cuda/cuda-wsl/</guid>
-      <description>Installing CUDA + NVHPC on WSL # This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.
-Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl &amp;ndash;update if accidentally rolled back, follow the instructions here then wsl &amp;ndash;update again check which Linux flavours are available with wsl &amp;ndash;list &amp;ndash;online install the desired flavour by wsl &amp;ndash;install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&amp;gt; x86_64 -&amp;gt; WSL-Ubuntu -&amp;gt; 2.</description>
+      <description>Installing CUDA + NVHPC on WSL # This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.&#xA;Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl &amp;ndash;update if accidentally rolled back, follow the instructions here then wsl &amp;ndash;update again check which Linux flavours are available with wsl &amp;ndash;list &amp;ndash;online install the desired flavour by wsl &amp;ndash;install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y &amp;amp;&amp;amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&amp;gt; x86_64 -&amp;gt; WSL-Ubuntu -&amp;gt; 2.</description>
     </item>
-    
+    <item>
+      <title>Fixed-Radius Neighbour Search Using Thrust</title>
+      <link>/worknotes/docs/cuda/frn-thrust/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/worknotes/docs/cuda/frn-thrust/</guid>
+      <description>Fixed-Radius Neighbour Search Using Thrust # This page describes how one might implement the pair-finding algorithm described by Simon Green (2010). Many implementations of Simon&amp;rsquo;s work exists, such as the FRNN Python package.&#xA;Why Thrust? # I would argue that there is a fairly strong incentive to make GPU-accelerated codes portable across different hardware platforms. At the time of writing, NVIDIA GPUs are becoming more challenging to get a hold of, and are more expensive relative to their competition (i.</description>
+    </item>
     <item>
       <title></title>
       <link>/worknotes/docs/cuda/hidden/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/cuda/hidden/</guid>
-      <description>This page is hidden in menu # Quondam non pater est dignior ille Eurotas # Latent te facies # Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus, frementes, qui in vel. Hippotades Peleus pennas conscia cuiquam Caeneus quas.
-Pater demittere evincitque reddunt Maxime adhuc pressit huc Danaas quid freta Soror ego Luctus linguam saxa ultroque prior Tatiumque inquit Saepe liquitur subita superata dederat Anius sudor Cum honorum Latona # O fallor in sustinui iussorum equidem.</description>
+      <description>This page is hidden in menu # Quondam non pater est dignior ille Eurotas # Latent te facies # Lorem markdownum arma ignoscas vocavit quoque ille texit mandata mentis ultimus, frementes, qui in vel. Hippotades Peleus pennas conscia cuiquam Caeneus quas.&#xA;Pater demittere evincitque reddunt Maxime adhuc pressit huc Danaas quid freta Soror ego Luctus linguam saxa ultroque prior Tatiumque inquit Saepe liquitur subita superata dederat Anius sudor Cum honorum Latona # O fallor in sustinui iussorum equidem.</description>
     </item>
-    
   </channel>
 </rss>

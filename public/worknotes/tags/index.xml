@@ -5,6 +5,7 @@
     <link>/worknotes/tags/</link>
     <description>Recent content in Tags on Ed&#39;s Space - Notes</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="/worknotes/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="/worknotes/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

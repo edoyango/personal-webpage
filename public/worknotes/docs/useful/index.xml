@@ -5,63 +5,49 @@
     <link>/worknotes/docs/useful/</link>
     <description>Recent content in Useful code snippets on Ed&#39;s Space - Notes</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="/worknotes/docs/useful/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="/worknotes/docs/useful/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Direct pair search</title>
       <link>/worknotes/docs/useful/fixed-cutoff-direct-pair-search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/fixed-cutoff-direct-pair-search/</guid>
-      <description>Point-pairs search with fixed cutoff distance (direct) # Description # I work with point pair searches through particle-based simulations (mostly SPH and DEM). The algorithm here is the most basic way to perform a pair search. It is O(N2) time, so is not useful for any practical applications.
-I use it frequently to server as a reference when investigating other ways to search for pairs. It&amp;rsquo;s simple to code, so is harder to introduce conceptual and coding errors.</description>
+      <description>Point-pairs search with fixed cutoff distance (direct) # Description # I work with point pair searches through particle-based simulations (mostly SPH and DEM). The algorithm here is the most basic way to perform a pair search. It is O(N2) time, so is not useful for any practical applications.&#xA;I use it frequently to server as a reference when investigating other ways to search for pairs. It&amp;rsquo;s simple to code, so is harder to introduce conceptual and coding errors.</description>
     </item>
-    
     <item>
       <title>Cell list pair search</title>
       <link>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/</guid>
-      <description>Point-pairs search with fixed cutoff distance (using cell-lists) # Description # This is an improvement to the direct search algorithm for searching for pairs of points within a cutoff distance. It uses a grid of cells whose side-length is equal to the specified cutoff distance.
-This is beneficial to performance since for any given point, all its neighbours are guaranteed to be within its own cell, or in adjacent cells.</description>
+      <description>Point-pairs search with fixed cutoff distance (using cell-lists) # Description # This is an improvement to the direct search algorithm for searching for pairs of points within a cutoff distance. It uses a grid of cells whose side-length is equal to the specified cutoff distance.&#xA;This is beneficial to performance since for any given point, all its neighbours are guaranteed to be within its own cell, or in adjacent cells.</description>
     </item>
-    
     <item>
       <title>Cell list pair search - reducing search space</title>
       <link>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/</guid>
-      <description>Cell-lists point-pairs search with fixed cutoff - reducing search space # Description # The naive cell-list pair search, is a good start. But a drawback of that implementation is that it searches through all adjacent cells, and uses an if statement to avoid duplicate checks. However, looping over all adjacent cells still takes time, and the if statement can be expensive by introducing branching.
-However, to eliminate duplicate checks, we only need to compare particles in the current cell with particles in half of the adjacent cells.</description>
+      <description>Cell-lists point-pairs search with fixed cutoff - reducing search space # Description # The naive cell-list pair search, is a good start. But a drawback of that implementation is that it searches through all adjacent cells, and uses an if statement to avoid duplicate checks. However, looping over all adjacent cells still takes time, and the if statement can be expensive by introducing branching.&#xA;However, to eliminate duplicate checks, we only need to compare particles in the current cell with particles in half of the adjacent cells.</description>
     </item>
-    
     <item>
       <title>grid dimension hashing</title>
       <link>/worknotes/docs/useful/grid-rows-spatial-hashing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/grid-rows-spatial-hashing/</guid>
       <description>Hashing grid cell indices based on grid dimensions # Description # This strategy is based on this NVIDIA article. The idea being that instead of storing indices of particles in a grid data structure, you can convert these 3-valued indices to single hashes. These hashes can then be used to sort the particle data so that the particle data is ordered based on their grid cell hash index. This is beneficial for GPUs, which is why it&amp;rsquo;s mentioned in the above article, but is also useful for CPUs as it iterating over the particle pairs more cache-friendly.</description>
     </item>
-    
     <item>
       <title>Cell lists pair search without &#34;if&#34;</title>
       <link>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/</guid>
       <description>Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if&amp;rsquo;s are undesirable because they introduce branching and harms performance. I&amp;rsquo;ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed.</description>
     </item>
-    
     <item>
       <title>Z-curve hashing</title>
       <link>/worknotes/docs/useful/z-curve-spatial-hashing/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/useful/z-curve-spatial-hashing/</guid>
       <description> Hashing grid cell indices based on Z-order curve # Description # Code (Fortran) # Coming soon... </description>
     </item>
-    
   </channel>
 </rss>
