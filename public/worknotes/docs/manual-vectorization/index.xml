@@ -5,65 +5,49 @@
     <link>/worknotes/docs/manual-vectorization/</link>
     <description>Recent content in Investigating Manual Vectorization for SPH on Ed&#39;s Space - Notes</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language><atom:link href="/worknotes/docs/manual-vectorization/index.xml" rel="self" type="application/rss+xml" />
+    <language>en</language>
+    <atom:link href="/worknotes/docs/manual-vectorization/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Motivation</title>
       <link>/worknotes/docs/manual-vectorization/motivation/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/motivation/</guid>
       <description>SPH is a continuum particle method that is often used for simulations. Typically, the most time consuming part of codes that aim to perform SPH simulations, is finding the pairs of SPH particles that are within a fixed-cutoff of each other (the pair-search step from herein), and calculating the contribution to particles&amp;rsquo; motion, due to its corresponding pair (the force calculation sweep step from herein). These steps can be combined together when organising the code, but it&amp;rsquo;s useful to seperate them when needing to re-use the pair list.</description>
     </item>
-    
     <item>
       <title>Vectorizing Array Addition</title>
       <link>/worknotes/docs/manual-vectorization/addition/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/addition/</guid>
-      <description>Vectorizing Array Addition # A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array (from herein, ABC addition):
-void abc_base_sgl(const int nelem, float* a, float* b, float*) { for (int i = 0; i &amp;lt; nelem; ++i) { c[i] = a[i] + b[i]; } } In the benchmarking code, the arrays are created with new.
-Doing the Vectorization # Vectorizing the ABC function with 128-bit vectors (SSE instructions) # This function, manually vectorized, looks like:</description>
+      <description>Vectorizing Array Addition # A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array (from herein, ABC addition):&#xA;void abc_base_sgl(const int nelem, float* a, float* b, float*) { for (int i = 0; i &amp;lt; nelem; ++i) { c[i] = a[i] + b[i]; } } In the benchmarking code, the arrays are created with new.&#xA;Doing the Vectorization # Vectorizing the ABC function with 128-bit vectors (SSE instructions) # This function, manually vectorized, looks like:</description>
     </item>
-    
     <item>
       <title>Vector Sum Reduction</title>
       <link>/worknotes/docs/manual-vectorization/sumreduce/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/sumreduce/</guid>
       <description>Vector Sum Reduction # We now we can add two SIMD vectors together element-by-element. However, I&amp;rsquo;m sure you can imagine scenarios where you might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with 512-bit vectors, but I don&amp;rsquo;t have a CPU with AVX512 instructions handy.</description>
     </item>
-    
     <item>
       <title>Faster Vector Sum Reduction</title>
       <link>/worknotes/docs/manual-vectorization/faster-sumreduce/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/faster-sumreduce/</guid>
-      <description>Faster Vector Sum Reduce # In my page introducing vectorized reductions, I show how to use horizontal adds (hadd) functions to perform the reduction. However, this doesn&amp;rsquo;t produce optimal assembly, so isn&amp;rsquo;t the fastest way to do things.
-This page will demonstrate a faster version to do each of the examples shown previously.
-Single precision, SSE instructions # This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE instructions.</description>
+      <description>Faster Vector Sum Reduce # In my page introducing vectorized reductions, I show how to use horizontal adds (hadd) functions to perform the reduction. However, this doesn&amp;rsquo;t produce optimal assembly, so isn&amp;rsquo;t the fastest way to do things.&#xA;This page will demonstrate a faster version to do each of the examples shown previously.&#xA;Single precision, SSE instructions # This section will show a faster sum-reduce example which makes use of 128-bit single precision vectors and SSE instructions.</description>
     </item>
-    
     <item>
       <title>Vectorizing A Simple Pair Sweep</title>
       <link>/worknotes/docs/manual-vectorization/sweep/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/sweep/</guid>
-      <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:
-for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
+      <description>Vectorizing A Simple Pair Sweep # One way to perform the force calculation sweep in SPH, is to use a double loop like:&#xA;for (int i = 0; i &amp;lt; nelem-1; ++i) { for (int j = i+1; j &amp;lt; nelem; ++j) { // compare particle i and j // calculate forces } } This is generally not a preferred way to do the force calculations, as the number of operations in this algorithm scales with the square of the number of particles.</description>
     </item>
-    
     <item>
       <title>Vectorizing Cell-based Pair Search</title>
       <link>/worknotes/docs/manual-vectorization/cll-avx512/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
       <guid>/worknotes/docs/manual-vectorization/cll-avx512/</guid>
       <description>Vectorizing Cell-based Pair Search # To calculate the acceleration of SPH particles, one must first find the pairs. In the case where incompressible or weakly-compressible assumptions are used, and where particles&amp;rsquo; kernel radius is fixed, the cell-linked list strategy is often employed. The basis of the algorithm is that described on one of my other pages written in Fortran. Below is the C++ version of the main sweep code.</description>
     </item>
-    
   </channel>
 </rss>
