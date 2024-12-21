@@ -106,3 +106,22 @@ acting as my our very over-qualified translator.
 ![My younger aunt and in front of the entrance to Huoguodian](/trips/img/trips-china2024/Image_20241220172808_cr.jpg "gallery")
 ![Yumcha lunch at Huoguodian](/trips/img/trips-china2024/Image_20241220172821_cr.jpg "gallery")
 ![Confucian temple attached to Yuelu academy](/trips/img/trips-china2024/Image_20241220172838_cr.jpg "gallery")
+
+# Guanghzou pt. 2
+
+We had a few days in Guangzhou, where I planned to mostly work remotely (since I didn't have enough leave to take the entire 5 weeks
+off without pay). Winn and her family saw some sights around the city, and in the evenings I would join them to eat dinner with her
+dad's friends. During that time, we stayed a night in a private villa adjacent to the Lanyuan hot spring resort (兰苑温泉). Our
+villa was apparently where party officials and company CEOs would often stay when visiting. It even had hot spring baths within the
+rooms! Dinner was in a giant and beautifully decorated room with a giant table. As part of the package, we even got a private tour
+Maozedong's holiday villa located nearby, containing beautiful art works like one that appears to change seasons based on the colour
+of the light in the room!
+
+I had to work during the day while we were there, but I tried to make the most of it!
+
+![Us at the entrance of Lanyuan hot spring](/trips/img/trips-china2024/Image_20241221212107_cr.jpg "gallery")
+![Our first bath in the public hot spring](/trips/img/trips-china2024/Image_20241221212111_cr.jpg "gallery")
+![Winn, Stone, and I in the hot spring](/trips/img/trips-china2024/Image_20241221213231_cr.jpg "gallery")
+![Our dinner table while at the resourt](/trips/img/trips-china2024/Image_20241221213236_cr.jpg "gallery")
+![The painting that changes season with different colours of light](/trips/img/trips-china2024/Image_20241221213240_cr.jpg "gallery"))
+![I'm trying to work but enjoy the hot springs too](/trips/img/trips-china2024/Image_20241221212114_cr.jpg "gallery")
