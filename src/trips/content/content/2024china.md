@@ -123,5 +123,137 @@ I had to work during the day while we were there, but I tried to make the most o
 ![Our first bath in the public hot spring](/trips/img/trips-china2024/Image_20241221212111_cr.jpg "gallery")
 ![Winn, Stone, and I in the hot spring](/trips/img/trips-china2024/Image_20241221213231_cr.jpg "gallery")
 ![Our dinner table while at the resourt](/trips/img/trips-china2024/Image_20241221213236_cr.jpg "gallery")
-![The painting that changes season with different colours of light](/trips/img/trips-china2024/Image_20241221213240_cr.jpg "gallery"))
-![I'm trying to work but enjoy the hot springs too](/trips/img/trips-china2024/Image_20241221212114_cr.jpg "gallery")
+![The painting that changes season with different colours of light](/trips/img/trips-china2024/Image_20241221213240_cr.jpg "gallery")
+![I'm working but enjoying the hot springs too!](/trips/img/trips-china2024/Image_20241221212114_cr.jpg "gallery")
+
+# Yunnan (云南)
+
+When Winn's dad was planning this trip, he asked for places we wanted to see. I very much wanted to visit Yunnan - known for it's
+beautiful mountain ranges and culture. From that, he organised a 4-city trip: Dali (大理), Lijiang (丽江), Shangri-la (香格里拉), and Kunming (昆明), in that order. We travelled to Lijiang from Gaunghzou by high-speed rail, and even with the  "high speed", the trip 
+took over 11 hours! Taking the plane was totally an option here, but the train tickets were half the price (costs add up when
+travelling with 5 people), and Winn's dad and I like sitting on trains. I took the opportunity to work remotely, which was fine
+given since the seating was comfortable, but my mobile internet would drop often, so I found it difficult to have meetings. The
+views heading toward western china were overall very charming, and in some parts, there were jagged 100-meter hills standing amongst
+the chinese villages.
+
+![Screenshot of the journey taken from Dali, Lijiang, Shangri-La, and Kunming cities in Yunnan](/trips/img/trips-china2024/yunnan-screenshot.png)
+
+## Yunnan - Dali (大理)
+
+We arrived at Dali in the evening and a taxi, organised by our accomodation, took us to our accomodation. We were staying just
+outside the old-city southern gate, which was beautifully lit-up as we drove past. Staying in the old town was very pleasant because
+you're already quite close to most of the popular tourist destinations, and you get more time to enjoy the traditional style
+architecture. The buildings in the old town have apparently been there for ages, and it used to be a poor area of Dali. But they
+restored all the buildings to attract tourists.
+
+Dali is probably most famous for the lake - Erhai (洱海) AKA Er Sea, apparently because they're nowhere near the ocean, so this is
+their beach holiday destination. We know that many tourists, when they come here, like to rent an electric motorobike to ride around
+the lake and stop at the sights, but we weren't brave enough to risk it. Instead, we got one of the drivers to take us around to the
+sights we chose. This only really works if you can speak chinese as not many of the drivers can speak English, and they'll charge 
+you a fair bit more, if they notice you're western. Acting as Gaungzhou tourists, we paid roughly 300 RMB for a day with a
+7-seater and a driver.
+
+My favourite places to visit were the Old Town and the Three Pagodas. The old town is fairly touristy, but still with many stores
+selling local specialties like silver, jade, rocks/minerals, flower teas, coffee, wine, and the list goes on! Some of the stores
+even have live alpacas hanging around *I think* for good Feng Shui, but they definitely double as a marketing tool. We wandered 
+around the old town twice - once during the day and once at night. During the day, some of the streets will have open air markets
+selling fruit and other local snacks, and during the night, they light up the street with paper lanterns and all the many
+colourfully dressed performers appear, dancing from the balconies.
+
+The three pagodas exist as a buddhist monument and apparently has a multi-millenia history. Its age is impressive and appearance
+unique and well-maintained, as it has been restored many times. Now, while the name (and many of the photos), suggest that the
+pagodas are the main attraction. And they are indeed very striking, but I enjoyed the visit moreso because of the surrounding park 
+and buddhist temples that are behind the pagodas. There are multiple that you can walk up through each of the temples have their own
+description to read and learn from. The final temple is the Chongsheng temple (崇圣寺), which ends up being quite a hike to get up
+to. But, you're rewarded with a gorgeous view of Erhai and the surrounds.
+
+Some of the foods that we tried in Dali that I liked are the mushroom hotpot, rice noodles (米线), the Dali yoghurts, and the tea
+and flower flavoured wines. These are all easy to find in the touristy areas, but they're generally cheaper in the city.
+
+The city also has some things exploring - we wandered around Erhai park (which is apparently where dragons come to rest), which has
+some beautiful spots where couples get professional photos taken! There's also a small zoo attached, but I would avoid that as the
+animals don't look well taken care of (there is a couple very adorable red pandas though). The Bai museum (Bai is an ethnic minority
+in Dali) was also an interesting visit. It motivated me to buy Dali shi (shi is stone) AKA marble that Dali households often
+display like art, although in the end I never got a piece.
+
+![Old town gate a couple hundred meters from our accomodation](/trips/img/trips-china2024/DSC_0431_cr.jpg "gallery")
+![Exploring the streets with Winn's little brother and dad](/trips/img/trips-china2024/DSC_0451_cr.jpg "gallery")
+![Alpaca store-front mascots in Dali old town](/trips/img/trips-china2024/DSC_0452_cr.jpg "gallery")
+![Praying for my future studies in a temple inside the old town](/trips/img/trips-china2024/Image_20241223200420_cr.jpg "gallery")
+![The gate to old town on the other side](/trips/img/trips-china2024/DSC_0484_cr.jpg "gallery")
+![The Three Pagodas](/trips/img/trips-china2024/DSC_0521_cr.jpg "gallery")
+![The gate to Chongsheng temple (still a long way to go)](/trips/img/trips-china2024/DSC_0573_cr.jpg "gallery")
+![The view from Chongsheng](/trips/img/trips-china2024/DSC_0631_cr.jpg "gallery")
+![A red panda at Erhai Park Zoo (would not recommend as the animals don't look to be taken care of well)](/trips/img/trips-china2024/DSC_0825_cr.jpg "gallery")
+![Lantern lights while exploring the old town in the evening](/trips/img/trips-china2024/DSC_0874_cr.jpg "gallery")
+![One of the performers dancing from the balcony of a restaurant](/trips/img/trips-china2024/DSC_0923_cr.jpg "gallery")
+![View from one of the gates in the old town](/trips/img/trips-china2024/DSC_0946_cr.jpg "gallery")
+![Rice noodles and Dali yoghurt in the city](/trips/img/trips-china2024/Image_20241223200442_cr.jpg "gallery")
+![Yunnan coffee while exploring some of the old streets](/trips/img/trips-china2024/Image_20241223200436_cr.jpg "gallery")
+![Mushroom and beef hotpot at a restaurant near our AirBnB](/trips/img/trips-china2024/Image_20241223200414_cr.jpg "gallery")
+
+## Lijiang (丽江)
+
+After an already enjoyable Lijiang trip, we took a couple hours high-speed train ride further west to Lijiang. From Dali, lijiang is
+an additional 400m above sea level. We definitely started to feel the effects of elevation if we tried to exert ourselves. This 
+time, we were staying IN the old town, in a repurposed old building which had 5 rooms being used for holidayers like us. The old 
+town appeared to be popular for couples and influencers to get dressed up and take photos around town (our accomodation was near a 
+few of such of the popular spots). The evenings are the busiest time as the town is very lit with colourful lights and the central 
+square has some of the older locals facilitating a dance circle while they play loud hybrid of tibetan folk music and edm. All the 
+stores sell similar things to what we saw in the old town in Dali, but there seemed to be a larger selection of food. We tried to
+find a bar to hang out at, but the prices for drinks were pretty steep, so we opted to buy drinks at a convenience store and drink
+in our AirBnB.
+
+The nearby Heilongtan park (黑龙潭公园) is a pleasant change of scenery from the hustle and bustle of old town as it has a
+combination of temples and nature to look at. There was also a hike that gives a good view of Jade Dragon Snowy Mountain (玉龙雪山) 
+the tallest mountain in the city. We did half of the hike as I was sick and Winn's dad wasn't feeling great because of the elevation 
+of Lijiang, but it's a pleasant walk if you don't mind a 1h or-so round trip (it does have lots of steps though). Heilongtan park 
+also had a lot of birds around which I enjoyed. We also saw wild squirrels being fed by some of the locals!
+
+The highlight of Lijiang was the visit to Jade Dragon Mountain. The peak of the mountain is almost at 5,600m but you can get to
+4,600ish by cablecar, and walk up 200m to get to a viewing platform for the peak. Note that to get a cablecar ticket, you have to
+but the ticket the day before. The website makes tickets available at 8pm everyday for the next day, but they disappear quickly,
+so you have to be fast! It was also not obvious how to book the tickets - we visited the tourist office in the old town, and they
+gave us a wechat link to use. The cablecar starts from the visitor center. 
+
+Before going to the Jade Dragon Snow Mountain visitor centre, if you're doubtful as to whether you can handle the elevation, buy
+your oxygen cylinders *before* going, as they're much cheaper in the old town. You'll probably want 1-2 per person. You can get to 
+the visitor centre by public bus, which is much cheaper than tours or hiring a driver (it cost us around 20 RMB, but I don't 
+remember the exact number). Note that the visitor centre elevation is already quite high - around 3200m. For us, the wait to *get 
+onto the cablecar* took over half an hour as the attraction is *that* popular. The cablecar ride itself is only about 10mins and 
+views are already impressive.
+
+At the top, you're welcomed by a huge crowd of people taking photos and lining up to take photos with the 4600m elevation sign. Now
+is a good time to start using your oxygen cylinder. You can walk up the wooden stairway another 200-ish metres to get to the viewing
+platform that sits at roughly 4800m elevation. On a good day, the viewing platform should have visibility of the peak, but the view
+was obscured by clouds when we went. Apparently spring/summer offers better visibility. Waiting for the cablecar going down took
+longer than going up (maybe 45-60mins?), so be prepared to stand for awhile! 
+
+Coming down from the viewing platform, Winn and her little brother didn't feel any altitude sickness symptoms, but I had a headache
+for the rest of the day. I think this was mainly because I was already sick, but I also went up to the viewing platform, exerting
+myself harder by doing so. Note that we only bought 1 oxygen cylinder to share between us.
+
+After heading back to the visitor center, you can visit Blue Moon Lake (蓝月湖) and the Yak Meadow. If you bought a ticket, the bus
+ride to these places are included. Otherwise, you have to buy a ticket (I think it was around 20 RMB). Blue Moon Lake offers a
+turquoise-tinted lake with full view of the Jade Dragon Mountain, so is a very popular spot for photos - we even saw a couple take
+wedding shots there!
+
+I'm a little disappointed that my first time at above 4000m was by cablecar instead of hiking, but going up Jade Long Snowy Mountain
+was definitely the highlight of Yunnan for me! Although I did learn that a couple decades ago, the only way to get up was to hike
+up, and one of Winn's Dad's friend's wife did that!
+
+![Winn at our accomodation in Lijiang](/trips/img/trips-china2024/DSC_0960_cr.jpg "gallery")
+![Evening view nearby our accomodation](/trips/img/trips-china2024/DSC_0977_cr.jpg "gallery")
+![Wandering the old town streets at night](/trips/img/trips-china2024/DSC_0979_cr.jpg "gallery")
+![Stores and bars lit up at night](/trips/img/trips-china2024/DSC_0984_cr.jpg "gallery")
+![Local dance circle in the main square](/trips/img/trips-china2024/DSC_0990_cr.jpg "gallery")
+![View of Jade Dragon Snowy Mountain from Heilongtan Park](/trips/img/trips-china2024/DSC_1221_cr.jpg "gallery")
+![View of Jade Dragon Snowy Mountain from 3/4 up the hike behind Heilongtan Park](/trips/img/trips-china2024/DSC_1137_cr.jpg "gallery")
+![View of Jade Dragon Snowy Mountain from one the carpark near Blue Moon Lake](/trips/img/trips-china2024/DSC_1226_cr.jpg "gallery")
+![View going up the cablecar to the summit](/trips/img/trips-china2024/DSC_1234_cr.jpg "gallery")
+![Winn's little brother and I with the 4506m elevation marker](/trips/img/trips-china2024/Image_20241223212604_cr.jpg "gallery")
+![Winn and I at the viewing platform](/trips/img/trips-china2024/Image_20241223212609_cr.jpg "gallery")
+![Partial view of mountain peak and valley from the upper viewing platform](/trips/img/trips-china2024/DSC_1294_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1325_cr.jpg "gallery")
+![The crowd of people lining up to get down and the people still making their way up to the upper viewing platform](/trips/img/trips-china2024/DSC_1324_cr.jpg "gallery")
+![A live "decorative yak" hanging out at Blue Moon Lake with Jade Dragon Mountain in the background](/trips/img/trips-china2024/DSC_1352_cr.jpg "gallery")
