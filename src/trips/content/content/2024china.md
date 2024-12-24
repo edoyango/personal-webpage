@@ -192,7 +192,7 @@ display like art, although in the end I never got a piece.
 ![Yunnan coffee while exploring some of the old streets](/trips/img/trips-china2024/Image_20241223200436_cr.jpg "gallery")
 ![Mushroom and beef hotpot at a restaurant near our AirBnB](/trips/img/trips-china2024/Image_20241223200414_cr.jpg "gallery")
 
-## Lijiang (丽江)
+## Yunnan - Lijiang (丽江)
 
 After an already enjoyable Lijiang trip, we took a couple hours high-speed train ride further west to Lijiang. From Dali, lijiang is
 an additional 400m above sea level. We definitely started to feel the effects of elevation if we tried to exert ourselves. This 
@@ -258,7 +258,7 @@ up, and one of Winn's Dad's friend's wife did that!
 ![The crowd of people lining up to get down and the people still making their way up to the upper viewing platform](/trips/img/trips-china2024/DSC_1324_cr.jpg "gallery")
 ![A live "decorative yak" hanging out at Blue Moon Lake with Jade Dragon Mountain in the background](/trips/img/trips-china2024/DSC_1352_cr.jpg "gallery")
 
-## Shangri-La (香格里拉)
+## Yunnan - Shangri-La (香格里拉)
 
 Shangri-La is the destination furthest west in our journey. It took us another couple hours by high-speed train from Lijiang.
 Shangri-la was renamed from Zhongdian (中甸县) in an effort to boost tourism (which apparently worked!). This city was the distinct 
@@ -316,3 +316,51 @@ tourists taking photos. But definitely worth a visit if you're in the area.
 ![View from Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112847.jpg "gallery")
 ![Winn's dad ringing the bell in one of the doorways in Sumtsenling](/trips/img/trips-china2024/Image_20241224112818_cr.jpg "gallery")
 ![Winn, her dad, and little brother at Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112822_cr.jpg "gallery")
+
+## Yunnan - Kunming (昆明)
+
+After heading as far west as we could, we took the HSR back towards Guangzhou, but stopping at Kunming on the way. The train trip
+from Shangri-la was about 5h. At first, I was most excited for two things: getting back to a "normal" altitude so going up and down
+hills didn't feel so hard, and getting Mixue bubble tea and ice cream again!
+
+Kunming was a return to city-life - compared to the significantly more rural areas that we had been to so far. We spent a lot of it
+enjoying the conveniences of city-life that we hadn't easy access to the past couple of weeks. We especially enjoyed the
+pulled-noodle place located just downstairs from our AirBnB apartment and visiting the exploring the city and visiting the
+nightmarkets and listening to the bands playing. The zoo also had many animals, although, like in Dali, I they weren't kept in the
+best of conditions and I felt bad for them. We enjoyed the birds though, including the large number of peacocks! I couldn't beat my
+[beautiful shot of the peacocks in tasmania](https://www.ed-yang.com/trips/img/trips-tasmania2022/cradlemt/DSC_0776.jpeg)
+
+We still managed to visit a few touristy spots. We saw the Stone Forest (石林) with unique rock formations (although I noticed the
+info about the geology was very lacking). On the way to the Stone Forest, we stopped by Haigeng Dam to see the "Siberian Gulls"
+that come down to Kunming from November to March. The city park was also another place we visited which had the migratory gulls
+visiting.
+
+![Peacocks in the Kunming Zoo](/trips/img/trips-china2024/Image_20241224152409_cr.jpg "gallery")
+![Enjoying the city park](/trips/img/trips-china2024/Image_20241224152405_cr.jpg "gallery")
+![The Ma family (Winn, stone, their dad) standing in front of a "Ma Gate"](/trips/img/trips-china2024/DSC_1741_cr.jpg "gallery")
+![Siberian gull feeding from a tourist's hand](/trips/img/trips-china2024/DSC_1815_cr.jpg "gallery")
+![Example of the cool rock formations in the Stone Park](/trips/img/trips-china2024/DSC_1944_cr.jpg "gallery")
+![Final dinner in Kunming at our favourite pulled noodle restaurant](/trips/img/trips-china2024/Image_20241224152358_cr.jpg "gallery")
+
+# Guangzhou pt. 3
+
+After an 8-hour train ride, we arrived back in Guangzhou! Our agenda for this trip was just to hang out - we got massages,
+piercings, went shopping, and caught with Winn's family friends and her grandma. Everyday, I made sure to enjoy Xiaolongbaos they 
+had just outside the apartment and enjoy the cheap oysters as well (1 RMB per oyster!). We also got a tour of the White Swan Hotel
+(白天鹅宾馆) and enjoy the facilities, as a former CEO is friends with Winn's dad.
+
+![Daily Xiaolongbaos are a must!](/trips/img/trips-china2024/Image_20241224160229_cr.jpg "gallery")
+![Swimming a few laps in the White Swan Hotel pool](/trips/img/trips-china2024/Image_20241224160225_cr.png "gallery")
+![Hotpot dinner with Winn's family friends](/trips/img/trips-china2024/Image_20241224160236_cr.jpg "gallery")
+
+# Shenzhen (深圳)
+
+One of my aunts (the older one) that I visited in Changsha actually lives in Shenzhen - quite close to Guangzhou. Since I had never
+seen photos of Dad and his family growing up, I thought I would visit to see the photo albums that my aunt had relocated to her
+place. There I got to learn more about my Grandpa and some of how my dad and his sisters grew up together. I also got to meet my
+cousins and my uncle, who I hadn't really gotten to know growing up. This short visit to Shenzhen was very special for me.
+
+
+![Me hanging out with my cousin and my uncle and aunt](/trips/img/trips-china2024/Image_20241224161357_cr.jpg "gallery")
+![Winn, my uncle, and I](/trips/img/trips-china2024/Image_20241224161413_cr.jpg "gallery")
+![My aunt and I looking through her old photos](/trips/img/trips-china2024/Image_20241224161405_cr.jpg "gallery")
