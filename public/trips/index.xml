@@ -4,20 +4,23 @@
     <title>Ed&#39;s Space - Trips</title>
     <link>/trips/</link>
     <description>Recent content on Ed&#39;s Space - Trips</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 24 Nov 2023 17:21:00 +0700</lastBuildDate>
+    <lastBuildDate>Sat, 09 Nov 2024 08:00:00 +1000</lastBuildDate>
     <atom:link href="/trips/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nov 2024 China</title>
+      <link>/trips/content/2024china/</link>
+      <pubDate>Sat, 09 Nov 2024 08:00:00 +1000</pubDate>
+      <guid>/trips/content/2024china/</guid>
+      <description>&lt;p&gt;Like what seems to be tradition at this point, we went on another November trip this year. But this time a place closer&#xA;to home (mentally) - China.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Nov 2023 Thailand</title>
       <link>/trips/content/2023thailand/</link>
       <pubDate>Fri, 24 Nov 2023 17:21:00 +0700</pubDate>
       <guid>/trips/content/2023thailand/</guid>
-      <description>&lt;p&gt;What better way to celebrate the conclusion of my partner&amp;rsquo;s first year of her master&amp;rsquo;s degree than to relax in Thailand!
-Unlike our last trip, this would be three weeks instead of one, giving us a lot more time to &lt;em&gt;relax&lt;/em&gt; and see more during
-the trip.&lt;/p&gt;
-&lt;p&gt;Same as last time, we flew in and out of Bangkok, but visited Chiang Mai in addition to Phuket in between.&lt;/p&gt;
-&lt;p&gt;I&amp;rsquo;ve also included my reading list for this trip (at the bottom).&lt;/p&gt;</description>
+      <description>&lt;p&gt;What better way to celebrate the conclusion of my partner&amp;rsquo;s first year of her master&amp;rsquo;s degree than to relax in Thailand!&#xA;Unlike our last trip, this would be three weeks instead of one, giving us a lot more time to &lt;em&gt;relax&lt;/em&gt; and see more during&#xA;the trip.&lt;/p&gt;&#xA;&lt;p&gt;Same as last time, we flew in and out of Bangkok, but visited Chiang Mai in addition to Phuket in between.&lt;/p&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve also included my reading list for this trip (at the bottom).&lt;/p&gt;</description>
     </item>
     <item>
       <title>Overland Track - Further Details</title>
@@ -78,7 +81,7 @@ the trip.&lt;/p&gt;
     <item>
       <title>Apr 2018 Tasmania, Australia</title>
       <link>/trips/content/2018tasmania/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 12 Mar 2023 20:22:00 +1100</pubDate>
       <guid>/trips/content/2018tasmania/</guid>
       <description>&lt;p&gt;My German housemate, who loves hiking and seeing what Australia has to offer, instigated this trip! Our other housemate came too. The trip was mostly hiking some of the mountains of Tasmania.&lt;/p&gt;</description>
     </item>
