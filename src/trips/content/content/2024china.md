@@ -1,6 +1,6 @@
 +++
 draft = false
-image = "img/portfolio/thailand2023-cover.jpeg"
+image = "img/portfolio/china2024-cover.jpg"
 showonlyimage = false
 date = "2024-11-09T08:00:00+10:00"
 title = "Nov 2024 China"
@@ -9,6 +9,7 @@ weight = -11
 
 Like what seems to be tradition at this point, we went on another November trip this year. But this time a place closer
 to home (mentally) - China.
+<!--more-->
 
 I don't have particularly great feelings about China, despite it being my "home" country and where most of my extended 
 family live. Growing up, I usually *had* to come to China when dad and mum flew over for dad's work trips and most of
