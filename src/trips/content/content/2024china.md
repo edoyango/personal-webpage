@@ -364,3 +364,53 @@ cousins and my uncle, who I hadn't really gotten to know growing up. This short 
 ![Me hanging out with my cousin and my uncle and aunt](/trips/img/trips-china2024/Image_20241224161357_cr.jpg "gallery")
 ![Winn, my uncle, and I](/trips/img/trips-china2024/Image_20241224161413_cr.jpg "gallery")
 ![My aunt and I looking through her old photos](/trips/img/trips-china2024/Image_20241224161405_cr.jpg "gallery")
+
+# Conclusion
+
+I would say that after visiting China with Winn and her family, my impression of China has become much more positive. Not only 
+because I actually had people to travel with this time, but because of how welcoming my relatives were, how developed China had 
+become in the time I haven't visited, and because Winn's dad did a great job planning everything! My only gripe is with my poor 
+Chinese, so that's something I'll have to improve in the future...
+
+## Reading list
+
+I read 3.5 books on this trip, which were, from most liked to least:
+
+### Other Rivers, by Peter Hessler
+
+My younger aunt recommended that I read Peter Hessler after our visit to Changsha. This book I really enjoyed because Peter does a 
+really great job of contextualising a lot of the behaviours of the Chinese people he encounters while  teaching in China and for 
+outsiders, he adds personality and depth to Chinese people with his perspective and experience that very few outsiders get to have. 
+I got a bit bored during the COV19 part of the book, as the extreme lockdowns and  paranoia that the Chinese people had to 
+experience were similar to what we experienced in Victoria, Aus; so it was nothing new. Although the post-covid perspective was
+interesting. But otherwise, the book was very well written and enjoyable.
+
+### River Town, by Peter Hessler
+
+This is the other book by Peter Hessler my aunt recommended. I'm only about halfway through this book but the perspective that Peter
+offers in this, much older book, is different from Other Rivers. The time from which he reporting from is very different from his 
+latest book, and he is also, naturally, more naive, as this his first time in China, and he's also much younger and less experienced 
+(but nevertheless apparently well-educated). But, some parts read like a journal, and it's usually not a whole lot of fun to read 
+stranger's journals. But nevertheless, his experiences and his use of broader context and history to interpret the locals' behaviour 
+(in general, and toward him) provide a very interesting peek into the rural Chinese mindset - shortly after China started to 
+experience dramatic growth. Even in the parts I didn't enjoy so much, he would make very interesting off-hand comments about China 
+and its people that motivate me to continue. I hope to finish the book soon, but I seem to have misplaced my kindle :( !
+
+### The Phoenix Project; by Gene Kim, George Spafford, and Kevin Behr
+
+I already read about a third of this book before starting this trip, so I wanted to finish it before starting new ones. I thought it
+was an apt read, as I had been feeling frustrated with how IT was managed at my workplace. And it had been on my to-read list ever
+since I got some basic Agile training a couple years back. I enjoyed the book in a way, that I feel, one enjoys many other fantasy
+novels. For me, the book portrayed a fantasy situation where, even though there is some conflict and an apparently insurmountable
+obstacle to overcome, many things line up perfectly and everyone helps the hero to defeat the dragon, or in this case, years of
+tech debt and poor funding. And I feel tempted to discard it for its apparent idealism, but I want to hope that my current workplace
+situation can be improved!
+
+### The Quants, by Scott Patterson
+
+I read this book mainly because I wanted to know what they did. by the end of the book, and perhaps this was deliberate, I felt a
+little disgusted at the "protagonists" as they made millions of dollars while not clearly contributing a whole lot and also
+putting the American financial system at risk. But the way Scott explained the technical issues they were facing was well-done and I
+felt like I had an approximate understanding of what was happening even though I'm not a quant (although I do have a finance
+bachelors). Throughout the whole book I definitely was wondering if I could make it as one, but I ultimately decided that I don't
+think I have the interest or care enought about money to.
