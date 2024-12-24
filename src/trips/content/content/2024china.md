@@ -275,7 +275,7 @@ fat for creaminess.
 
 In addition to the tasty hot pot, another reason the evenings in Shangri-la were fun was due to the dancing in the main square. Like
 in Lijiang, every night around 7pm, there would be dance circle that dances to folk-edm. A quick google told me that it's called
-"Guozhuang" dancing, and is a tibetan style of group dancing. Unlike in Lijiang, the dancers had a higher ratio of locals to
+"Guozhuang" dancing (锅庄舞), and is a tibetan style of group dancing. Unlike in Lijiang, the dancers had a higher ratio of locals to
 tourists, and they're mostly local workers e.g. shopkeepers who dance everynight for fun and they learn by mimicking the other
 dancers. But of course, tourists are welcome and the regulars appear to be very used to dancing their way around fumbling newbies.
 
@@ -285,7 +285,7 @@ done for a bit extra. Winn and I got matching outfits and Winn's little brother 
 nearby temples and shrines in these outfits and snapped a few pics. You can get photographers as well, but it's a fairbit more
 expensive. 
 
-Our second day was jam-packed with sightseeing. We started off by visiting Potatson national park (普达措国家公园) which had
+Our second day was jam-packed with sightseeing. We started off by visiting Potatso national park (普达措国家公园) which had
 beautiful lakes and meadows and an abundance of birds, cows, horses, and squirrels! When you pay for the (very expensive by Chinese
 standard) entry ticket, you're also paying for information from the local tour guides and bus rides to the main spots within the
 national park. The tour guides told us about the local ethnic minorities and how they made their living, and their religion and
@@ -298,21 +298,21 @@ Aus), and past a beautiful lake seemingly overrun by cormorants, geese, and coot
 well worth it. The monastery itself was well-maintained and looked like it was still used, and it was filled with dressed-up
 tourists taking photos. But definitely worth a visit if you're in the area.
 
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112840.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112834_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1403_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1462_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112844_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1467_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1485_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112830_cr.png "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1496_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1517_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1576_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1580_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1583_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1606_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1623_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112847.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112818_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112822_cr.jpg "gallery")
+![Walking into the old town](/trips/img/trips-china2024/Image_20241224112840.jpg "gallery")
+![Our first dinner in Shangri-la - yak hotpot](/trips/img/trips-china2024/Image_20241224112834_cr.jpg "gallery")
+![Inbetween songs in the evening guozhuang dance circle](/trips/img/trips-china2024/DSC_1403_cr.jpg "gallery")
+![Winn, her dad, and little brother together, dressed up](/trips/img/trips-china2024/DSC_1462_cr.jpg "gallery")
+![Winn and in matching traditional dress](/trips/img/trips-china2024/Image_20241224112844_cr.jpg "gallery")
+![Winn, dressed in traditional wear, with temple in background](/trips/img/trips-china2024/DSC_1467_cr.jpg "gallery")
+![Winn in traditional dress, looking cool](/trips/img/trips-china2024/DSC_1485_cr.jpg "gallery")
+![Our second yak hot pot dinner](/trips/img/trips-china2024/Image_20241224112830_cr.png "gallery")
+![White Wagtail seen in Potatso National Park](/trips/img/trips-china2024/DSC_1496_cr.jpg "gallery")
+![Horses grazing in Potatso National park](/trips/img/trips-china2024/DSC_1517_cr.jpg "gallery")
+![Yak's grazing in Potatso National Park](/trips/img/trips-china2024/DSC_1576_cr.jpg "gallery")
+![Perched crow with horse and Bita Lake in the background at Potatso National Park](/trips/img/trips-china2024/DSC_1580_cr.jpg "gallery")
+![Bita Lake at Potatso National Park](/trips/img/trips-china2024/DSC_1583_cr.jpg "gallery")
+![Squirrel expecting food at Potatso National Park](/trips/img/trips-china2024/DSC_1606_cr.jpg "gallery")
+![Sumtsenling Monastery from the lake](/trips/img/trips-china2024/DSC_1623_cr.jpg "gallery")
+![View from Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112847.jpg "gallery")
+![Winn's dad ringing the bell in one of the doorways in Sumtsenling](/trips/img/trips-china2024/Image_20241224112818_cr.jpg "gallery")
+![Winn, her dad, and little brother at Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112822_cr.jpg "gallery")
