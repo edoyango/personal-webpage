@@ -257,3 +257,62 @@ up, and one of Winn's Dad's friend's wife did that!
 ![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1325_cr.jpg "gallery")
 ![The crowd of people lining up to get down and the people still making their way up to the upper viewing platform](/trips/img/trips-china2024/DSC_1324_cr.jpg "gallery")
 ![A live "decorative yak" hanging out at Blue Moon Lake with Jade Dragon Mountain in the background](/trips/img/trips-china2024/DSC_1352_cr.jpg "gallery")
+
+## Shangri-La (香格里拉)
+
+Shangri-La is the destination furthest west in our journey. It took us another couple hours by high-speed train from Lijiang.
+Shangri-la was renamed from Zhongdian (中甸县) in an effort to boost tourism (which apparently worked!). This city was the distinct 
+of the places we went to on this trip - the people mostly weren't han people, the architecture style differed significantly, and it 
+was also the most rural. From the train, we could see wooly cows wandering some of the streets! That being said, the city felt the
+most interesting and I would even say that I enjoyed it the most. But it was also the coldest! Make sure to pack warm clothes if you
+visit.
+
+We arrived in the early afternoon, but we took it pretty easy at first - we were all feeling symptoms of altitude sickness. The city 
+is located around 3150m above sea level and we all had headaches and were finding ourselves out-of-breath just walking up and down 
+the hilly streets of the old town we were staying in. For dinner, we enjoyed the yak hotpot set that we enjoyed with Shangri-la beer 
+and baijiu. A lot of the food here seemed to center around yak products - besides the meat itself we also got a tea, which used yak 
+fat for creaminess.
+
+In addition to the tasty hot pot, another reason the evenings in Shangri-la were fun was due to the dancing in the main square. Like
+in Lijiang, every night around 7pm, there would be dance circle that dances to folk-edm. A quick google told me that it's called
+"Guozhuang" dancing, and is a tibetan style of group dancing. Unlike in Lijiang, the dancers had a higher ratio of locals to
+tourists, and they're mostly local workers e.g. shopkeepers who dance everynight for fun and they learn by mimicking the other
+dancers. But of course, tourists are welcome and the regulars appear to be very used to dancing their way around fumbling newbies.
+
+The next day, inspired by the many chinese tourists getting dressed up, and the prevelance of the rental stores in Shangri-la, we
+made the leap and got dressed up. I think for each person, an outfit cost about 60 RMB and the girls also get their hair and makeup
+done for a bit extra. Winn and I got matching outfits and Winn's little brother got dressed up as well. We wandered around the
+nearby temples and shrines in these outfits and snapped a few pics. You can get photographers as well, but it's a fairbit more
+expensive. 
+
+Our second day was jam-packed with sightseeing. We started off by visiting Potatson national park (普达措国家公园) which had
+beautiful lakes and meadows and an abundance of birds, cows, horses, and squirrels! When you pay for the (very expensive by Chinese
+standard) entry ticket, you're also paying for information from the local tour guides and bus rides to the main spots within the
+national park. The tour guides told us about the local ethnic minorities and how they made their living, and their religion and
+culture. But note that none of the tour guides speak English and the information signs that do have English are mostly poorly 
+translated. Thankfully I had Winn to translate! 
+
+In the afternoon, we got the driver to take us to Sumtsenling Monastery (松赞林寺). But, because of construction happening on the
+roads, we had to walk a few kilometres, dodging actively working excavators (people would be fired for this safety transgression in
+Aus), and past a beautiful lake seemingly overrun by cormorants, geese, and coots. But the view of the monastery from the lake was
+well worth it. The monastery itself was well-maintained and looked like it was still used, and it was filled with dressed-up
+tourists taking photos. But definitely worth a visit if you're in the area.
+
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112840.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112834_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1403_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1462_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112844_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1467_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1485_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112830_cr.png "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1496_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1517_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1576_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1580_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1583_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1606_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1623_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112847.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112818_cr.jpg "gallery")
+![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/Image_20241224112822_cr.jpg "gallery")
