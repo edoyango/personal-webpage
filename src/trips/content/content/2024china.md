@@ -96,7 +96,7 @@ acting as my our very over-qualified translator.
 
 ![Giant young Maozedong status on Orange Isle](/trips/img/trips-china2024/DSC_0267_cr.jpg "gallery")
 ![Entrance to the cultural revolution-themed tea house](/trips/img/trips-china2024/DSC_0286_cr.jpg "gallery")
-!["Graffiti" on the inside of the tea house, which says "The World is yours'!"](/trips/img/trips-china2024/DSC_0299_cr.png "gallery")
+!["Graffiti" on the inside of the tea house, which says "The World is yours'!"](/trips/img/trips-china2024/DSC_0299_cr.jpg "gallery")
 !["Light garden" near Changsha's old city walls](/trips/img/trips-china2024/DSC_0315_cr.jpg "gallery")
 ![Beautifully lit up stairwell leading up to the old city wall](/trips/img/trips-china2024/DSC_0322_cr.jpg "gallery")
 ![Lit up traditional chinese-style building on the old city wall](/trips/img/trips-china2024/DSC_0350_cr.jpg "gallery")
