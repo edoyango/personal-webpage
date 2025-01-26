@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Combining the Orange Pi 5 Pro and YOLOv5 for bird detection # I started this project to record and identify the birds that we saw on our verandah throughout the day, as well as an excuse to learn about object detection. I aimed at using YOLO mainly because the ultralytics package is very easy to use and the performance-accuracy tradeoff was good.
+When I first got started, it was quite easy to play with ultralytics and its latest iterations of YOLO on my laptop, but my main constraint was that I didn&rsquo;t have any machines that were a good (and affordable) candidate to process the videos.">
+<meta name="theme-color" content="#FFFFFF">
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/pi/yolov5-orangepi/">
+  <meta property="og:site_name" content="Ed&#39;s Space - Notes">
+  <meta property="og:title" content="Combining the Orange Pi 5 Pro and YOLOv5 for bird detection">
+  <meta property="og:description" content="Combining the Orange Pi 5 Pro and YOLOv5 for bird detection # I started this project to record and identify the birds that we saw on our verandah throughout the day, as well as an excuse to learn about object detection. I aimed at using YOLO mainly because the ultralytics package is very easy to use and the performance-accuracy tradeoff was good.
+When I first got started, it was quite easy to play with ultralytics and its latest iterations of YOLO on my laptop, but my main constraint was that I didn’t have any machines that were a good (and affordable) candidate to process the videos.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2024-12-19T17:01:51+11:00">
+<title>Combining the Orange Pi 5 Pro and YOLOv5 for bird detection | Ed&#39;s Space - Notes</title>
+<link rel="manifest" href="/worknotes/manifest.json">
+<link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+  <script defer src="/worknotes/flexsearch.min.js"></script>
+  <script defer src="/worknotes/en.search.min.4be85fa9aa8a1b7cf53de2b60ff21bd6db1a7527a180fa81c7e490f8ecc22dc8.js" ></script>
+
+  <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+
+  
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="/worknotes/"><span>Ed&#39;s Space - Notes</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/f-cpp/" class="">A Basic Comparison of C&#43;&#43; vs Fortran</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle"  />
+    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+      <a role="button" class="">Investigating Manual Vectorization for SPH</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/motivation/" class="">Motivation</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/addition/" class="">Vectorizing Array Addition</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sumreduce/" class="">Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/faster-sumreduce/" class="">Faster Vector Sum Reduction</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/sweep/" class="">Vectorizing A Simple Pair Sweep</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/manual-vectorization/cll-avx512/" class="">Vectorizing Cell-based Pair Search</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
+    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+      <a role="button" class="">Useful code snippets</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-direct-pair-search/" class="">Direct pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/" class="">Cell list pair search</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/" class="">Cell list pair search - reducing search space</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/grid-rows-spatial-hashing/" class="">grid dimension hashing</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/" class="">Cell lists pair search without &#34;if&#34;</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/useful/z-curve-spatial-hashing/" class="">Z-curve hashing</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/caf/" class="">Coarray Fortran Things</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle"  />
+    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+      <a role="button" class="">CUDA Programming</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/cuda-wsl/" class="">CUDA &#43; NVHPC on WSL</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/frn-thrust/" class="">Fixed-Radius Neighbour Search Using Thrust</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
+    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+      <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/cavitycfdem/" class="">OpenFOAM cavity case to CFDEM</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/snappyhexmesh/" class="">Snappy Hex Mesh Basics</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/cfdem/liggghts-intel-comp/" class="">Speeding Up LIGGGHTS with Intel Compilers and Compiler Options</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle" checked />
+    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+      <a role="button" class="">Raspberry Pis</a>
+    </label>
+  
+
+          
+  <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/yolov5-orangepi/" class="active">Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/trim-jetsonnano/" class="">Reducing Jetson Nano OS for Server</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/webserver/" class="">Setting Up Public Webserver on Raspberry Pi</a>
+  
+
+        </li>
+      
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/slurm-cluster/" class="">Setting Up Raspberry Pi Slurm Cluster</a>
+  
+
+        </li>
+      
+    
+  </ul>
+
+        </li>
+      
+    
+  </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/edoyango"  target="_blank" rel="noopener">
+        GitHub
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var e=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(){localStorage.setItem("menu.scrollTop",e.scrollTop)}),e.scrollTop=localStorage.getItem("menu.scrollTop")})()</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/worknotes/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</strong>
+
+  <label for="toc-control">
+    
+    <img src="/worknotes/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#combining-the-orange-pi-5-pro-and-yolov5-for-bird-detection">Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</a>
+      <ul>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#hardware">Hardware</a>
+          <ul>
+            <li><a href="#webcams">webcams</a></li>
+            <li><a href="#orange-pi-5-pro">Orange Pi 5 Pro</a></li>
+            <li><a href="#storage">Storage</a></li>
+            <li><a href="#a-note-about-training">A note about training</a></li>
+          </ul>
+        </li>
+        <li><a href="#software-setup">Software Setup</a>
+          <ul>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#update-drivers">Update drivers</a></li>
+            <li><a href="#optional-install-ffmpeg">Optional: Install FFMPEG</a></li>
+            <li><a href="#test-examples">Test examples</a></li>
+            <li><a href="#training-a-new-model">Training a new model</a></li>
+            <li><a href="#customized-inference">Customized inference</a></li>
+          </ul>
+        </li>
+        <li><a href="#other-notes">Other notes</a>
+          <ul>
+            <li><a href="#model-choice">Model choice</a></li>
+            <li><a href="#other-improvements-to-performance">Other improvements to performance</a></li>
+            <li><a href="#docker">Docker</a></li>
+            <li><a href="#npu-monitoring">NPU monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#future-work">Future work</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="combining-the-orange-pi-5-pro-and-yolov5-for-bird-detection">
+  Combining the Orange Pi 5 Pro and YOLOv5 for bird detection
+  <a class="anchor" href="#combining-the-orange-pi-5-pro-and-yolov5-for-bird-detection">#</a>
+</h1>
+<p>I started this project to record and identify the birds that we saw on our verandah throughout the day, as well as an
+excuse to learn about object detection. I aimed at using YOLO mainly because the <code>ultralytics</code> package is very easy to
+use and the performance-accuracy tradeoff was good.</p>
+<p>When I first got started, it was quite easy to play with <code>ultralytics</code> and its latest iterations of YOLO on my laptop,
+but my main constraint was that I didn&rsquo;t have any machines that were a good (and affordable) candidate to process the
+videos. This was mainly because inference on GPUs was fairly resource intensive and we needed the GPUs for other daily
+resource-intensive use cases like gaming, work, or image/video editing.</p>
+<p>So at first, I was recording webcam videos of our verandah, uploading them to google drive, downloading them to the HPC
+I had at work, and then processing them using the under-utilized GPUs on the HPC. This worked pretty well - except that
+I changed job, and no longer have access to free and available GPU compute. So what was I to do!</p>
+<p>I knew that the 
+  <a href="https://turingpi.com/product/turing-rk1">RK1</a> chips existed which used the RK3588 chip, which had an
+NPU built into it. From searching the web, I discovered that the RockChip NPU supported many object detection
+frameworks - including all the recent YOLO frameworks (see the
+
+  <a href="https://github.com/airockchip/rknn_model_zoo">RKNN model zoo</a>)! My original expectation was that I would buy three RK1
+modules - two to perform object detection and the third for any peripheral needs like work management, post-processing,
+file upload/download etc. So, <strong>The Orange pi 5 Pro was originally intended for testing before I got multiple RK1
+modules, but turns out the lone SBC was enough!</strong> This turned out to be because the NPU has 3 cores, so I can
+perform inference on multiple video feeds, and the hardware accelerated FFMPEG encoding is very fast!</p>
+<p>Here I&rsquo;ve documented the setup steps for future reference.</p>
+<h2 id="requirements">
+  Requirements
+  <a class="anchor" href="#requirements">#</a>
+</h2>
+<p>The core objective was to <strong>perform real-time object detection on two webcam video feeds</strong>. In a little more detail, this meant I
+needed the setup to be able to:</p>
+<ol>
+<li>Perform inference on the video feeds at a resolution of 704x396 @ 10fps using a medium sized YOLO model</li>
+<li>save and encode/compress bird-containing segments of the video feed</li>
+</ol>
+<p>704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The cameras
+could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being kept for future
+model training).</p>
+<p>On an NVIDIA A30 GPU, the object-detection alone usually took roughly 2h process 20h of video feed (2 webcams recording for 10h).</p>
+<h2 id="hardware">
+  Hardware
+  <a class="anchor" href="#hardware">#</a>
+</h2>
+<h3 id="webcams">
+  webcams
+  <a class="anchor" href="#webcams">#</a>
+</h3>
+<p>I used two of the same 
+  <a href="https://www.amazon.com.au/dp/B0B6QV5SVW">2MP webcam with zoom</a> so I could get a good view of the platforms
+we had setup on the verandah for the birds. Using regular non-zoom webcams (e.g. what you would use for meetings), meant the birds
+were way too small on the feed and it was challenging for the model, as well as to label images. Sometimes the birds were only a
+handful of pixels!</p>
+<h3 id="orange-pi-5-pro">
+  Orange Pi 5 Pro
+  <a class="anchor" href="#orange-pi-5-pro">#</a>
+</h3>
+<p>I chose the Orange Pi 5 Pro mainly because:</p>
+<ul>
+<li>I didn&rsquo;t need many peripherals as it was acting as a server (just needed USB ports)</li>
+<li>Was cheaper than the Ultra/Max</li>
+<li>Had faster memory than the normal Orange Pi 5</li>
+</ul>
+<p>I got the 8GB model as I guesstimated I needed roughly 4.5GB for inference. I arrived at this number by adding together the CPU RAM
+and GPU RAM usage while doing inference with the ultralytics package.</p>
+<p>I bought the Orange Pi 5 Pro itself on Taobao while I was in China, which had roughly the same sticker price as if I had bought it
+off Aliexpress from Australia, but I wouldn&rsquo;t have to pay shipping fees or import taxes. If you&rsquo;re buying it outside of China,
+Aliexpress prices seemed to be much better than Amazon.</p>
+<p>I bought the Orange Pi 5 Pro with the charger as it required a minimum of 5A and 5V which wasn&rsquo;t that easy to find cheaply.</p>
+<p>To keep the Orange Pi cool, I bought a 
+  <a href="https://www.aliexpress.com/item/1005001866650684.html">copper plate cooler with fan (4-fans)</a>
+as it didn&rsquo;t take much for the Pi to overheat and throttle itself.</p>
+<h3 id="storage">
+  Storage
+  <a class="anchor" href="#storage">#</a>
+</h3>
+<p>I&rsquo;m using a 32GB SD Card that I had from previous Raspberry Pi projects and the SD card stores most of the root partition. I also
+repurposed an old external hard drive to store the recorded video data.</p>
+<h3 id="a-note-about-training">
+  A note about training
+  <a class="anchor" href="#a-note-about-training">#</a>
+</h3>
+<p>Training cannot be done on the NPU, so you&rsquo;ll need to have seperate hardware to perform the model training.</p>
+<h2 id="software-setup">
+  Software Setup
+  <a class="anchor" href="#software-setup">#</a>
+</h2>
+<h3 id="setup">
+  Setup
+  <a class="anchor" href="#setup">#</a>
+</h3>
+<p>To start off, I used 
+  <a href="https://etcher.balena.io/">Balena Etcher</a> to flash the SD card with the 
+  <a href="https://drive.google.com/drive/folders/1KnmBQ3Z0M_5snRC24LjhKb8_tKbcfOkw">official server image</a>.
+Unfortunately, unlike the Raspberry Pi, I couldn&rsquo;t find a way to pre-configure the WiFi headless, so I had to do it with the screen
+and keyboard plugged in. Note that the default user and password is <code>orangepi</code>. The image does come with the <code>orangepi-config</code>
+utility which makes connecting to the WiFi <em>a little</em> easier.</p>
+<p>Once your internet is setup and you&rsquo;ve confirmed you can</p>
+<h3 id="update-drivers">
+  Update drivers
+  <a class="anchor" href="#update-drivers">#</a>
+</h3>
+<p>Once the Pi was setup and running, I needed to update the RKNN library by downloading the latest binary (which for some reason, is
+stored on 
+  <a href="https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/">their GitHub</a>).</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># clear out old drivers</span>
+</span></span><span style="display:flex;"><span>sudo find /usr -name librknrrt.so -delete
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># download the library directly to /usr/lib</span>
+</span></span><span style="display:flex;"><span>sudo wget https://raw.githubusercontent.com/airockchip/rknn-toolkit2/refs/heads/master/rknpu2/runtime/Linux/librknn_api/aarch64/librknnrt.so -O /usr/lib/librknrrt.so
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># the RKNN toolkit pip package (used later) expects it to be in /usr/lib64</span>
+</span></span><span style="display:flex;"><span>sudo ln -s /usr/lib/librknrrt.so /usr/lib64/librknrrt.so
+</span></span></code></pre></div><h3 id="optional-install-ffmpeg">
+  Optional: Install FFMPEG
+  <a class="anchor" href="#optional-install-ffmpeg">#</a>
+</h3>
+<p>I use FFMPEG to perform the video encoding and compression needed in my pipeline. If you want to use FFMPEG for encoding
+using hardware acceleration, you&rsquo;ll need to build one from source. The instructions 
+  <a href="https://github.com/nyanmisaka/ffmpeg-rockchip/wiki/Compilation">here</a>
+should be sufficient to get you going.</p>
+<h3 id="test-examples">
+  Test examples
+  <a class="anchor" href="#test-examples">#</a>
+</h3>
+<p>To start, it&rsquo;s a good idea to create a virtual environment to store the required dependencies to run the Python code.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#204a87">cd</span> ~
+</span></span><span style="display:flex;"><span>python -m venv rknn-venv
+</span></span><span style="display:flex;"><span>. rknn-venv/bin/activate
+</span></span><span style="display:flex;"><span>pip install rknn-toolkit2
+</span></span></code></pre></div><p>Then, we&rsquo;ll need the repo</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/airockchip/rknn_model_zoo.git --depth <span style="color:#0000cf;font-weight:bold">1</span>
+</span></span></code></pre></div><p>And now we can run the examples.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># move to the YOLOv5 example directory</span>
+</span></span><span style="display:flex;"><span><span style="color:#204a87">cd</span> rknn_model_zoo/examples/yolov5/python
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># convert the model</span>
+</span></span><span style="display:flex;"><span>python convert.py ../model/yolov5s_relu.onnx rk3588 i8 yolov5s_relu.rknn
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># run the example with the converted model - this saves the image into ./result</span>
+</span></span><span style="display:flex;"><span>python yolov5.py --model_path yolov5s_relu.rknn --img_save
+</span></span></code></pre></div><p>If the above doesn&rsquo;t work, it could be that you didn&rsquo;t update the drivers properly, or you didn&rsquo;t install the RKNN-toolkit into your
+environment.</p>
+<h3 id="training-a-new-model">
+  Training a new model
+  <a class="anchor" href="#training-a-new-model">#</a>
+</h3>
+<p>Training a new model can be done by using 
+  <a href="https://github.com/airockchip/yolov5">RKNN&rsquo;s customized fork of YOLOv5</a>. I personally use
+Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations are compatible with the
+YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset. Note you cannot practically do
+training on the NPU, so as mentioned, you&rsquo;ll need seperate hardware to perform training.</p>
+<p>The instructions below you have an NVIDIA or AMD GPU installed in the appropriate manner for your hardware.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Get the customized YOLOv5 repository</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/airockchip/yolov5.git
+</span></span><span style="display:flex;"><span><span style="color:#204a87">cd</span> yolov5
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Install older PyTorch to stop PyTorch complaining about some things in the code</span>
+</span></span><span style="display:flex;"><span>pip install <span style="color:#4e9a06">&#39;torch&lt;2&#39;</span> <span style="color:#4e9a06">&#39;torchvision&lt;0.15&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Install remaining dependencies</span>
+</span></span><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Train your model (assuming your dataset is my-dataset)</span>
+</span></span><span style="display:flex;"><span>python train.py --weights yolov5m.pt --epochs <span style="color:#0000cf;font-weight:bold">120</span> --batch <span style="color:#0000cf;font-weight:bold">0</span> --data my-dataset/data.yaml
+</span></span></code></pre></div><p>After training, you will need to export the model as onnx, and then convert the model to RKNN format.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Export first to ONNX</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">python</span> <span style="color:#000">export</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">py</span> <span style="color:#ce5c00;font-weight:bold">--</span><span style="color:#000">rknpu</span> <span style="color:#ce5c00;font-weight:bold">--</span><span style="color:#000">weight</span> <span style="color:#000">path</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">to</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">weights</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">pt</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># go back to example python folder to use convert.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">cd</span> <span style="color:#ce5c00;font-weight:bold">../</span><span style="color:#000">rknn_model_zoo</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">examples</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">yolov5</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">python</span> <span style="color:#8f5902;font-style:italic"># replace with where you saved the examples</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">python</span> <span style="color:#000">convert</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">py</span> <span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">path</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">to</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">weights</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">onnx</span> <span style="color:#000">rk3588</span> <span style="color:#000">i8</span> <span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">path</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">to</span><span style="color:#ce5c00;font-weight:bold">/</span><span style="color:#000">weights</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">rknn</span>
+</span></span></code></pre></div><p>Note that, for some reason, the training will always try to find better anchors and perform training assuming those
+anchors. You&rsquo;ll need to save the anchors in a txt file to be used with the example script. The steps above will print
+out the anchors used in the model. Save those in <code>anchors.txt</code> in the examples folder (or wherever else that is
+convenient).</p>
+<h3 id="customized-inference">
+  Customized inference
+  <a class="anchor" href="#customized-inference">#</a>
+</h3>
+<p>The example <code>yolov5.py</code> inference script is very basic and unfortunately, not written in a modular way. Hence,
+the script will require customization if you wish to repurpose it for your use case. In most cases, the <code>CLASSES</code> and
+<code>coco_id_list</code> variables will need to be changed to match your data e.g. from:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000">CLASSES</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;person&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;bicycle&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;car&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;motorbike &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;aeroplane &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bus &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;train&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;truck &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;boat&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;traffic light&#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;fire hydrant&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;stop sign &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;parking meter&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bench&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bird&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;cat&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;dog &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;horse &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;sheep&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;cow&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;elephant&#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;bear&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;zebra &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;giraffe&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;backpack&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;umbrella&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;handbag&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;tie&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;suitcase&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;frisbee&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;skis&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;snowboard&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;sports ball&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;kite&#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;baseball bat&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;baseball glove&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;skateboard&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;surfboard&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;tennis racket&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bottle&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;wine glass&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;cup&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;fork&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;knife &#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;spoon&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bowl&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;banana&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;apple&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;sandwich&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;orange&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;broccoli&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;carrot&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;hot dog&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;pizza &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;donut&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;cake&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;chair&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;sofa&#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;pottedplant&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;bed&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;diningtable&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;toilet &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;tvmonitor&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;laptop	&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;mouse	&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;remote &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;keyboard &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;cell phone&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;microwave &#34;</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>           <span style="color:#4e9a06">&#34;oven &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;toaster&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;sink&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;refrigerator &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;book&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;clock&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;vase&#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;scissors &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;teddy bear &#34;</span><span style="color:#000;font-weight:bold">,</span><span style="color:#4e9a06">&#34;hair drier&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;toothbrush &#34;</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">coco_id_list</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">4</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">6</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">7</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">8</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">9</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">11</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">13</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">14</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">15</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">16</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">17</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">18</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">19</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">21</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">22</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">23</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">24</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">25</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">27</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">28</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">31</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">32</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">33</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">34</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#0000cf;font-weight:bold">35</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">36</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">37</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">38</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">39</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">40</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">41</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">42</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">43</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">44</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">46</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">47</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">48</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">49</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">50</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">51</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">52</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">53</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">54</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">55</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">56</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">57</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">58</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">59</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">60</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">61</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">62</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">63</span><span style="color:#000;font-weight:bold">,</span>
+</span></span><span style="display:flex;"><span>         <span style="color:#0000cf;font-weight:bold">64</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">65</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">67</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">70</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">72</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">73</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">74</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">75</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">76</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">77</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">78</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">79</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">80</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">81</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">82</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">84</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">85</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">86</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">87</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">88</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">89</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">90</span><span style="color:#000;font-weight:bold">]</span>
+</span></span></code></pre></div><p>To:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000">CLASSES</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;dog&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;cat&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;mouse&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># replace this with your dataset&#39;s classes</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#000">coco_id_list</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span>
+</span></span></code></pre></div><p>Note that the ID list starts from 1. It&rsquo;s not a big deal if you get the names wrong, it will just result in incorrect labels being
+written on your detected images. The script is setup to use images only, so if you want to use it on another media format e.g.
+video, you will have to customize the logic yourself.</p>
+<h2 id="other-notes">
+  Other notes
+  <a class="anchor" href="#other-notes">#</a>
+</h2>
+<h3 id="model-choice">
+  Model choice
+  <a class="anchor" href="#model-choice">#</a>
+</h3>
+<p>You might be looking at the 
+  <a href="https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-support">model support table</a>
+and the 
+  <a href="https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-performance-benchmarkfps">model performance benchmark table</a>,
+which show that all the newer YOLO models have usable performance (e.g., they say that yolo11m has 12.7 FPS). But, this only
+accounts for the time spent on the NPU, but doesn&rsquo;t include pre- and post-processing which is done on the CPU. Besides some image
+processing, post-processing also includes steps that couldn&rsquo;t run on the NPU, such as using the softmax function. <strong>The softmax
+function is used by YOLOv6 and above and is the bottleneck for using these models on the RK3588.</strong> So while the
+performance table says that <code>yolo11s</code> has 33 FPS, including the pre- and post-processing, I was getting around 10FPS.
+And note that the PyTorch softmax function already uses multiple threads, so it is challenging to accelerate.</p>
+<h3 id="other-improvements-to-performance">
+  Other improvements to performance
+  <a class="anchor" href="#other-improvements-to-performance">#</a>
+</h3>
+<p>There are two performance improvements that aren&rsquo;t well documented, that may be good for your use case: batch inference, and
+multi-core inference.</p>
+<h4 id="batch-inference">
+  Batch inference
+  <a class="anchor" href="#batch-inference">#</a>
+</h4>
+<p>When using the <code>convert.py</code> script in the example, the model only accepts singular inputs (i.e., batch size of 1). You can enable
+batches by updating the 
+  <a href="https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/convert.py#L60"><code>convert.py</code> script</a>.
+For example:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># old</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">ret</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">do_quantization</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">do_quant</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">dataset</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">DATASET_PATH</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># new</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">ret</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">build</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">do_quantization</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">do_quant</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">dataset</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">DATASET_PATH</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">rknn_batch_size</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#0000cf;font-weight:bold">16</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>This will require updating the <code>yolov5.py</code> example script too, if you wish for that to work. The 
+  <a href="https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/yolov5.py#L236">main loop</a>
+needs to be changed so that batches are passed to the pre-processing step, the model, and the post-processing step.</p>
+<p><strong>I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by roughly 2.5x.</strong>
+While this was significant, I didn&rsquo;t find it necessary, as I found that <code>yolov5m</code> with <code>imgsz=704</code> was sufficient was
+achieving a performance that was satisfactory for my use case.</p>
+<h4 id="multi-core-inference">
+  Multi-core inference
+  <a class="anchor" href="#multi-core-inference">#</a>
+</h4>
+<p>As alluded to in the <code>rknn_model_zoo</code> performance table, the RK3588 has multiple cores. By default, inference uses only
+one of thoses cores, but you can use all the cores if necessary. This requires changing the 
+  <a href="https://github.com/airockchip/rknn_model_zoo/blob/main/py_utils/rknn_executor.py#L12">utility code in the model zoo that initializes the model</a>.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># from</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">ret</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">init_runtime</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">target</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">target</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">device_id</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">device_id</span><span style="color:#000;font-weight:bold">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># to</span>
+</span></span><span style="display:flex;"><span><span style="color:#000">ret</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">init_runtime</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">target</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">target</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">device_id</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">device_id</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">NPU_CORE_0_1_2</span><span style="color:#000;font-weight:bold">)</span>
+</span></span></code></pre></div><p>I haven&rsquo;t tested this as I am performing inference on two video feeds at the same time, but there seems to be people out there using
+it  (
+  <a href="https://github.com/leafqycc/rknn-multi-threaded/blob/nosigmoid/rknnpool.py">example</a>).</p>
+<h3 id="docker">
+  Docker
+  <a class="anchor" href="#docker">#</a>
+</h3>
+<p>To build a container that can use the NPU, the only thing that must be done is installing the driver (
+  <a href="https://github.com/edoyango/birds/blob/main/Dockerfile">example</a>).
+If hardware accelerated FFMPEG is needed, that needs to be built inside the container too.</p>
+<p>To use the container, the container needs to be run with <code>--privileged</code> (or if using Docker Compose, <code>priveleged: true</code>).</p>
+<h3 id="npu-monitoring">
+  NPU monitoring
+  <a class="anchor" href="#npu-monitoring">#</a>
+</h3>
+<p>The load on the NPU can be viewed through</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo cat /sys/kernel/debug/rknpu/load
+</span></span></code></pre></div><pre tabindex="0"><code>NPU load:  Core0: 53%, Core1: 40%, Core2:  0%,
+</code></pre><p>which could be combined with <code>watch</code> for a dynamic feed.</p>
+<h2 id="future-work">
+  Future work
+  <a class="anchor" href="#future-work">#</a>
+</h2>
+<ul>
+<li>I could potentially run larger models (or use higher resolution input) by leveraging the acceleration notes above.
+<ul>
+<li>batch processing would require that I change the main loop. It could also limit my applications e.g. in case I
+want to stream my feed(s), how frames are read/processed/written need to be thought about to ensure a smooth feed.</li>
+<li>multi-core inference may handicap my ability to perform inference on two feeds at once</li>
+</ul>
+</li>
+<li>Use an NVME drive instead of an external HDD. This would be more for form factor than performance, as IO isn&rsquo;t a
+bottleneck.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/17bcd4e0e43d2695e2558fafd6efd5639fded0f7" title='Last modified by Edward Yang | December 19, 2024' target="_blank" rel="noopener">
+      <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
+      <span>December 19, 2024</span>
+    </a>
+  </div>
+
+
+
+  <div>
+    <a class="flex align-center" href="https://github.com/edoyango/personal-webpage/edit/main/worknotes/content/docs/pi/yolov5-orangepi.md" target="_blank" rel="noopener">
+      <img src="/worknotes/svg/edit.svg" class="book-icon" alt="Edit" />
+      <span>Edit this page</span>
+    </a>
+  </div>
+
+
+</div>
+
+
+
+  <script>(function(){function e(e){const t=window.getSelection(),n=document.createRange();n.selectNodeContents(e),t.removeAllRanges(),t.addRange(n)}document.querySelectorAll("pre code").forEach(t=>{t.addEventListener("click",function(){if(window.getSelection().toString())return;e(t.parentElement),navigator.clipboard&&navigator.clipboard.writeText(t.parentElement.textContent)})})})()</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#combining-the-orange-pi-5-pro-and-yolov5-for-bird-detection">Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</a>
+      <ul>
+        <li><a href="#requirements">Requirements</a></li>
+        <li><a href="#hardware">Hardware</a>
+          <ul>
+            <li><a href="#webcams">webcams</a></li>
+            <li><a href="#orange-pi-5-pro">Orange Pi 5 Pro</a></li>
+            <li><a href="#storage">Storage</a></li>
+            <li><a href="#a-note-about-training">A note about training</a></li>
+          </ul>
+        </li>
+        <li><a href="#software-setup">Software Setup</a>
+          <ul>
+            <li><a href="#setup">Setup</a></li>
+            <li><a href="#update-drivers">Update drivers</a></li>
+            <li><a href="#optional-install-ffmpeg">Optional: Install FFMPEG</a></li>
+            <li><a href="#test-examples">Test examples</a></li>
+            <li><a href="#training-a-new-model">Training a new model</a></li>
+            <li><a href="#customized-inference">Customized inference</a></li>
+          </ul>
+        </li>
+        <li><a href="#other-notes">Other notes</a>
+          <ul>
+            <li><a href="#model-choice">Model choice</a></li>
+            <li><a href="#other-improvements-to-performance">Other improvements to performance</a></li>
+            <li><a href="#docker">Docker</a></li>
+            <li><a href="#npu-monitoring">NPU monitoring</a></li>
+          </ul>
+        </li>
+        <li><a href="#future-work">Future work</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

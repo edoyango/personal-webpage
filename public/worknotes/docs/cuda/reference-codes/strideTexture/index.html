@@ -8,24 +8,28 @@ I find that using textured memory pointers didn&rsquo;t improve anything reliabl
 The deprecation is also why a C&#43;&#43; version is not provided here.
 Code (Fortran) # module kernels_m real, texture, pointer:: aTex (:) contains attributes(global) subroutine stride(b, a, s) real:: b(*), a(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = a(is)&#43;1 end subroutine stride attributes(global) subroutine strideTex(b, s) real:: b(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = aTex(is)&#43;1 end subroutine strideTex end module kernels_m program strideTexture use cudafor use kernels_m implicit none integer, parameter:: nMB = 4 !">
 <meta name="theme-color" content="#FFFFFF">
-<meta name="color-scheme" content="light dark"><meta property="og:title" content="strideTexture" />
-<meta property="og:description" content="strideTexture # Description # A demonstration showing how the use of textured memory pointers can improve strided global memory access.
-I find that using textured memory pointers didn&rsquo;t improve anything reliably on my NVIDIA 1650.
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/cuda/reference-codes/strideTexture/">
+  <meta property="og:site_name" content="Ed&#39;s Space - Notes">
+  <meta property="og:title" content="strideTexture">
+  <meta property="og:description" content="strideTexture # Description # A demonstration showing how the use of textured memory pointers can improve strided global memory access.
+I find that using textured memory pointers didn’t improve anything reliably on my NVIDIA 1650.
 The deprecation is also why a C&#43;&#43; version is not provided here.
-Code (Fortran) # module kernels_m real, texture, pointer:: aTex (:) contains attributes(global) subroutine stride(b, a, s) real:: b(*), a(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = a(is)&#43;1 end subroutine stride attributes(global) subroutine strideTex(b, s) real:: b(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = aTex(is)&#43;1 end subroutine strideTex end module kernels_m program strideTexture use cudafor use kernels_m implicit none integer, parameter:: nMB = 4 !" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/worknotes/docs/cuda/reference-codes/strideTexture/" /><meta property="article:section" content="docs" />
-
-<meta property="article:modified_time" content="2023-03-18T01:36:43+11:00" />
-
+Code (Fortran) # module kernels_m real, texture, pointer:: aTex (:) contains attributes(global) subroutine stride(b, a, s) real:: b(*), a(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = a(is)&#43;1 end subroutine stride attributes(global) subroutine strideTex(b, s) real:: b(*) integer, value:: s integer:: i, is i = blockDim%x*( blockIdx%x-1)&#43; threadIdx%x is = (blockDim%x*( blockIdx%x-1)&#43; threadIdx%x) * s b(i) = aTex(is)&#43;1 end subroutine strideTex end module kernels_m program strideTexture use cudafor use kernels_m implicit none integer, parameter:: nMB = 4 !">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2023-03-18T01:36:43+11:00">
 <title>strideTexture | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.5720fcdb3b8c15d19099a7ac209d3373550a1b04bbf08696f3860b86d969eb9a.js" ></script>
+  <script defer src="/worknotes/en.search.min.4be85fa9aa8a1b7cf53de2b60ff21bd6db1a7527a180fa81c7e490f8ecc22dc8.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+
+  
+
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -655,6 +659,19 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/yolov5-orangepi/" class="">Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</a>
+  
+
+        </li>
+      
     
       
         <li>

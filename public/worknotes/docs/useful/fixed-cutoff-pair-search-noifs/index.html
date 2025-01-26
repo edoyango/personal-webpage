@@ -5,21 +5,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if&rsquo;s are undesirable because they introduce branching and harms performance. I&rsquo;ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed.">
 <meta name="theme-color" content="#FFFFFF">
-<meta name="color-scheme" content="light dark"><meta property="og:title" content="Cell lists pair search without &#34;if&#34;" />
-<meta property="og:description" content="Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if&rsquo;s are undesirable because they introduce branching and harms performance. I&rsquo;ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/" /><meta property="article:section" content="docs" />
-
-<meta property="article:modified_time" content="2023-09-10T17:24:41+10:00" />
-
+<meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/useful/fixed-cutoff-pair-search-noifs/">
+  <meta property="og:site_name" content="Ed&#39;s Space - Notes">
+  <meta property="og:title" content="Cell lists pair search without &#34;if&#34;">
+  <meta property="og:description" content="Cell lists pair search without if # Description # So far, the speedup demonstrated from the fixed-cutoff cell-lists pair search algorithm is pretty great. One last change we can make to improve things, is to remove any if statements when searching adjacent cells. if’s are undesirable because they introduce branching and harms performance. I’ve found that it can be beneficial to remove if statements, even if it means a bit more computation/assignments are performed.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="docs">
+    <meta property="article:modified_time" content="2023-09-10T17:24:41+10:00">
 <title>Cell lists pair search without &#34;if&#34; | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.5720fcdb3b8c15d19099a7ac209d3373550a1b04bbf08696f3860b86d969eb9a.js" ></script>
+  <script defer src="/worknotes/en.search.min.4be85fa9aa8a1b7cf53de2b60ff21bd6db1a7527a180fa81c7e490f8ecc22dc8.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
+
+  
+
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -649,6 +653,19 @@ https://github.com/alex-shpak/hugo-book
 
           
   <ul>
+    
+      
+        <li>
+          
+  
+  
+
+  
+    <a href="/worknotes/docs/pi/yolov5-orangepi/" class="">Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</a>
+  
+
+        </li>
+      
     
       
         <li>
