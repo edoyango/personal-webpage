@@ -27,30 +27,35 @@ file upload/download etc. So, **The Orange pi 5 Pro was originally intended for 
 modules, but turns out the lone SBC was enough!** This turned out to be because the NPU has 3 cores, so I can
 perform inference on multiple video feeds, and the hardware accelerated FFMPEG encoding is very fast!
 
+Here's an example GIF of the output (compressed in a few ways):
+
+![Example output of inference output](/worknotes/imgs/sample.gif)
+
 Here I've documented the setup steps for future reference.
 
 ## Requirements
 
-The core objective was to **perform real-time object detection on two webcam video feeds**. In a little more detail, this meant I 
-needed the setup to be able to:
+The core objective was to **perform real-time object detection on two webcam video feeds**. In a little more detail, 
+this meant I needed the setup to be able to:
 
 1. Perform inference on the video feeds at a resolution of 704x396 @ 10fps using a medium sized YOLO model
 2. save and encode/compress bird-containing segments of the video feed
 
-704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The cameras
-could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being kept for future
-model training).
+704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The 
+cameras could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being 
+kept for future model training).
 
-On an NVIDIA A30 GPU, the object-detection alone usually took roughly 2h process 20h of video feed (2 webcams recording for 10h).
+On an NVIDIA A30 GPU, the object-detection alone usually took roughly 2h to process 20h of video feed (2 webcams 
+recording for 10h).
 
 ## Hardware
 
 ### webcams
 
-I used two of the same [2MP webcam with zoom](https://www.amazon.com.au/dp/B0B6QV5SVW) so I could get a good view of the platforms 
-we had setup on the verandah for the birds. Using regular non-zoom webcams (e.g. what you would use for meetings), meant the birds
-were way too small on the feed and it was challenging for the model, as well as to label images. Sometimes the birds were only a
-handful of pixels!
+I used two of the same [2MP webcam with zoom](https://www.amazon.com.au/dp/B0B6QV5SVW) so I could get a good view of the 
+platforms we had setup on the verandah for the birds. Using regular non-zoom webcams (e.g. what you would use for 
+meetings), meant the birds were way too small on the feed and it was challenging for the model, as well as to label 
+images. Sometimes the birds were only a handful of pixels!
 
 ### Orange Pi 5 Pro
 
@@ -60,22 +65,23 @@ I chose the Orange Pi 5 Pro mainly because:
 * Was cheaper than the Ultra/Max
 * Had faster memory than the normal Orange Pi 5
 
-I got the 8GB model as I guesstimated I needed roughly 4.5GB for inference. I arrived at this number by adding together the CPU RAM
-and GPU RAM usage while doing inference with the ultralytics package.
+I got the 8GB model as I guesstimated I needed roughly 4.5GB for inference. I arrived at this number by adding together 
+the CPU RAM and GPU RAM usage while doing inference with the ultralytics package.
 
-I bought the Orange Pi 5 Pro itself on Taobao while I was in China, which had roughly the same sticker price as if I had bought it
-off Aliexpress from Australia, but I wouldn't have to pay shipping fees or import taxes. If you're buying it outside of China,
-Aliexpress prices seemed to be much better than Amazon.
+I bought the Orange Pi 5 Pro itself on Taobao while I was in China, which had roughly the same sticker price as if I had 
+bought it off Aliexpress from Australia, but I wouldn't have to pay shipping fees or import taxes. If you're buying it 
+outside of China, Aliexpress prices seemed to be much better than Amazon.
 
-I bought the Orange Pi 5 Pro with the charger as it required a minimum of 5A and 5V which wasn't that easy to find cheaply.
+I bought the Orange Pi 5 Pro with the charger as it required a minimum of 5A and 5V which wasn't that easy to find 
+cheaply.
 
 To keep the Orange Pi cool, I bought a [copper plate cooler with fan (4-fans)](https://www.aliexpress.com/item/1005001866650684.html) 
 as it didn't take much for the Pi to overheat and throttle itself.
 
 ### Storage
 
-I'm using a 32GB SD Card that I had from previous Raspberry Pi projects and the SD card stores most of the root partition. I also
-repurposed an old external hard drive to store the recorded video data.
+I'm using a 32GB SD Card that I had from previous Raspberry Pi projects and the SD card stores most of the root 
+partition. I also repurposed an old external hard drive to store the recorded video data.
 
 ### A note about training
 
@@ -86,16 +92,16 @@ Training cannot be done on the NPU, so you'll need to have seperate hardware to 
 ### Setup
 
 To start off, I used [Balena Etcher](https://etcher.balena.io/) to flash the SD card with the [official server image](https://drive.google.com/drive/folders/1KnmBQ3Z0M_5snRC24LjhKb8_tKbcfOkw).
-Unfortunately, unlike the Raspberry Pi, I couldn't find a way to pre-configure the WiFi headless, so I had to do it with the screen
-and keyboard plugged in. Note that the default user and password is `orangepi`. The image does come with the `orangepi-config` 
-utility which makes connecting to the WiFi *a little* easier.
+Unfortunately, unlike the Raspberry Pi, I couldn't find a way to pre-configure the WiFi headless, so I had to do it with 
+the screen and keyboard plugged in. Note that the default user and password is `orangepi`. The image does come with the 
+`orangepi-config` utility which makes connecting to the WiFi *a little* easier.
 
 Once your internet is setup and you've confirmed you can 
 
 ### Update drivers
 
-Once the Pi was setup and running, I needed to update the RKNN library by downloading the latest binary (which for some reason, is
-stored on [their GitHub](https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/)).
+Once the Pi was setup and running, I needed to update the RKNN library by downloading the latest binary (which for some 
+reason, is stored on [their GitHub](https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/)).
 
 ```bash {style=tango,linenos=false}
 # clear out old drivers
@@ -144,15 +150,15 @@ python convert.py ../model/yolov5s_relu.onnx rk3588 i8 yolov5s_relu.rknn
 python yolov5.py --model_path yolov5s_relu.rknn --img_save
 ```
 
-If the above doesn't work, it could be that you didn't update the drivers properly, or you didn't install the RKNN-toolkit into your
-environment.
+If the above doesn't work, it could be that you didn't update the drivers properly, or you didn't install the 
+RKNN-toolkit into your environment.
 
 ### Training a new model
 
-Training a new model can be done by using [RKNN's customized fork of YOLOv5](https://github.com/airockchip/yolov5). I personally use
-Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations are compatible with the
-YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset. Note you cannot practically do
-training on the NPU, so as mentioned, you'll need seperate hardware to perform training.
+Training a new model can be done by using [RKNN's customized fork of YOLOv5](https://github.com/airockchip/yolov5). I 
+personally use Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations 
+are compatible with the YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset. 
+Note you cannot practically do training on the NPU, so as mentioned, you'll need seperate hardware to perform training.
 
 The instructions below you have an NVIDIA or AMD GPU installed in the appropriate manner for your hardware.
 
@@ -215,9 +221,9 @@ CLASSES = ("dog", "cat", "mouse") # replace this with your dataset's classes
 coco_id_list = [1, 2, 3]
 ```
 
-Note that the ID list starts from 1. It's not a big deal if you get the names wrong, it will just result in incorrect labels being
-written on your detected images. The script is setup to use images only, so if you want to use it on another media format e.g.
-video, you will have to customize the logic yourself.
+Note that the ID list starts from 1. It's not a big deal if you get the names wrong, it will just result in incorrect 
+labels being written on your detected images. The script is setup to use images only, so if you want to use it on 
+another media format e.g. video, you will have to customize the logic yourself.
 
 ## Other notes
 
@@ -225,22 +231,23 @@ video, you will have to customize the logic yourself.
 
 You might be looking at the [model support table](https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-support)
 and the [model performance benchmark table](https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-performance-benchmarkfps),
-which show that all the newer YOLO models have usable performance (e.g., they say that yolo11m has 12.7 FPS). But, this only
-accounts for the time spent on the NPU, but doesn't include pre- and post-processing which is done on the CPU. Besides some image
-processing, post-processing also includes steps that couldn't run on the NPU, such as using the softmax function. **The softmax
-function is used by YOLOv6 and above and is the bottleneck for using these models on the RK3588.** So while the
-performance table says that `yolo11s` has 33 FPS, including the pre- and post-processing, I was getting around 10FPS.
-And note that the PyTorch softmax function already uses multiple threads, so it is challenging to accelerate.
+which show that all the newer YOLO models have usable performance (e.g., they say that yolo11m has 12.7 FPS). But, this 
+only accounts for the time spent on the NPU, but doesn't include pre- and post-processing which is done on the CPU. 
+Besides some image processing, post-processing also includes steps that couldn't run on the NPU, such as using the 
+softmax function. **The softmax function is used by YOLOv6 and above and is the bottleneck for using these models on the 
+RK3588.** So while the performance table says that `yolo11s` has 33 FPS, including the pre- and post-processing, I was 
+getting around 10FPS. And note that the PyTorch softmax function already uses multiple threads, so it is challenging to 
+accelerate.
 
 ### Other improvements to performance
 
-There are two performance improvements that aren't well documented, that may be good for your use case: batch inference, and 
-multi-core inference.
+There are two performance improvements that aren't well documented, that may be good for your use case: batch inference, 
+and  multi-core inference.
 
 #### Batch inference
 
-When using the `convert.py` script in the example, the model only accepts singular inputs (i.e., batch size of 1). You can enable
-batches by updating the [`convert.py` script](https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/convert.py#L60).
+When using the `convert.py` script in the example, the model only accepts singular inputs (i.e., batch size of 1). You 
+can enable batches by updating the [`convert.py` script](https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/convert.py#L60).
 For example:
 
 ```python {style=tango,linenos=false}
@@ -254,9 +261,9 @@ ret = rknn.build(do_quantization=do_quant, dataset=DATASET_PATH, rknn_batch_size
 This will require updating the `yolov5.py` example script too, if you wish for that to work. The [main loop](https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/yolov5.py#L236)
 needs to be changed so that batches are passed to the pre-processing step, the model, and the post-processing step.
 
-**I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by roughly 2.5x.**
-While this was significant, I didn't find it necessary, as I found that `yolov5m` with `imgsz=704` was sufficient was
-achieving a performance that was satisfactory for my use case.
+**I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by 
+roughly 2.5x.** While this was significant, I didn't find it necessary, as I found that `yolov5m` with `imgsz=704` was 
+sufficient was achieving a performance that was satisfactory for my use case.
 
 #### Multi-core inference
 
@@ -271,15 +278,16 @@ ret = rknn.init_runtime(target=target, device_id=device_id)
 ret = rknn.init_runtime(target=target, device_id=device_id, rknn.NPU_CORE_0_1_2)
 ```
 
-I haven't tested this as I am performing inference on two video feeds at the same time, but there seems to be people out there using
-it  ([example](https://github.com/leafqycc/rknn-multi-threaded/blob/nosigmoid/rknnpool.py)).
+I haven't tested this as I am performing inference on two video feeds at the same time, but there seems to be people out 
+there using it ([example](https://github.com/leafqycc/rknn-multi-threaded/blob/nosigmoid/rknnpool.py)).
 
 ### Docker
 
 To build a container that can use the NPU, the only thing that must be done is installing the driver ([example](https://github.com/edoyango/birds/blob/main/Dockerfile)). 
 If hardware accelerated FFMPEG is needed, that needs to be built inside the container too.
 
-To use the container, the container needs to be run with `--privileged` (or if using Docker Compose, `priveleged: true`).
+To use the container, the container needs to be run with `--privileged` (or if using Docker Compose, 
+`priveleged: true`).
 
 ### NPU monitoring
 

@@ -14,13 +14,13 @@ When I first got started, it was quite easy to play with ultralytics and its lat
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2024-12-19T17:01:51+11:00">
+    <meta property="article:modified_time" content="2025-01-26T18:41:15+11:00">
 <title>Combining the Orange Pi 5 Pro and YOLOv5 for bird detection | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.4be85fa9aa8a1b7cf53de2b60ff21bd6db1a7527a180fa81c7e490f8ecc22dc8.js" ></script>
+  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 
@@ -845,21 +845,25 @@ modules - two to perform object detection and the third for any peripheral needs
 file upload/download etc. So, <strong>The Orange pi 5 Pro was originally intended for testing before I got multiple RK1
 modules, but turns out the lone SBC was enough!</strong> This turned out to be because the NPU has 3 cores, so I can
 perform inference on multiple video feeds, and the hardware accelerated FFMPEG encoding is very fast!</p>
+<p>Here&rsquo;s an example GIF of the output (compressed in a few ways):</p>
+<p>
+  <img src="/worknotes/imgs/sample.gif" alt="Example output of inference output" /></p>
 <p>Here I&rsquo;ve documented the setup steps for future reference.</p>
 <h2 id="requirements">
   Requirements
   <a class="anchor" href="#requirements">#</a>
 </h2>
-<p>The core objective was to <strong>perform real-time object detection on two webcam video feeds</strong>. In a little more detail, this meant I
-needed the setup to be able to:</p>
+<p>The core objective was to <strong>perform real-time object detection on two webcam video feeds</strong>. In a little more detail,
+this meant I needed the setup to be able to:</p>
 <ol>
 <li>Perform inference on the video feeds at a resolution of 704x396 @ 10fps using a medium sized YOLO model</li>
 <li>save and encode/compress bird-containing segments of the video feed</li>
 </ol>
-<p>704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The cameras
-could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being kept for future
-model training).</p>
-<p>On an NVIDIA A30 GPU, the object-detection alone usually took roughly 2h process 20h of video feed (2 webcams recording for 10h).</p>
+<p>704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The
+cameras could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being
+kept for future model training).</p>
+<p>On an NVIDIA A30 GPU, the object-detection alone usually took roughly 2h to process 20h of video feed (2 webcams
+recording for 10h).</p>
 <h2 id="hardware">
   Hardware
   <a class="anchor" href="#hardware">#</a>
@@ -869,10 +873,10 @@ model training).</p>
   <a class="anchor" href="#webcams">#</a>
 </h3>
 <p>I used two of the same 
-  <a href="https://www.amazon.com.au/dp/B0B6QV5SVW">2MP webcam with zoom</a> so I could get a good view of the platforms
-we had setup on the verandah for the birds. Using regular non-zoom webcams (e.g. what you would use for meetings), meant the birds
-were way too small on the feed and it was challenging for the model, as well as to label images. Sometimes the birds were only a
-handful of pixels!</p>
+  <a href="https://www.amazon.com.au/dp/B0B6QV5SVW">2MP webcam with zoom</a> so I could get a good view of the
+platforms we had setup on the verandah for the birds. Using regular non-zoom webcams (e.g. what you would use for
+meetings), meant the birds were way too small on the feed and it was challenging for the model, as well as to label
+images. Sometimes the birds were only a handful of pixels!</p>
 <h3 id="orange-pi-5-pro">
   Orange Pi 5 Pro
   <a class="anchor" href="#orange-pi-5-pro">#</a>
@@ -883,12 +887,13 @@ handful of pixels!</p>
 <li>Was cheaper than the Ultra/Max</li>
 <li>Had faster memory than the normal Orange Pi 5</li>
 </ul>
-<p>I got the 8GB model as I guesstimated I needed roughly 4.5GB for inference. I arrived at this number by adding together the CPU RAM
-and GPU RAM usage while doing inference with the ultralytics package.</p>
-<p>I bought the Orange Pi 5 Pro itself on Taobao while I was in China, which had roughly the same sticker price as if I had bought it
-off Aliexpress from Australia, but I wouldn&rsquo;t have to pay shipping fees or import taxes. If you&rsquo;re buying it outside of China,
-Aliexpress prices seemed to be much better than Amazon.</p>
-<p>I bought the Orange Pi 5 Pro with the charger as it required a minimum of 5A and 5V which wasn&rsquo;t that easy to find cheaply.</p>
+<p>I got the 8GB model as I guesstimated I needed roughly 4.5GB for inference. I arrived at this number by adding together
+the CPU RAM and GPU RAM usage while doing inference with the ultralytics package.</p>
+<p>I bought the Orange Pi 5 Pro itself on Taobao while I was in China, which had roughly the same sticker price as if I had
+bought it off Aliexpress from Australia, but I wouldn&rsquo;t have to pay shipping fees or import taxes. If you&rsquo;re buying it
+outside of China, Aliexpress prices seemed to be much better than Amazon.</p>
+<p>I bought the Orange Pi 5 Pro with the charger as it required a minimum of 5A and 5V which wasn&rsquo;t that easy to find
+cheaply.</p>
 <p>To keep the Orange Pi cool, I bought a 
   <a href="https://www.aliexpress.com/item/1005001866650684.html">copper plate cooler with fan (4-fans)</a>
 as it didn&rsquo;t take much for the Pi to overheat and throttle itself.</p>
@@ -896,8 +901,8 @@ as it didn&rsquo;t take much for the Pi to overheat and throttle itself.</p>
   Storage
   <a class="anchor" href="#storage">#</a>
 </h3>
-<p>I&rsquo;m using a 32GB SD Card that I had from previous Raspberry Pi projects and the SD card stores most of the root partition. I also
-repurposed an old external hard drive to store the recorded video data.</p>
+<p>I&rsquo;m using a 32GB SD Card that I had from previous Raspberry Pi projects and the SD card stores most of the root
+partition. I also repurposed an old external hard drive to store the recorded video data.</p>
 <h3 id="a-note-about-training">
   A note about training
   <a class="anchor" href="#a-note-about-training">#</a>
@@ -914,16 +919,16 @@ repurposed an old external hard drive to store the recorded video data.</p>
 <p>To start off, I used 
   <a href="https://etcher.balena.io/">Balena Etcher</a> to flash the SD card with the 
   <a href="https://drive.google.com/drive/folders/1KnmBQ3Z0M_5snRC24LjhKb8_tKbcfOkw">official server image</a>.
-Unfortunately, unlike the Raspberry Pi, I couldn&rsquo;t find a way to pre-configure the WiFi headless, so I had to do it with the screen
-and keyboard plugged in. Note that the default user and password is <code>orangepi</code>. The image does come with the <code>orangepi-config</code>
-utility which makes connecting to the WiFi <em>a little</em> easier.</p>
+Unfortunately, unlike the Raspberry Pi, I couldn&rsquo;t find a way to pre-configure the WiFi headless, so I had to do it with
+the screen and keyboard plugged in. Note that the default user and password is <code>orangepi</code>. The image does come with the
+<code>orangepi-config</code> utility which makes connecting to the WiFi <em>a little</em> easier.</p>
 <p>Once your internet is setup and you&rsquo;ve confirmed you can</p>
 <h3 id="update-drivers">
   Update drivers
   <a class="anchor" href="#update-drivers">#</a>
 </h3>
-<p>Once the Pi was setup and running, I needed to update the RKNN library by downloading the latest binary (which for some reason, is
-stored on 
+<p>Once the Pi was setup and running, I needed to update the RKNN library by downloading the latest binary (which for some
+reason, is stored on 
   <a href="https://github.com/airockchip/rknn-toolkit2/blob/master/rknpu2/runtime/Linux/librknn_api/aarch64/">their GitHub</a>).</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># clear out old drivers</span>
 </span></span><span style="display:flex;"><span>sudo find /usr -name librknrrt.so -delete
@@ -961,17 +966,17 @@ should be sufficient to get you going.</p>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># run the example with the converted model - this saves the image into ./result</span>
 </span></span><span style="display:flex;"><span>python yolov5.py --model_path yolov5s_relu.rknn --img_save
-</span></span></code></pre></div><p>If the above doesn&rsquo;t work, it could be that you didn&rsquo;t update the drivers properly, or you didn&rsquo;t install the RKNN-toolkit into your
-environment.</p>
+</span></span></code></pre></div><p>If the above doesn&rsquo;t work, it could be that you didn&rsquo;t update the drivers properly, or you didn&rsquo;t install the
+RKNN-toolkit into your environment.</p>
 <h3 id="training-a-new-model">
   Training a new model
   <a class="anchor" href="#training-a-new-model">#</a>
 </h3>
 <p>Training a new model can be done by using 
-  <a href="https://github.com/airockchip/yolov5">RKNN&rsquo;s customized fork of YOLOv5</a>. I personally use
-Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations are compatible with the
-YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset. Note you cannot practically do
-training on the NPU, so as mentioned, you&rsquo;ll need seperate hardware to perform training.</p>
+  <a href="https://github.com/airockchip/yolov5">RKNN&rsquo;s customized fork of YOLOv5</a>. I
+personally use Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations
+are compatible with the YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset.
+Note you cannot practically do training on the NPU, so as mentioned, you&rsquo;ll need seperate hardware to perform training.</p>
 <p>The instructions below you have an NVIDIA or AMD GPU installed in the appropriate manner for your hardware.</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># Get the customized YOLOv5 repository</span>
 </span></span><span style="display:flex;"><span>git clone https://github.com/airockchip/yolov5.git
@@ -1018,9 +1023,9 @@ the script will require customization if you wish to repurpose it for your use c
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#000">CLASSES</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;dog&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;cat&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;mouse&#34;</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#8f5902;font-style:italic"># replace this with your dataset&#39;s classes</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#000">coco_id_list</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000;font-weight:bold">[</span><span style="color:#0000cf;font-weight:bold">1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">3</span><span style="color:#000;font-weight:bold">]</span>
-</span></span></code></pre></div><p>Note that the ID list starts from 1. It&rsquo;s not a big deal if you get the names wrong, it will just result in incorrect labels being
-written on your detected images. The script is setup to use images only, so if you want to use it on another media format e.g.
-video, you will have to customize the logic yourself.</p>
+</span></span></code></pre></div><p>Note that the ID list starts from 1. It&rsquo;s not a big deal if you get the names wrong, it will just result in incorrect
+labels being written on your detected images. The script is setup to use images only, so if you want to use it on
+another media format e.g. video, you will have to customize the logic yourself.</p>
 <h2 id="other-notes">
   Other notes
   <a class="anchor" href="#other-notes">#</a>
@@ -1033,24 +1038,25 @@ video, you will have to customize the logic yourself.</p>
   <a href="https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-support">model support table</a>
 and the 
   <a href="https://github.com/airockchip/rknn_model_zoo/tree/main?tab=readme-ov-file#model-performance-benchmarkfps">model performance benchmark table</a>,
-which show that all the newer YOLO models have usable performance (e.g., they say that yolo11m has 12.7 FPS). But, this only
-accounts for the time spent on the NPU, but doesn&rsquo;t include pre- and post-processing which is done on the CPU. Besides some image
-processing, post-processing also includes steps that couldn&rsquo;t run on the NPU, such as using the softmax function. <strong>The softmax
-function is used by YOLOv6 and above and is the bottleneck for using these models on the RK3588.</strong> So while the
-performance table says that <code>yolo11s</code> has 33 FPS, including the pre- and post-processing, I was getting around 10FPS.
-And note that the PyTorch softmax function already uses multiple threads, so it is challenging to accelerate.</p>
+which show that all the newer YOLO models have usable performance (e.g., they say that yolo11m has 12.7 FPS). But, this
+only accounts for the time spent on the NPU, but doesn&rsquo;t include pre- and post-processing which is done on the CPU.
+Besides some image processing, post-processing also includes steps that couldn&rsquo;t run on the NPU, such as using the
+softmax function. <strong>The softmax function is used by YOLOv6 and above and is the bottleneck for using these models on the
+RK3588.</strong> So while the performance table says that <code>yolo11s</code> has 33 FPS, including the pre- and post-processing, I was
+getting around 10FPS. And note that the PyTorch softmax function already uses multiple threads, so it is challenging to
+accelerate.</p>
 <h3 id="other-improvements-to-performance">
   Other improvements to performance
   <a class="anchor" href="#other-improvements-to-performance">#</a>
 </h3>
-<p>There are two performance improvements that aren&rsquo;t well documented, that may be good for your use case: batch inference, and
-multi-core inference.</p>
+<p>There are two performance improvements that aren&rsquo;t well documented, that may be good for your use case: batch inference,
+and  multi-core inference.</p>
 <h4 id="batch-inference">
   Batch inference
   <a class="anchor" href="#batch-inference">#</a>
 </h4>
-<p>When using the <code>convert.py</code> script in the example, the model only accepts singular inputs (i.e., batch size of 1). You can enable
-batches by updating the 
+<p>When using the <code>convert.py</code> script in the example, the model only accepts singular inputs (i.e., batch size of 1). You
+can enable batches by updating the 
   <a href="https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/convert.py#L60"><code>convert.py</code> script</a>.
 For example:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># old</span>
@@ -1061,9 +1067,9 @@ For example:</p>
 </span></span></code></pre></div><p>This will require updating the <code>yolov5.py</code> example script too, if you wish for that to work. The 
   <a href="https://github.com/airockchip/rknn_model_zoo/blob/main/examples/yolov5/python/yolov5.py#L236">main loop</a>
 needs to be changed so that batches are passed to the pre-processing step, the model, and the post-processing step.</p>
-<p><strong>I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by roughly 2.5x.</strong>
-While this was significant, I didn&rsquo;t find it necessary, as I found that <code>yolov5m</code> with <code>imgsz=704</code> was sufficient was
-achieving a performance that was satisfactory for my use case.</p>
+<p><strong>I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by
+roughly 2.5x.</strong> While this was significant, I didn&rsquo;t find it necessary, as I found that <code>yolov5m</code> with <code>imgsz=704</code> was
+sufficient was achieving a performance that was satisfactory for my use case.</p>
 <h4 id="multi-core-inference">
   Multi-core inference
   <a class="anchor" href="#multi-core-inference">#</a>
@@ -1076,8 +1082,8 @@ one of thoses cores, but you can use all the cores if necessary. This requires c
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#8f5902;font-style:italic"># to</span>
 </span></span><span style="display:flex;"><span><span style="color:#000">ret</span> <span style="color:#ce5c00;font-weight:bold">=</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">init_runtime</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">target</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">target</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">device_id</span><span style="color:#ce5c00;font-weight:bold">=</span><span style="color:#000">device_id</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">rknn</span><span style="color:#ce5c00;font-weight:bold">.</span><span style="color:#000">NPU_CORE_0_1_2</span><span style="color:#000;font-weight:bold">)</span>
-</span></span></code></pre></div><p>I haven&rsquo;t tested this as I am performing inference on two video feeds at the same time, but there seems to be people out there using
-it  (
+</span></span></code></pre></div><p>I haven&rsquo;t tested this as I am performing inference on two video feeds at the same time, but there seems to be people out
+there using it (
   <a href="https://github.com/leafqycc/rknn-multi-threaded/blob/nosigmoid/rknnpool.py">example</a>).</p>
 <h3 id="docker">
   Docker
@@ -1086,7 +1092,8 @@ it  (
 <p>To build a container that can use the NPU, the only thing that must be done is installing the driver (
   <a href="https://github.com/edoyango/birds/blob/main/Dockerfile">example</a>).
 If hardware accelerated FFMPEG is needed, that needs to be built inside the container too.</p>
-<p>To use the container, the container needs to be run with <code>--privileged</code> (or if using Docker Compose, <code>priveleged: true</code>).</p>
+<p>To use the container, the container needs to be run with <code>--privileged</code> (or if using Docker Compose,
+<code>priveleged: true</code>).</p>
 <h3 id="npu-monitoring">
   NPU monitoring
   <a class="anchor" href="#npu-monitoring">#</a>
@@ -1119,9 +1126,9 @@ bottleneck.</li>
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/17bcd4e0e43d2695e2558fafd6efd5639fded0f7" title='Last modified by Edward Yang | December 19, 2024' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/99c261b811572a1a0c95a783c0537cae6aa6bfd6" title='Last modified by Edward Yang | January 26, 2025' target="_blank" rel="noopener">
       <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>December 19, 2024</span>
+      <span>January 26, 2025</span>
     </a>
   </div>
 
