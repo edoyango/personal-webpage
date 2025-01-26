@@ -5,6 +5,9 @@
     <loc>/worknotes/docs/f-cpp/</loc>
     <lastmod>2023-05-15T00:49:16+10:00</lastmod>
   </url><url>
+    <loc>/worknotes/docs/pi/yolov5-orangepi/</loc>
+    <lastmod>2024-12-19T17:01:51+11:00</lastmod>
+  </url><url>
     <loc>/worknotes/docs/cuda/cuda-wsl/</loc>
     <lastmod>2023-03-18T01:36:43+11:00</lastmod>
   </url><url>
@@ -15,6 +18,7 @@
     <lastmod>2023-09-10T15:26:00+10:00</lastmod>
   </url><url>
     <loc>/worknotes/docs/cuda/frn-thrust/</loc>
+    <lastmod>2024-02-25T21:53:33+11:00</lastmod>
   </url><url>
     <loc>/worknotes/docs/manual-vectorization/</loc>
     <lastmod>2023-08-04T16:11:26+10:00</lastmod>
@@ -142,7 +146,7 @@
     <loc>/worknotes/categories/</loc>
   </url><url>
     <loc>/worknotes/docs/</loc>
-    <lastmod>2023-10-09T22:22:37+11:00</lastmod>
+    <lastmod>2024-12-19T17:01:51+11:00</lastmod>
   </url><url>
     <loc>/worknotes/</loc>
     <lastmod>2023-03-18T01:43:41+11:00</lastmod>

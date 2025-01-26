@@ -4,9 +4,16 @@
     <title>Raspberry Pis on Ed&#39;s Space - Notes</title>
     <link>/worknotes/docs/pi/</link>
     <description>Recent content in Raspberry Pis on Ed&#39;s Space - Notes</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en</language>
     <atom:link href="/worknotes/docs/pi/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Combining the Orange Pi 5 Pro and YOLOv5 for bird detection</title>
+      <link>/worknotes/docs/pi/yolov5-orangepi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/worknotes/docs/pi/yolov5-orangepi/</guid>
+      <description>Combining the Orange Pi 5 Pro and YOLOv5 for bird detection # I started this project to record and identify the birds that we saw on our verandah throughout the day, as well as an excuse to learn about object detection. I aimed at using YOLO mainly because the ultralytics package is very easy to use and the performance-accuracy tradeoff was good.&#xA;When I first got started, it was quite easy to play with ultralytics and its latest iterations of YOLO on my laptop, but my main constraint was that I didn&amp;rsquo;t have any machines that were a good (and affordable) candidate to process the videos.</description>
+    </item>
     <item>
       <title>Reducing Jetson Nano OS for Server</title>
       <link>/worknotes/docs/pi/trim-jetsonnano/</link>
