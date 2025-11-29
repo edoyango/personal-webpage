@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Vector Sum Reduction # We now we can add two SIMD vectors together element-by-element. However, I&rsquo;m sure you can imagine scenarios where you might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with 512-bit vectors, but I don&rsquo;t have a CPU with AVX512 instructions handy.">
+<meta name="description" content="
+  Vector Sum Reduction
+  #
+
+We now we can add two SIMD vectors together element-by-element. However, I&rsquo;m sure you can imagine scenarios where you
+might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this
+with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with
+512-bit vectors, but I don&rsquo;t have a CPU with AVX512 instructions handy.">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/manual-vectorization/sumreduce/">
   <meta property="og:site_name" content="Ed&#39;s Space - Notes">
@@ -16,14 +23,11 @@
 <title>Vector Sum Reduction | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+<link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
+  <script defer src="/worknotes/en.search.min.252e38082ab7cca3db437fb29a1b8a3534e775402223dd91ff513aa1ee15afb0.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
-
-  
-
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -88,8 +92,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle" checked />
-    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+    <input type="checkbox" id="section-d75bf0277a78395058ee4f19eb9d8b34" class="toggle" checked />
+    <label for="section-d75bf0277a78395058ee4f19eb9d8b34" class="flex justify-between">
       <a role="button" class="">Investigating Manual Vectorization for SPH</a>
     </label>
   
@@ -187,8 +191,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
-    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+    <input type="checkbox" id="section-82c659c7714fca9486231756ebb8db74" class="toggle"  />
+    <label for="section-82c659c7714fca9486231756ebb8db74" class="flex justify-between">
       <a role="button" class="">Useful code snippets</a>
     </label>
   
@@ -299,8 +303,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle"  />
-    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+    <input type="checkbox" id="section-70035f3795255ae1e304b2577ac7a328" class="toggle"  />
+    <label for="section-70035f3795255ae1e304b2577ac7a328" class="flex justify-between">
       <a role="button" class="">CUDA Programming</a>
     </label>
   
@@ -585,8 +589,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
-    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+    <input type="checkbox" id="section-87ae867329107c34e1f6caa377fccc2a" class="toggle"  />
+    <label for="section-87ae867329107c34e1f6caa377fccc2a" class="flex justify-between">
       <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
     </label>
   
@@ -645,8 +649,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle"  />
-    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+    <input type="checkbox" id="section-89270b1739b00fc57bd375e4e320a20e" class="toggle"  />
+    <label for="section-89270b1739b00fc57bd375e4e320a20e" class="flex justify-between">
       <a role="button" class="">Raspberry Pis</a>
     </label>
   
@@ -1067,25 +1071,25 @@ of data in an array. With single precision data, the speedups achieved for all t
 within cache, the achieved speedup was around expectations of using the horizontal add strategy. These results
 correspond with the upper end of the ranges.</p>
 <table>
-<thead>
-<tr>
-<th></th>
-<th>Single</th>
-<th>Double</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>128-bit</td>
-<td>1.1x-1.3x</td>
-<td>1x-1.1x</td>
-</tr>
-<tr>
-<td>256-bit</td>
-<td>1.2x-2.4x</td>
-<td>1x-1.7x</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th></th>
+          <th>Single</th>
+          <th>Double</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>128-bit</td>
+          <td>1.1x-1.3x</td>
+          <td>1x-1.1x</td>
+      </tr>
+      <tr>
+          <td>256-bit</td>
+          <td>1.2x-2.4x</td>
+          <td>1x-1.7x</td>
+      </tr>
+  </tbody>
 </table>
 <p>In contrast, double precision vectorization attempts with 128-bit vectors only achieved 1.1x at best, for problems
 that fit in cache, and did not obtain any speedup for tests that could only fit in RAM. The 256-bit vectorization

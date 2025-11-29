@@ -3,14 +3,239 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="transposeMPI # Description # Code showing the use of tiling and shared memory in transposing a matrix. The book uses it as an example of the performance difference between CUDA aware MPI vs non-MPI transfers (transfers between GPUs via their respective host CPUs). The code will work on GPUs communicating across node boundaries.
-Code (C&#43;&#43;) # To do... Code (Fortran) # module transpose_m implicit none integer, parameter:: cudaTileDim = 32 integer, parameter:: blockRows = 8 contains attributes(global) subroutine cudaTranspose(odata, ldo, idata, ldi) real, intent(out):: odata(ldo, *) real, intent(in):: idata(ldi, *) integer, value, intent(in):: ldo, ldi real, shared:: tile(cudaTileDim&#43;1, cudaTileDim) integer:: x, y, j x = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows tile(threadIdx%x, threadIdx%y&#43;j) = idata(x, y&#43;j) end do call syncthreads() x = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows odata(x, y&#43;j) = tile(threadIdx%y&#43;j, threadIdx%x) end do end subroutine end module transpose_m !">
+<meta name="description" content="
+  transposeMPI
+  #
+
+
+  Description
+  #
+
+Code showing the use of tiling and shared memory in transposing a matrix. The book uses it as an example of the performance difference between CUDA aware MPI vs non-MPI transfers (transfers between GPUs via their respective host CPUs). The code will work on GPUs communicating across node boundaries.
+
+  Code (C&#43;&#43;)
+  #
+
+To do...
+
+  Code (Fortran)
+  #
+
+module transpose_m
+
+    implicit none
+    integer, parameter:: cudaTileDim = 32
+    integer, parameter:: blockRows = 8
+
+contains
+
+    attributes(global) subroutine cudaTranspose(odata, ldo, idata, ldi)
+
+        real, intent(out):: odata(ldo, *)
+        real, intent(in):: idata(ldi, *)
+        integer, value, intent(in):: ldo, ldi
+        real, shared:: tile(cudaTileDim&#43;1, cudaTileDim)
+        integer:: x, y, j
+
+        x = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%x
+        y = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%y
+
+        do j = 0, cudaTileDim-1, blockRows
+            tile(threadIdx%x, threadIdx%y&#43;j) = idata(x, y&#43;j)
+        end do
+
+        call syncthreads()
+
+        x = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%x
+        y = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%y
+
+        do j = 0, cudaTileDim-1, blockRows
+            odata(x, y&#43;j) = tile(threadIdx%y&#43;j, threadIdx%x)
+        end do
+
+    end subroutine
+
+end module transpose_m
+
+!
+! Main code
+!
+
+program transpose_MPI
+
+    use cudafor
+    use mpi
+    use transpose_m
+    use mpiDeviceUtil
+
+    implicit none
+
+    ! global array size
+    integer, parameter:: nx = 2048, ny = 2048
+
+    ! host arrays (global)
+    real:: idata_h(nx, ny), tdata_h(ny, nx), gold(ny, nx)
+
+    ! CUDA vars and device arrays
+    integer:: deviceID, nDevices
+    type(dim3):: dimGrid, dimBlock
+    real, device, allocatable:: idata_d(:, :), tdata_d(:, :), sTile_d(:, :), &amp;
+        rTile_d(:, :)
+
+    ! MPI stuff
+    integer:: mpiTileDimX, mpiTileDimY
+    integer:: procid, numprocs, tag, ierr, localRank
+    integer:: nstages, stage, sRank, rRank
+    integer:: status(MPI_STATUS_SIZE)
+    double precision:: timeStart, timeStop
+    character(len=10):: localRankStr
+
+    integer:: i, j, nyl, jl, jg, p
+    integer:: xOffset, yOffset
+
+    ! MPI initialization
+    call MPI_INIT(ierr)
+    call MPI_COMM_RANK(MPI_COMM_WORLD, procid, ierr)
+    call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
+
+    ierr = cudaGetDeviceCount(nDevices)
+
+    ! check parameters and calculate execution configuration
+    if (mod(nx, numprocs) == 0 .and. mod(ny, numprocs) == 0) then
+        mpiTileDimX = nx/numprocs
+        mpiTileDimY = ny/numprocs
+    else
+        write(*,*) &#34;ny must be an integral multiple of numprocs&#34;
+        call MPI_ABORT(MPI_COMM_WORLD, 1, ierr)
+    end if
+
+    if (mod(mpiTileDimX, cudaTileDim) /= 0 .or. mod(mpiTileDimY, cudaTileDim) &amp;
+        /= 0) then
+        write(*,*) &#34;mpiTileDimX and mpiTileDimY must be an integral multiple&#34;, &amp;
+            &#34; of cudaTileDim&#34;
+        call MPI_ABORT(MPI_COMM_WORLD, 1, ierr)
+    end if
+
+    if (numprocs &gt; nDevices) then
+        write(*,*) &#34;numprcs must be &lt;= number of GPUs on the system!&#34;
+        call MPI_ABORT(MPI_COMM_WORLD, 1, ierr)
+    end if
+
+    ! each MPI process 
+    call assignDevice(procid, numprocs, deviceID)
+
+    dimGrid = dim3(mpiTileDimX/cudaTileDim, mpiTileDimY/cudaTileDim, 1)
+    dimBlock = dim3(cudaTileDim, blockRows, 1)
+
+    ! write parameters to terminal
+    if (procid == 0) then
+        write(*,*)
+        write(*,&#34;(&#39;Array size: &#39;, i0,&#39; x &#39;,i0,/)&#34;) nx, ny
+        write(*,&#34;(&#39;CUDA block size: &#39;, i0,&#39; x &#39;,i0,&#39;,  CUDA tile size: &#39;, &amp;
+            i0,&#39; x &#39;,i0,/)&#34;) cudaTileDim, blockRows, cudaTileDim, cudaTileDim
+
+        write(*,&#34;(&#39;dimGrid: &#39;, i0,&#39; x &#39;,i0,&#39; x &#39;,i0,&#39;  dimBlock: &#39;, i0,&amp;
+            &#39; x &#39;,i0,&#39; x &#39;,i0,/)&#34;) dimGrid%x, dimGrid%y, dimGrid%x, &amp;
+            dimBlock%x, dimBlock%y, dimBlock%z
+
+        write(*,&#34;(&#39;numprocs: &#39;, i0, &#39;,  Local input array size: &#39;, &amp;
+            i0,&#39; x &#39;,i0,/)&#34;) numprocs, nx, mpiTileDimY
+
+        write(*,&#34;(&#39;mpiTileDim: &#39;, i0,&#39; x &#39;,i0,/)&#34;) mpiTileDimX, mpiTileDimY
+    end if
+
+    ! initalize data
+    ! host - each process has entire array on host (for now)
+    do p = 0, numprocs-1
+        do jl = 1, mpiTileDimY
+            jg = p*mpiTileDimY &#43; jl
+            do i = 1, nx
+                idata_h(i, jg) = i &#43; (jg-1)*nx
+            end do
+        end do
+    end do
+
+    gold = transpose(idata_h)
+
+    ! device - each process has nx*mpiTileDimY = ny*mpiTileDimX elements
+    allocate( idata_d(nx, mpiTileDimY), &amp;
+        tdata_d(ny, mpiTileDimX), &amp;
+        sTile_d(mpiTileDimX, mpiTileDimY), &amp;
+        rTile_d(mpiTileDimX, mpiTileDimY))
+
+    yOffset = procid*mpiTileDimY
+    idata_d(1:nx, 1:mpiTileDimY) = idata_h(1:nx, yOffset&#43;1:yOffset&#43;mpiTileDimY)
+    tdata_d = -1.0
+
+    ! ---------
+    ! transpose
+    ! ---------
+    call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+    timeStart = MPI_WTIME()
+
+    ! 0th stage - local transpose
+    call cudaTranspose&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;&amp;
+        (tdata_d(procid*mpiTileDimY&#43;1, 1), ny, &amp;
+        idata_d(procid*mpiTileDimX&#43;1, 1), nx)
+
+    ! other stages that involve MPI transfers
+    do stage = 1, numprocs-1
+        ! sRank = the rank to which procid send data to
+        ! rRank = the rank from which myrank receives data
+        sRank = modulo(procid-stage, numprocs)
+        rRank = modulo(procid&#43;stage, numprocs)
+
+        call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+
+        ! pack tile so data to be sent is contiguous
+
+        !$cuf kernel do (2) &lt;&lt;&lt;*, *&gt;&gt;&gt;
+        do j = 1, mpiTileDimY
+            do i = 1, mpiTileDimX
+                sTile_d(i, j) = idata_d(sRank*mpiTileDimX&#43;i, j)
+            end do
+        end do
+
+        call MPI_SENDRECV(sTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, sRank, &amp;
+            procid, rTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, rRank, rRank, &amp;
+            MPI_COMM_WORLD, status, ierr)
+
+        ! do transpose from receive tile into final array
+        ! (no need to unpack)
+        call cudaTranspose&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;&amp;
+            (tdata_d(rRank*mpiTileDimY&#43;1, 1), ny, rTile_d, mpiTileDimX)
+
+    end do
+
+    call MPI_BARRIER(MPI_COMM_WORLD, ierr)
+    timeStop = MPI_WTIME()
+
+    ! check results
+    tdata_h = tdata_d
+
+    xOffset = procid*mpiTileDimX
+    if (all(tdata_h(1:ny, 1:mpiTileDimX) == &amp;
+        gold(1:ny, xOffset&#43;1:xOffset&#43;mpiTileDimX))) then
+        if (procid == 0) then
+            write(*,&#34;(&#39;Bandwidth (GB/s): &#39;, f7.2,/)&#34;) 2.*(nx*ny*4)/&amp;
+                (1.e9*(timeStop-timeStart))
+        end if
+    else
+        write(*,&#34;(&#39;[&#39;,i0,&#39;]&#39;, &#39;*** Failed ***&#39;)&#34;) procid
+    end if
+
+    deallocate(idata_d, tdata_d, sTile_d, rTile_d)
+
+    call MPI_FINALIZE(ierr)
+
+end program transpose_MPI
+">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/cuda/reference-codes/transposeMPI/">
   <meta property="og:site_name" content="Ed&#39;s Space - Notes">
   <meta property="og:title" content="transposeMPI">
   <meta property="og:description" content="transposeMPI # Description # Code showing the use of tiling and shared memory in transposing a matrix. The book uses it as an example of the performance difference between CUDA aware MPI vs non-MPI transfers (transfers between GPUs via their respective host CPUs). The code will work on GPUs communicating across node boundaries.
-Code (C&#43;&#43;) # To do... Code (Fortran) # module transpose_m implicit none integer, parameter:: cudaTileDim = 32 integer, parameter:: blockRows = 8 contains attributes(global) subroutine cudaTranspose(odata, ldo, idata, ldi) real, intent(out):: odata(ldo, *) real, intent(in):: idata(ldi, *) integer, value, intent(in):: ldo, ldi real, shared:: tile(cudaTileDim&#43;1, cudaTileDim) integer:: x, y, j x = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows tile(threadIdx%x, threadIdx%y&#43;j) = idata(x, y&#43;j) end do call syncthreads() x = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows odata(x, y&#43;j) = tile(threadIdx%y&#43;j, threadIdx%x) end do end subroutine end module transpose_m !">
+Code (C&#43;&#43;) # To do... Code (Fortran) # module transpose_m implicit none integer, parameter:: cudaTileDim = 32 integer, parameter:: blockRows = 8 contains attributes(global) subroutine cudaTranspose(odata, ldo, idata, ldi) real, intent(out):: odata(ldo, *) real, intent(in):: idata(ldi, *) integer, value, intent(in):: ldo, ldi real, shared:: tile(cudaTileDim&#43;1, cudaTileDim) integer:: x, y, j x = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows tile(threadIdx%x, threadIdx%y&#43;j) = idata(x, y&#43;j) end do call syncthreads() x = (blockIdx%y-1) * cudaTileDim &#43; threadIdx%x y = (blockIdx%x-1) * cudaTileDim &#43; threadIdx%y do j = 0, cudaTileDim-1, blockRows odata(x, y&#43;j) = tile(threadIdx%y&#43;j, threadIdx%x) end do end subroutine end module transpose_m ! ! Main code ! program transpose_MPI use cudafor use mpi use transpose_m use mpiDeviceUtil implicit none ! global array size integer, parameter:: nx = 2048, ny = 2048 ! host arrays (global) real:: idata_h(nx, ny), tdata_h(ny, nx), gold(ny, nx) ! CUDA vars and device arrays integer:: deviceID, nDevices type(dim3):: dimGrid, dimBlock real, device, allocatable:: idata_d(:, :), tdata_d(:, :), sTile_d(:, :), &amp; rTile_d(:, :) ! MPI stuff integer:: mpiTileDimX, mpiTileDimY integer:: procid, numprocs, tag, ierr, localRank integer:: nstages, stage, sRank, rRank integer:: status(MPI_STATUS_SIZE) double precision:: timeStart, timeStop character(len=10):: localRankStr integer:: i, j, nyl, jl, jg, p integer:: xOffset, yOffset ! MPI initialization call MPI_INIT(ierr) call MPI_COMM_RANK(MPI_COMM_WORLD, procid, ierr) call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr) ierr = cudaGetDeviceCount(nDevices) ! check parameters and calculate execution configuration if (mod(nx, numprocs) == 0 .and. mod(ny, numprocs) == 0) then mpiTileDimX = nx/numprocs mpiTileDimY = ny/numprocs else write(*,*) &#34;ny must be an integral multiple of numprocs&#34; call MPI_ABORT(MPI_COMM_WORLD, 1, ierr) end if if (mod(mpiTileDimX, cudaTileDim) /= 0 .or. mod(mpiTileDimY, cudaTileDim) &amp; /= 0) then write(*,*) &#34;mpiTileDimX and mpiTileDimY must be an integral multiple&#34;, &amp; &#34; of cudaTileDim&#34; call MPI_ABORT(MPI_COMM_WORLD, 1, ierr) end if if (numprocs &gt; nDevices) then write(*,*) &#34;numprcs must be &lt;= number of GPUs on the system!&#34; call MPI_ABORT(MPI_COMM_WORLD, 1, ierr) end if ! each MPI process call assignDevice(procid, numprocs, deviceID) dimGrid = dim3(mpiTileDimX/cudaTileDim, mpiTileDimY/cudaTileDim, 1) dimBlock = dim3(cudaTileDim, blockRows, 1) ! write parameters to terminal if (procid == 0) then write(*,*) write(*,&#34;(&#39;Array size: &#39;, i0,&#39; x &#39;,i0,/)&#34;) nx, ny write(*,&#34;(&#39;CUDA block size: &#39;, i0,&#39; x &#39;,i0,&#39;, CUDA tile size: &#39;, &amp; i0,&#39; x &#39;,i0,/)&#34;) cudaTileDim, blockRows, cudaTileDim, cudaTileDim write(*,&#34;(&#39;dimGrid: &#39;, i0,&#39; x &#39;,i0,&#39; x &#39;,i0,&#39; dimBlock: &#39;, i0,&amp; &#39; x &#39;,i0,&#39; x &#39;,i0,/)&#34;) dimGrid%x, dimGrid%y, dimGrid%x, &amp; dimBlock%x, dimBlock%y, dimBlock%z write(*,&#34;(&#39;numprocs: &#39;, i0, &#39;, Local input array size: &#39;, &amp; i0,&#39; x &#39;,i0,/)&#34;) numprocs, nx, mpiTileDimY write(*,&#34;(&#39;mpiTileDim: &#39;, i0,&#39; x &#39;,i0,/)&#34;) mpiTileDimX, mpiTileDimY end if ! initalize data ! host - each process has entire array on host (for now) do p = 0, numprocs-1 do jl = 1, mpiTileDimY jg = p*mpiTileDimY &#43; jl do i = 1, nx idata_h(i, jg) = i &#43; (jg-1)*nx end do end do end do gold = transpose(idata_h) ! device - each process has nx*mpiTileDimY = ny*mpiTileDimX elements allocate( idata_d(nx, mpiTileDimY), &amp; tdata_d(ny, mpiTileDimX), &amp; sTile_d(mpiTileDimX, mpiTileDimY), &amp; rTile_d(mpiTileDimX, mpiTileDimY)) yOffset = procid*mpiTileDimY idata_d(1:nx, 1:mpiTileDimY) = idata_h(1:nx, yOffset&#43;1:yOffset&#43;mpiTileDimY) tdata_d = -1.0 ! --------- ! transpose ! --------- call MPI_BARRIER(MPI_COMM_WORLD, ierr) timeStart = MPI_WTIME() ! 0th stage - local transpose call cudaTranspose&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;&amp; (tdata_d(procid*mpiTileDimY&#43;1, 1), ny, &amp; idata_d(procid*mpiTileDimX&#43;1, 1), nx) ! other stages that involve MPI transfers do stage = 1, numprocs-1 ! sRank = the rank to which procid send data to ! rRank = the rank from which myrank receives data sRank = modulo(procid-stage, numprocs) rRank = modulo(procid&#43;stage, numprocs) call MPI_BARRIER(MPI_COMM_WORLD, ierr) ! pack tile so data to be sent is contiguous !$cuf kernel do (2) &lt;&lt;&lt;*, *&gt;&gt;&gt; do j = 1, mpiTileDimY do i = 1, mpiTileDimX sTile_d(i, j) = idata_d(sRank*mpiTileDimX&#43;i, j) end do end do call MPI_SENDRECV(sTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, sRank, &amp; procid, rTile_d, mpiTileDimX*mpiTileDimY, MPI_REAL, rRank, rRank, &amp; MPI_COMM_WORLD, status, ierr) ! do transpose from receive tile into final array ! (no need to unpack) call cudaTranspose&lt;&lt;&lt;dimGrid, dimBlock&gt;&gt;&gt;&amp; (tdata_d(rRank*mpiTileDimY&#43;1, 1), ny, rTile_d, mpiTileDimX) end do call MPI_BARRIER(MPI_COMM_WORLD, ierr) timeStop = MPI_WTIME() ! check results tdata_h = tdata_d xOffset = procid*mpiTileDimX if (all(tdata_h(1:ny, 1:mpiTileDimX) == &amp; gold(1:ny, xOffset&#43;1:xOffset&#43;mpiTileDimX))) then if (procid == 0) then write(*,&#34;(&#39;Bandwidth (GB/s): &#39;, f7.2,/)&#34;) 2.*(nx*ny*4)/&amp; (1.e9*(timeStop-timeStart)) end if else write(*,&#34;(&#39;[&#39;,i0,&#39;]&#39;, &#39;*** Failed ***&#39;)&#34;) procid end if deallocate(idata_d, tdata_d, sTile_d, rTile_d) call MPI_FINALIZE(ierr) end program transpose_MPI">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -18,14 +243,11 @@ Code (C&#43;&#43;) # To do... Code (Fortran) # module transpose_m implicit none 
 <title>transposeMPI | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+<link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
+  <script defer src="/worknotes/en.search.min.252e38082ab7cca3db437fb29a1b8a3534e775402223dd91ff513aa1ee15afb0.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
-
-  
-
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,8 +312,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle"  />
-    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+    <input type="checkbox" id="section-d75bf0277a78395058ee4f19eb9d8b34" class="toggle"  />
+    <label for="section-d75bf0277a78395058ee4f19eb9d8b34" class="flex justify-between">
       <a role="button" class="">Investigating Manual Vectorization for SPH</a>
     </label>
   
@@ -189,8 +411,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
-    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+    <input type="checkbox" id="section-82c659c7714fca9486231756ebb8db74" class="toggle"  />
+    <label for="section-82c659c7714fca9486231756ebb8db74" class="flex justify-between">
       <a role="button" class="">Useful code snippets</a>
     </label>
   
@@ -301,8 +523,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle" checked />
-    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+    <input type="checkbox" id="section-70035f3795255ae1e304b2577ac7a328" class="toggle" checked />
+    <label for="section-70035f3795255ae1e304b2577ac7a328" class="flex justify-between">
       <a role="button" class="">CUDA Programming</a>
     </label>
   
@@ -587,8 +809,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
-    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+    <input type="checkbox" id="section-87ae867329107c34e1f6caa377fccc2a" class="toggle"  />
+    <label for="section-87ae867329107c34e1f6caa377fccc2a" class="flex justify-between">
       <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
     </label>
   
@@ -647,8 +869,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle"  />
-    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+    <input type="checkbox" id="section-89270b1739b00fc57bd375e4e320a20e" class="toggle"  />
+    <label for="section-89270b1739b00fc57bd375e4e320a20e" class="flex justify-between">
       <a role="button" class="">Raspberry Pis</a>
     </label>
   
