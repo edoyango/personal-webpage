@@ -3,14 +3,242 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="bandwidthTest # Description # Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal &ldquo;pageable&rdquo; memory.
-Code (C&#43;&#43;) # #include &lt;stdio.h&gt; #include &lt;cstdlib&gt; int main() { const int nElements = 4*1024*1024; size_t nbytes = nElements*sizeof(float); float *a_pageable, *b_pageable; float *a_pinned, *b_pinned; float *a_d; int ierr_a, ierr_b; cudaDeviceProp prop; cudaEvent_t startEvent, stopEvent; float time = 0.0; // pageable host memory a_pageable = (float*)malloc(nbytes); b_pageable = (float*)malloc(nbytes); // pinned host memory ierr_a = cudaMallocHost((void**)&amp;a_pinned, nbytes); ierr_b = cudaMallocHost((void**)&amp;b_pinned, nbytes); if (ierr_a !">
+<meta name="description" content="
+  bandwidthTest
+  #
+
+
+  Description
+  #
+
+Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal &ldquo;pageable&rdquo; memory.
+
+  Code (C&#43;&#43;)
+  #
+
+#include &lt;stdio.h&gt;
+#include &lt;cstdlib&gt;
+
+int main() {
+
+    const int nElements = 4*1024*1024;
+    size_t nbytes = nElements*sizeof(float);
+    float *a_pageable, *b_pageable;
+    float *a_pinned, *b_pinned;
+    float *a_d;
+    int ierr_a, ierr_b;
+    cudaDeviceProp prop;
+    cudaEvent_t startEvent, stopEvent;
+    float time = 0.0;
+
+    // pageable host memory
+    a_pageable = (float*)malloc(nbytes);
+    b_pageable = (float*)malloc(nbytes);
+
+    // pinned host memory
+    ierr_a = cudaMallocHost((void**)&amp;a_pinned, nbytes);
+    ierr_b = cudaMallocHost((void**)&amp;b_pinned, nbytes);
+    if (ierr_a != 0 || ierr_b != 0) {
+        printf(&#34;Allocation of a_pinned/b_pinned failed\n&#34;);
+        std::exit(1);
+    }
+
+    // initializing
+    for (int i = 0; i &lt; nElements; &#43;&#43;i) a_pageable[i] = i;
+    memcpy(a_pinned, a_pageable, nbytes);
+    memset(b_pageable, 0.0, nbytes);
+    memset(b_pinned, 0.0, nbytes);
+
+    // device memory
+    cudaMalloc((void**)&amp;a_d, nbytes);
+
+    // output device info and transfer size
+    cudaGetDeviceProperties(&amp;prop, 0);
+    printf(&#34;\nDevice: %s\n&#34;, prop.name);
+    printf(&#34;Transfer size (MB): %f\n&#34;, nbytes/1024./1024.);
+
+    cudaEventCreate(&amp;startEvent);
+    cudaEventCreate(&amp;stopEvent);
+
+    // pageable data transfers
+    printf(&#34;\nPageable transfers\n&#34;);
+    cudaEventRecord(startEvent, 0);
+    cudaMemcpy(a_d, a_pageable, nbytes, cudaMemcpyHostToDevice);
+    cudaEventRecord(stopEvent, 0);
+    cudaEventSynchronize(stopEvent);
+    cudaEventElapsedTime(&amp;time, startEvent, stopEvent);
+    printf(&#34;  Host to Device bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6);
+
+    cudaEventRecord(startEvent, 0);
+    cudaMemcpy(b_pageable, a_d, nbytes, cudaMemcpyDeviceToHost);
+    cudaEventRecord(stopEvent, 0);
+    cudaEventSynchronize(stopEvent);
+    cudaEventElapsedTime(&amp;time, startEvent, stopEvent);
+    printf(&#34;  Device to Host bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6);
+
+    for (int i = 0; i &lt; nElements; &#43;&#43;i) {
+        if (a_pageable[i] != b_pageable[i]) {
+            printf(&#34;*** Pageable transfers failed ***\n&#34;);
+            break;
+        }
+    }
+
+    cudaMemset(a_d, 0.0, nbytes);
+
+    // pinned data transfers
+    printf(&#34;\nPinned transfers\n&#34;);
+    cudaEventRecord(startEvent, 0);
+    cudaMemcpy(a_d, a_pinned, nbytes, cudaMemcpyHostToDevice);
+    cudaEventRecord(stopEvent, 0);
+    cudaEventSynchronize(stopEvent);
+    cudaEventElapsedTime(&amp;time, startEvent, stopEvent);
+    printf(&#34;  Host to Device bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6);
+
+    cudaEventRecord(startEvent, 0);
+    cudaMemcpy(b_pinned, a_d, nbytes, cudaMemcpyDeviceToHost);
+    cudaEventRecord(stopEvent, 0);
+    cudaEventSynchronize(stopEvent);
+    cudaEventElapsedTime(&amp;time, startEvent, stopEvent);
+    printf(&#34;  Device to Host bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6);
+
+    for (int i = 0; i &lt; nElements; &#43;&#43;i) {
+        if (a_pinned[i] != a_pinned[i]) {
+            printf(&#34;*** Pinned transfers failed ***\n&#34;);
+            break;
+        }
+    }
+
+    printf(&#34;\n&#34;);
+
+    // cleanup
+    cudaFree(a_d);
+    cudaFreeHost(a_pinned);
+    cudaFreeHost(b_pinned);
+    free(a_pageable);
+    free(b_pageable);
+    cudaEventDestroy(startEvent);
+    cudaEventDestroy(stopEvent);
+
+}
+
+  Code (Fortran)
+  #
+
+program BandwidthTest
+
+    use cudafor
+
+    implicit none
+    integer, parameter:: nElements = 4*1024*1024
+
+    ! host arrays
+    real(4):: a_pageable(nElements), b_pageable(nElements)
+    real(4), allocatable, pinned:: a_pinned(:), b_pinned(:)
+
+    ! device arrays
+    real(4), device:: a_d(nElements)
+
+    ! events for timing
+    type(cudaEvent):: startEvent, stopEvent
+
+    ! misc
+    type(cudaDeviceProp):: prop
+    real(4):: time
+    integer:: istat, i
+    logical:: pinnedFlag
+
+    ! allocate and initialize
+    do i = 1, nElements
+        a_pageable(i) = i
+    end do
+    b_pageable = 0.
+
+    allocate(a_pinned(nElements), b_pinned(nElements), STAT=istat, PINNED=pinnedFlag)
+    if (istat /= 0) then
+        write(*,*) &#39;Allocation of a_pinned/b_pinned failed&#39;
+        pinnedFlag = .false.
+    else
+        if (.not. pinnedFlag) write(*,*) &#39;Pinned allocation failed&#39;
+    end if
+
+    if (pinnedFlag) then
+        a_pinned = a_pageable
+        b_pinned = 0.
+    end if
+
+    istat = cudaEventCreate(startEvent)
+    istat = cudaEventCreate(stopEvent)
+
+    ! output device info and transfer size
+    istat = cudaGetDeviceProperties(prop, 0)
+
+    write(*,*)
+    write(*,*) &#39;Device: &#39;, trim(prop%name)
+    write(*,*) &#39;Transfer size (MB): &#39;, 4*nElements/1024./1024.
+
+    ! pageable data transfer
+    write(*,*)
+    write(*,*) &#39;Pageable transfer&#39;
+
+    istat = cudaEventRecord(startEvent, 0)
+    a_d = a_pageable
+    istat = cudaEventRecord(stopEvent, 0)
+    istat = cudaEventSynchronize(stopEvent)
+
+    istat = cudaEventElapsedTime(time, startEvent, stopEvent)
+    write(*,*) &#39;  Host to Device bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6
+
+    istat = cudaEventRecord(startEvent, 0)
+    b_pageable = a_d
+    istat = cudaEventRecord(stopEvent, 0)
+    istat = cudaEventSynchronize(stopEvent)
+
+    istat = cudaEventElapsedTime(time, startEvent, stopEvent)
+    write(*,*) &#39;  Device to Host bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6
+
+    if (any(a_pageable /= b_pageable)) write(*,*) &#39;*** Pageable transfers failed ***&#39;
+
+    ! pinned data transfers
+    if (pinnedFlag) then
+        write(*,*)
+        write(*,*) &#39;Pinned transfer&#39;
+
+        istat = cudaEventRecord(startEvent, 0)
+        a_d = a_pinned
+        istat = cudaEventRecord(stopEvent, 0)
+        istat = cudaEventSynchronize(stopEvent)
+
+        istat = cudaEventElapsedTime(time , startEvent , stopEvent)
+        write(*,*) &#39; Host to Device bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6
+
+        istat = cudaEventRecord(startEvent, 0)
+        b_pinned = a_d
+        istat = cudaEventRecord(stopEvent, 0)
+        istat = cudaEventSynchronize(stopEvent)
+
+        istat = cudaEventElapsedTime(time, startEvent, stopEvent)
+        write(*,*) &#39;  Device to Host bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6
+
+        if (any(a_pinned /= b_pinned)) write(*,*) &#39;*** Pinned transfers failed ***&#39;
+
+    end if
+
+    write(*,*)
+
+    ! cleanup
+    if (allocated(a_pinned)) deallocate(a_pinned)
+    if (allocated(b_pinned)) deallocate(b_pinned)
+    istat = cudaEventDestroy(startEvent)
+    istat = cudaEventDestroy(stopEvent)
+
+end program BandwidthTest
+">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/cuda/reference-codes/bandwidthTest/">
   <meta property="og:site_name" content="Ed&#39;s Space - Notes">
   <meta property="og:title" content="bandwidthTest">
   <meta property="og:description" content="bandwidthTest # Description # Demonstrates the increase of bandwidth when reading/writing from/to pinned host memory instead of normal “pageable” memory.
-Code (C&#43;&#43;) # #include &lt;stdio.h&gt; #include &lt;cstdlib&gt; int main() { const int nElements = 4*1024*1024; size_t nbytes = nElements*sizeof(float); float *a_pageable, *b_pageable; float *a_pinned, *b_pinned; float *a_d; int ierr_a, ierr_b; cudaDeviceProp prop; cudaEvent_t startEvent, stopEvent; float time = 0.0; // pageable host memory a_pageable = (float*)malloc(nbytes); b_pageable = (float*)malloc(nbytes); // pinned host memory ierr_a = cudaMallocHost((void**)&amp;a_pinned, nbytes); ierr_b = cudaMallocHost((void**)&amp;b_pinned, nbytes); if (ierr_a !">
+Code (C&#43;&#43;) # #include &lt;stdio.h&gt; #include &lt;cstdlib&gt; int main() { const int nElements = 4*1024*1024; size_t nbytes = nElements*sizeof(float); float *a_pageable, *b_pageable; float *a_pinned, *b_pinned; float *a_d; int ierr_a, ierr_b; cudaDeviceProp prop; cudaEvent_t startEvent, stopEvent; float time = 0.0; // pageable host memory a_pageable = (float*)malloc(nbytes); b_pageable = (float*)malloc(nbytes); // pinned host memory ierr_a = cudaMallocHost((void**)&amp;a_pinned, nbytes); ierr_b = cudaMallocHost((void**)&amp;b_pinned, nbytes); if (ierr_a != 0 || ierr_b != 0) { printf(&#34;Allocation of a_pinned/b_pinned failed\n&#34;); std::exit(1); } // initializing for (int i = 0; i &lt; nElements; &#43;&#43;i) a_pageable[i] = i; memcpy(a_pinned, a_pageable, nbytes); memset(b_pageable, 0.0, nbytes); memset(b_pinned, 0.0, nbytes); // device memory cudaMalloc((void**)&amp;a_d, nbytes); // output device info and transfer size cudaGetDeviceProperties(&amp;prop, 0); printf(&#34;\nDevice: %s\n&#34;, prop.name); printf(&#34;Transfer size (MB): %f\n&#34;, nbytes/1024./1024.); cudaEventCreate(&amp;startEvent); cudaEventCreate(&amp;stopEvent); // pageable data transfers printf(&#34;\nPageable transfers\n&#34;); cudaEventRecord(startEvent, 0); cudaMemcpy(a_d, a_pageable, nbytes, cudaMemcpyHostToDevice); cudaEventRecord(stopEvent, 0); cudaEventSynchronize(stopEvent); cudaEventElapsedTime(&amp;time, startEvent, stopEvent); printf(&#34; Host to Device bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6); cudaEventRecord(startEvent, 0); cudaMemcpy(b_pageable, a_d, nbytes, cudaMemcpyDeviceToHost); cudaEventRecord(stopEvent, 0); cudaEventSynchronize(stopEvent); cudaEventElapsedTime(&amp;time, startEvent, stopEvent); printf(&#34; Device to Host bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6); for (int i = 0; i &lt; nElements; &#43;&#43;i) { if (a_pageable[i] != b_pageable[i]) { printf(&#34;*** Pageable transfers failed ***\n&#34;); break; } } cudaMemset(a_d, 0.0, nbytes); // pinned data transfers printf(&#34;\nPinned transfers\n&#34;); cudaEventRecord(startEvent, 0); cudaMemcpy(a_d, a_pinned, nbytes, cudaMemcpyHostToDevice); cudaEventRecord(stopEvent, 0); cudaEventSynchronize(stopEvent); cudaEventElapsedTime(&amp;time, startEvent, stopEvent); printf(&#34; Host to Device bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6); cudaEventRecord(startEvent, 0); cudaMemcpy(b_pinned, a_d, nbytes, cudaMemcpyDeviceToHost); cudaEventRecord(stopEvent, 0); cudaEventSynchronize(stopEvent); cudaEventElapsedTime(&amp;time, startEvent, stopEvent); printf(&#34; Device to Host bandwidth (GB/s): %f\n&#34;, nbytes/time/1.e&#43;6); for (int i = 0; i &lt; nElements; &#43;&#43;i) { if (a_pinned[i] != a_pinned[i]) { printf(&#34;*** Pinned transfers failed ***\n&#34;); break; } } printf(&#34;\n&#34;); // cleanup cudaFree(a_d); cudaFreeHost(a_pinned); cudaFreeHost(b_pinned); free(a_pageable); free(b_pageable); cudaEventDestroy(startEvent); cudaEventDestroy(stopEvent); } Code (Fortran) # program BandwidthTest use cudafor implicit none integer, parameter:: nElements = 4*1024*1024 ! host arrays real(4):: a_pageable(nElements), b_pageable(nElements) real(4), allocatable, pinned:: a_pinned(:), b_pinned(:) ! device arrays real(4), device:: a_d(nElements) ! events for timing type(cudaEvent):: startEvent, stopEvent ! misc type(cudaDeviceProp):: prop real(4):: time integer:: istat, i logical:: pinnedFlag ! allocate and initialize do i = 1, nElements a_pageable(i) = i end do b_pageable = 0. allocate(a_pinned(nElements), b_pinned(nElements), STAT=istat, PINNED=pinnedFlag) if (istat /= 0) then write(*,*) &#39;Allocation of a_pinned/b_pinned failed&#39; pinnedFlag = .false. else if (.not. pinnedFlag) write(*,*) &#39;Pinned allocation failed&#39; end if if (pinnedFlag) then a_pinned = a_pageable b_pinned = 0. end if istat = cudaEventCreate(startEvent) istat = cudaEventCreate(stopEvent) ! output device info and transfer size istat = cudaGetDeviceProperties(prop, 0) write(*,*) write(*,*) &#39;Device: &#39;, trim(prop%name) write(*,*) &#39;Transfer size (MB): &#39;, 4*nElements/1024./1024. ! pageable data transfer write(*,*) write(*,*) &#39;Pageable transfer&#39; istat = cudaEventRecord(startEvent, 0) a_d = a_pageable istat = cudaEventRecord(stopEvent, 0) istat = cudaEventSynchronize(stopEvent) istat = cudaEventElapsedTime(time, startEvent, stopEvent) write(*,*) &#39; Host to Device bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6 istat = cudaEventRecord(startEvent, 0) b_pageable = a_d istat = cudaEventRecord(stopEvent, 0) istat = cudaEventSynchronize(stopEvent) istat = cudaEventElapsedTime(time, startEvent, stopEvent) write(*,*) &#39; Device to Host bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6 if (any(a_pageable /= b_pageable)) write(*,*) &#39;*** Pageable transfers failed ***&#39; ! pinned data transfers if (pinnedFlag) then write(*,*) write(*,*) &#39;Pinned transfer&#39; istat = cudaEventRecord(startEvent, 0) a_d = a_pinned istat = cudaEventRecord(stopEvent, 0) istat = cudaEventSynchronize(stopEvent) istat = cudaEventElapsedTime(time , startEvent , stopEvent) write(*,*) &#39; Host to Device bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6 istat = cudaEventRecord(startEvent, 0) b_pinned = a_d istat = cudaEventRecord(stopEvent, 0) istat = cudaEventSynchronize(stopEvent) istat = cudaEventElapsedTime(time, startEvent, stopEvent) write(*,*) &#39; Device to Host bandwidth (GB/s): &#39;, nElements*4/time/1.e&#43;6 if (any(a_pinned /= b_pinned)) write(*,*) &#39;*** Pinned transfers failed ***&#39; end if write(*,*) ! cleanup if (allocated(a_pinned)) deallocate(a_pinned) if (allocated(b_pinned)) deallocate(b_pinned) istat = cudaEventDestroy(startEvent) istat = cudaEventDestroy(stopEvent) end program BandwidthTest">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -18,14 +246,11 @@ Code (C&#43;&#43;) # #include &lt;stdio.h&gt; #include &lt;cstdlib&gt; int main(
 <title>bandwidthTest | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+<link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
+  <script defer src="/worknotes/en.search.min.252e38082ab7cca3db437fb29a1b8a3534e775402223dd91ff513aa1ee15afb0.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
-
-  
-
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,8 +315,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle"  />
-    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+    <input type="checkbox" id="section-d75bf0277a78395058ee4f19eb9d8b34" class="toggle"  />
+    <label for="section-d75bf0277a78395058ee4f19eb9d8b34" class="flex justify-between">
       <a role="button" class="">Investigating Manual Vectorization for SPH</a>
     </label>
   
@@ -189,8 +414,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
-    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+    <input type="checkbox" id="section-82c659c7714fca9486231756ebb8db74" class="toggle"  />
+    <label for="section-82c659c7714fca9486231756ebb8db74" class="flex justify-between">
       <a role="button" class="">Useful code snippets</a>
     </label>
   
@@ -301,8 +526,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle" checked />
-    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+    <input type="checkbox" id="section-70035f3795255ae1e304b2577ac7a328" class="toggle" checked />
+    <label for="section-70035f3795255ae1e304b2577ac7a328" class="flex justify-between">
       <a role="button" class="">CUDA Programming</a>
     </label>
   
@@ -587,8 +812,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
-    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+    <input type="checkbox" id="section-87ae867329107c34e1f6caa377fccc2a" class="toggle"  />
+    <label for="section-87ae867329107c34e1f6caa377fccc2a" class="flex justify-between">
       <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
     </label>
   
@@ -647,8 +872,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle"  />
-    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+    <input type="checkbox" id="section-89270b1739b00fc57bd375e4e320a20e" class="toggle"  />
+    <label for="section-89270b1739b00fc57bd375e4e320a20e" class="flex justify-between">
       <a role="button" class="">Raspberry Pis</a>
     </label>
   

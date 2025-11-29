@@ -3,14 +3,71 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Installing CUDA &#43; NVHPC on WSL # This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.
-Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl &ndash;update if accidentally rolled back, follow the instructions here then wsl &ndash;update again check which Linux flavours are available with wsl &ndash;list &ndash;online install the desired flavour by wsl &ndash;install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;&amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;&amp; sudo apt upgrade -y &amp;&amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&gt; x86_64 -&gt; WSL-Ubuntu -&gt; 2.">
+<meta name="description" content="
+  Installing CUDA &#43; NVHPC on WSL
+  #
+
+This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.
+
+Install the latest Windows CUDA graphics driver
+Install WSL2
+
+open PowerShell as administrator
+Make sure to update WSL kernel to latest version wsl &ndash;update
+
+if accidentally rolled back, follow the instructions here
+then wsl &ndash;update again
+
+
+check which Linux flavours are available with wsl &ndash;list &ndash;online
+install the desired flavour by wsl &ndash;install -d 
+start WSL with wsl, or opening the WSL application from the Windows search bar
+
+
+sudo apt update &amp;&amp; sudo apt upgrade -y
+Close and restart WSL
+sudo apt update &amp;&amp; sudo apt upgrade -y &amp;&amp; sudo apt autoremove -y
+Install CUDA for WSL
+
+check which CUDA version is compatible with the desired version NVHPC kit here
+select the correct CUDA version here
+Select the right setup: Linux -&gt; x86_64 -&gt; WSL-Ubuntu -&gt; 2.0 -&gt; dev (local)
+before beginning install, delete old GPG key sudo apt-key del 7fa2af80
+Perform the install with code below:
+
+
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin
+sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb
+sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb
+sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda
+
+Install NVHPC
+
+Download the desired NVHPC kit
+tar xzvf nvhpc*.tar.gz
+sudo nvhpc*/install
+
+
+
+
+  Uninstalling NVHPC and CUDA
+  #
+
+sudo rm /opt/nvidia/hpc_sdk
+sudo apt-get purge -y cuda &amp;&amp; sudo apt-get autoremove -y
+sudo rm /usr/share/keyrings/cuda-*-keyring.gpg
+sudo dpdkg -P cuda-repo-wsl-ubuntu-*-*-local_*amd64.deb
+You can then perform the installation steps again for the desired NVHPC-CUDA combination">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/cuda/cuda-wsl/">
   <meta property="og:site_name" content="Ed&#39;s Space - Notes">
   <meta property="og:title" content="CUDA &#43; NVHPC on WSL">
   <meta property="og:description" content="Installing CUDA &#43; NVHPC on WSL # This page describes the steps to setup CUDA and NVHPC within the WSL2 container (Windows 10) - avoiding the need for dual-boot or a separate Linux PC. Note that WSL2 must not have been installed when beginning these steps.
-Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl –update if accidentally rolled back, follow the instructions here then wsl –update again check which Linux flavours are available with wsl –list –online install the desired flavour by wsl –install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;&amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;&amp; sudo apt upgrade -y &amp;&amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&gt; x86_64 -&gt; WSL-Ubuntu -&gt; 2.">
+Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as administrator Make sure to update WSL kernel to latest version wsl –update if accidentally rolled back, follow the instructions here then wsl –update again check which Linux flavours are available with wsl –list –online install the desired flavour by wsl –install -d start WSL with wsl, or opening the WSL application from the Windows search bar sudo apt update &amp;&amp; sudo apt upgrade -y Close and restart WSL sudo apt update &amp;&amp; sudo apt upgrade -y &amp;&amp; sudo apt autoremove -y Install CUDA for WSL check which CUDA version is compatible with the desired version NVHPC kit here select the correct CUDA version here Select the right setup: Linux -&gt; x86_64 -&gt; WSL-Ubuntu -&gt; 2.0 -&gt; dev (local) before beginning install, delete old GPG key sudo apt-key del 7fa2af80 Perform the install with code below: wget https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-wsl-ubuntu.pin sudo mv cuda-wsl-ubuntu.pin /etc/apt/preferences.d/cuda-repository-pin-600 wget https://developer.download.nvidia.com/compute/cuda/11.7.1/local_installers/cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb sudo dpkg -i cuda-repo-wsl-ubuntu-11-7-local_11.7.1-1_amd64.deb sudo cp /var/cuda-repo-wsl-ubuntu-11-7-local/cuda-*-keyring.gpg /usr/share/keyrings/ sudo apt-get update sudo apt-get -y install cuda Install NVHPC Download the desired NVHPC kit tar xzvf nvhpc*.tar.gz sudo nvhpc*/install Uninstalling NVHPC and CUDA # sudo rm /opt/nvidia/hpc_sdk sudo apt-get purge -y cuda &amp;&amp; sudo apt-get autoremove -y sudo rm /usr/share/keyrings/cuda-*-keyring.gpg sudo dpdkg -P cuda-repo-wsl-ubuntu-*-*-local_*amd64.deb You can then perform the installation steps again for the desired NVHPC-CUDA combination">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -18,14 +75,11 @@ Install the latest Windows CUDA graphics driver Install WSL2 open PowerShell as 
 <title>CUDA &#43; NVHPC on WSL | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+<link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
+  <script defer src="/worknotes/en.search.min.252e38082ab7cca3db437fb29a1b8a3534e775402223dd91ff513aa1ee15afb0.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
-
-  
-
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -90,8 +144,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle"  />
-    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+    <input type="checkbox" id="section-d75bf0277a78395058ee4f19eb9d8b34" class="toggle"  />
+    <label for="section-d75bf0277a78395058ee4f19eb9d8b34" class="flex justify-between">
       <a role="button" class="">Investigating Manual Vectorization for SPH</a>
     </label>
   
@@ -189,8 +243,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
-    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+    <input type="checkbox" id="section-82c659c7714fca9486231756ebb8db74" class="toggle"  />
+    <label for="section-82c659c7714fca9486231756ebb8db74" class="flex justify-between">
       <a role="button" class="">Useful code snippets</a>
     </label>
   
@@ -301,8 +355,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle" checked />
-    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+    <input type="checkbox" id="section-70035f3795255ae1e304b2577ac7a328" class="toggle" checked />
+    <label for="section-70035f3795255ae1e304b2577ac7a328" class="flex justify-between">
       <a role="button" class="">CUDA Programming</a>
     </label>
   
@@ -587,8 +641,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
-    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+    <input type="checkbox" id="section-87ae867329107c34e1f6caa377fccc2a" class="toggle"  />
+    <label for="section-87ae867329107c34e1f6caa377fccc2a" class="flex justify-between">
       <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
     </label>
   
@@ -647,8 +701,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle"  />
-    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+    <input type="checkbox" id="section-89270b1739b00fc57bd375e4e320a20e" class="toggle"  />
+    <label for="section-89270b1739b00fc57bd375e4e320a20e" class="flex justify-between">
       <a role="button" class="">Raspberry Pis</a>
     </label>
   

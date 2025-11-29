@@ -12,14 +12,14 @@
       <link>/worknotes/docs/f-cpp/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>/worknotes/docs/f-cpp/</guid>
-      <description>A Basic Comparison of C++ vs Fortran # I&amp;rsquo;m an avid user of Fortran and this is pretty well known in my team. I&amp;rsquo;m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it&amp;rsquo;s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al.</description>
+      <description>&lt;h1 id=&#34;a-basic-comparison-of-c-vs-fortran&#34;&gt;&#xA;  A Basic Comparison of C++ vs Fortran&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#a-basic-comparison-of-c-vs-fortran&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;I&amp;rsquo;m an avid user of Fortran and this is pretty well known in my team. I&amp;rsquo;m not particularly evangalistic about using&#xA;Fortran, but I do feel it has its place in modern programming, despite the fact that it&amp;rsquo;s one of the oldest programming&#xA;languages out there. This has kind of been echoed by other Fortran users. For example, in &#xA;  &lt;a href=&#34;https://arxiv.org/pdf/2301.02432.pdf&#34;&gt;Matsuoka et al. (2023)&lt;/a&gt;,&#xA;They declare that &amp;ldquo;Fortran is dead, long live the DSL!&amp;rdquo; is a HPC myth. They go on to explain that the high performance&#xA;of Fortran is not easily reproduced even in languages like C.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Coarray Fortran Things</title>
       <link>/worknotes/docs/caf/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>/worknotes/docs/caf/</guid>
-      <description>Coarray Fortran Things # ignoring the basics. Best tutorial to start with is this one. Basic, but couldn&amp;rsquo;t find very beginner friendly ones.&#xA;Install # OpenCoarrays is a library usable with gfortran and uses MPI 1-sided comms as the to perform the communications. install via linuxbrew or spack.&#xA;Intel compilers don&amp;rsquo;t rely on external libraries and should be ready to use coarrays with intel-MPI. It only requires compilation with -coarray option.</description>
+      <description>&lt;h1 id=&#34;coarray-fortran-things&#34;&gt;&#xA;  Coarray Fortran Things&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#coarray-fortran-things&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;p&gt;ignoring the basics. Best tutorial to start with is &#xA;  &lt;a href=&#34;https://github.com/tkoenig1/coarray-tutorial/blob/main/tutorial.md&#34;&gt;this one&lt;/a&gt;. Basic, but couldn&amp;rsquo;t find very beginner friendly ones.&lt;/p&gt;&#xA;&lt;h2 id=&#34;install&#34;&gt;&#xA;  Install&#xA;  &lt;a class=&#34;anchor&#34; href=&#34;#install&#34;&gt;#&lt;/a&gt;&#xA;&lt;/h2&gt;&#xA;&lt;p&gt;&#xA;  &lt;a href=&#34;http://www.opencoarrays.org/&#34;&gt;OpenCoarrays&lt;/a&gt; is a library usable with gfortran and uses MPI 1-sided comms as the to perform the communications. install via linuxbrew or spack.&lt;/p&gt;&#xA;&lt;p&gt;Intel compilers don&amp;rsquo;t rely on external libraries and should be ready to use coarrays with intel-MPI. It only requires compilation with &lt;code&gt;-coarray&lt;/code&gt; option.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

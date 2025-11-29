@@ -3,12 +3,21 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="A Basic Comparison of C&#43;&#43; vs Fortran # I&rsquo;m an avid user of Fortran and this is pretty well known in my team. I&rsquo;m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it&rsquo;s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al.">
+<meta name="description" content="
+  A Basic Comparison of C&#43;&#43; vs Fortran
+  #
+
+I&rsquo;m an avid user of Fortran and this is pretty well known in my team. I&rsquo;m not particularly evangalistic about using
+Fortran, but I do feel it has its place in modern programming, despite the fact that it&rsquo;s one of the oldest programming
+languages out there. This has kind of been echoed by other Fortran users. For example, in 
+  Matsuoka et al. (2023),
+They declare that &ldquo;Fortran is dead, long live the DSL!&rdquo; is a HPC myth. They go on to explain that the high performance
+of Fortran is not easily reproduced even in languages like C.">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="color-scheme" content="light dark"><meta property="og:url" content="/worknotes/docs/f-cpp/">
   <meta property="og:site_name" content="Ed&#39;s Space - Notes">
   <meta property="og:title" content="A Basic Comparison of C&#43;&#43; vs Fortran">
-  <meta property="og:description" content="A Basic Comparison of C&#43;&#43; vs Fortran # I’m an avid user of Fortran and this is pretty well known in my team. I’m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it’s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al.">
+  <meta property="og:description" content="A Basic Comparison of C&#43;&#43; vs Fortran # I’m an avid user of Fortran and this is pretty well known in my team. I’m not particularly evangalistic about using Fortran, but I do feel it has its place in modern programming, despite the fact that it’s one of the oldest programming languages out there. This has kind of been echoed by other Fortran users. For example, in Matsuoka et al. (2023), They declare that “Fortran is dead, long live the DSL!” is a HPC myth. They go on to explain that the high performance of Fortran is not easily reproduced even in languages like C.">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
@@ -16,14 +25,11 @@
 <title>A Basic Comparison of C&#43;&#43; vs Fortran | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
-<link rel="stylesheet" href="/worknotes/book.min.16fde4d05cd1cf758f445b62581a359a2b0aa3a8b1be4966bf73546658560a86.css" >
+<link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.068887f2151df6dff85804fb4ed9e0dd4484497a025b54ae51f42a43eec61995.js" ></script>
+  <script defer src="/worknotes/en.search.min.252e38082ab7cca3db437fb29a1b8a3534e775402223dd91ff513aa1ee15afb0.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
-
-  
-
 <!--
 Made with Book Theme
 https://github.com/alex-shpak/hugo-book
@@ -88,8 +94,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-66e324409520a0737bd43cc569874f83" class="toggle"  />
-    <label for="section-66e324409520a0737bd43cc569874f83" class="flex justify-between">
+    <input type="checkbox" id="section-d75bf0277a78395058ee4f19eb9d8b34" class="toggle"  />
+    <label for="section-d75bf0277a78395058ee4f19eb9d8b34" class="flex justify-between">
       <a role="button" class="">Investigating Manual Vectorization for SPH</a>
     </label>
   
@@ -187,8 +193,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-0a528f07e9a082a49af09fdd51803971" class="toggle"  />
-    <label for="section-0a528f07e9a082a49af09fdd51803971" class="flex justify-between">
+    <input type="checkbox" id="section-82c659c7714fca9486231756ebb8db74" class="toggle"  />
+    <label for="section-82c659c7714fca9486231756ebb8db74" class="flex justify-between">
       <a role="button" class="">Useful code snippets</a>
     </label>
   
@@ -299,8 +305,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-dd9822fd3605fad8b87900cb6ce57d44" class="toggle"  />
-    <label for="section-dd9822fd3605fad8b87900cb6ce57d44" class="flex justify-between">
+    <input type="checkbox" id="section-70035f3795255ae1e304b2577ac7a328" class="toggle"  />
+    <label for="section-70035f3795255ae1e304b2577ac7a328" class="flex justify-between">
       <a role="button" class="">CUDA Programming</a>
     </label>
   
@@ -585,8 +591,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="toggle"  />
-    <label for="section-60fac35d986ec8cfa3e69ae7d6bd89c7" class="flex justify-between">
+    <input type="checkbox" id="section-87ae867329107c34e1f6caa377fccc2a" class="toggle"  />
+    <label for="section-87ae867329107c34e1f6caa377fccc2a" class="flex justify-between">
       <a href="/worknotes/docs/cfdem/" class="">CFDEM</a>
     </label>
   
@@ -645,8 +651,8 @@ https://github.com/alex-shpak/hugo-book
   
 
   
-    <input type="checkbox" id="section-a7de28c45dd79595ad56b835eba0d6dc" class="toggle"  />
-    <label for="section-a7de28c45dd79595ad56b835eba0d6dc" class="flex justify-between">
+    <input type="checkbox" id="section-89270b1739b00fc57bd375e4e320a20e" class="toggle"  />
+    <label for="section-89270b1739b00fc57bd375e4e320a20e" class="flex justify-between">
       <a role="button" class="">Raspberry Pis</a>
     </label>
   
@@ -994,40 +1000,40 @@ reversed pair <code>(j, i)</code> doesn&rsquo;t exist.</p>
 <code>output_unit</code> (writing to <code>stdout</code>).</p>
 <p>When compiling and executing this code, the following times are:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.00351s</td>
-<td>0.00358s</td>
-<td>0.00143s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.15779s</td>
-<td>0.15726s</td>
-<td>0.05317s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>1.71186s</td>
-<td>1.75904s</td>
-<td>0.52538s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>9.71352s</td>
-<td>9.83662s</td>
-<td>2.91456s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.00351s</td>
+          <td>0.00358s</td>
+          <td>0.00143s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.15779s</td>
+          <td>0.15726s</td>
+          <td>0.05317s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>1.71186s</td>
+          <td>1.75904s</td>
+          <td>0.52538s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>9.71352s</td>
+          <td>9.83662s</td>
+          <td>2.91456s</td>
+      </tr>
+  </tbody>
 </table>
 <h2 id="c-version-1-a-vector-of-structures">
   C++ version 1: a vector of structures
@@ -1157,45 +1163,45 @@ distance.</li>
 </ul>
 <p>When compiling and executing this code, the following times are:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-<th><code>-fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.009426s</td>
-<td>0.008331s</td>
-<td>0.001344s</td>
-<td>0.009052s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.493711s</td>
-<td>0.51553s</td>
-<td>0.06409s</td>
-<td>0.528323s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>5.74999s</td>
-<td>6.02984s</td>
-<td>0.646653</td>
-<td>6.14586s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>32.4458s</td>
-<td>33.8446s</td>
-<td>3.45058s</td>
-<td>34.3546s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+          <th><code>-fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.009426s</td>
+          <td>0.008331s</td>
+          <td>0.001344s</td>
+          <td>0.009052s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.493711s</td>
+          <td>0.51553s</td>
+          <td>0.06409s</td>
+          <td>0.528323s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>5.74999s</td>
+          <td>6.02984s</td>
+          <td>0.646653</td>
+          <td>6.14586s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>32.4458s</td>
+          <td>33.8446s</td>
+          <td>3.45058s</td>
+          <td>34.3546s</td>
+      </tr>
+  </tbody>
 </table>
 <p>We can see that all but the aggressively optimised version of this code are disgustingly - over 3x the time taken for
 the default optimisations Fortran version! However, the aggressive compiler optimisations bring doown the run time
@@ -1216,45 +1222,45 @@ significantly - but still slower than the Fortran version.</p>
     (pos[i].x[2]-pos[j].x[2])*(pos[i].x[2]-pos[j].x[2]);
 </code></pre><p>Compiling this and running it we get:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-<th><code>-fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.017024s</td>
-<td>0.015104s</td>
-<td>0.001302s</td>
-<td>0.013916s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.7424s</td>
-<td>0.793698s</td>
-<td>0.065268s</td>
-<td>0.805783s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>8.92672s</td>
-<td>9.0975s</td>
-<td>0.590568s</td>
-<td>9.22796s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>50.4143s</td>
-<td>51.6696s</td>
-<td>3.20469s</td>
-<td>52.8981s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+          <th><code>-fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.017024s</td>
+          <td>0.015104s</td>
+          <td>0.001302s</td>
+          <td>0.013916s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.7424s</td>
+          <td>0.793698s</td>
+          <td>0.065268s</td>
+          <td>0.805783s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>8.92672s</td>
+          <td>9.0975s</td>
+          <td>0.590568s</td>
+          <td>9.22796s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>50.4143s</td>
+          <td>51.6696s</td>
+          <td>3.20469s</td>
+          <td>52.8981s</td>
+      </tr>
+  </tbody>
 </table>
 <p>And the aggressive optimisation version reduces in run time by about 10%, at the expense of all the other versions
 almost doubling! The code has also lost some flexibility in that the calculation of <code>r</code> no longer updates as we change
@@ -1306,45 +1312,45 @@ Google this to figure out that the 2D array would be passed as <code>double x[][
 the Learn C++ tutorial would have to be used if <code>dim</code> wasn&rsquo;t constant. Fortran wouldn&rsquo;t experience this problem.</p>
 <p>Compiling this and running, we get:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-<th><code>-fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.005682s</td>
-<td>0.006304s</td>
-<td>0.001652s</td>
-<td>0.005846s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.304066s</td>
-<td>0.314797s</td>
-<td>0.046719s</td>
-<td>0.322617s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>3.31205s</td>
-<td>3.53902s</td>
-<td>0.491014s</td>
-<td>3.55314s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>18.8977s</td>
-<td>19.5868s</td>
-<td>2.81262s</td>
-<td>19.5882s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+          <th><code>-fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.005682s</td>
+          <td>0.006304s</td>
+          <td>0.001652s</td>
+          <td>0.005846s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.304066s</td>
+          <td>0.314797s</td>
+          <td>0.046719s</td>
+          <td>0.322617s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>3.31205s</td>
+          <td>3.53902s</td>
+          <td>0.491014s</td>
+          <td>3.55314s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>18.8977s</td>
+          <td>19.5868s</td>
+          <td>2.81262s</td>
+          <td>19.5882s</td>
+      </tr>
+  </tbody>
 </table>
 <p>Which shows the aggressively optimised program is now faster than the Fortran version! However, the other versions are
 still much slower. I think <code>-O3</code> optimisation is safe for most applications, but this result is still meaningful as the
@@ -1375,45 +1381,45 @@ to avoid memory leaks. The definition of <code>x</code> in the <code>dsearch</co
 </span></span><span style="display:flex;"><span>             <span style="color:#204a87;font-weight:bold">int</span><span style="color:#ce5c00;font-weight:bold">&amp;</span> <span style="color:#000">niac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 </span></span></code></pre></div><p>Compiling and running:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-<th><code>-fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.006434s</td>
-<td>0.005638s</td>
-<td>0.001538s</td>
-<td>0.005885s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.295594s</td>
-<td>0.32687s</td>
-<td>0.057452s</td>
-<td>0.299215s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>3.29056s</td>
-<td>3.3863s</td>
-<td>0.58139s</td>
-<td>3.31922s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>18.6892s</td>
-<td>18.9621s</td>
-<td>3.03032s</td>
-<td>19.3092s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+          <th><code>-fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.006434s</td>
+          <td>0.005638s</td>
+          <td>0.001538s</td>
+          <td>0.005885s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.295594s</td>
+          <td>0.32687s</td>
+          <td>0.057452s</td>
+          <td>0.299215s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>3.29056s</td>
+          <td>3.3863s</td>
+          <td>0.58139s</td>
+          <td>3.31922s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>18.6892s</td>
+          <td>18.9621s</td>
+          <td>3.03032s</td>
+          <td>19.3092s</td>
+      </tr>
+  </tbody>
 </table>
 <p>And the speed of the aggresively optimised version has now dropped, although the less-optimised versions appear to have
 gotten faster than version 3a.</p>
@@ -1438,45 +1444,45 @@ freeing of this array is done by</p>
 beginner friendly from a conceptual standpoint.</p>
 <p>Now compiling and running:</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th>no flags</th>
-<th><code>-O0</code></th>
-<th><code>-O3</code></th>
-<th><code>-fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.005687s</td>
-<td>0.006379s</td>
-<td>0.001573s</td>
-<td>0.006154s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.294367s</td>
-<td>0.305595s</td>
-<td>0.052221s</td>
-<td>0.316611s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>3.17132s</td>
-<td>3.38158s</td>
-<td>0.537241s</td>
-<td>3.44193s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>18.5441s</td>
-<td>19.2792s</td>
-<td>2.84747s</td>
-<td>19.533s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th>no flags</th>
+          <th><code>-O0</code></th>
+          <th><code>-O3</code></th>
+          <th><code>-fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.005687s</td>
+          <td>0.006379s</td>
+          <td>0.001573s</td>
+          <td>0.006154s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.294367s</td>
+          <td>0.305595s</td>
+          <td>0.052221s</td>
+          <td>0.316611s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>3.17132s</td>
+          <td>3.38158s</td>
+          <td>0.537241s</td>
+          <td>3.44193s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>18.5441s</td>
+          <td>19.2792s</td>
+          <td>2.84747s</td>
+          <td>19.533s</td>
+      </tr>
+  </tbody>
 </table>
 <p>The aggresively optimised version is now about as fast as the Fortran version, which is faster than version 3b, but slower
 than 3a.</p>
@@ -1487,30 +1493,30 @@ than 3a.</p>
 <p>So far, the <code>-fstrict-aliasing</code> flag doesn&rsquo;t seem to make a difference when combined with the default optimisations. How
 about combining it with <code>-O3</code>?</p>
 <table>
-<thead>
-<tr>
-<th>no. of points</th>
-<th><code>-O3 -fstrict-aliasing</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1000</td>
-<td>0.00136s</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>0.052659s</td>
-</tr>
-<tr>
-<td>27000</td>
-<td>0.532555s</td>
-</tr>
-<tr>
-<td>64000</td>
-<td>2.8715s</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th>no. of points</th>
+          <th><code>-O3 -fstrict-aliasing</code></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>1000</td>
+          <td>0.00136s</td>
+      </tr>
+      <tr>
+          <td>8000</td>
+          <td>0.052659s</td>
+      </tr>
+      <tr>
+          <td>27000</td>
+          <td>0.532555s</td>
+      </tr>
+      <tr>
+          <td>64000</td>
+          <td>2.8715s</td>
+      </tr>
+  </tbody>
 </table>
 <p>Combining the <code>-fstrict-aliasing</code> with <code>-O3</code> doesn&rsquo;t seem to make a discernable difference, although it seems to slow
 down version 4 by a trivial amount - consistent with the other versions.</p>
