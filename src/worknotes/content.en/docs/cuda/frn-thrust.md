@@ -445,7 +445,10 @@ To test the performance we use the following test case:
 * positions already sent to GPU.
 * cutoff radius is 0.03 (3 times the average particle spacing).
 * run on an A100 PCIE
-* compiled with `nvcc -O3 --use_fast_math --extended-lambda --compiler-options "-march=native -mtune=native"` using CUDA 12.2 with `gcc` 11.2.0 used as the base.
+* compiled with `nvcc -O3 --use_fast_math --extended-lambda --compiler-options "-march=native -mtune=native"` using
+  CUDA 12.2 with `gcc` 11.2.0 used as the base.
+    * Latest CUDA at time of writing is 13.0 and latest gcc is 15.2. However, the CUDA drivers on the A100s I have
+      access to have been kept back to 12.2 for some reason.
 
 With 5 different randomly generated positions, time taken to generate pairs for these positions is approximately 70ms.
 Using the CPU on the node of the GPU (I think it's Intel Xeon Gold 5320), time to find the same pairs is around 2.27s -
@@ -492,6 +495,10 @@ in number of potential pairs. Increasing `cells_per_cutoff` to 3 gives a segment
 
 ### Timings on more NVIDIA GPUs
 
+I have access to a couple other NVIDIA GPU models: the 4060 on my laptop, and the V100 SXM2 available on Australia's
+national HPC. These are tested using the CUDA compatible with their driver versions (CUDA 13.0 for the laptop GPU and
+12.9 for the V100).
+
 `cells_per_cutoff = 1` (times in microseconds):
 
 | Test No. | RTX 4060 Laptop | V100 SXM2 |
@@ -526,7 +533,8 @@ hipcc test.cu
 ```
 
 Which compiles with O3 by default. The only code change I needed was to swap out `cudaDeviceSynchronize` with 
-`hipDeviceSynchronize`.
+`hipDeviceSynchronize` and remove the NVTX code. ROCm used here are 6.4.1 for the MI250X tests and 6.4.4 for the
+780m tests.
 
 `cells_per_cutoff = 1` (times in microseconds):
 

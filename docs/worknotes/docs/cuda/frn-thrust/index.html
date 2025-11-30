@@ -28,13 +28,13 @@ Why Thrust? # I would argue that there is a fairly strong incentive to make GPU-
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2025-12-01T09:07:33+11:00">
+    <meta property="article:modified_time" content="2025-12-01T09:11:30+11:00">
 <title>Fixed-Radius Neighbour Search Using Thrust | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.2040c0bff7b8fc7b698ccabb27ff04871436769b804175fbde404aa79367f6ac.js" ></script>
+  <script defer src="/worknotes/en.search.min.48eb540d192c9db780915c3ca5ce500743414d181ec846194664598f9897bdc2.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 <!--
@@ -1006,7 +1006,13 @@ with a <code>remove_if</code>:</p>
 <li>positions already sent to GPU.</li>
 <li>cutoff radius is 0.03 (3 times the average particle spacing).</li>
 <li>run on an A100 PCIE</li>
-<li>compiled with <code>nvcc -O3 --use_fast_math --extended-lambda --compiler-options &quot;-march=native -mtune=native&quot;</code> using CUDA 12.2 with <code>gcc</code> 11.2.0 used as the base.</li>
+<li>compiled with <code>nvcc -O3 --use_fast_math --extended-lambda --compiler-options &quot;-march=native -mtune=native&quot;</code> using
+CUDA 12.2 with <code>gcc</code> 11.2.0 used as the base.
+<ul>
+<li>Latest CUDA at time of writing is 13.0 and latest gcc is 15.2. However, the CUDA drivers on the A100s I have
+access to have been kept back to 12.2 for some reason.</li>
+</ul>
+</li>
 </ul>
 <p>With 5 different randomly generated positions, time taken to generate pairs for these positions is approximately 70ms.
 Using the CPU on the node of the GPU (I think it&rsquo;s Intel Xeon Gold 5320), time to find the same pairs is around 2.27s -
@@ -1115,6 +1121,9 @@ in number of potential pairs. Increasing <code>cells_per_cutoff</code> to 3 give
   Timings on more NVIDIA GPUs
   <a class="anchor" href="#timings-on-more-nvidia-gpus">#</a>
 </h3>
+<p>I have access to a couple other NVIDIA GPU models: the 4060 on my laptop, and the V100 SXM2 available on Australia&rsquo;s
+national HPC. These are tested using the CUDA compatible with their driver versions (CUDA 13.0 for the laptop GPU and
+12.9 for the V100).</p>
 <p><code>cells_per_cutoff = 1</code> (times in microseconds):</p>
 <table>
   <thead>
@@ -1200,7 +1209,8 @@ for <code>cells_per_cutoff = 2</code>.</p>
 <code>hipcc</code> and <code>rocthrust</code> installed. These came with the <code>rocm</code> debian package. The compilation command used was</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hipcc test.cu
 </span></span></code></pre></div><p>Which compiles with O3 by default. The only code change I needed was to swap out <code>cudaDeviceSynchronize</code> with
-<code>hipDeviceSynchronize</code>.</p>
+<code>hipDeviceSynchronize</code> and remove the NVTX code. ROCm used here are 6.4.1 for the MI250X tests and 6.4.4 for the
+780m tests.</p>
 <p><code>cells_per_cutoff = 1</code> (times in microseconds):</p>
 <table>
   <thead>
@@ -1753,7 +1763,7 @@ versions of these algorithms, but they performed
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/92345af3275e103fecb5a76c1b1802da96445644" title='Last modified by Edward Yang | December 1, 2025' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/4576878ab5269cc1a98e8acb9d21586910993df4" title='Last modified by Edward Yang | December 1, 2025' target="_blank" rel="noopener">
       <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
       <span>December 1, 2025</span>
     </a>
