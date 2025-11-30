@@ -28,13 +28,13 @@ Why Thrust? # I would argue that there is a fairly strong incentive to make GPU-
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
     <meta property="article:section" content="docs">
-    <meta property="article:modified_time" content="2024-02-25T21:53:33+11:00">
+    <meta property="article:modified_time" content="2025-12-01T09:07:33+11:00">
 <title>Fixed-Radius Neighbour Search Using Thrust | Ed&#39;s Space - Notes</title>
 <link rel="manifest" href="/worknotes/manifest.json">
 <link rel="icon" href="/worknotes/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="/worknotes/book.min.bbbc295605634a339d694e79de1f34bb64fb1413d11c2e8e1e95220e664378ee.css" >
   <script defer src="/worknotes/flexsearch.min.js"></script>
-  <script defer src="/worknotes/en.search.min.fd7f72fd9b58160070cc3403153f246ee8e2ae9aadc6126116d079145c8307a9.js" ></script>
+  <script defer src="/worknotes/en.search.min.2040c0bff7b8fc7b698ccabb27ff04871436769b804175fbde404aa79367f6ac.js" ></script>
 
   <script defer src="/worknotes/sw.min.97afbbb840f8817a158b86f13f6a071d4ddf793bff2b4832f0bea2832fcea52b.js" ></script>
 <!--
@@ -343,245 +343,6 @@ https://github.com/alex-shpak/hugo-book
   
     <a href="/worknotes/docs/cuda/frn-thrust/" class="active">Fixed-Radius Neighbour Search Using Thrust</a>
   
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/" class="">nvfortran and nvc&#43;&#43; reference codes</a>
-  
-
-          
-  <ul>
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/deviceQuery/" class="">deviceQuery</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/precision_m/" class="">precision_m</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/error/" class="">Error Handling</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/limitingFactor/" class="">limitingFactor</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/peakBandwidth/" class="">peakBandwidth</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/bandwidthTest/" class="">bandwidthTest</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/MemCpy/" class="">MemCpy</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/testAsync/" class="">testAsync</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/offsetNStride/" class="">offsetNStride</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/strideTexture/" class="">strideTexture</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/sharedExample/" class="">sharedExample</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/checkP2pAccess/" class="">checkP2PAccess</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/directTransfer/" class="">directTransfer</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/p2pBandwidth/" class="">p2pBandwidth</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/mpiDevices/" class="">mpiDevices</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/mpiDeviceUtil/" class="">mpiDeviceUtil</a>
-  
-
-        </li>
-      
-    
-      
-        <li>
-          
-  
-  
-
-  
-    <a href="/worknotes/docs/cuda/reference-codes/transposeMPI/" class="">transposeMPI</a>
-  
-
-        </li>
-      
-    
-  </ul>
 
         </li>
       
@@ -1437,7 +1198,7 @@ for <code>cells_per_cutoff = 2</code>.</p>
 </h3>
 <p>Getting the code to work with GPUs was fairly trivial. I only needed to make sure I had a working ROCm version with
 <code>hipcc</code> and <code>rocthrust</code> installed. These came with the <code>rocm</code> debian package. The compilation command used was</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hipcc test.cu
+<div class="highlight"><pre tabindex="0" style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>hipcc test.cu
 </span></span></code></pre></div><p>Which compiles with O3 by default. The only code change I needed was to swap out <code>cudaDeviceSynchronize</code> with
 <code>hipDeviceSynchronize</code>.</p>
 <p><code>cells_per_cutoff = 1</code> (times in microseconds):</p>
@@ -1992,9 +1753,9 @@ versions of these algorithms, but they performed
   <div class="flex flex-wrap justify-between">
 
 
-  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/5fdfe492e69a3e670d1111f7d8edd8afe90ec4f0" title='Last modified by Edward | February 25, 2024' target="_blank" rel="noopener">
+  <div><a class="flex align-center" href="https://github.com/edoyango/personal-webpage/commit/92345af3275e103fecb5a76c1b1802da96445644" title='Last modified by Edward Yang | December 1, 2025' target="_blank" rel="noopener">
       <img src="/worknotes/svg/calendar.svg" class="book-icon" alt="Calendar" />
-      <span>February 25, 2024</span>
+      <span>December 1, 2025</span>
     </a>
   </div>
 
