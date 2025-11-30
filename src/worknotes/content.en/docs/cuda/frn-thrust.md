@@ -521,7 +521,7 @@ for `cells_per_cutoff = 2`.
 Getting the code to work with GPUs was fairly trivial. I only needed to make sure I had a working ROCm version with
 `hipcc` and `rocthrust` installed. These came with the `rocm` debian package. The compilation command used was
 
-```bash
+```bash {style=tango}
 hipcc test.cu
 ```
 
