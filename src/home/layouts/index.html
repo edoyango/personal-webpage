@@ -1,9 +1,9 @@
 {{ define "main" }}
 
-	{{ partial "banner" site.Data.banner }}
-	{{ partial "spotlight" site.Data.trips }}
-	{{ partial "spotlight" site.Data.notes }}
-	{{ partial "spotlight" site.Data.docs }}
+	{{ partial "banner" hugo.Data.banner }}
+	{{ partial "spotlight" hugo.Data.trips }}
+	{{ partial "spotlight" hugo.Data.notes }}
+	{{ partial "spotlight" hugo.Data.docs }}
 	{{ partial "footer" . }}
 
 {{ end }}

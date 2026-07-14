@@ -1,7 +1,7 @@
-baseurl = "/trips"
+baseURL = "/trips"
 title = "Ed's Space - Trips"
 theme = "creative-portfolio"
-languageCode = "en-us"
+locale = "en-US"
 # Enable comments by entering your Disqus shortname
 disqusShortname = ""
 # Enable Google Analytics by entering your tracking code
@@ -58,3 +58,7 @@ googleAnalytics = ""
   email         = "edward_yang_125@hotmail.com"
   linkedin      = "https://www.linkedin.com/in/edward-yang-a0a9941b1/"
   github        = "https://github.com/edoyango/"
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

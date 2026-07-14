@@ -5,6 +5,7 @@
 title = "Edward Yang"
 copyright = "2023"
 theme = "hugo-story"
+locale = "en-US"
 
 ## -----------------------------------------------
 ## Publish
@@ -25,7 +26,7 @@ publishDir = "public"
 ## Hugo Built-in Features
 ## -----------------------------------------------
 
-disableKinds = ["taxonomy", "taxonomyTerm", "section"]
+disableKinds = ["taxonomy", "section"]
 # googleAnalytics = "G-XXXXXXXXXX"
 
 ## -----------------------------------------------
@@ -43,3 +44,7 @@ disableKinds = ["taxonomy", "taxonomyTerm", "section"]
   linkedin = "https://www.linkedin.com/in/edward-yang-a0a9941b1/"
 
 [Params.asset]
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

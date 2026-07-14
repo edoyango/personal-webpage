@@ -1,5 +1,5 @@
 baseURL: "/about/cv"
-languageCode: "en-us"
+locale: "en-US"
 title: "Resume | Edward Yang"
 disableKinds: ["taxonomy", "term", "page", "section", "RSS", "sitemap", "robotsTXT", "404"]
 theme: "resume-a4"
@@ -92,3 +92,7 @@ params:
         title: Website
         url: 'https://ed-yang.com'
         icon: fas fa-globe
+
+caches:
+  images:
+    dir: ":cacheDir/images"

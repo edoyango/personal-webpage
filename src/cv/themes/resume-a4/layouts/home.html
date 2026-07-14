@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}"><!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale }}"><!DOCTYPE html>
 
 <head>
 	<meta charset="utf-8">
@@ -23,20 +23,20 @@
 	<main class="paper">
 		<div class="grid">
 			<header class="flex-row">
-				{{ partial "header" (dict "Header" .Site.Params.header "Data" .Site.Data "useFontAwesome" .Site.Params.useFontAwesome) }}
+				{{ partial "header" (dict "Header" .Site.Params.header "Data" hugo.Data "useFontAwesome" .Site.Params.useFontAwesome) }}
 			</header>
 
 			{{ range first 1 .Site.Params.pages }}
 			<div class="left-column">
 				{{ range .features }}
-					{{ partial "section" (dict "Feature" . "Data" $.Site.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
+					{{ partial "section" (dict "Feature" . "Data" hugo.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
 				{{ end }}
 			</div>
 			{{ end }}
 
 			<div class="right-column">
 				{{ range .Site.Params.side }}
-					{{ partial "section" (dict "Feature" . "Data" $.Site.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
+					{{ partial "section" (dict "Feature" . "Data" hugo.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
 				{{ end }}
 			</div>
 		</div>
@@ -45,7 +45,7 @@
 	{{ range after 1 .Site.Params.pages }}
 	<article class="paper">
 		{{ range .features }}
-			{{ partial "section" (dict "Feature" . "Data" $.Site.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
+			{{ partial "section" (dict "Feature" . "Data" hugo.Data "useFontAwesome" $.Site.Params.useFontAwesome) }}
 		{{ end }}
 	</article>
 	{{ end }}

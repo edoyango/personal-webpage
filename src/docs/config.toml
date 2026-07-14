@@ -22,7 +22,8 @@ enableGitInfo = true
 # And https://gohugo.io/content-management/multilingual/#translation-by-content-directory
 [languages]
 [languages.en]
-  languageName = 'English'
+  label = 'English'
+  locale = 'en-US'
   contentDir = 'content.en'
   weight = 1
 
@@ -101,3 +102,7 @@ enableGitInfo = true
   # /!\ This is an experimental feature, might be removed or changed at any time
   # (Optional, experimental, default false) Enables a drop-down menu for translations only if a translation is present.
   BookTranslatedOnly = false
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'

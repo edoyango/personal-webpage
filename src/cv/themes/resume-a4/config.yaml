@@ -1,5 +1,5 @@
 baseURL: "/"
-languageCode: "en-us"
+locale: "en-US"
 title: "Resume | MERT BAKIR"
 disableKinds: ["taxonomy", "term", "page", "section", "RSS", "sitemap", "robotsTXT", "404"]
 theme: "resume-a4"
