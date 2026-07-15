@@ -10,7 +10,7 @@ weight: 5
 So far, the speedup demonstrated from the [fixed-cutoff cell-lists pair search algorithm](grid-rows-spatial-hashing.md)
 is pretty great. One last change we can make to improve things, is to remove any `if` statements when searching adjacent
 cells. `if`'s are undesirable because they introduce [branching](https://en.wikipedia.org/wiki/Branch_(computer_science))
-and harms performance. I've found that it can be beneficial to remove `if` statements, even if it means a bit more
+and harm performance. I've found that it can be beneficial to remove `if` statements, even if it means a bit more
 computation/assignments are performed. 
 
 The below code is the `update_pair_list` function from the code [shown previously](grid-rows-spatial-hashing.md), except
@@ -27,7 +27,7 @@ The speedup observed with `-O3` compilation is about 1.2x over the [previous ver
 ## Code (Fortran)
 
 Use the same `sort.cpp` code as previously and update the `update_pair_list` function as per the code below. Save the
-code as `cll4.cpp` and compile with:
+code as `cll4.F90` and compile with:
 
 ```bash {linenos=false,style=tango}
 g++ -c sort.cpp

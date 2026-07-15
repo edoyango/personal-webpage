@@ -33,7 +33,7 @@ cells. This reduces the search space from 9 cells, to 5 cells in 2D; and 27 cell
 *The coverage still contains the cells with particles, and the only cells missed are empty buffer cells.*
 
 The code below copies the setup code from the naive implementation, but makes modifications to reduce the
-search space. Note the introduction of the `idxs` parameter array used to selectively loop through adjacent
+search space. Note the introduction of the `sweep_idxs` parameter array used to selectively loop through adjacent
 cells.
 
 ### Additional notes

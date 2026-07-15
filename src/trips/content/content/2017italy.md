@@ -23,7 +23,7 @@ Rome is definitely a must go at some stage in your travelling life, but no more 
 
 Florence was located only a 30min train ride from Prato, where I would be attending classes. Prato is a small city outside of Florence with few tourist attractions, whereas Florence is a tourist hot spot with beautiful architecture and nice stores. Staying in Florence sounded like a good idea, and it did pay off at first, but living in a tourist hotspot wore off after a few days...
 
-Great place to visit as a tourist, but I wouldnt' spend more than 5 days, which I would say is already pushing it... It probably doesn't need a second visit either.
+Great place to visit as a tourist, but I wouldn't spend more than 5 days, which I would say is already pushing it... It probably doesn't need a second visit either.
 
 ![](/trips/img/trips-italy/DSC_0016.jpeg "gallery")
 ![](/trips/img/trips-italy/DSC_0018.jpeg "gallery")
@@ -55,11 +55,11 @@ I took 10 days (9 nights) which is 1 less day than commonly recommended by guide
 **See [this page](/trips/content/2017tmb-packing) for details on how I prepared and what to expect from the trip.**
 
 #### Day 1: Courmayeur -> Rifugio Bonatti (Stage 5)
-Courmayeur is very well-signed, so it did'nt take long to find my start of the TMB. Almost immediately after I leave the town, I'm greeted by views of the massif, which remain in view for a short while before I enter forested areas. This day ended up being the hardest of the entire trip because I had minimal food and sleep in the 24 hours leading up to it (for various reasons).
+Courmayeur is very well-signed, so it didn't take long to find my start of the TMB. Almost immediately after I leave the town, I'm greeted by views of the massif, which remain in view for a short while before I enter forested areas. This day ended up being the hardest of the entire trip because I had minimal food and sleep in the 24 hours leading up to it (for various reasons).
 
 After about 1.5h from Courmayeur, I arrived at Rifugio Bertone, took a break and had a beer in true European fashion. I took the harder route of the two the guidebook recommended, which offered better views, but man was it steep!
 
-My stay at the Bonatti refuge was pretty comfortable. They served a four-course dinner with a salad entree, pasta, something made from zucchini, and some tart thing for dessert. I weirded out the dutch guys sitting next to me because of how much pasta I was eating. As I got up to get my third bowl of pasta, one of the guys asked me: "hey you know there's another dish after this?". I responded with a nervous laugh and "Yeah, I know".
+My stay at the Bonatti refuge was pretty comfortable. They served a four-course dinner with a salad entree, pasta, something made from zucchini, and some tart thing for dessert. I weirded out the Dutch guys sitting next to me because of how much pasta I was eating. As I got up to get my third bowl of pasta, one of the guys asked me: "hey you know there's another dish after this?". I responded with a nervous laugh and "Yeah, I know".
 
 ![](/trips/img/trips-italy/tmb/1/DSC_0006.jpeg "gallery")
 ![](/trips/img/trips-italy/tmb/1/DSC_0033.jpeg "gallery")
@@ -101,7 +101,7 @@ Eventually I round a bend bringing the Fenetre d'Arpette into view. The track di
 
 The descent was long and constant. I wished that I had poles to use to save my knees. A couple hours after starting the descent, I reached the Chalet du Glacier and got a salad for lunch that tasted pretty awesome (loving Swiss food).
 
-Departing from the chalet, I took a half-hour walk to Col de la Forclaz where there was a hotel with restaurant attached. I had a coffee and ice-cream before checking into the hotel (I didn't book this one in advance). Dinner itself was alright. We started off with vegetable soup which was pretty good; then got chicken, veges, and chips; and finally ice-cream for dessert. During dinner I chatted with a trio of sisters form Melbourne. Before sleeping, I had a short chat with a Chinese guy who was completing the TMB in a trio.
+Departing from the chalet, I took a half-hour walk to Col de la Forclaz where there was a hotel with restaurant attached. I had a coffee and ice-cream before checking into the hotel (I didn't book this one in advance). Dinner itself was alright. We started off with vegetable soup which was pretty good; then got chicken, veges, and chips; and finally ice-cream for dessert. During dinner I chatted with a trio of sisters from Melbourne. Before sleeping, I had a short chat with a Chinese guy who was completing the TMB in a trio.
 
 ![](/trips/img/trips-italy/tmb/4/DSC_0329.jpeg "gallery")
 ![](/trips/img/trips-italy/tmb/4/DSC_0344.jpeg "gallery")
@@ -110,9 +110,9 @@ Departing from the chalet, I took a half-hour walk to Col de la Forclaz where th
 #### Day 5: Col de la Forclaz -> Tre-le-Champ (Stage 9)
 The first half an hour of the hike goes back on what I covered yesterday until the Chalet du Glacier. I eventually made my first stop at Refuge les Grands. It's a small hut type thing that only provides accommodation and refreshment. It was manned by a French-Swiss lady who I chatted with for a bit while I had a lemonade. 1.5h later, I approached the Col de Balme, which had a refuge manned by an old lady who couldn't speak English and her grandkids. Passing the Col is France.
 
-The guidebook offers a good and bad-weather alternatives. Although the lady from before warned me of bad weather, I decided to take the good-weather alternative along the high-route. The high-route took me under a series of ski-lifts and offered pretty good views of the valley below. Shortly after, I reached Col des Posettes before starting the ascent to Aiguillette des Posettes. After desending, I eventually got to Tre-le-Champ: A small town with only a handful of houses. I had booked in advance for a stay in the dorm room.
+The guidebook offers a good and bad-weather alternatives. Although the lady from before warned me of bad weather, I decided to take the good-weather alternative along the high-route. The high-route took me under a series of ski-lifts and offered pretty good views of the valley below. Shortly after, I reached Col des Posettes before starting the ascent to Aiguillette des Posettes. After descending, I eventually got to Tre-le-Champ: A small town with only a handful of houses. I had booked in advance for a stay in the dorm room.
 
-For dinner, I was chucked on a table with a french faily who didn't speak any English. The dad could speak a little English. But I tried to interact with the family as well as I could non-verbally. The mum was doting and kept offering me food and asking me (in french) if I thought the food was good. The food itself was great. We started off with a simple mixed salad, and moved onto a penne carbonara. Dessert was unsweetened yoghurt - you're supposed to add the sugar yourself.
+For dinner, I was chucked on a table with a French family who didn't speak any English. The dad could speak a little English. But I tried to interact with the family as well as I could non-verbally. The mum was doting and kept offering me food and asking me (in french) if I thought the food was good. The food itself was great. We started off with a simple mixed salad, and moved onto a penne carbonara. Dessert was unsweetened yoghurt - you're supposed to add the sugar yourself.
 
 ![](/trips/img/trips-italy/tmb/5/DSC_0419.jpeg "gallery")
 ![](/trips/img/trips-italy/tmb/5/DSC_0467.jpeg "gallery")
@@ -123,9 +123,9 @@ I got up pretty early - way before breakfast time. I spent my time hanging out w
 
 Today I was taking another variant route that goes up to Lac Blanc (Lake Blanc). The path turns into a series of ladders and metal steps hammered into the rock, which was good since my legs were cooked, and I could use my arms more.
 
-I took a dip in Lac de Cheserys which precedes Lac Blanc by around 30mins. Lac Blanc intself was a beautiful torquiose and the water was freezing - probably because it originates from glaciel melt.
+I took a dip in Lac de Cheserys which precedes Lac Blanc by around 30mins. Lac Blanc itself was a beautiful turquoise and the water was freezing - probably because it originates from glacial melt.
 
-The descent to down from the lake to Refuge La Flegere shares the route from the cable-car from Chamonix to the lake. It was a little boring, but offered consistent views of the Mont Blanc Massif. At the refuge, I found it pretty cold, so I hung out inside while others seemed comfortable on the deck chairs outside
+The descent to down from the lake to Refuge La Flegere shares the route from the cable-car from Chamonix to the lake. It was a little boring, but offered consistent views of the Mont Blanc Massif. At the refuge, I found it pretty cold, so I hung out inside while others seemed comfortable on the deck chairs outside.
 
 Everyone at dinner was French for some reason, with the exception of an American couple who were seated on their own in the dining hall. My whole table didn't seem interested in talking with me :(.
 
@@ -134,17 +134,17 @@ Everyone at dinner was French for some reason, with the exception of an American
 ![](/trips/img/trips-italy/tmb/6/DSC_0616.jpeg "gallery")
 
 #### Day 7: La Flegere -> Les Houches (Stage 11)
-Today I left early to skip the crowds. I was expecting about 6.5h of hiking. The track took me along the side of the mountain, through grassy fields and wooded areas. It had rained in the morning and the clouds gave the mountaiside a mysterious look. Large swathes of the mountainside had been converted to skii resorts.
+Today I left early to skip the crowds. I was expecting about 6.5h of hiking. The track took me along the side of the mountain, through grassy fields and wooded areas. It had rained in the morning and the clouds gave the mountainside a mysterious look. Large swathes of the mountainside had been converted to ski resorts.
 
 A checkpoint for today was Col Brevent. I missed signage for the col and took a 2h round-trip detour and reached Col Cornu by accident! After finding my way back to Plan Praz and finding the correct track, I made a steep climb up to Col Brevent. My next stop was Le Brevent, about an hour away.
 
-The trail was pretty fun. I had to navigate over and around rocks and climb ladders. I saw a pair of Ibex that let me get pretty close! Le Brevent is pretty touristy as there's a cable-car station that ferry's people to and from Chamonix. There's a restaurant with wonderful views of the Mont Blanc Massif and that hangs over the cliff edge.
+The trail was pretty fun. I had to navigate over and around rocks and climb ladders. I saw a pair of Ibex that let me get pretty close! Le Brevent is pretty touristy as there's a cable-car station that ferries people to and from Chamonix. There's a restaurant with wonderful views of the Mont Blanc Massif and that hangs over the cliff edge.
 
-For lunch, I ate at the restaurant at Le Brevent. The English translation had steak in it, but it was sort of like raw beef patties mixed with some sort of salsa-like mixture. It was pretty odd, but tasted ok. The descent from Le Brevent was pretty brutal. About 1.6km decent down into Les Houches.
+For lunch, I ate at the restaurant at Le Brevent. The English translation had steak in it, but it was sort of like raw beef patties mixed with some sort of salsa-like mixture. It was pretty odd, but tasted ok. The descent from Le Brevent was pretty brutal. About 1.6km descent down into Les Houches.
 
-I got lost a couple times and took an hour longer to get to Les Houches. I arrived hungry, exhausted, and grumpy. I decided on Chalet-Refuge Michel Fagot for my accomodation, which was described as a low-cost accommodation option in the guidebook. At Chalet-Refuge, I ran into that guy from the Netherlands I met in Tre-le-Champ. We chatted until dinner.
+I got lost a couple times and took an hour longer to get to Les Houches. I arrived hungry, exhausted, and grumpy. I decided on Chalet-Refuge Michel Fagot for my accommodation, which was described as a low-cost accommodation option in the guidebook. At Chalet-Refuge, I ran into that guy from the Netherlands I met in Tre-le-Champ. We chatted until dinner.
 
-We continued chatting through dinner, also joined by a Canadian couple. Dinner didn't feel like it was enough. This place was the first on my trip to have a stable internet connectino, so I stayed up late to do uni work (fun I know).
+We continued chatting through dinner, also joined by a Canadian couple. Dinner didn't feel like it was enough. This place was the first on my trip to have a stable internet connection, so I stayed up late to do uni work (fun I know).
 
 ![](/trips/img/trips-italy/tmb/7/DSC_0069.jpeg "gallery")
 ![](/trips/img/trips-italy/tmb/7/DSC_0124.jpeg "gallery")
@@ -153,9 +153,9 @@ We continued chatting through dinner, also joined by a Canadian couple. Dinner d
 #### Day 8: Les Houces -> Les Contamines (Stage 1)
 I started the morning petting the resident dog. Breakfast bread with spread. Not many options. I didn't end up eating heaps. Today I planned on taking the high route alternative that goes through Col de Tricot. It's pretty long and is expected to take 7.5h of hiking. Once I gained a bit of altitude I was given pretty good morning views of the valley.
 
-About a kilometer from the Col de Tricot, I started to feel exhausted and struggle to reach the col. I got a view of the valley below where I could see my next stop - Refuge de Miage. The way down to the refuge was very windy and very steep. I really begun to feel exhausted. After about the first hundred meters down, I felt light-headed and breaked frequently. Eventually, I asked an older fella for water. The water made me feel well enough to get to the Refuge. I really needed food.
+About a kilometer from the Col de Tricot, I started to feel exhausted and struggled to reach the col. I got a view of the valley below where I could see my next stop - Refuge de Miage. The way down to the refuge was very windy and very steep. I really begun to feel exhausted. After about the first hundred meters down, I felt light-headed and breaked frequently. Eventually, I asked an older fella for water. The water made me feel well enough to get to the Refuge. I really needed food.
 
-Once I got to the Refuge I immediately went to find a seat. I ordered a cider, a salad, and a mixed platter of cheese, potatoes, and cured meats. The waitress thought that I couldn't eat it all. I immediately fell asleep after she took my order and was woken by a different waittress with my food. She looked confused when she realised the food was just for me. I continued onward after feeling much better from having food and and a nap.
+Once I got to the Refuge I immediately went to find a seat. I ordered a cider, a salad, and a mixed platter of cheese, potatoes, and cured meats. The waitress thought that I couldn't eat it all. I immediately fell asleep after she took my order and was woken by a different waitress with my food. She looked confused when she realised the food was just for me. I continued onward after feeling much better from having food and a nap.
 
 After a short, but steep ascent, I reached Auberge du Truc, a family run refuge. The descent was along gravel roads and forested areas. Les Contamines had a long list of accommodation, so I didn't bother booking any beforehand. I first tried Le Christiania Hotel because it had a sauna and spa. Unfortunately it was fully booked. The receptionist called around on my behalf to find accommodation. After a few calls, to much relief, she found a spot for me in Hotel la Clef des Champs.
 
@@ -169,17 +169,17 @@ I sat alone for dinner, so I spent it reading. Dinner was great though. Nice veg
 
 Today's destination was originally intended to be Refuge Motet, about 8h from Les Contamines. But, it was full, so I instead reserved a spot in Rifugio Elisabetta, which is 11h away 😫. I made sure to start my day with heaps of food. In addition to the length of the climb, there was a significant amount of vertical distance to cover as well.
 
-The start of the hike was not bad. It was mostly level which developed into some parts with steep inclines, but I didn't struggle through them. The hike is pretty pleasant taking me through forested areas and passing a couple refuges. I took a break at Rifuge de la Balme and had a basic sandwich. Here I met the guy who gave me a sip of his water yesterday and we joke a around a bit. After my break, I make a comfortable ascent toward Col de la Croix, the point where the alternative track breaks away from the main track.
+The start of the hike was not bad. It was mostly level which developed into some parts with steep inclines, but I didn't struggle through them. The hike is pretty pleasant taking me through forested areas and passing a couple refuges. I took a break at Rifuge de la Balme and had a basic sandwich. Here I met the guy who gave me a sip of his water yesterday and we joked around a bit. After my break, I made a comfortable ascent toward Col de la Croix, the point where the alternative track breaks away from the main track.
 
-I didn't take a break at the Col de la Croix like other were since it was pretty windy. I moved straight on toward Col de Fours. The ascent was pretty comfortable. The trail to Col de Fours had bits of snow along it. It was pretty hard and slippery, so not that great to play with. Once I reached Col de Fours, I decided to go to the peak about 40 minutes round-trip off the trail that others had recommended that I do.
+I didn't take a break at the Col de la Croix like others were since it was pretty windy. I moved straight on toward Col de Fours. The ascent was pretty comfortable. The trail to Col de Fours had bits of snow along it. It was pretty hard and slippery, so not that great to play with. Once I reached Col de Fours, I decided to go to the peak about 40 minutes round-trip off the trail that others had recommended that I do.
 
-I met up with an American guy shortly after the peak and descended down with him. We crossed the stream at the bottom of the valley and took a short walk to Rifugio Mortet, where I meat his crew of 3. I ordered a crepe and beer to sustain me for the last 3 hours of my journey to Rifugio Elisabetta.
+I met up with an American guy shortly after the peak and descended down with him. We crossed the stream at the bottom of the valley and took a short walk to Rifugio Mortet, where I met his crew of 3. I ordered a crepe and beer to sustain me for the last 3 hours of my journey to Rifugio Elisabetta.
 
 Before reaching Rifugio Elisabetta, I had to cross the Col de la Seigne. A storm had started halfway up and continued to get rougher. Once I reached the Col de la Seigne, the wind got really strong.
 
 The descent from Col de la Seigne was not bad. But then the rain got heavier. The lightning got closer. The rain then turned to hail. The lightning got even closer. I hid behind a rock formation so that I wouldn't get pelted by the hail. I waited for the hail to stop before moving on. The rain however, continued and remained heavy. I power-walked the last hour to Elisabetta.
 
-I arrived at Elisabetta at 7:15 and was absolutely soaked. I sat down for dinner with two brothers who could speak a bit of English. We chatted for a bit, but they're English wasn't great, and of course I don't know any French, so conversation was quite limited. We had risotto (I had 3 bowls), corned beef with steamed veges, and some sort of pudding with mousse. The dorms were pretty weird. It was like 3 levels of bunk beds, but each mattress was laid next to each other with like 10 mattresses on each level. It was preeeetty weird. Thankfully I got a mattress with empty mattresses on either side.
+I arrived at Elisabetta at 7:15 and was absolutely soaked. I sat down for dinner with two brothers who could speak a bit of English. We chatted for a bit, but their English wasn't great, and of course I don't know any French, so conversation was quite limited. We had risotto (I had 3 bowls), corned beef with steamed veges, and some sort of pudding with mousse. The dorms were pretty weird. It was like 3 levels of bunk beds, but each mattress was laid next to each other with like 10 mattresses on each level. It was preeeetty weird. Thankfully I got a mattress with empty mattresses on either side.
 
 I went to bed after having a short conversation with an American girl who was also travelling solo.
 

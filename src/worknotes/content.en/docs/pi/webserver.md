@@ -5,7 +5,7 @@ weight: 1
 
 # Setting Up Public Webserver on Raspberry Pi
 
-The instructions here assumes you're using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OS' are largely similar though. The main difference will be the packages and package managers, and the firewall tool.
+The instructions here assume you're using Raspberry Pi Lite as the OS on the Raspberry Pi. Other OSes are largely similar though. The main difference will be the packages and package managers, and the firewall tool.
 
 * Setup the pi to host the server
     1. Flash disk with raspberry pi lite. Insert disk into pi and power them on.
@@ -33,15 +33,15 @@ The instructions here assumes you're using Raspberry Pi Lite as the OS on the Ra
             	    inet6 fe80::9a0:b632:2b19:bb89/64 scope link
             	       valid_lft forever preferred_lft forever
 
-        and the MAC address is the first address following `link/ether` for the interface you're using. If the Raspberry Pi is connected to the router via WiFi, then you use the `wlan` address. If connected via ethernet cable, then you use the `eth0` address. In the above example, I used the address `b8:27:eb:71:9e:cd`, because my Pi is connected to the router via Wifi. We use this MAC address to link the physical device to an IP address in the next step.
+        and the MAC address is the first address following `link/ether` for the interface you're using. If the Raspberry Pi is connected to the router via WiFi, then you use the `wlan` address. If connected via ethernet cable, then you use the `eth0` address. In the above example, I used the address `b8:27:eb:71:9e:cd`, because my Pi is connected to the router via WiFi. We use this MAC address to link the physical device to an IP address in the next step.
     2. On the router:
-        1. Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. To do this on my routher (TP-Link AC1200), I browsed to `http://192.168.0.1`, signed in, and then went to "IP & MAC Binding" → "Binding Settings" → "Add New" and enter the MAC address collected from above and the desired IP to bind it to.
-        2. Setup port forwarding to forward packages to port 22, 80, 443, and 8443 to the IP address you've assigned the pi in the previous step. On my router, I navigated to "Forwarding" → "Virtual Server" → "Add New". This step forward incoming requests matching those ports, to the Raspberry Pi.
+        1. Assign a static IP address to the Pi. Instructions are readily available online for most manufacturers. To do this on my router (TP-Link AC1200), I browsed to `http://192.168.0.1`, signed in, and then went to "IP & MAC Binding" → "Binding Settings" → "Add New" and entered the MAC address collected from above and the desired IP to bind it to.
+        2. Setup port forwarding to forward packets to port 22, 80, 443, and 8443 to the IP address you've assigned the pi in the previous step. On my router, I navigated to "Forwarding" → "Virtual Server" → "Add New". This step forwards incoming requests matching those ports, to the Raspberry Pi.
         3. Test the setup. While on a machine connected to the router, you can test ssh and http connection from the command line with `ssh pi@<ip-address>` and `curl http://<ip-address>`.
         4. You can also check http by entering the URL into your web browser: `http://<ip-address>`. Note that `<ip-address>` is the static IP address you assigned to the Pi on the router. 
     3. Sign an SSL certificate to enable HTTPS connections. This requires signing an SSL certificate. There are many paid services out there, but the free [Let's Encrypt](https://letsencrypt.org/) SSL certificate signing service is the best option (because it's free). Using the automatic cert-bot option should be fine ([instructions for Ubuntu](https://certbot.eff.org/instructions?ws=apache&os=ubuntufocal)). You can test that the signed certificate works, by navigating to the Pi web server in a browser on another device i.e., `https://<ip-address>` (note the "s").
 * Get your ISP to open ports 22, 80, 443, and 8443 to your house. I had to send an online request to them and they followed up with me on the phone. Some ISPs may not be blocking any ports either.
-* Purchase a domain and setup [resource records](https://support.google.com/domains/answer/3290350) so that the domain points your IP address. I setup:
+* Purchase a domain and setup [resource records](https://support.google.com/domains/answer/3290350) so that the domain points to your IP address. I setup:
 
         Host Name	Type	TTL		Data
         ed-yang.com	A	10 minutes	<my IP>
@@ -58,7 +58,7 @@ You then need to setup `systemd` so the Apache web server package will work prop
         [boot]
         systemd=true
 
-2. Restart WSL by exiting WSL, opening a powershell terminal as administrator, and running the command `wsl --shutdown`. After doing so, `systemd` should be running!
+2. Restart WSL by exiting WSL, opening a PowerShell terminal as administrator, and running the command `wsl --shutdown`. After doing so, `systemd` should be running!
 
 You can now go ahead and install the Apache web server packages:
 

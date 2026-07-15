@@ -14,17 +14,17 @@ but my main constraint was that I didn't have any machines that were a good (and
 videos. This was mainly because inference on GPUs was fairly resource intensive and we needed the GPUs for other daily
 resource-intensive use cases like gaming, work, or image/video editing. 
 
-So at first, I was recording webcam videos of our verandah, uploading them to google drive, downloading them to the HPC
+So at first, I was recording webcam videos of our verandah, uploading them to Google Drive, downloading them to the HPC
 I had at work, and then processing them using the under-utilized GPUs on the HPC. This worked pretty well - except that
-I changed job, and no longer have access to free and available GPU compute. So what was I to do!
+I changed jobs, and no longer have access to free and available GPU compute. So what was I to do!
 
 I knew that the [RK1](https://turingpi.com/product/turing-rk1) chips existed which used the RK3588 chip, which had an
 NPU built into it. From searching the web, I discovered that the RockChip NPU supported many object detection 
 frameworks - including all the recent YOLO frameworks (see the 
 [RKNN model zoo](https://github.com/airockchip/rknn_model_zoo))! My original expectation was that I would buy three RK1
 modules - two to perform object detection and the third for any peripheral needs like work management, post-processing,
-file upload/download etc. So, **The Orange pi 5 Pro was originally intended for testing before I got multiple RK1 
-modules, but turns out the lone SBC was enough!** This turned out to be because the NPU has 3 cores, so I can
+file upload/download etc. So, **The Orange Pi 5 Pro was originally intended for testing before I got multiple RK1 
+modules, but it turns out the lone SBC was enough!** This turned out to be because the NPU has 3 cores, so I can
 perform inference on multiple video feeds, and the hardware accelerated FFMPEG encoding is very fast!
 
 Here's an example GIF of the output (compressed in a few ways):
@@ -39,7 +39,7 @@ The core objective was to **perform real-time object detection on two webcam vid
 this meant I needed the setup to be able to:
 
 1. Perform inference on the video feeds at a resolution of 704x396 @ 10fps using a medium sized YOLO model
-2. save and encode/compress bird-containing segments of the video feed
+2. Save and encode/compress bird-containing segments of the video feed
 
 704x396 resolution and medium model were chosen by experimenting and finding a balance between speed and accuracy. The 
 cameras could record at over 30 FPS, but 10 FPS was chosen as it reduced storage space significantly (videos were being 
@@ -85,7 +85,7 @@ partition. I also repurposed an old external hard drive to store the recorded vi
 
 ### A note about training
 
-Training cannot be done on the NPU, so you'll need to have seperate hardware to perform the model training.
+Training cannot be done on the NPU, so you'll need to have separate hardware to perform the model training.
 
 ## Software Setup
 
@@ -96,7 +96,7 @@ Unfortunately, unlike the Raspberry Pi, I couldn't find a way to pre-configure t
 the screen and keyboard plugged in. Note that the default user and password is `orangepi`. The image does come with the 
 `orangepi-config` utility which makes connecting to the WiFi *a little* easier.
 
-Once your internet is setup and you've confirmed you can 
+Once your internet is set up and you've confirmed you can connect to it, move on to updating the drivers below.
 
 ### Update drivers
 
@@ -158,9 +158,9 @@ RKNN-toolkit into your environment.
 Training a new model can be done by using [RKNN's customized fork of YOLOv5](https://github.com/airockchip/yolov5). I 
 personally use Roboflow to label my images. If using Roboflow, make sure that the directory structure and annotations 
 are compatible with the YOLOv5 format. In Roboflow, this is an option that you can choose when downloading your dataset. 
-Note you cannot practically do training on the NPU, so as mentioned, you'll need seperate hardware to perform training.
+Note you cannot practically do training on the NPU, so as mentioned, you'll need separate hardware to perform training.
 
-The instructions below you have an NVIDIA or AMD GPU installed in the appropriate manner for your hardware.
+The instructions below assume you have an NVIDIA or AMD GPU installed in the appropriate manner for your hardware.
 
 ```bash {style=tango,linenos=false}
 # Get the customized YOLOv5 repository
@@ -242,7 +242,7 @@ accelerate.
 ### Other improvements to performance
 
 There are two performance improvements that aren't well documented, that may be good for your use case: batch inference, 
-and  multi-core inference.
+and multi-core inference.
 
 #### Batch inference
 
@@ -263,12 +263,12 @@ needs to be changed so that batches are passed to the pre-processing step, the m
 
 **I found that using a batch size of 16 increased throughput of inference (EXCLUDING pre- and post-processing) by 
 roughly 2.5x.** While this was significant, I didn't find it necessary, as I found that `yolov5m` with `imgsz=704` was 
-sufficient was achieving a performance that was satisfactory for my use case.
+achieving a performance that was satisfactory for my use case.
 
 #### Multi-core inference
 
 As alluded to in the `rknn_model_zoo` performance table, the RK3588 has multiple cores. By default, inference uses only
-one of thoses cores, but you can use all the cores if necessary. This requires changing the [utility code in the model zoo that initializes the model](https://github.com/airockchip/rknn_model_zoo/blob/main/py_utils/rknn_executor.py#L12).
+one of those cores, but you can use all the cores if necessary. This requires changing the [utility code in the model zoo that initializes the model](https://github.com/airockchip/rknn_model_zoo/blob/main/py_utils/rknn_executor.py#L12).
 
 ```python {style=tango,linenos=false}
 # from
@@ -287,7 +287,7 @@ To build a container that can use the NPU, the only thing that must be done is i
 If hardware accelerated FFMPEG is needed, that needs to be built inside the container too.
 
 To use the container, the container needs to be run with `--privileged` (or if using Docker Compose, 
-`priveleged: true`).
+`privileged: true`).
 
 ### NPU monitoring
 

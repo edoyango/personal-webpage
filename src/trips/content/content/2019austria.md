@@ -32,7 +32,7 @@ I took the train from Vienna to Innsbruck, which took about 5h. I stayed in Inns
 
 I took the train from Innsbruck to Reith b.Seefeld Bahnhof train station, where I started the hike. The hike is pretty well-signed, so navigation is not really an issue. However, the hike requires traversing up and down steep rocky sections where the rocks are quite loose. Having appropriate hiking shoes is strongly recommended.
 
-I used the huts for accomodation, and didn't need to book in advance. The first hut, N&#246;rdlinger H&#252;tte, was quite popular, so I would recommend booking that in advance if you're in a big group. The other huts I stayed at (in order) were Bettelwurf H&#252;tte, and Pfeis H&#252;tte.
+I used the huts for accommodation, and didn't need to book in advance. The first hut, N&#246;rdlinger H&#252;tte, was quite popular, so I would recommend booking that in advance if you're in a big group. The other huts I stayed at (in order) were Bettelwurf H&#252;tte, and Pfeis H&#252;tte.
 
 After the first day, I had to come down from N&#246;rdlinger H&#252;tte because I didn't bring the right socks and my shoe was giving me blisters. I continued the track (kind of) and getting down to Seefeld Bahnhof, took the train back to Innsbruck, and took the cable car back and walked to Bettelwurf H&#252;tte, where I stayed for the night. The next night I stayed at Pfeis H&#252;tte and walked to Scharnitz Bahnhof to take the train back to Innsbruck.
 

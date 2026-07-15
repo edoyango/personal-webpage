@@ -10,12 +10,12 @@ The cavity case is a good one to start with as it forms the beginning of the
 These steps assume we're using the PUBLIC version of CFDEM which couples
 LIGGGHTS-PUBLIC 3.8.0 and OpenFOAM-5.x. It also assumes that your environment
 variables have already been setup as per the 
-[CFDEM insallation instructions](https://www.cfdem.com/media/CFDEM/docu/CFDEMcoupling_Manual.html#installation).
+[CFDEM installation instructions](https://www.cfdem.com/media/CFDEM/docu/CFDEMcoupling_Manual.html#installation).
 
 ## Getting the case files
 
 The lid-driven cavity flow example case comes with the OpenFOAM source code. If
-you don't have it already from install OpenFOAM, get it by:
+you don't have it already from installing OpenFOAM, get it by:
 
 ```bash {style=tango,linenos=false}
 git clone https://github.com/OpenFOAM/OpenFOAM-5.x.git
@@ -68,8 +68,8 @@ the "Immersed Boundary" CFDEM solver.
 
 ### 3a. Make the mesh finer
 
-The cavity example case uses a 2D grid of cells which posesses 20 cells in both
-directions. This is a little course, so we will double the number of cells in
+The cavity example case uses a 2D grid of cells which possesses 20 cells in both
+directions. This is a little coarse, so we will double the number of cells in
 each direction. Do this by changing the `blocks` dictionary to
 
 ```cpp {style=tango,linenos=false}
@@ -116,7 +116,7 @@ for the number of processors you would like to run this case on.
 
 ## 4. Update initial conditions
 
-In the original cavity example, only initial boundary velocity and pressure needs to be
+In the original cavity example, only initial boundary velocity and pressure need to be
 defined. To adapt this for CFDEM, initial boundary conditions for the variables `phiIB`,
  `Us`, and `voidfraction` need to be defined.
 

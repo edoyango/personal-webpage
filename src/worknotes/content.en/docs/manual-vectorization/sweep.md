@@ -67,7 +67,7 @@ accesses to `a` would mostly be unaligned.
 ###  Vectorizing the direct pair sweep with 128-bit vectors (SSE instructions)
 
 This attempt to vectorize the loop will turn the outer loop into a vector of all the same variable, and then the inner
-loop will load multiple sequential elements to operate the outer-loop vector. This looks like:
+loop will load multiple sequential elements to operate on the outer-loop vector. This looks like:
 
 ```cpp {style=tango,linenos=false}
 void sweep_128_sgl(const int nelem, float* a, float* b) {
@@ -93,7 +93,7 @@ Now this code looks more complicated than the ABC addition example used earlier.
 3. `__m128 vdiff = _mm_sub_ps(vi, vj);` subtracts the `vj` vector from the `vi` vector and stores it in the `vdiff` vector. This is equivalent to the `tmp = a[i]-a[j];` step in the base code.
 4. `__m128 vbj = _mm_loadu_ps(&b[j]);` loads the 4 following elements at the location of `b[j]`. This is so that the `vdiff` vector can be subtracted.
 5. `vbj = _mm_sub_ps(vbj, vdiff);` subtracts `vdiff` from `vbj`. This is equivalent to `b[j] -= tmp;` in the base code.
-6. `_mm_storeu_ps(&b[j], vbj);` takes the calculates vector and places it back in the location at `b[j]`.
+6. `_mm_storeu_ps(&b[j], vbj);` takes the calculated vector and places it back in the location at `b[j]`.
 7. `_mm_storeu_ps(tmp, vdiff);` stores the calculated difference vector in a temporary array of 4 elements. This is so that the elements of the vector can be serially added to `b[i]`.
 8. `b[i] += tmp[0]+tmp[1]+tmp[2]+tmp[3];` serially adds the 4 elements of the difference vector to `b[i]`. This is equivalent to `b[i] += tmp;` in the base code.
 
@@ -118,7 +118,7 @@ Benchmark                                     Time       CPU    Time Old   Time 
 OVERALL_GEOMEAN
 ```
 
-The manual vectorization with the compiler optimizations are about 3.9x faster than the code without the manual
+The manual vectorization with the compiler optimizations is about 3.9x faster than the code without the manual
 vectorization for 128-bit vectors. Near-optimal speedup is gained for 256-bit vectors with a speedup of ~7.3x (see table
 below).
 
@@ -137,7 +137,7 @@ Although not shown here, without the compiler optimizations, the speedup of the 
 vectors is at best, ~1.5x faster; and ~2.7x faster for 256-bit vectors.
 
 The double precision versions of the code also obtain close to optimal performance gain using 128-bit vectors. Like the
-single precision version,the double precision data managed to obtain very close to optimal (3.78x).
+single precision version, the double precision data managed to obtain very close to optimal (3.78x).
 
 ``` {style=tango,linenos=false}
 Comparing sweep_base_dbl (from results/sweep1d_base_dbl.json) to sweep_128_dbl (from results/sweep1d_128_dbl.json)
@@ -167,7 +167,7 @@ up to 30% slower with 128-bit vectors, and at best, 1.62x faster with 256-bit ve
 You may have noticed that the incrementing of `b[i]` looks like it's serialized, but near-optimal performance is
 obtained in the tests. This is because `g++` and `clang++` will automatically convert `b[i] += tmp[0] + ...;` to
 assembly using SIMD instructions. I couldn't figure out a way to prevent the compilers from doing this without also
-making the intel intrinsic functions unavailable as well. In principle, the serializations of the update of `b[i]` would
+making the Intel intrinsic functions unavailable as well. In principle, the serializations of the update of `b[i]` would
 prevent optimal performance, and the manually vectorized reductions [discussed here](sumreduce.md) and [here](faster-sumreduce.md)
 would be needed to improve performance. 
 
@@ -297,7 +297,7 @@ and replacing it with something like
 bx[i] += reduce_256_sgl(vdiff);
 ```
 
-where `reduce_256_sgl`, uses the function definitions:
+where `reduce_256_sgl` uses the function definitions:
 
 ```cpp {style=tango,linenos=false}
 static inline __attribute__((always_inline))
@@ -369,17 +369,17 @@ the sake of brevity.
 | 256_dbl_reduce1 | 1.45 | 1.50 | 1.69 | 1.85 |
 | 256_dbl_reduce2 | 1.45 | 1.49 | 1.75 | 1.91 |
 
-The 3D version shows significantly less speedup compared its 2D and 1D counterparts using both `g++` and
-`clang++` compilers. The best speedup obtained speedups are ~3.6x and ~1.9x for the single and double
+The 3D version shows significantly less speedup compared to its 2D and 1D counterparts using both `g++` and
+`clang++` compilers. The best speedups obtained are ~3.6x and ~1.9x for the single and double
 precision versions, respectively. The speedup of using 256-bit vectors is comparable to using 128-bit
 vectors. But, despite the lesser performance of the 3D version, it is still probably worth manually 
-vectorizing this algorith, given the inability of the Clang and GNU compilers from automatically vectorizing 
+vectorizing this algorithm, given the inability of the Clang and GNU compilers to automatically vectorize 
 the nested loop (at the time of writing).
 
 ## Completing the Sweep
 
 The Sweep algorithm discussed so far, takes shortcuts to mitigate the discussion of dealing with "residuals" -
-the leftover itrations. Just for reference, the double precision 256-bit manually vectorized version of a full
+the leftover iterations. Just for reference, the double precision 256-bit manually vectorized version of a full
 sweep, taking care of the residuals, is shown below:
 
 ```cpp {style=tango,linenos=false}
@@ -433,7 +433,7 @@ void sweep_256_dbl_reduce2(const int nelem, double* ax, double *ay, double* az, 
 
 The approach to dealing with the residual iterations is intentionally naive as SIMD intrinsics are a little tricky to
 implement efficiently using blend instructions. And, given that at most, only a few iterations in the inner loop will 
-make use of the simple, it's probably not really worth the added complexity for a likely modest performance gain.
+make use of the simple approach, it's probably not really worth the added complexity for a likely modest performance gain.
 
 The corresponding performance (compiled with `g++`):
 
@@ -449,5 +449,5 @@ OVERALL_GEOMEAN                                    -0.3677   -0.3675            
 ```
 
 The speedup varies significantly, but is roughly similar to the simplified 3D version shown previously. Interestingly,
-the speedup of the largest test case is quite good for reasons unnknown to me. This effect is present with both `g++`
+the speedup of the largest test case is quite good for reasons unknown to me. This effect is present with both `g++`
 and `clang++`. 

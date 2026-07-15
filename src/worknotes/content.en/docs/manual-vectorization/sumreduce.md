@@ -5,9 +5,9 @@ weight: 3
 
 # Vector Sum Reduction
 
-We now we can add two SIMD vectors together element-by-element. However, I'm sure you can imagine scenarios where you
+We now can add two SIMD vectors together element-by-element. However, I'm sure you can imagine scenarios where you
 might want to add all the elements in a vector together i.e., a sum-reduction. This page will explain how to do this
-with 128-bit and 256-bit vectors the approach is different for each vector width. I would show how to do this with
+with 128-bit and 256-bit vectors. The approach is different for each vector width. I would show how to do this with
 512-bit vectors, but I don't have a CPU with AVX512 instructions handy.
 
 ## Reducing 4 floats
@@ -28,11 +28,11 @@ void reduce_base_sgl(const int nelem, float* a, float* b) {
 }
 ```
 
-The loop tries to mimick cases where many small sum-reductions are performed.
+The loop tries to mimic cases where many small sum-reductions are performed.
 
 ### 128-bit vectorization (SSE)
 
-In the first demonstration of vectorizing the sumreduction loop above, we'll make use of a few new
+In the first demonstration of vectorizing the sum-reduction loop above, we'll make use of a few new
 functions:
 
 ```cpp {style=tango,linenos=false}
@@ -74,7 +74,7 @@ v = _mm_hadd_ps(v, v);
 //   = [a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1, a2+a3+a0+a1]
 ```
 
-The double `hadd` functions results in 3 adds for every 4 elements (the two horizontal adds, and an add to the reduction
+The double `hadd` function results in 3 adds for every 4 elements (the two horizontal adds, and an add to the reduction
 variable), compared to 8 adds in the serial sum of all the elements in the vector. Implementing these new functions to 
 vectorize our loop:
 
@@ -147,13 +147,13 @@ As expected, the performance difference is minimal, although there appears to be
 test sizes that fit within L1 and L2 cache (i.e., the 4,096 and 32,768 element tests). I'm not sure on this, but I am
 guessing that the improvements are due to SIMD vectors being used to store the intermediate reduction data. 
 
-Another interesting observation is that the double precision version base version performs faster on the smallest case
+Another interesting observation is that the double precision base version performs faster on the smallest case
 than the equivalent for the single precision version. This is probably CPU-specific, as I don't observe this on my
 desktop CPU (Intel i7-10750H).
 
 ### 256-bit vectorization (AVX)
 
-256-bit vectors double the vector width before. This means 8 elements in a single precision (`__m128`) vector, and 4
+256-bit vectors double the vector width from before. This means 8 elements in a single precision (`__m256`) vector, and 4
 elements in a double precision vector. For single precision data, the `_mm256_hadd_ps` function works like:
 
 ```cpp {style=tango,linenos=false}
@@ -188,7 +188,7 @@ _mm256 v = _mm256_hadd_ps(v, v);
 // v   [a0+a1+a2+a3+a0+a1+a2+a3, ...  , ...  , ...  , a4+a5+a6+a7+a4+a5+a6+a7, ...  , ...  , ...]
 ```
 
-Where the repeated entries are skipped in the last addition. Each element of the bottom 128 bits of the vector have
+Where the repeated entries are skipped in the last addition. Each element of the bottom 128 bits of the vector has
 `2*(a0+a1+a2+a3)` and the top 128 bits have `2*(a4+a5+a6+a7)`. Hopefully it's clear that simply performing three `hadd`s
 in a row would not be possible to perform our reduction, at least for 8 elements of single precision data. 
 
@@ -222,7 +222,7 @@ _mm256 v = _mm256_hadd_pd(v, v);
 ```
 
 Which should illustrate that double `_mm256_hadd_pd` has the same limitation as `_mm256_hadd_ps`, as the two halves of 
-the resultant 256-bit vector merely contains double of the sum of all elements in each of the corresponding 128-bit
+the resultant 256-bit vector merely contain double of the sum of all elements in each of the corresponding 128-bit
 halves.
 
 `__m256` vectors can be reduced by first splitting the vector into two `__m128` vectors, adding the two halves together
@@ -247,7 +247,7 @@ void reduce_256_sgl(const int nelem, float* a, float* b) {
 }
 ```
 
-Note that in this verison, 8 elements are loaded at a time into the 256-bit vector, which removes the need for the inner
+Note that in this version, 8 elements are loaded at a time into the 256-bit vector, which removes the need for the inner
 loop. But, the inner loop is kept so that it is more comparable to the base and 128-bit versions.
 
 To extract the lower 128-bit part of the 256-bit vector, the `_mm256_castps256_ps128` function is used. This function
@@ -286,8 +286,8 @@ OVERALL_GEOMEAN                                  -0.4240   -0.4240          0   
 
 Best speedup obtained is now ~2.1x and worst is ~1.2x. Given that for every 8 elements added, there are 4 addition
 operations (2 horizontal, 1 normal, and 1 to update the reduction variable), you would expect that this implementation
-would achieve around (8)/4 ~= 2x. speedup over the non-vectorized base version. The better performance for smaller 
-problems might be because normal adds are cheaper than horizontal adds. The minimum speedup of ~1.6x is actually worse 
+would achieve around (8)/4 ~= 2x speedup over the non-vectorized base version. The better performance for smaller 
+problems might be because normal adds are cheaper than horizontal adds. The minimum speedup of ~1.2x is actually worse 
 than that achieved by the equivalent 128-bit vector version. 
 
 #### Double precision
@@ -315,7 +315,7 @@ Like with the single precision version, the test sizes that are in RAM, do not s
 
 ## Conclusion
 
-The horizontal add intrinsics were introduced here, as well as other needed, to perform vectorized reductions of chunks
+The horizontal add intrinsics were introduced here, as well as other functions needed to perform vectorized reductions of chunks
 of data in an array. With single precision data, the speedups achieved for all tests were meaningful. For tests that fit
 within cache, the achieved speedup was around expectations of using the horizontal add strategy. These results
 correspond with the upper end of the ranges.

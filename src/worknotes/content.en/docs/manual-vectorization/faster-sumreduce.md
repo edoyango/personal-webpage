@@ -45,7 +45,7 @@ shuf = _mm_movehl_ps(shuf, sums);
 ```
 
 We finally add the lowermost element of `shuf` and `sums` to get the reduced sum in the lowermost element of the `sums`
-vector, and the remaing elements can be ignored.
+vector, and the remaining elements can be ignored.
 
 ```cpp {style=tango,linenos=false}
 sums = _mm_add_ss(sums, shuf);
@@ -187,7 +187,7 @@ fast 128-bit version.
 
 ### Performance with LLVM compiler (`clang++`)
 
-The LLVM compilers are a different family of compilers form the GNU compilers and can translate the C++ code to assembly
+The LLVM compilers are a different family of compilers from the GNU compilers and can translate the C++ code to assembly
 differently. In the case of C++, we use the `clang++` compiler. Let's compare the performance of our test programs using
 `clang++`.
 
@@ -197,7 +197,7 @@ The compilation command for the manually vectorized code is:
 clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
 ```
 
-The base case needed additional options to ensure no SSE/AVX instructions were introdued:
+The base case needed additional options to ensure no SSE/AVX instructions were introduced:
 
 ``` {style=tango,linenos=false}
 -mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
@@ -266,9 +266,9 @@ I found this pretty clever when I saw it. The motivation for this trick is that 
 for double precision data. What happens here is:
 
 1. `va` is cast to a single precision vector.
-    * This doesn't change the data itself. It only changes how functions interepret it.
+    * This doesn't change the data itself. It only changes how functions interpret it.
     * i.e., the 128 bits in the vector are still the same.
-2. The upper 64 bits of `va` (i.e., the second element), is placed in the first element position of `undef`.
+2. The upper 64 bits of `va` (i.e., the second element), are placed in the first element position of `undef`.
 3. The resultant vector is stored in `shuftmp`.
 
 This effectively moves the 2nd element of `va` into the first place of `undef`, despite not having an equivalent
@@ -357,7 +357,7 @@ remain the same for the manually vectorized code:
 clang++ -o reduce.x reduce.cpp -mavx2 -Ibenchmark/include -Lbenchmark/build/src -lbenchmark -lpthread -O2
 ```
 
-The base case needed additional options to ensure no SSE/AVX instructions were introdued:
+The base case needed additional options to ensure no SSE/AVX instructions were introduced:
 
 ``` {style=tango,linenos=false}
 -mno-sse -mno-sse2 -mno-sse3 -mno-sse4 -mno-sse4.1 -mno-sse4.2 -mno-avx -mno-avx2
@@ -376,7 +376,7 @@ Benchmark                                               Time       CPU    Time O
 OVERALL_GEOMEAN                                      -0.0904   -0.0903           0           0           0           0
 ```
 
-And now it looks like the state of things have improved! This new version, compiled with `clang++`, shows an
+And now it looks like the state of things has improved! This new version, compiled with `clang++`, shows an
 improvement, at least for the smallest test size. The others show a minor change, again demonstrating that it's
 important to test your code with multiple compilers!
 
@@ -435,6 +435,6 @@ The improved 256-bit version, obtained better performance over the horizontal ad
 compiler is used. With `clang++`, the new 256-bit version is approximately between 2x and 5x faster than even the
 updated 128-bit sum reduction.
 
-In contrast, the double precision 128-bit and 256-bit improved versions showed here showed modest improvements compared
+In contrast, the double precision 128-bit and 256-bit improved versions shown here showed modest improvements compared
 to the previous vectorized version. Both versions seemed to be a lot faster for the smallest test size when compiled
 with `clang++` (around 2x faster).

@@ -6,7 +6,7 @@ weight: 1
 # Fixed-Radius Neighbour Search Using Thrust
 
 This page describes how one might implement the pair-finding algorithm described by [Simon Green (2010)](https://developer.download.nvidia.com/assets/cuda/files/particles.pdf).
-Many implementations of Simon's work exists, such as the [FRNN Python package](https://github.com/lxxue/FRNN).
+Many implementations of Simon's work exist, such as the [FRNN Python package](https://github.com/lxxue/FRNN).
 
 ## Why Thrust?
 
@@ -67,12 +67,12 @@ std::pair<thrust::device_vector<I>, thrust::device_vector<I>> find_pairs(
 }
 ```
 
-`nvtx3/nvToolsExt.h` is included so the NVTX ranges can be used for profiling with NSight Systems. Both the whole function smaller
+`nvtx3/nvToolsExt.h` is included so the NVTX ranges can be used for profiling with NSight Systems. Both the whole function and smaller
 regions will have function calls.
 
 ### Defining Algorithm Constants
 
-To mitigate mistakes and make the code easier to read, lets define constants related to the algorithm. 
+To mitigate mistakes and make the code easier to read, let's define constants related to the algorithm. 
 
 ```cpp {style=tango}
 // define constants
@@ -138,12 +138,12 @@ Before continuing to the next step, we can calculate the number of cells in each
     nvtxRangePop();
 ```
 
-Which rounds up the number of grid cells. Optionally, you can update the maxima of the grid, but isn't really necessary
+Which rounds up the number of grid cells. Optionally, you can update the maxima of the grid, but it isn't really necessary
 as the maxima aren't used from herein. The "grid extents" NVTX region is also stopped.
 
 ### Mapping the particles to the grid and sorting
 
-This is the step that Simon's paper illustrates. First we must determine the grid cell indices that each cell belongs
+This is the step that Simon's paper illustrates. First we must determine the grid cell indices that each particle belongs
 to. As per Simon's paper, we're using a scalar "hash" to map particles to grid cells. This 1D hash is beneficial for two
 reasons:
 
@@ -188,11 +188,11 @@ There's a lot going on here so let's break it down:
 * `[=] __device__ (...)`
     * is a lambda (can be used since compute capability 7.0). `[=]` specifies that external values should be captured
     by value. Capturing external variables by reference is unavailable in a CUDA lambda. The `__device__` attribute
-    specifes that the generated lambda instructions is for the device aka GPU.
+    specifies that the generated lambda instructions are for the device aka GPU.
     * the lambda accepts a `thrust::detail::tuple_of_iterator_references`, which is a tuple of each of the x, y, z
     values. These values, are retrieved with the `thrust::get<i>` function, where `i` is an index.
     * `static_cast<I>((thrust::get<i>(in) - mingrid[i])/cutoff)` is obtaining the grid index in the `i`th direction.
-    The "hashing" function ensures that that the grid is "column major" i.e., the third index is consecutive in memory.
+    The "hashing" function ensures that the grid is "column major" i.e., the third index is consecutive in memory.
 
 Now that each particle has been assigned a grid cell index, we can sort the grid cells, and obtain a mapping of old
 array indices to new ones.
@@ -277,7 +277,7 @@ updated. Note:
 `cell_ends` can be used even with zeroes, but it's more convenient to ensure that they are filled with something
 meaningful. Here, the intention is to use `cell_ends` to specify the range of particle indices that belong to a cell.
 For example, if `cell_ends = 0 1 2 3 0 0 0 0 0 4 5 0`, then the start of cell 3 is found at `cell_ends[2]`, and the end
-is found at `cell_ends[3]` (open-interval). If the zeroes remain, then for cell 8, the the start may be specified as
+is found at `cell_ends[3]` (open-interval). If the zeroes remain, then for cell 8, the start may be specified as
 `cell_ends[7] = 0`, and the end is `cell_ends[8] = 4`, which is not correct. If the zeroes are "filled" with a
 sensible value, then we can use `cell_ends[i-1]` as the first particle index for cell `i`.
 
@@ -289,7 +289,7 @@ starting particle index to use for cell 8.
 
 In my version of the finding pair algorithm, I avoid using atomics as they can degrade performance significantly in
 cases where there is high-contention (i.e., many threads are trying to update the same variable). In addition, AMD
-GPUs don't do atomic operations that well. To avoid atomics, I generate potential pairs first, and then compacting these
+GPUs don't do atomic operations that well. To avoid atomics, I generate potential pairs first, and then compact these
 pairs into realised pairs.
 
 When generating potential pairs, it's important to understand that for each particle, only half the neighbouring cells
@@ -333,8 +333,8 @@ Given that each particle will check a cell for neighbours, we must first figure 
 ```
 
 After `nchecks` is initialized, a `thrust::for_each` call is used, using the `thrust::counting_iterator` to specify the
-iteration range. As many threads as there are particles is launched, where each thread is responsible for generating
-the number checks to be done for the relevant neighbouring cells. 
+iteration range. As many threads as there are particles are launched, where each thread is responsible for generating
+the number of checks to be done for the relevant neighbouring cells. 
 
 Now, we can get the total number of checks to be performed:
 
@@ -347,7 +347,7 @@ Now, we can get the total number of checks to be performed:
 ```
 
 The `thrust::exclusive_scan` turns the `nchecks` vector into a vector that specifies the starting index within the
-potential pair list that correspond to a particle `i` and one of its neighbouring cells. With that information, the
+potential pair list that corresponds to a particle `i` and one of its neighbouring cells. With that information, the
 actual generation of potential pairs can be performed.
 
 ```cpp {style=tango}
@@ -452,10 +452,10 @@ To test the performance we use the following test case:
 
 With 5 different randomly generated positions, time taken to generate pairs for these positions is approximately 70ms.
 Using the CPU on the node of the GPU (I think it's Intel Xeon Gold 5320), time to find the same pairs is around 2.27s -
-roughly 32.4x faster. My laptop CPU (AMD 8845hs) takes about 1.30s which means **the GPU speedup is more like a 18.6x**.
+roughly 32.4x faster. My laptop CPU (AMD 8845hs) takes about 1.30s which means **the GPU speedup is more like an 18.6x**.
 
 A fairly significant drawback of the algorithm here is that it consumes a lot of memory. On average, the potential pair
-list will consume 81/(4pi) ~ 6.5x more memory than the actual pair list. this is due to the search space being a cube
+list will consume 81/(4pi) ~ 6.5x more memory than the actual pair list. This is due to the search space being a cube
 of length 3r, and the actual "pair" space being a sphere of radius r. Indeed, for this test case, the potential pair
 list ends up being around 340e6 elements, and the actual pair list is about 55e6.
 
@@ -577,12 +577,12 @@ As a whole, I find thrust not too difficult to use, as a fairly unsophisticated 
 the GPU programming, and gives access to very useful and optimised algorithms, while also being fairly platform
 portable. I only have two main gripes with it. The first is that making the low-level features unavailable makes it a
 little difficult to get the best performance for complex kernels, but I believe that to be intentional and part of the
-design. The second issue is the lack of examples. It feels like you have to be a fairly knowledgable programmer to parse
+design. The second issue is the lack of examples. It feels like you have to be a fairly knowledgeable programmer to parse
 the documentation - although ChatGPT makes it a lot easier.
 
 I'm tempted to compare Thrust with Kokkos, which also aims to provide a performance portable programming framework.
 Kokkos is much more beginner friendly, with a long spiel about the programming model, good quality examples, and lots of
-public training material. It also gives gives access to low-level features such as shared memory and block through 
+public training material. It also gives access to low-level features such as shared memory and block through 
 abstractions such as scratch space and teams. However, while most of their key algorithms perform really well, others
 like `Kokkos::parallel_scan` and `Kokkos::sort` resort to thrust under the hood (they had originally written their own
 versions of these algorithms, but they performed [quite poorly](https://github.com/kokkos/kokkos/issues/6838)).

@@ -8,7 +8,7 @@ weight: 2
 ignoring the basics. Best tutorial to start with is [this one](https://github.com/tkoenig1/coarray-tutorial/blob/main/tutorial.md). Basic, but couldn't find very beginner friendly ones.
 
 ## Install
-[OpenCoarrays](http://www.opencoarrays.org/) is a library usable with gfortran and uses MPI 1-sided comms as the to perform the communications. install via linuxbrew or spack.
+[OpenCoarrays](http://www.opencoarrays.org/) is a library usable with gfortran and uses MPI 1-sided comms to perform the communications. install via linuxbrew or spack.
 
 Intel compilers don't rely on external libraries and should be ready to use coarrays with intel-MPI. It only requires compilation with `-coarray` option.
 
@@ -55,7 +55,7 @@ real, allocatable:: f(:)[:]
 integer, allocatable, codimension[:]:: g(:,:)
 ```
 
-Remember that when you allocate the array, you must allocate them using the same size. The program will continue without issue, but references to other images' arrays will be misplaced. This is because each image uses the allocated size of its local copy as a template for other images' copies of the variable (from what I can tell - tested with gfortran and opencoarrays).
+Remember that when you allocate the arrays, you must allocate them using the same size. The program will continue without issue, but references to other images' arrays will be misplaced. This is because each image uses the allocated size of its local copy as a template for other images' copies of the variable (from what I can tell - tested with gfortran and opencoarrays).
 ## Coarrays in subroutines/functions
 
 the codimension property can be used to declare input variables of a subroutine.

@@ -9,13 +9,13 @@ bookToc: false
 ## Description
 I work with point pair searches through particle-based simulations (mostly SPH and DEM). The algorithm here is the most basic way to perform a pair search. It is O(N2) time, so is not useful for any practical applications.
 
-I use it frequently to server as a reference when investigating other ways to search for pairs. It's simple to code, so is harder to introduce conceptual and coding errors.
+I use it frequently to serve as a reference when investigating other ways to search for pairs. It's simple to code, so it is harder to introduce conceptual and coding errors.
 
 It does also have some real-world relevance, as the [cell-list pair-search algorithm](/docs/useful/fixed-cutoff-cell-lists-pair-search) uses many smaller direct searches.
 
 The Fortran code below contains the module `dsearch_m`, and a `main` program. To compile only the module, pass the `-DNOMAIN` option to the compiler, and the preprocessor will omit it.
 
-The module has the `dsearch` and `dsearch_compact` interfaces. `dsearch` returns two lists, one with the "left-sided" points of the pairs, and `pair_j`, which returns the "right-sided" points in the pair list. In contrast, `dsearch_compact` returns a shorter list, `endpos`, where `endpos(i)` corresponds to the last pair with point `i` as the "left-sided" point. See the `main` program for an example of how to iterate over the lists.
+The module has the `dsearch` and `dsearch_compact` interfaces. `dsearch` returns two lists, one, `pair_i`, with the "left-sided" points of the pairs, and `pair_j`, which returns the "right-sided" points in the pair list. In contrast, `dsearch_compact` returns a shorter list, `endpos`, where `endpos(i)` corresponds to the last pair with point `i` as the "left-sided" point. See the `main` program for an example of how to iterate over the lists.
 
 The benefit of `dsearch_compact` is the output format has a smaller memory footprint, and iterating over the list requires fewer memory accesses and is consequently usually a bit faster. However, the drawback is that it is less intuitive and more awkward to iterate over.
 

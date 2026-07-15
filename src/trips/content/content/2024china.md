@@ -36,7 +36,7 @@ But first up was Guangzhou (广州) - my partner's "hometown" and where her pare
 
 I was told many times that Guangzhou was famous for its food selection. Gaungzhou has one of the largest domestic
 immigrant population, so it has cuisine from all around China. And not only is the selection good, so is the price!
-Our first breakfast consisted of 6 dishes (for 4 people) and 3 soy milks which cost around AU$15 altogher! Back home it
+Our first breakfast consisted of 6 dishes (for 4 people) and 3 soy milks which cost around AU$15 altogether! Back home it
 easily would've been 5x the price...
 
 We spent altogether roughly 2.5 weeks in Guangzhou - most of it was spent shopping, seeing Winn's family and family
@@ -48,7 +48,7 @@ The rest of the day was spent in full tourist mode. In Guangzhou's "Glasses city
 doubled as sunnies. The procedure was quick and the tech impressive, and the only challenge was choosing which of the
 seemingly hundreds of glasses stores to buy from! While waiting for the glasses to be made, we visited Shamian island 
 (沙面岛), where western merchants used to work and preside. It has a distinctly western style architecture (I think 
-portugese) which constrasts heavily against the concrete jungle of Guangzhou surrounding it. Conveniently nearby was the 
+Portuguese) which contrasts heavily against the concrete jungle of Guangzhou surrounding it. Conveniently nearby was the 
 hotel that Winn's dad had a career at before coming to Australia. So, we visited there before returning to the glasses 
 city to collect the glasses we ordered in the morning.
 
@@ -70,10 +70,10 @@ who I hadn't seen for 10 or 20 years and learn about dad and grandpa and the res
 
 Our first visit was the middle school my dad went (no. 1 middle school - 一中), where I got to meet my dad's
 classmates who heard I was visiting. I learnt a lot about what dad was like at that age, the role they played in
-eachother's lives, and about the circumstances that they grew up in. Dad seemed like a leader to them and their feelings
-toward him seem to be that of admiration, and for some, regret - beacuse of the actions (or lacktherof) that led to his
+each other's lives, and about the circumstances that they grew up in. Dad seemed like a leader to them and their feelings
+toward him seem to be that of admiration, and for some, regret - because of the actions (or lack thereof) that led to his
 capture and imprisonment following. This part of the trip was very eye opening because it was the first time I had heard
-from people who were with him as a teenager, and who that close to the events that changes his life forever.
+from people who were with him as a teenager, and who were that close to the events that changed his life forever.
 
 ![My younger aunt and I going through a book about my Grandpa](/trips/img/trips-china2024/Image_20241220160457_cr.jpg "gallery")
 ![Group photo with my aunts and I and some of my dad's classmates](/trips/img/trips-china2024/Image_20241220160448_cr.jpg "gallery")
@@ -93,7 +93,7 @@ bizarre giant statue of young Maozedong. We also visited a cultural revolution t
 decision...), the old city wall, and various shopping streets (new and old). We even got a personal tour from the former
 director and restoration architect for China's oldest academy - Yuelu Academy. He was also accompanied by Dr. Jordan, 
 faculty of the attached Hunan University (specialising in Chinese Philosophy and originally from Tasmania), who was 
-acting as my our very over-qualified translator.
+acting as our very over-qualified translator.
 
 ![Giant young Maozedong status on Orange Isle](/trips/img/trips-china2024/DSC_0267_cr.jpg "gallery")
 ![Entrance to the cultural revolution-themed tea house](/trips/img/trips-china2024/DSC_0286_cr.jpg "gallery")
@@ -114,7 +114,7 @@ We had a few days in Guangzhou, where I planned to mostly work remotely (since I
 off without pay). Winn and her family saw some sights around the city, and in the evenings I would join them to eat dinner with her
 dad's friends. During that time, we stayed a night in a private villa adjacent to the Lanyuan hot spring resort (兰苑温泉). Our
 villa was apparently where party officials and company CEOs would often stay when visiting. It even had hot spring baths within the
-rooms! Dinner was in a giant and beautifully decorated room with a giant table. As part of the package, we even got a private tour
+rooms! Dinner was in a giant and beautifully decorated room with a giant table. As part of the package, we even got a private tour of
 Maozedong's holiday villa located nearby, containing beautiful art works like one that appears to change seasons based on the colour
 of the light in the room!
 
@@ -134,21 +134,21 @@ beautiful mountain ranges and culture. From that, he organised a 4-city trip: Da
 took over 11 hours! Taking the plane was totally an option here, but the train tickets were half the price (costs add up when
 travelling with 5 people), and Winn's dad and I like sitting on trains. I took the opportunity to work remotely, which was fine
 given since the seating was comfortable, but my mobile internet would drop often, so I found it difficult to have meetings. The
-views heading toward western china were overall very charming, and in some parts, there were jagged 100-meter hills standing amongst
-the chinese villages.
+views heading toward western China were overall very charming, and in some parts, there were jagged 100-meter hills standing amongst
+the Chinese villages.
 
 ![Screenshot of the journey taken from Dali, Lijiang, Shangri-La, and Kunming cities in Yunnan](/trips/img/trips-china2024/yunnan-screenshot.png)
 
 ## Yunnan - Dali (大理)
 
-We arrived at Dali in the evening and a taxi, organised by our accomodation, took us to our accomodation. We were staying just
+We arrived at Dali in the evening and a taxi, organised by our accommodation, took us to our accommodation. We were staying just
 outside the old-city southern gate, which was beautifully lit-up as we drove past. Staying in the old town was very pleasant because
 you're already quite close to most of the popular tourist destinations, and you get more time to enjoy the traditional style
 architecture. The buildings in the old town have apparently been there for ages, and it used to be a poor area of Dali. But they
 restored all the buildings to attract tourists.
 
 Dali is probably most famous for the lake - Erhai (洱海) AKA Er Sea, apparently because they're nowhere near the ocean, so this is
-their beach holiday destination. We know that many tourists, when they come here, like to rent an electric motorobike to ride around
+their beach holiday destination. We know that many tourists, when they come here, like to rent an electric motorbike to ride around
 the lake and stop at the sights, but we weren't brave enough to risk it. Instead, we got one of the drivers to take us around to the
 sights we chose. This only really works if you can speak chinese as not many of the drivers can speak English, and they'll charge 
 you a fair bit more, if they notice you're western. Acting as Gaungzhou tourists, we paid roughly 300 RMB for a day with a
@@ -161,7 +161,7 @@ around the old town twice - once during the day and once at night. During the da
 selling fruit and other local snacks, and during the night, they light up the street with paper lanterns and all the many
 colourfully dressed performers appear, dancing from the balconies.
 
-The three pagodas exist as a buddhist monument and apparently has a multi-millenia history. Its age is impressive and appearance
+The three pagodas exist as a Buddhist monument and apparently have a multi-millennia history. Its age is impressive and appearance
 unique and well-maintained, as it has been restored many times. Now, while the name (and many of the photos), suggest that the
 pagodas are the main attraction. And they are indeed very striking, but I enjoyed the visit moreso because of the surrounding park 
 and buddhist temples that are behind the pagodas. There are multiple that you can walk up through each of the temples have their own
@@ -177,7 +177,7 @@ animals don't look well taken care of (there is a couple very adorable red panda
 in Dali) was also an interesting visit. It motivated me to buy Dali shi (shi is stone) AKA marble that Dali households often
 display like art, although in the end I never got a piece.
 
-![Old town gate a couple hundred meters from our accomodation](/trips/img/trips-china2024/DSC_0431_cr.jpg "gallery")
+![Old town gate a couple hundred meters from our accommodation](/trips/img/trips-china2024/DSC_0431_cr.jpg "gallery")
 ![Exploring the streets with Winn's little brother and dad](/trips/img/trips-china2024/DSC_0451_cr.jpg "gallery")
 ![Alpaca store-front mascots in Dali old town](/trips/img/trips-china2024/DSC_0452_cr.jpg "gallery")
 ![Praying for my future studies in a temple inside the old town](/trips/img/trips-china2024/Image_20241223200420_cr.jpg "gallery")
@@ -195,12 +195,12 @@ display like art, although in the end I never got a piece.
 
 ## Yunnan - Lijiang (丽江)
 
-After an already enjoyable Lijiang trip, we took a couple hours high-speed train ride further west to Lijiang. From Dali, lijiang is
+After an already enjoyable Lijiang trip, we took a couple hours high-speed train ride further west to Lijiang. From Dali, Lijiang is
 an additional 400m above sea level. We definitely started to feel the effects of elevation if we tried to exert ourselves. This 
 time, we were staying IN the old town, in a repurposed old building which had 5 rooms being used for holidayers like us. The old 
-town appeared to be popular for couples and influencers to get dressed up and take photos around town (our accomodation was near a 
+town appeared to be popular for couples and influencers to get dressed up and take photos around town (our accommodation was near a 
 few of such of the popular spots). The evenings are the busiest time as the town is very lit with colourful lights and the central 
-square has some of the older locals facilitating a dance circle while they play loud hybrid of tibetan folk music and edm. All the 
+square has some of the older locals facilitating a dance circle while they play a loud hybrid of Tibetan folk music and edm. All the 
 stores sell similar things to what we saw in the old town in Dali, but there seemed to be a larger selection of food. We tried to
 find a bar to hang out at, but the prices for drinks were pretty steep, so we opted to buy drinks at a convenience store and drink
 in our AirBnB.
@@ -213,7 +213,7 @@ also had a lot of birds around which I enjoyed. We also saw wild squirrels being
 
 The highlight of Lijiang was the visit to Jade Dragon Mountain. The peak of the mountain is almost at 5,600m but you can get to
 4,600ish by cablecar, and walk up 200m to get to a viewing platform for the peak. Note that to get a cablecar ticket, you have to
-but the ticket the day before. The website makes tickets available at 8pm everyday for the next day, but they disappear quickly,
+buy the ticket the day before. The website makes tickets available at 8pm everyday for the next day, but they disappear quickly,
 so you have to be fast! It was also not obvious how to book the tickets - we visited the tourist office in the old town, and they
 gave us a wechat link to use. The cablecar starts from the visitor center. 
 
@@ -243,8 +243,8 @@ I'm a little disappointed that my first time at above 4000m was by cablecar inst
 was definitely the highlight of Yunnan for me! Although I did learn that a couple decades ago, the only way to get up was to hike
 up, and one of Winn's Dad's friend's wife did that!
 
-![Winn at our accomodation in Lijiang](/trips/img/trips-china2024/DSC_0960_cr.jpg "gallery")
-![Evening view nearby our accomodation](/trips/img/trips-china2024/DSC_0977_cr.jpg "gallery")
+![Winn at our accommodation in Lijiang](/trips/img/trips-china2024/DSC_0960_cr.jpg "gallery")
+![Evening view nearby our accommodation](/trips/img/trips-china2024/DSC_0977_cr.jpg "gallery")
 ![Wandering the old town streets at night](/trips/img/trips-china2024/DSC_0979_cr.jpg "gallery")
 ![Stores and bars lit up at night](/trips/img/trips-china2024/DSC_0984_cr.jpg "gallery")
 ![Local dance circle in the main square](/trips/img/trips-china2024/DSC_0990_cr.jpg "gallery")
@@ -262,7 +262,7 @@ up, and one of Winn's Dad's friend's wife did that!
 ## Yunnan - Shangri-La (香格里拉)
 
 Shangri-La is the destination furthest west in our journey. It took us another couple hours by high-speed train from Lijiang.
-Shangri-la was renamed from Zhongdian (中甸县) in an effort to boost tourism (which apparently worked!). This city was the distinct 
+Shangri-la was renamed from Zhongdian (中甸县) in an effort to boost tourism (which apparently worked!). This city was the most distinct 
 of the places we went to on this trip - the people mostly weren't han people, the architecture style differed significantly, and it 
 was also the most rural. From the train, we could see wooly cows wandering some of the streets! That being said, the city felt the
 most interesting and I would even say that I enjoyed it the most. But it was also the coldest! Make sure to pack warm clothes if you
@@ -276,14 +276,14 @@ fat for creaminess.
 
 In addition to the tasty hot pot, another reason the evenings in Shangri-la were fun was due to the dancing in the main square. Like
 in Lijiang, every night around 7pm, there would be dance circle that dances to folk-edm. A quick google told me that it's called
-"Guozhuang" dancing (锅庄舞), and is a tibetan style of group dancing. Unlike in Lijiang, the dancers had a higher ratio of locals to
+"Guozhuang" dancing (锅庄舞), and is a Tibetan style of group dancing. Unlike in Lijiang, the dancers had a higher ratio of locals to
 tourists, and they're mostly local workers e.g. shopkeepers who dance everynight for fun and they learn by mimicking the other
 dancers. But of course, tourists are welcome and the regulars appear to be very used to dancing their way around fumbling newbies.
 
-The next day, inspired by the many chinese tourists getting dressed up, and the prevelance of the rental stores in Shangri-la, we
+The next day, inspired by the many Chinese tourists getting dressed up, and the prevalence of the rental stores in Shangri-la, we
 made the leap and got dressed up. I think for each person, an outfit cost about 60 RMB and the girls also get their hair and makeup
 done for a bit extra. Winn and I got matching outfits and Winn's little brother got dressed up as well. We wandered around the
-nearby temples and shrines in these outfits and snapped a few pics. You can get photographers as well, but it's a fairbit more
+nearby temples and shrines in these outfits and snapped a few pics. You can get photographers as well, but it's a fair bit more
 expensive. 
 
 Our second day was jam-packed with sightseeing. We started off by visiting Potatso national park (普达措国家公园) which had
@@ -327,7 +327,7 @@ hills didn't feel so hard, and getting Mixue bubble tea and ice cream again!
 Kunming was a return to city-life - compared to the significantly more rural areas that we had been to so far. We spent a lot of it
 enjoying the conveniences of city-life that we hadn't easy access to the past couple of weeks. We especially enjoyed the
 pulled-noodle place located just downstairs from our AirBnB apartment and visiting the exploring the city and visiting the
-nightmarkets and listening to the bands playing. The zoo also had many animals, although, like in Dali, I they weren't kept in the
+nightmarkets and listening to the bands playing. The zoo also had many animals, although, like in Dali, they weren't kept in the
 best of conditions and I felt bad for them. We enjoyed the birds though, including the large number of peacocks! I couldn't beat my
 [beautiful shot of the peacocks in tasmania](https://www.ed-yang.com/trips/img/trips-tasmania2022/cradlemt/DSC_0776.jpeg)
 
@@ -346,9 +346,9 @@ visiting.
 # Guangzhou pt. 3
 
 After an 8-hour train ride, we arrived back in Guangzhou! Our agenda for this trip was just to hang out - we got massages,
-piercings, went shopping, and caught with Winn's family friends and her grandma. Everyday, I made sure to enjoy Xiaolongbaos they 
+piercings, went shopping, and caught up with Winn's family friends and her grandma. Everyday, I made sure to enjoy Xiaolongbaos they 
 had just outside the apartment and enjoy the cheap oysters as well (1 RMB per oyster!). We also got a tour of the White Swan Hotel
-(白天鹅宾馆) and enjoy the facilities, as a former CEO is friends with Winn's dad.
+(白天鹅宾馆) and enjoyed the facilities, as a former CEO is friends with Winn's dad.
 
 ![Daily Xiaolongbaos are a must!](/trips/img/trips-china2024/Image_20241224160229_cr.jpg "gallery")
 ![Swimming a few laps in the White Swan Hotel pool](/trips/img/trips-china2024/Image_20241224160225_cr.png "gallery")
@@ -382,15 +382,15 @@ I read 3.5 books on this trip, which were, from most liked to least:
 My younger aunt recommended that I read Peter Hessler after our visit to Changsha. This book I really enjoyed because Peter does a 
 really great job of contextualising a lot of the behaviours of the Chinese people he encounters while  teaching in China and for 
 outsiders, he adds personality and depth to Chinese people with his perspective and experience that very few outsiders get to have. 
-I got a bit bored during the COV19 part of the book, as the extreme lockdowns and  paranoia that the Chinese people had to 
+I got a bit bored during the COVID-19 part of the book, as the extreme lockdowns and  paranoia that the Chinese people had to 
 experience were similar to what we experienced in Victoria, Aus; so it was nothing new. Although the post-covid perspective was
 interesting. But otherwise, the book was very well written and enjoyable.
 
 ### River Town, by Peter Hessler
 
 This is the other book by Peter Hessler my aunt recommended. I'm only about halfway through this book but the perspective that Peter
-offers in this, much older book, is different from Other Rivers. The time from which he reporting from is very different from his 
-latest book, and he is also, naturally, more naive, as this his first time in China, and he's also much younger and less experienced 
+offers in this, much older book, is different from Other Rivers. The time from which he is reporting is very different from his 
+latest book, and he is also, naturally, more naive, as this is his first time in China, and he's also much younger and less experienced 
 (but nevertheless apparently well-educated). But, some parts read like a journal, and it's usually not a whole lot of fun to read 
 stranger's journals. But nevertheless, his experiences and his use of broader context and history to interpret the locals' behaviour 
 (in general, and toward him) provide a very interesting peek into the rural Chinese mindset - shortly after China started to 
@@ -409,9 +409,9 @@ situation can be improved!
 
 ### The Quants, by Scott Patterson
 
-I read this book mainly because I wanted to know what they did. by the end of the book, and perhaps this was deliberate, I felt a
+I read this book mainly because I wanted to know what they did. By the end of the book, and perhaps this was deliberate, I felt a
 little disgusted at the "protagonists" as they made millions of dollars while not clearly contributing a whole lot and also
 putting the American financial system at risk. But the way Scott explained the technical issues they were facing was well-done and I
 felt like I had an approximate understanding of what was happening even though I'm not a quant (although I do have a finance
 bachelors). Throughout the whole book I definitely was wondering if I could make it as one, but I ultimately decided that I don't
-think I have the interest or care enought about money to.
+think I have the interest or care enough about money to.

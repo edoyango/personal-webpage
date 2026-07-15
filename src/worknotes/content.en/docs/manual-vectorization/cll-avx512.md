@@ -31,9 +31,9 @@ for (int hashi = gridhash[0]; hashi <= gridhash[nelem-1]; ++hashi) {
 }
 ```
 
-Some distinctions between this code and the Fortran code is that the positions are seperated into two `std::vector`, and
+Some distinctions between this code and the Fortran code are that the positions are separated into two `std::vector`s, and
 distance vectors and magnitudes are stored in `std::vectors`, as opposed to being discarded immediately (the calculation
-is performed in `sph::dr` function). This is useful because these values can be reused lated to calculate kernel values,
+is performed in `sph::dr` function). This is useful because these values can be reused later to calculate kernel values,
 gradients, and particles' acceleration. 
 
 ## Vectorizing the code with AVX512 instructions
@@ -115,22 +115,22 @@ for (int hashi = gridhash[0]; hashi <= gridhash[nelem-1]; ++hashi) {
 }
 ```
 
-Here, I make use of the 512-bit vectors to find pairs of particles and requires AVX512f instructions. In addition to the
+Here, I make use of the 512-bit vectors to find pairs of particles and require AVX512f instructions. In addition to the
 use of 512-bit vectors, AVX512f is needed for the `_mm*_cmp_*_mask` and `_mm*_mask_compress_*` instructions.
 The latter function compresses elements into the lower elements of the resultant vector, based on a mask. _That mask can
-be determined at runtime_, which is not the case fo SSE*/AVX2 shuffle and blend instructions.
+be determined at runtime_, which is not the case for SSE*/AVX2 shuffle and blend instructions.
 
 The calculation of `vdx/vdy/vdr` follows a straightforward pattern, where data is loaded from each of the i particles
 and the relative position vector and magnitude is calculated for each of the j particles. `pair_i` is stored using the
 constant (relative to the iteration) `ii` value, and `pair_j` is stored using a similar mask and compress pattern.
 
-`_mm_cmp_pd_mask` compares the values of the first argument (in this case, the `__m128d` vector of relative distance),
-and compares it with the second argument, another vector (in this case, created by `_mm_set1_pd(cutoff)`). The
-comparison function is determined by the third argument, which is `_CMP_LT_OQ` which is less than or equal to. In other
-words, each element of the `vdr` vector is checked whether it is less than or equal to `cutoff`. The result is stored in
+`_mm_cmp_pd_mask` compares the values of the first argument (in this case, the `__m128d` vector of relative distance)
+with the second argument, another vector (in this case, created by `_mm_set1_pd(cutoff)`). The
+comparison function is determined by the third argument, which is `_CMP_LT_OQ` which is less than. In other
+words, each element of the `vdr` vector is checked whether it is less than `cutoff`. The result is stored in
 the mask `umask`. 
 
-To illustrate this a bit better, consider the below simplied example of an iteration:
+To illustrate this a bit better, consider the below simplified example of an iteration:
 
 ```cpp {style=tango,linenos=false}
 // define cutoff
@@ -180,13 +180,13 @@ OVERALL_GEOMEAN                                   -0.4177   -0.4177          0  
 ```
 
 From the results above, we get a meaningful speedup of about 1.4-1.7x, albeit far from an ideal 8x speedup. A possible 
-reason for the far-from-ideal speedup is high ratio of residual to vectorized iterations. This is relevant because here,
+reason for the far-from-ideal speedup is a high ratio of residual to vectorized iterations. This is relevant because here,
 inner loops are vectorized and there are residual iterations for every time an inner loop is executed. In this case,
 where the cutoff is set as 2.4x the average particle spacing, that means that on average, and ignoring edges of the
-square that hte particles are contained in, each cell has only `2.4*2.4 = 5.76` particles. This implies that the first
+square that the particles are contained in, each cell has only `2.4*2.4 = 5.76` particles. This implies that the first
 inner (non-vectorized) loop will have only `2 * 5.76 - 1 = 10.52` iterations on average. The second loop will 
 have `3 * 5.76 = 17.28` iterations on average. These are estimates, and the real averages are probably lower since
-cells near at the edge of the domain will not have as many particles in them.
+cells near the edge of the domain will not have as many particles in them.
 
 It's also important to note that `_mm*_mask_compress_*` is very expensive relative to all the other intrinsics used
 here.
@@ -208,7 +208,7 @@ OVERALL_GEOMEAN                                   -0.4208   -0.4208          0  
 ```
 
 Note that using 128-bit vectors reduces speedup in this case to below that of using 512-bit vectors. I find that the
-256-bit vectors provides the most consistent speedups, regardless of cutoff.
+256-bit vectors provide the most consistent speedups, regardless of cutoff.
 
 ## Possible future improvements
 

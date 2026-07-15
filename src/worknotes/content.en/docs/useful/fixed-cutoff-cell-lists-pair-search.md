@@ -21,7 +21,7 @@ The main steps are:
 2. Map points to grid.
 3. Sweep through the cells to find pairs.
 
-The interface to the code looks similar to the direct search version, with the addition of a `maxpcell` variable that needs to be added to size the grid array.
+The interface to the code looks similar to the direct search version, with the addition of a `maxpercell` variable that needs to be added to size the grid array.
 
 ## Code (Fortran)
 ```fortran {linenos=false,style=tango}

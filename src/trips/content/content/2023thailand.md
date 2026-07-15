@@ -25,7 +25,7 @@ We got one less day in Bangkok than planned, because of the 1.5 day delay of our
 for the delay, we had a whopping 24h in Bangkok before catching the overnight train to Chiang Mai.
 
 We arrived at around 10pm Bangkok time picked up our [online preordered sim cards](https://www.klook.com/en-AU/activity/16587-dtac-4g-sim-thailand/?spm=BookingDetail.ActivityCard&clickId=a31828157b) from the Klook kiosk at the aiport and
-went straight to our accomodation. Our accomodation was an [AirBnB place](https://www.airbnb.com.au/rooms/35329051) that
+went straight to our accommodation. Our accommodation was an [AirBnB place](https://www.airbnb.com.au/rooms/35329051) that
 we chose mainly because it was cheap and on the airport rail line (i.e., easy to get to after our flight). It was basic,
 but comfortable. And honestly, after a 9h flight and wrestling with the Bangkok heat and humidity, anywhere with a bed
 and aircon was plenty. We finished the day with a visit to 7-eleven for water, and dinner via Food Panda delivery
@@ -40,7 +40,7 @@ share).
 
 After ticking off the money exchange item, we walked around the corner to [Panda Spa and Massage](https://maps.app.goo.gl/UvbqhxkW4rAx3RbG7)
 to get a back, neck, and shoulder massage to heal us from last night's long plane ride. The masseuses were super strong
-and really targetted the knots in our muscles! Although my partner woke up the next morning with bruses (and a 
+and really targeted the knots in our muscles! Although my partner woke up the next morning with bruises (and a 
 knot-free back). And to fuel up, we again walked around the corner to our Bib Gourmand choice: [Kuang Heng Pratu Nam
 Chicken Rice](https://maps.app.goo.gl/UeEnub1e7uVwZCiL9), which, you guessed it, specialises in hainanese chicken rice.
 I probably wouldn't recommend going out your way to visit, but the flavours are definitely tasty and unique, and
@@ -55,8 +55,8 @@ train to Chiang Mai, we decided to do it when we're back in Bangkok toward the e
 
 ### Bangkok to Chiang Mai via Overnight Train
 
-Overnight trains are definitely not the fastest option as plains between Bangkok and Chiang Mai take around a couple 
-hours or so, and perhaps not the cheapest as busses as cheaper. Another criticism that I've heard is that overnight
+Overnight trains are definitely not the fastest option as planes between Bangkok and Chiang Mai take around a couple 
+hours or so, and perhaps not the cheapest as buses are cheaper. Another criticism that I've heard is that overnight
 trains can often be delayed or cancelled, although that wasn't an issue for us. But I insisted on this because this 
 holiday was supposed to be relaxing, and there's something about watching the scenery pass by on a train that I find 
 relaxing. 
@@ -67,7 +67,7 @@ expected arrival at 7:15am. We had a Thai friend help us book online, and we boo
 class consisted of booths with two chairs facing each other. And each of these booths could be turned into bunk beds.
 The lower bunk gets the window (great if you're an early riser), whereas the top bunk doesn't. Power points are
 available in both the seated and bunk beds configuration. **Important tip**: remember to bring an eye mask - lights are
-kept on throughout the night. Ear plugs help too - We had issues with people talking in the middle of the night. We also
+kept on throughout the night. Ear plugs help too - we had issues with people talking in the middle of the night. We also
 found the food on the train to be *relatively* expensive, so we brought our own food.
 
 ![IMG20231114061716.jpg](/trips/img/trips-thailand2023/IMG20231114061716.jpg "gallery")
@@ -75,7 +75,7 @@ found the food on the train to be *relatively* expensive, so we brought our own 
 ![DSC_0009.jpg](/trips/img/trips-thailand2023/DSC_0009.jpg "gallery")
 
 Next time, if I were to take the train again, I'd consider booking at the ticket office rather than online. Apparently
-the ticket office and online bookings have seperate pools of tickets (not sure why). When we booked online, we got the
+the ticket office and online bookings have separate pools of tickets (not sure why). When we booked online, we got the
 last 2 of 3 tickets which were only top bunks. But, last minute travellers who booked at the office got bottom bunks.
 Additionally, if travelling in two's, I might go in first class, which lets you share a cabin (still a bunk bed) with
 two people, avoiding the noise and light issue, and at least one of you gets the window.
@@ -83,7 +83,7 @@ two people, avoiding the noise and light issue, and at least one of you gets the
 ### Chiang Mai
 
 After a surprisingly comfortable ride on the overnight train, we arrived in Chiang Mai at around 7:30am - greeted by
-Tuk Tuk and taxi drivers trying to get tourists' business. We opted (as many other did) to order a Bolt to minimize the
+Tuk Tuk and taxi drivers trying to get tourists' business. We opted (as many others did) to order a Bolt to minimize the
 need for haggling and for a more comfortable and inexpensive ride. Throughout our stay in Chiang Mai, We stayed at an
 AirBnB in the [Astra Condo](https://www.airbnb.com.au/rooms/39219424), which we liked because it was away from the
 Chiang Mai old city, and consequently away from the noise; and because of the space. The pool was quite nice too.
@@ -97,8 +97,8 @@ Thailand doesn't share a border with China; but convenient if you know Chinese.
 #### Old city
 
 The Chiang Mai old city is a classic destination for tourists, with heaps of Wats (temples) within walking distance,
-coupled with tourist accomodation and eclectic restaurants/bars - all surrounded by a moat and remnants of the wall that
-used to surround the city. We spent a couple mornings exploring the area and seeings Wats on Prapokkloa Rd - starting
+coupled with tourist accommodation and eclectic restaurants/bars - all surrounded by a moat and remnants of the wall that
+used to surround the city. We spent a couple mornings exploring the area and seeing Wats on Prapokkloa Rd - starting
 from the Chiang Mai Gate. Those mornings, we grabbed breakfast from Chiang Mai Gate Market - experimenting with the 
 available local cuisine. 
 
@@ -126,11 +126,11 @@ since it was recommended by our AirBnB host. But, their inexpensive bikes were a
 instead went to a place across the road. It cost us 250 THB per day, with a 1,000 THB deposit, and we needed to cover
 our own petrol. This price and deposit amount seemed standard for scooter rentals. Our newfound independence enabled us
 to visit [Baan Kaang Wat](https://www.google.com/maps/place/Baan+Kang+Wat/@18.7763307,98.9461536,17z/data=!3m1!4b1!4m6!3m5!1s0x30da3135abcf1377:0x5b0f6ce47286ce9f!8m2!3d18.7763256!4d98.9487285!16s%2Fg%2F11c1plybwt?entry=ttu) - 
-a village, located at the base of Doi Inthanon, that provides accomodation for craftsman and artists and a space for 
+a village, located at the base of Doi Inthanon, that provides accommodation for craftsman and artists and a space for 
 them to sell their products; and Doi Suthep - a temple atop the mountain. The artists' village had funny and fashionable
 art pieces, postcards, jewellery, clothing, and more that would make a great place to buy souvenirs. Doi Suthep was
-pretty crowded because of all the school kids on an excursion. In hinsdight, it would've been good to visit a couple
-more places on the mountainside like Doi Kham, and Huay Tueng Thao Resevoir. But we felt like we crossed off the main
+pretty crowded because of all the school kids on an excursion. In hindsight, it would've been good to visit a couple
+more places on the mountainside like Doi Kham, and Huay Tueng Thao Reservoir. But we felt like we crossed off the main
 items on our agenda for that day. We spent the rest of the day around MAYA shopping centre, getting a manicure, and 
 exploring shops around Chiang Mai Night Bazaar.
 
@@ -144,11 +144,11 @@ exploring shops around Chiang Mai Night Bazaar.
 #### Elephant Nature Park
 
 Day four was spent entirely at Elephant Nature Park - selected because it claims to be the most ethical elephant park
-and because it hosts other animals like water buffalo, dogs, and cows. It's unique in that Elephants are largely left to
+and because it hosts other animals like water buffalo, dogs, and cows. It's unique in that elephants are largely left to
 roam the park and viewing is done from a distance. This is in contrast to other parks, which force elephants to be 
 ridden or to be bathed by tourists. The elephants adopted in the nature park are often elephants that previous owners
 can no longer afford to take care of, or have been injured, rendering them unable to work. We did the skywalk day trip
-which picked us up from our accomodation and took us around the main park in the morning, and showed us their other area
+which picked us up from our accommodation and took us around the main park in the morning, and showed us their other area
 where new and/or young elephants are kept prior to being brought into the main park. We would highly recommend this park
 as you know that the elephants are treated well. And while the intention is to let the elephants roam free, they do
 occasionally come up to say hi (apparently they like sneaking up on the visitors!).
@@ -180,7 +180,7 @@ Our favourite places we ate at in Chiang Mai:
     * Awarded Michelin Bib Gourmand
 * Pause on the Hill
     * Best coffee of the handful of places I tried in Chiang Mai
-    * Offers western staples (e.g., Latte, Long black, Cappucino etc.), and Thai staples (e.g., long black with yuzu)
+    * Offers western staples (e.g., Latte, Long black, Cappuccino etc.), and Thai staples (e.g., long black with yuzu)
     * Pleasant and quiet indoor ambience
 
 ### Phuket
@@ -194,9 +194,9 @@ locals to dock their boats. It's also a little awkward to get to - it's the last
 the airport, which takes two hours! Taking a more direct route via taxi is half that. But the main advantages are 
 that it is far less touristy (although apparently becoming more gentrified), and serves as a great base to island 
 hop from, since you can ask any of the long-tail boat drivers on the road parallel to the beach front. There is also Yanui beach, which is a 15-ish minute scooter ride from Rawai beach. Generally, I would recommend this place to
-stay if you planned to stay for awhile, wanted time away from the busier areas, and want to island hop.
+stay if you planned to stay for awhile, wanted time away from the busier areas, and wanted to island hop.
 
-The accomodation itself was good value and comfortable (about $40 AUD per night), but not for those who want views
+The accommodation itself was good value and comfortable (about $40 AUD per night), but not for those who want views
 and privacy.
 
 #### James Bond Island, Phang Nga Bay, and Hong Island by canoe
@@ -217,24 +217,24 @@ seasick.
 
 The other island hopping adventure we got to go on, is to Bon Island and Coral Island. Bon Island is a small island near
 Rawai Beach and only takes 20 minutes or so by longtail boat to get to. Banana Beach is only a bit further out in the
-same direction and takes around half an hour. We visited Coral Island first, and then Bon island on the way back. But I
+same direction and takes around half an hour. We visited Coral Island first, and then Bon Island on the way back. But I
 would probably skip Bon Island altogether next time since the beach is smaller and not as great for snorkelling.
 
 To arrange a boat, we simply talked to one of the guys standing next to the boat/island hopping signs sitting along
-the road adjacent to Rawai beach. We talked to a guy at around 8am and asked for an 8:30 pickup from our accomodation,
+the road adjacent to Rawai beach. We talked to a guy at around 8am and asked for an 8:30 pickup from our accommodation,
 which wasn't an issue, although such short notice was probably only possible because we were staying a 5 minute walk
 from where he was posted. The return trip to Banana Beach and Bon Island cost us 1800 THB for the whole day (Banana
 Beach alone would've been 1500 THB). The boat trip also comes with snorkels to use. When you get to Banana Beach, using
 the beach chairs and toilets requires a 100 THB per-person fee (more if you want to use the beds).
 
-Because we left so early, we were one of the first to get to banana beach. We later also learnt that early is better 
+Because we left so early, we were one of the first to get to Banana Beach. We later also learnt that early is better 
 because the tide tends to be higher in the morning, and drops in the afternoon - making it more difficult to snorkel. We
-spent most of the morning snorkelling and lounging in the chairs on banana beach. The snorkelling was surprisingly 
+spent most of the morning snorkelling and lounging in the chairs on Banana Beach. The snorkelling was surprisingly 
 really good! There was coral almost at the water front with a pretty good variety of fishes. But some of those fish will
 bite you if you stay still or step on the coral (their homes)! We arrived around 9am and the place stayed pretty empty
 until 10am.
 
-Bon island didn't have nearly as good snorkelling, but while banana bay got pretty busy by the afternoon, Bon Island was
+Bon Island didn't have nearly as good snorkelling, but while banana bay got pretty busy by the afternoon, Bon Island was
 almost empty. On Bon Island, we mostly lazed around, explored the rockpools, and played with the hermit crabs on the
 beach.
 
@@ -268,12 +268,12 @@ to be (in order):
 2. Nothing But Thieves
 3. Joji
 
-Bloc Party was bit ordinary - the lead singer had a bit of a bored look (admittedly, it was the last show of their
+Bloc Party was a bit ordinary - the lead singer had a bit of a bored look (admittedly, it was the last show of their
 tour). It also doesn't help that their music is not really my taste. Nothing But Thieves were not bad - some of the
 sounds in their songs reminded me of bands I listen to at least semi-regularly, like: Muse, Radiohead, and Maroon 5. My
 partner also seemed to really like them. They also had really cool light and smoke effects going on, and the band had
 good energy. A band I might explore more in the future. But, despite being the headline act, Joji was super
-disappointing. The sound of the speakers weren't balanced, so instruments were drowning out voices (this was an issue
+disappointing. The sound of the speakers wasn't balanced, so instruments were drowning out voices (this was an issue
 for all the acts, and probably depended on where you were standing); and he had this stupid supporting DJ (?) that would
 inject "ay ay ay" in the middle of Joji's singing and make really bad jokes. We ended up leaving a couple songs into his
 show. 
@@ -293,7 +293,7 @@ nice silk clothing.
 
 Our next search spot was Old Siam Square. As the name suggests, Old Siam Square has a lot of "legacy" shops - including
 the "Silk Zone", apparently all reliable shops and tailors dealing in silk. But after strolling around and looking at
-the available clothing they had. It was clear that they catered more toward [formal wear](https://www.etsy.com/au/listing/1288468173/2set-thai-traditional-silkset-for)
+the available clothing they had, it was clear that they catered more toward [formal wear](https://www.etsy.com/au/listing/1288468173/2set-thai-traditional-silkset-for)
 or [older style shirts](https://www.ebay.com.au/itm/175286147112) which wasn't what I was after. Apparently they can
 tailor, given a reference, but we only had a few days left and wasn't sure that the shirts would be done in time.
 
@@ -357,11 +357,11 @@ wearing a moderately thick long sleeve (cut-resistant gloves may also come in ha
 the birds will try to rip them off!
 
 When you walk in, you're immediately greeted by birds eager to jump onto you for food, but beware the Cockatoos! They
-seem to love ripping things off your clothing - they ripped off a button off my partners hat, and tried to rip off one
+seem to love ripping things off your clothing - they ripped off a button off my partner's hat, and tried to rip off one
 of my piercings! If it becomes too much, you can make your way into the next room which has cushions to sit on and is
 devoid of animals. The backyard has ducks, fluffy chickens, bunnies, hamsters, and the entrance to another bird
 enclosure. The minders are very kind and helpful, and will help you catch the ducks to take a photo with, and to also
-help you take photos. The bird enclosure has many colourful (with varying degrees of agressiveness), who will happily
+help you take photos. The bird enclosure has many colourful birds (with varying degrees of aggressiveness), who will happily
 perch on you for photos (one hung out in my hair for awhile).
 
 A highly recommended experience if you love animals! Across the road also has a dog cafe, although it was empty at the
@@ -382,7 +382,7 @@ We ate a lot of different food in Bangkok, so I'll keep the selection limited.
     * Very affordable Omakase (999 THB per person which is ~$40 AUD)
     * Very professional staff, who modified the menu based on my allergy to shellfish
     * Emphasised a show, using fancy ingredients (otoro, gold flecks, truffle) and tools
-    * Past Omakase's I've been to tended to focus more on interesting ingredients or flavours, so that was a little lacking
+    * Past Omakases I've been to tended to focus more on interesting ingredients or flavours, so that was a little lacking
     * Both my favourite course was the squid nigiri with yuzu salt
     * Only seats 10 or so people, so quite intimate (there was only 4 of us when we went)
 * Sae Phun
@@ -423,7 +423,7 @@ make their way to the present day group (group 5) who can choose to have career 
 
 She argues that the current gender gap is *mostly*, but not *entirely*, driven by the fact that high-paying jobs tend
 to be "greedy jobs" and it is impossible to have a greedy job and be a primary caretaker at the same time. Greedy jobs
-apparently result in higher pay both because of the more hours worked, but also these jobs are payed *more per hour*
+apparently result in higher pay both because of the more hours worked, but also these jobs are paid *more per hour*
 because workers are effectively on-call, hours are inconsistent, and more time in the profession tends to be rewarded by
 clients. The examples of high paying greedy jobs Prof. Claudia uses are doctors, lawyers, consultants, and investment
 bankers. She argues that bias against women is unlikely to be a *large* factor for the pay gap because her data shows 
@@ -432,7 +432,7 @@ marriage/parentship) earn only a bit less than what men do.
 
 Towards the end of the book, she highlights changes currently happening and further changes needed to reduce the cost of
 dropping out of these traditionally greedy jobs:
-* Consulting firms are finding that early-career women are leaving to become caretakers, which is unecomical for the firms due to brain drain and wasted training, and so are raising the "substitutability" of workers and introducing work-life-balance measures, which Prof. Claudia argues is critical to keeping women working in well-paid careers.
+* Consulting firms are finding that early-career women are leaving to become caretakers, which is uneconomical for the firms due to brain drain and wasted training, and so are raising the "substitutability" of workers and introducing work-life-balance measures, which Prof. Claudia argues is critical to keeping women working in well-paid careers.
 * Having workers on call isn't strictly necessary, and changes in the system can reduce the need for workers to be on-call. For example: vets used to be small-businesses only and owners would be on call, and eventually they moved to small-businesses would be 9-5, but a centralised facility would be available 24/7 for emergencies, which would have vets on a roster, so nobody would have to be on call (also similar to how GPs work with emergency departments). 
 * Lower the cost of child care, so the primary caretaking partner (usually the wife in heterosexual couples) doesn't need to take time off.
 * alter societal norms, so it isn't always the woman being the primary caretaker.
@@ -440,14 +440,14 @@ dropping out of these traditionally greedy jobs:
 I liked this book as it gave a lot more clarity to gender economic inequity. Popular discourse tends to be lazy in how
 they discuss it by attributing the inequity to abstract and not measurable concepts like "the patriarchy", "sexism"; and
 instead it writes a narrative based on primary data for what has happened and what is happening. I'm not saying that we
-don't live in a patriarchical society that can enforce gender norms, or that there isn't sex bias in our society, but
+don't live in a patriarchal society that can enforce gender norms, or that there isn't sex bias in our society, but
 that by providing a mechanism to phenomena like the gender pay gap, provide a far more useful way to discuss it, as well
 as address it. I think that Prof. Claudia provides a very clear and easy to understand view of the gender pay gap, and
 provides some guidance on how it can be addressed. I also appreciate that later in the book, she treats the issues as
 arising from couples' situations and decisions (rather than attributing the issue to the patriarchy or sexism in a
 hand-wavy manner), as well as acknowledging that men generally prefer being present as fathers and lament when they are
 not. Finally, I think the comments and solution towards the end provide good guidance for which policies to promote if 
-we want live (and work) in a world where both parents have the opportunity to take care of their kids, without losing long-term income. 
+we want to live (and work) in a world where both parents have the opportunity to take care of their kids, without losing long-term income. 
 
 Overall, a good and intuitive, albeit dense read. A must read for anyone seeking specificity and clarity on the gender
 pay gap, and the strides women have made and the challenges they still face.
@@ -463,7 +463,7 @@ modern men and boys. In addition to describing issues, he also makes an effort t
 the differences in the more *extreme* left and right wing views (US) surrounding gender issues. He tries to carefully
 highlight that while women do indeed experience challenges, men's outcomes in very recent history, are worsening for a
 variety of reasons. He occasionally criticizes the state of public discourse and policy around gender issues to be 
-biased in the favour of women as efforts to address mens issues are assumed to be detracting from women's or LGBTIQA+ 
+biased in the favour of women as efforts to address men's issues are assumed to be detracting from women's or LGBTIQA+ 
 issues, and instead argues that "we can hold two thoughts at once" and "it isn't a zero-sum game".
 
 The main issues that I see him identifying throughout the book are:
@@ -472,23 +472,23 @@ The main issues that I see him identifying throughout the book are:
 * Agender policies (e.g., policies that waive college fees for everyone) unintentionally benefit women much more than men
 * Work that men have traditionally gone into (often manual labour) are currently being automated and many men are not re-entering the work force
 * Gender roles assigned to men have yet to move on from men being economic providers - problematic in a world where women can provide for themselves, and in a world where traditionally male jobs are disappearing (see above)
-* Gender expectation prevent males from being retrenched into HEAL (Health, Education, Administration, Literacy) jobs, despite evidence to suggest that having male teachers (for example), could improve outcomes for boys in schools.
+* Gender expectations prevent males from being retrenched into HEAL (Health, Education, Administration, Literacy) jobs, despite evidence to suggest that having male teachers (for example), could improve outcomes for boys in schools.
 
 Dr. Richard suggests that these issues can be solved in tandem, and often result in win-win-win situations (win for men,
 win for their partners and/or children, and win for society writ large). The clearest example being getting men into
 HEAL jobs removing the stereotype that men cannot be carers. This would provide more jobs for men; make it socially
-acceptable for men to be more involved in child care and reduce the expecation on women to be primary child carers; help
+acceptable for men to be more involved in child care and reduce the expectation on women to be primary child carers; help
 boys in schools (boys apparently benefit from having male teachers, and girls' outcomes aren't affected); and society
 benefit by filling jobs in a sector that has huge job growth (apparently 3 HEAL jobs are created for every STEM job).
 
-A couple solutions that he proposes seem actionable, in that they are simple to implement (adminstratively), but may
+A couple solutions that he proposes seem actionable, in that they are simple to implement (administratively), but may
 require a bit of persuasion. For example, he proposes that we "redshirt" boys i.e., have all of them start school a year 
 later due to boys' cognitive development being delayed in childhood and adolescence compared to girls. This is already
 being done on an ad-hoc basis, especially in affluent schools. Furthermore, there is ample evidence supporting this
 policy. When talking about getting men into HEAL jobs, Dr. Reeves suggests that policy-makers should mimic initiatives
 used by campaigns to get girls into STEM jobs - such as, getting speakers at school to raise awareness of men in
 HEAL, introduce summer programs, and introducing quotas in HEAL - similar to those implemented for women in STEM. But
-he seems to draw short in identifying actionable solutions for resolving gender issues. It seems that women (according
+he seems to fall short in identifying actionable solutions for resolving gender issues. It seems that women (according
 to Claudia Goldin's narrative), needed barriers removed to progress in closing the gap, but data used in this book 
 suggests that men are also facing identity and motivation issues.
 
@@ -499,7 +499,7 @@ appreciate how he highlights that particularly lower class men's incomes are dec
 same-classed women. Or you could frame it as "men's problems are that those at the bottom are becoming worse off,
 whereas women's problems are that it is almost impossible to get in the top". Most importantly, I feel like the book
 does a lot to give voice to issues affecting large swathes of men, like the change in gender roles, and the loss of 
-income. It highlights the discrepency in how men's issues are treated - men's issues are ignored (evident by lack of
+income. It highlights the discrepancy in how men's issues are treated - men's issues are ignored (evident by lack of
 government and non-profit entities campaigning for men's issues), and women's issues are apparently caused by men. And
 finally, it shows that men have a lot of gaps to close with women too - like in education, mental health, and identity.
 
@@ -522,15 +522,15 @@ But the settings were different each time, offering different slices of life in 
 Most of these stories were quite perplexing to me - not because of their somber tone, but because of how tragic the
 characters' circumstances are. They're mostly low socio-economic status and their environment is just so different from
 the one I grew up in - in the stories financial insecurity was pervasive, single parenthood was in a couple, early
-sexualisation and harrassment, racism, and the list goes on. But each of the stories, these adversities are viewed
-through a lense of naivete - which made me wonder: how common are these issues in Thailand really?
+sexualisation and harassment, racism, and the list goes on. But in each of the stories, these adversities are viewed
+through a lens of naivete - which made me wonder: how common are these issues in Thailand really?
 
 But I thought the books were interesting for another reason - they portray viewpoints from different "kinds" of Thai
-people. In the first story, Farang, the show how local Thai people living on a tourist island view the western tourists, 
+people. In the first story, Farang, they show how local Thai people living on a tourist island view the western tourists, 
 which, in the story, is with infatuation (the protagonist's feelings), or with hesitation and resentment (some of the
 other local's feelings). In the last story (the novella), more interactions between characters in a town are fleshed
 out, highlighting the complex dynamic in a small town with limited opportunity and law enforcement.
 
-Overall, as a fan of somber slice of life's, I really enjoyed the book. I'm not sure how common stories like the ones
+Overall, as a fan of somber slices of life, I really enjoyed the book. I'm not sure how common stories like the ones
 told in the book are (although ChatGPT4 tells me it's very authentic to Thai's experience), but I would recommend it for
 anyone looking to experience Thailand from a more local and realistic lense.

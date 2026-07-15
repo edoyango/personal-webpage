@@ -7,7 +7,7 @@ title = "Overland Track - Further Details"
 weight = -10
 +++
 
-This page is dedicated to describing all the equipment I brought (and wish I brought), all the costs of the trip (not including equipment and food), and the food I brought (and wish I brought)
+This page is dedicated to describing all the equipment I brought (and wish I brought), all the costs of the trip (not including equipment and food), and the food I brought (and wish I brought).
 <!--more-->
 
 ### Costs
@@ -35,7 +35,7 @@ Besides the track fee and parks pass fee, all the other costs are optional in th
     * 1x synthetic fleece jacket from Colombia (pretty warm and would recommend)
     * 1x rain jacket: GORE-TEX Minimalist Jacket from Marmot (did well to protect from wind and rain and would recommend)
     * 2x hiking t-shirts from Mountain Designs (have had these for awhile. I like that they dry pretty quickly but have a good thickness)
-    * 1x hiking pants, convertable to shorts, from Kathmandu (was a bit annoyed at how quickly it soaked up water)
+    * 1x hiking pants, convertible to shorts, from Kathmandu (was a bit annoyed at how quickly it soaked up water)
     * 2x pairs of hiking socks: Trekking Plus from Mountain Designs and XX from Falke (I really like the Falke socks. The other pair I brought caused problems for my feet)
     * 5x pairs of generic underwear
     * 1x hiking shoes: Moab Speed GTX from Merrell (the shoes had great grip, waterproofing and sturdiness. Would recommend)
@@ -46,7 +46,7 @@ Besides the track fee and parks pass fee, all the other costs are optional in th
     * 1x shorts (which could be used to swim)
     * 1x thermal top
     * 1x thermal bottom
-* prescription glasses and prescription sunglesses (I'm short-sighted)
+* prescription glasses and prescription sunglasses (I'm short-sighted)
 * electronics:
     * DSLR Camera (D3300 from Nikon - did not need to charge)
     * Watch: Fenix 5S from Garmin (did not record any times and was at 25% battery at the end of the trek)
@@ -81,13 +81,13 @@ lunch for each day:
 * 2 slices sliced Gouda cheese from Coles
 * 10 crackers
 
-dinner for each days:
+dinner for each day:
 * meal 1:
     * half packet of Coles dehydrated peas
     * dehydrated mash potatoes (enough to make ~1 cup after hydrating)
     * Continental Soup Sensations Tomato & Ricotta packet
 * meal 2:
-    * half packet of Coles dehydrated peaks
+    * half packet of Coles dehydrated peas
     * Continental Soup Sensations Pumpkin and Sour Cream
     * 1 Mi Goreng packet
 
@@ -98,9 +98,9 @@ snacks:
 * various tea bags (1 bag a day)
 
 cooking:
-* Furno Stove form 360 Degree
+* Furno Stove from 360 Degree
 * Jetpower 230g gas canister from Jetboil which can attach to stove from above
-* X-pot Kettle from Sea to Summit (this is collapsible, which is handy, but I was shown that there are much lighterweight pots that gas canisters can fit inside of, which removes the need for collapsibility)
+* X-pot Kettle from Sea to Summit (this is collapsible, which is handy, but I was shown that there are much lighter-weight pots that gas canisters can fit inside of, which removes the need for collapsibility)
 * matches to light the gas stove
 
 hydration:

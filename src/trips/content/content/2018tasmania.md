@@ -12,9 +12,9 @@ My German housemate, who loves hiking and seeing what Australia has to offer, in
 
 ### Hobart
 
-Flying into Hobart, we grabbed our rental car and headed straight to the accomodation. The accomodation was a beautiful house on a hillside with a view of the bay. But it definitely felt people still lived there with photos of family littered about.
+Flying into Hobart, we grabbed our rental car and headed straight to the accommodation. The accommodation was a beautiful house on a hillside with a view of the bay. But it definitely felt people still lived there with photos of family littered about.
 
-We stayed 3 nights in Hobart - using it as a base. From Hobart, we visited Mt Hartz and Mt Field - both a couple hours drive out. The things we saw in Hobart itself are: the (in)famous MONA musem; Mt Wellington also - although our view of Hobart at the peak was blocked by clouds &#128546;; and Pirate Bay.
+We stayed 3 nights in Hobart - using it as a base. From Hobart, we visited Mt Hartz and Mt Field - both a couple hours drive out. The things we saw in Hobart itself are: the (in)famous MONA museum; Mt Wellington also - although our view of Hobart at the peak was blocked by clouds &#128546;; and Pirate Bay.
 
 ![DSC_0011.jpeg](/trips/img/trips-tasmania2018/DSC_0011.jpeg "gallery")
 ![DSC_0074.jpeg](/trips/img/trips-tasmania2018/DSC_0074.jpeg "gallery")
@@ -22,7 +22,7 @@ We stayed 3 nights in Hobart - using it as a base. From Hobart, we visited Mt Ha
 
 ### Mt Hartz
 
-The day we attempted this hike, the it had just rained and was forecast to rain again in the late morning. But we did it anyway (I resisted). We were aiming for Mt Hartz peak, which is about 13km from the carpark. The hike wasn't that bad bar the low temperatures. The winds at the peak were strooong though. We couldn't make the last few hundred meters to get to the top, at risk of being blown off the mountain! So unfortunately, we didn't get to complete the Mt Hartz Peak hike properly. On the way down, there we took a very cold dip in a lake 🥶, which would've been great if it wasn't already freezing cold 😫.
+The day we attempted this hike, it had just rained and was forecast to rain again in the late morning. But we did it anyway (I resisted). We were aiming for Mt Hartz peak, which is about 13km from the carpark. The hike wasn't that bad bar the low temperatures. The winds at the peak were strooong though. We couldn't make the last few hundred meters to get to the top, at risk of being blown off the mountain! So unfortunately, we didn't get to complete the Mt Hartz Peak hike properly. On the way down, we took a very cold dip in a lake 🥶, which would've been great if it wasn't already freezing cold 😫.
 
 ![DSC_0078.jpeg](/trips/img/trips-tasmania2018/DSC_0078.jpeg "gallery")
 ![DSC_0089.jpeg](/trips/img/trips-tasmania2018/DSC_0089.jpeg "gallery")
@@ -30,14 +30,14 @@ The day we attempted this hike, the it had just rained and was forecast to rain 
 
 ### Mt Field
 
-Thankfully, the weather on this hike was much more welcoming. But the hike felt much longer. Also because my two housemates are a fair bit faster hikers than me. The hike has a faux peak which I didn't realise wasn't the actual peak until we got there. The views from the first peak were good, but the real peak defintely delivered. The hike is punctuated by beautiful lakes and waterfalls.
+Thankfully, the weather on this hike was much more welcoming. But the hike felt much longer. Also because my two housemates are a fair bit faster hikers than me. The hike has a faux peak which I didn't realise wasn't the actual peak until we got there. The views from the first peak were good, but the real peak definitely delivered. The hike is punctuated by beautiful lakes and waterfalls.
 
 ![DSC_0024.jpeg](/trips/img/trips-tasmania2018/DSC_0024.jpeg "gallery")
 ![DSC_0062.jpeg](/trips/img/trips-tasmania2018/DSC_0062.jpeg "gallery")
 ![DSC_0091.jpeg](/trips/img/trips-tasmania2018/DSC_0091.jpeg "gallery")
 
 ### Mt Rufus
-Departing from hobart, our next destination was Queenstown (which I can tell you is very different from NZ's Queenstown). In between our 3.5h drive, we stopped at Lake St Clair famous in Tasmania, and known for being the end point of the overland track.
+Departing from Hobart, our next destination was Queenstown (which I can tell you is very different from NZ's Queenstown). In between our 3.5h drive, we stopped at Lake St Clair famous in Tasmania, and known for being the end point of the overland track.
 
 We chose the Mt Rufus Track (19km) because the tracks following the lake's perimeter were a little easy and didn't offer anything impressive. The view from Mt Rufus was beautiful and still offered views of the lake. The track was a little long though.
 
@@ -47,7 +47,7 @@ We chose the Mt Rufus Track (19km) because the tracks following the lake's perim
 
 ### Mt Cradle
 
-The idea of staying at Queenstown was so that it wasn't long until we get to Mt Cradle - the start of the Overland Track!
+The idea of staying at Queenstown was so that it wasn't long until we got to Mt Cradle - the start of the Overland Track!
 
 The weather wasn't welcoming this time, and there was fog and cloud cover all morning. We climbed up to Marion's lookout, but stopped short of the summit because of the bad weather. There were plenty of other tourists here, although we were early, so it wasn't so bad.
 
@@ -57,7 +57,7 @@ The weather wasn't welcoming this time, and there was fog and cloud cover all mo
 
 ### Trowunna Wildlife Sanctuary
 
-Our last day in Tasmania was a short one due to having to fly out early. We spent the morning driving from our accomodation in Devonport and hanging out at the Trowunna Wildlife Sanctuary. Here they had an assortment of animals include the Tasmanian devil and baby kangaroos. Would recommend - especially for bird lovers!
+Our last day in Tasmania was a short one due to having to fly out early. We spent the morning driving from our accommodation in Devonport and hanging out at the Trowunna Wildlife Sanctuary. Here they had an assortment of animals including the Tasmanian devil and baby kangaroos. Would recommend - especially for bird lovers!
 
 ![DSC_0071.jpeg](/trips/img/trips-tasmania2018/DSC_0071.jpeg "gallery")
 ![DSC_0087.jpeg](/trips/img/trips-tasmania2018/DSC_0087.jpeg "gallery")

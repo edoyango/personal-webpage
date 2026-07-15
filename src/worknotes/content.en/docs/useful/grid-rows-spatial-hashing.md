@@ -11,7 +11,7 @@ This strategy is based on [this NVIDIA article](https://developer.download.nvidi
 The idea being that instead of storing indices of particles in a grid data structure, you can convert these 3-valued
 indices to single hashes. These hashes can then be used to sort the particle data so that the particle data is ordered
 based on their grid cell hash index. This is beneficial for GPUs, which is why it's mentioned in the above article, but
-is also useful for CPUs as it iterating over the particle pairs more cache-friendly. 
+is also useful for CPUs as it makes iterating over the particle pairs more cache-friendly. 
 
 Read the above article for details. The code makes use of the C++ sort function available in the `algorithm` header.
 
@@ -30,7 +30,7 @@ The significant speedup obtained is for a few reasons:
 * In the case of compiling with more aggressive optimisations, the new structure is better able to leverage the compiler's automatic SIMD instructions.
 
 The main downside of the code is that now the points are ordered differently from the input. If the order of the points
-is not critical, then it is better to maintain this new order,as data locality would be much better. However, if
+is not critical, then it is better to maintain this new order, as data locality would be much better. However, if
 necessary, reordering the points can be reversed easily, and with only a modest time penalty.
 
 Another benefit is the lower memory usage by the algorithm. This is because it doesn't need to allocate the

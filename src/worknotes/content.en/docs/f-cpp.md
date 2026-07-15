@@ -5,10 +5,10 @@ weight: 1
 
 # A Basic Comparison of C++ vs Fortran
 
-I'm an avid user of Fortran and this is pretty well known in my team. I'm not particularly evangalistic about using
+I'm an avid user of Fortran and this is pretty well known in my team. I'm not particularly evangelistic about using
 Fortran, but I do feel it has its place in modern programming, despite the fact that it's one of the oldest programming
 languages out there. This has kind of been echoed by other Fortran users. For example, in [Matsuoka et al. (2023)](https://arxiv.org/pdf/2301.02432.pdf),
-They declare that "Fortran is dead, long live the DSL!" is a HPC myth. They go on to explain that the high performance 
+they declare that "Fortran is dead, long live the DSL!" is an HPC myth. They go on to explain that the high performance 
 of Fortran is not easily reproduced even in languages like C.
 
 The first author, Satoshi Matsuoka, is pretty important in the HPC world currently. He is heavily involved in the HPC
@@ -23,13 +23,13 @@ particular C++). I hadn't been able to erase his skepticism due to my naivety on
 a programming sense) Fortran, and had only played with C++. So I figured, that if I was to continue to use Fortran, I
 might as well be aware of how it compares to other languages.
 
-Here, I use the "direct search" method of finding pairs of points that lay within a certain distance of eachother. I use
-pair search algorithms within the context of SPH, where each of these pairs have a kernel weight associated with it. So
-the algorithm shown here will also calculating this value for each pair.
+Here, I use the "direct search" method of finding pairs of points that lay within a certain distance of each other. I use
+pair search algorithms within the context of SPH, where each of these pairs has a kernel weight associated with it. So
+the algorithm shown here will also calculate this value for each pair.
 
 The C++ code I'm writing here is supposed to be from the perspective of a beginner. Firstly because I am a beginner C++
 coder, but also because this exercise is supposed to help beginners decide why they want to choose Fortran over C++ when
-starting a new project. This hypothetical beginners knowledge of C++ will come from the [Learn C++](https://www.learncpp.com/)
+starting a new project. This hypothetical beginner's knowledge of C++ will come from the [Learn C++](https://www.learncpp.com/)
 website, as it is often recommended for beginners.
 
 ## Hardware
@@ -53,17 +53,17 @@ Each version of the code is compiled multiple times with different flags for opt
 4. `-fstrict-aliasing` (strict aliasing - only for C++ code)
 
 the strict aliasing optimisation was added because variables in Fortran are strictly "aliased", whereas this is
-not the case for C++. This apparently allows for optimisations to be made when compiling all Fortran code. See [thisstackoverflow discussion](https://stackoverflow.com/questions/13078736/fortran-vs-c-does-fortran-still-hold-any-advantage-in-numerical-analysis-thes) 
+not the case for C++. This apparently allows for optimisations to be made when compiling all Fortran code. See [this stackoverflow discussion](https://stackoverflow.com/questions/13078736/fortran-vs-c-does-fortran-still-hold-any-advantage-in-numerical-analysis-thes) 
 for more details.
 
 ## The Fortran code
 
 Without going into too much detail, the `dsearch` subroutine is really just a nested loop that loops over the points
-twice to find which are within the cutoff distance (`scale_k*hsml`) of eachother. The loop is written to take advantage
-of symmetry. Consequently, the final list of pairs (`pair_i`, and `pair_j`), are unique i.e., given a pair `(i, j)`, the
+twice to find which are within the cutoff distance (`scale_k*hsml`) of each other. The loop is written to take advantage
+of symmetry. Consequently, the final list of pairs (`pair_i`, and `pair_j`), is unique i.e., given a pair `(i, j)`, the
 reversed pair `(j, i)` doesn't exist.
 
-Note that the points' positions are generated randomly rather than deterministicly, so that data accesses are random.
+Note that the points' positions are generated randomly rather than deterministically, so that data accesses are random.
 
 ```fortran {style=tango,linenos=false}
 module kernel_and_consts
@@ -205,8 +205,8 @@ A challenge that arises in C++ and scientific computing is storing multi-dimensi
 need to store the position of the points in a 2D array - one dimension for the coordinates, and one for the points. My
 first version of the C++ code uses a vector of structures, where the structure is just an array of length `dim` (in 
 this case `dim` = 3). Vectors are often the recommended way to store array data. But for multi-dimensional data, there
-are many ways to store that in a vector e.g., a vector of vectors or a vector of tructs. Here I opt to use a vector of
-structs as it is a fairly common way to organise point data when the point is assocated with many values.
+are many ways to store that in a vector e.g., a vector of vectors or a vector of structs. Here I opt to use a vector of
+structs as it is a fairly common way to organise point data when the point is associated with many values.
 
 ```cpp {style=tango,linenos=false}
 #include <vector>
@@ -317,12 +317,12 @@ Some comments about this code:
 * There are many more "imports" needed than the Fortran code. `algorithm` is needed for `max`, `cmath` is needed for
 `sqrt`, `random` is needed for the random number generator, `iostream` is needed for IO, `chrono` is needed for timing,
 and `vector` is needed for the `vector` datatype. I would argue that this is a bit of a barrier to productivity for
-beginners as many functions and types are located in disaparate headers that one needs to lookup or remember.
+beginners as many functions and types are located in disparate headers that one needs to lookup or remember.
 * The `dim` function isn't available in the `algorithm` header.
 * The random number generator is more verbose to setup and use compared to the `random_number` subroutine in Fortran.
 * The absence of a `sum` function that works on arrays requires the manual writing of the calculation of `r` (inter-point)
 distance. 
-* the `pow` function can be slow under default/no optimisations (see [this discussion on stackeroverflow](https://stackoverflow.com/questions/2940367/what-is-more-efficient-using-pow-to-square-or-just-multiply-it-with-itself)), so the quartic power was manually repeated.
+* the `pow` function can be slow under default/no optimisations (see [this discussion on stackoverflow](https://stackoverflow.com/questions/2940367/what-is-more-efficient-using-pow-to-square-or-just-multiply-it-with-itself)), so the quartic power was manually repeated.
 * The `chrono` high precision timers are available without the need to program your own (unlike in the Fortran code).
 
 
@@ -335,8 +335,8 @@ When compiling and executing this code, the following times are:
 | 27000         | 5.74999s | 6.02984s | 0.646653 | 6.14586s |
 | 64000         | 32.4458s | 33.8446s | 3.45058s | 34.3546s |
 
-We can see that all but the aggressively optimised version of this code are disgustingly - over 3x the time taken for
-the default optimisations Fortran version! However, the aggressive compiler optimisations bring doown the run time
+We can see that all but the aggressively optimised version of this code are disgustingly slow - over 3x the time taken for
+the default optimisations Fortran version! However, the aggressive compiler optimisations bring down the run time
 significantly - but still slower than the Fortran version.
 
 ## C++ version 2: manual loop unrolling
@@ -398,8 +398,8 @@ int* pair_i = new int [maxinter];
 int* pair_j = new int [maxinter];
 ```
 
-We also have to update the notation form `pos[i].x[d]` to `x[i][d]` as appropriate. The arrays now have to be manually
-deleted, so I add the the following code to just before the loop through the problem sizes ends:
+We also have to update the notation from `pos[i].x[d]` to `x[i][d]` as appropriate. The arrays now have to be manually
+deleted, so I add the following code to just before the loop through the problem sizes ends:
 
 ```cpp {style=tango,linenos=false}
 delete[] x;
@@ -472,7 +472,7 @@ for (int i = 0; i < ntotal; ++i) {
 delete[] x;
 ```
 
-Both the allocation and deallocation statements are pretty gross and unintuitive for beginners. Furthermore, are mandatory
+Both the allocation and deallocation statements are pretty gross and unintuitive for beginners. Furthermore, they are mandatory
 to avoid memory leaks. The definition of `x` in the `dsearch` declaration does become simpler however:
 
 ```cpp {style=tango,linenos=false}
@@ -494,7 +494,7 @@ Compiling and running:
 | 27000         | 3.29056s | 3.3863s | 0.58139s | 3.31922s |
 | 64000         | 18.6892s | 18.9621s | 3.03032s | 19.3092s |
 
-And the speed of the aggresively optimised version has now dropped, although the less-optimised versions appear to have
+And the speed of the aggressively optimised version has now dropped, although the less-optimised versions appear to have
 gotten faster than version 3a.
 
 ## C++ version 4: contiguous 2D (partially) dynamic arrays
@@ -520,7 +520,7 @@ delete x;
 
 The definition of `x` in the `dsearch` declaration remains the same as version 3b.
 
-I clear disadvantage beeing the special definitions and deletions that would require some wrapping. It's also not very
+A clear disadvantage being the special definitions and deletions that would require some wrapping. It's also not very
 beginner friendly from a conceptual standpoint. 
 
 Now compiling and running:
@@ -532,10 +532,10 @@ Now compiling and running:
 | 27000         | 3.17132s | 3.38158s | 0.537241s | 3.44193s |
 | 64000         | 18.5441s | 19.2792s | 2.84747s | 19.533s |
 
-The aggresively optimised version is now about as fast as the Fortran version, which is faster than version 3b, but slower
+The aggressively optimised version is now about as fast as the Fortran version, which is faster than version 3b, but slower
 than 3a. 
 
-### Aggresive compiler optimisations with strict aliasing
+### Aggressive compiler optimisations with strict aliasing
 
 So far, the `-fstrict-aliasing` flag doesn't seem to make a difference when combined with the default optimisations. How
 about combining it with `-O3`?
@@ -554,7 +554,7 @@ down version 4 by a trivial amount - consistent with the other versions.
 
 It's clear that C++ can be just as fast as Fortran. However, I would argue that the speed wasn't as easy to arrive to as
 what it was with Fortran. The Fortran code is written in a way not very different from how a beginner would write it and using
-only intrinsics. Furthermore the only import was `iso_fortran_env` which wasn't mandatory (`real(real64)` declerations 
+only intrinsics. Furthermore the only import was `iso_fortran_env` which wasn't mandatory (`real(real64)` declarations 
 could be replaced with `double precision`, `_real64` suffixes could be replaced with `d0`, and `output_unit` could be
 replaced with `*`); whereas all the headers for the C++ versions were mandatory. The rather subtle optimisation of the
 calculation of `r` reduced the C++ code's flexibility, but was necessary to bring down the speed to the level that GNU's
@@ -564,7 +564,7 @@ allocation is easy to read and easy to write for higher dimensions. Finally, the
 using non-contiguous dynamic arrays to contiguous is not easily found or quick to understand by a beginner (I have the
 advantage of years of experience coding).
 
-However, I should mention that version 3a of the C++ code compiled with the aggressive optimisations was an unexepected
+However, I should mention that version 3a of the C++ code compiled with the aggressive optimisations was an unexpected
 and interesting result. I hypothesise that when `x` is declared in such a way, that the compiler forces the data to be
 contiguous. I think further optimisations are made by leveraging the fact that the inner dimension (or the column) is constant in
 size. It would be interesting to see if I can also leverage this in Fortran.
@@ -573,8 +573,8 @@ But before closing I should mention that this experiment handled a rather uncomm
 written cannot leverage the plethora of C/C++ libraries available. I think the difference in how the `dsearch` function
 was timed is a good illustration of a key difference between Fortran and C++. And that is that C++ has a lot of packages
 (in the form of libraries and header files) that have a lot of high-level functionality that you can utilise, whereas
-this is not the case for Fortran. With Fortran, you will often need to write your own subrouties to achieve certain
-objectives, like how I needed to write my own high-precision timer function when the C++ code could leveragethe `chrono`
+this is not the case for Fortran. With Fortran, you will often need to write your own subroutines to achieve certain
+objectives, like how I needed to write my own high-precision timer function when the C++ code could leverage the `chrono`
 STL headers. But I should also add that it's not difficult to call C++ code from Fortran, so there is potential to
 mix-and-match (see [this relatively simple example](https://fortran-lang.discourse.group/t/calling-c-from-fortran/3402)).
 
@@ -582,11 +582,11 @@ mix-and-match (see [this relatively simple example](https://fortran-lang.discour
 
 Fortran was designed for maths (mainly calculus and linear algebra), and so its syntax favours those applications -
 particularly in the use of arrays. It also has a pretty good collection of mathematical intrinsic functions that you
-don't have to look to hard for. Consequently, if your problem can be expressed in multi-dimensional arrays (or tensors),
-then it will much easier to write fast code. 
+don't have to look too hard for. Consequently, if your problem can be expressed in multi-dimensional arrays (or tensors),
+then it will be much easier to write fast code. 
 
-This simple expeirment demonstrates that C++ can definitly achieve the same performance for applications that Fortran was designed for. But, it's a *general purpose* language, so it takes a fair bit of work to apply it to the subset of problems that Fortran targets. For example, strict aliasing and contiguous data in memory are *required* in Fortran, whereas there is a fair
-bit of effort needed to set that up in C++ when it comes ot multi-dimensional arrays.
+This simple experiment demonstrates that C++ can definitely achieve the same performance for applications that Fortran was designed for. But, it's a *general purpose* language, so it takes a fair bit of work to apply it to the subset of problems that Fortran targets. For example, strict aliasing and contiguous data in memory are *required* in Fortran, whereas there is a fair
+bit of effort needed to set that up in C++ when it comes to multi-dimensional arrays.
 
 So, I think I'll continue using Fortran, because at the end of the day, I enjoy working with numerical methods and
 simulations, which ultimately was what Fortran was designed for.

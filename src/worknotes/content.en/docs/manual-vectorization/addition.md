@@ -5,7 +5,7 @@ weight: 2
 
 # Vectorizing Array Addition
 
-A common place to start, is to manually vectorize the addition of two arrays, and storing the result in a third array
+A common place to start, is to manually vectorize the addition of two arrays, and store the result in a third array
 (from herein, ABC addition):
 
 ```cpp {style=tango,linenos=false}
@@ -50,9 +50,9 @@ load 4 elements, as single precision data is 32 bits. Loading 4 elements at a ti
 is incremented by 4 every iteration.
 
 `_mm_add_ps` is part of the same MultiMedia extensions, and works with single precision floats, but performs an
-add operation on two 128-bit vectors. The add operation will operate on each element on each vector.
+add operation on two 128-bit vectors. The add operation will operate on each element of each vector.
 
-`_mm_storeu_ps` takes the `res` vector, and places back at the position specified by the supplied pointer (in
+`_mm_storeu_ps` takes the `res` vector, and places it back at the position specified by the supplied pointer (in
 this case, `&c[i]`).
 
 `__m128` is the 128-bit wide vector for single precision floating point numbers.
@@ -74,7 +74,7 @@ void abc_128_dbl(const int nelem, double* a, double* b, double* c) {
 There are 3 main differences in this version. Two of them are that `ps` is replaced by `pd` everywhere, and `d` is added
 to the end of the `__m128` types. These ensure that the equivalent functions and types for double precision floating
 point numbers are used. The 3rd change is that the loop counter is incremented by two instead of 4 every iteration. This
-is because double precision floating point data is stored using 64 bits, so only two of them can fit into an 128-bit
+is because double precision floating point data is stored using 64 bits, so only two of them can fit into a 128-bit
 SIMD vector.
 
 ### Vectorizing the ABC function with 256-bit vectors (AVX instructions)
@@ -95,7 +95,7 @@ void abc_256_sgl(const int nelem, float* a, float* b, float* c) {
 ```
 
 Where `mm` has been changed to `mm256`, to indicate these instructions are part of the 256-bit wide vector instructions,
-and the incrememnt has been doubled from 4 to 8, due to the doubling in width of the vectors. The same changes are true
+and the increment has been doubled from 4 to 8, due to the doubling in width of the vectors. The same changes are true
 for the double precision version:
 
 ```cpp {style=tango,linenos=false}
@@ -132,8 +132,8 @@ Benchmark                                     Time        CPU    Time Old    Tim
 OVERALL_GEOMEAN                            -0.5166    -0.5167           0           0           0           0
 ```
 
-In this results, the "Old" is the non-manually vectorized loop, and the "New" is the vectorized loop. The comparison
-shows at least (1-0.5166)^-1 = 2x speedup by manually vectorization for all array sizes tested here! To compare the manually
+In these results, the "Old" is the non-manually vectorized loop, and the "New" is the vectorized loop. The comparison
+shows at least (1-0.5166)^-1 = 2x speedup by manual vectorization for all array sizes tested here! To compare the manually
 vectorized code to compiler's automatic vectorization, we can compile the code again with:
 
 ```bash {style=tango,linenos=false}
@@ -142,12 +142,12 @@ g++ -o abc.x abc.cpp -msse -isystem benchmark/include -Lbenchmark/build/src -lbe
 
 which
 * replaces `-mavx2` with `-msse`, enabling only 128-bit wide vectors and SSE instructions,
-* add `-O2`, which enables level 2 compiler optimisations, and
-* add `-ftree-vectorize`, which enables automatic vectorization of loops.
+* adds `-O2`, which enables level 2 compiler optimisations, and
+* adds `-ftree-vectorize`, which enables automatic vectorization of loops.
 
 These options will make the code faster through compiler optimisations, which should benefit both the original base code
 and the manually vectorized code, but they will also enable automatic vectorization on the original loop only.
-Comparing the results performance of the now automatically vectorized function (`abc_base_sgl`), with the manually
+Comparing the resulting performance of the now automatically vectorized function (`abc_base_sgl`), with the manually
 vectorized function (`abc_128_sgl`), I get:
 
 ``` {style=tango,linenos=false}
@@ -186,8 +186,8 @@ Which shows a further speedup over the 128-bit version. Over the base version, t
 is due to the size of cache being used on the CPU. The 4,096 element test (4096 elements * 4 bytes * 2 arrays = ~33kB), 
 is enough to sit within L1 cache. The next test moves to L2 cache as 32,768 elements * 4 bytes * 2 arrays = ~262kB moves
 to L2 unified cache. The next test (2,097,152 elements * 4 bytes * 2 arrays = ~16.8MB) must move to L3 unified cache, 
-and the final test (16, 777, 216 * 4 bytes * 2 arrays = ~134MB) must go to RAM. This behaviour isn't observed with 
-128-bit width registers, as the smaller vectors means less data needing to be fetched per transaction.
+and the final test (16,777,216 * 4 bytes * 2 arrays = ~134MB) must go to RAM. This behaviour isn't observed with 
+128-bit width registers, as the smaller vectors mean less data needing to be fetched per transaction.
 
 The minimum speedup is ~3x, and the best is ~3.8x - neither of which is 2x that observed with the 128-bit vectors.
 
@@ -216,7 +216,7 @@ Benchmark                                     Time        CPU    Time Old    Tim
 OVERALL_GEOMEAN                            +0.0058    +0.0062           0           0           0           0
 ```
 
-I see a similarly small variation in performance between the the automatically vectorized base function and the
+I see a similarly small variation in performance between the automatically vectorized base function and the
 manually vectorized version.
 
 The code shown here achieves far less than ideal speedup e.g., ~2x achieved for 128-bit vectors, when 4x is ideal; and
@@ -294,8 +294,8 @@ speedup achieved is ~1.9x and slowest is ~1.5x.
 ## Improving SIMD Performance By Aligning Memory
 
 When explaining the `_mm_storeu_px` and `_mm_loadu_px` functions, I mentioned that these, respectively, store and load
-data to/from "aligned" memory. When using the "classic" `malloc` or `new` functions to allocate memory for arrays, these
-arrays may be "unaligned". This means its integer address is the computer's memory, is not divisible by its size (in 
+data to/from "unaligned" memory. When using the "classic" `malloc` or `new` functions to allocate memory for arrays, these
+arrays may be "unaligned". This means its integer address in the computer's memory is not divisible by its size (in 
 bytes). I'm not sure of the details of why, but this means that accessing this memory can be more expensive. It may also
 negatively affect caching behaviour.
 
@@ -335,7 +335,7 @@ Another reason, more relevant to vectorization, is that when the program is load
 aligned to vector register widths, the `store` and `load` functions can be used. `store` and `load` are faster than 
 their unaligned equivalents, `storeu` and `loadu`, as they do not need to do extra work to check for alignment.
 
-Alligned memory may not be useful when allocating lots of small bits of information e.g., allocating 4 2-element arrays
+Aligned memory may not be useful when allocating lots of small bits of information e.g., allocating 4 2-element arrays
 that are aligned on 64-byte boundaries will have them look like:
 
 ```
@@ -346,7 +346,7 @@ that are aligned on 64-byte boundaries will have them look like:
 
 where each block is an 8-byte element. Aligning these 4 two-element double arrays on 64-byte boundaries causes them to 
 be spread out in memory. This could be undesirable as your program might use more memory, and they would be pulled into 
-the cache in seperate cache lines - meaning your program may run slower between accesses of the arrays.
+the cache in separate cache lines - meaning your program may run slower between accesses of the arrays.
 
 ### Performance of aligned vs unaligned data for SIMD instructions
 
@@ -410,18 +410,18 @@ Benchmark                                            Time        CPU    Time Old
 OVERALL_GEOMEAN                                   -0.0436    -0.0434           0           0           0           0
 ```
 
-### Effect of `std::aligned_malloc`
+### Effect of `std::aligned_alloc`
 
 Almost all test sizes perform better than the unaligned counterparts. The only exceptions are the largest tests for the
 128-bit vector code - these seem to perform almost 3% worse. This probably is related to the fact that the `a` and `b`
 arrays are entirely on RAM. This is also consistent with the 256-bit vector tests where the largest tests perform the
-worst when compared to their unaligned conterparts.
+worst when compared to their unaligned counterparts.
 
-The 256-bit vector codes have the most increased performance - espcially for the tests that can fit in L1 and L2 cache.
+The 256-bit vector codes have the most increased performance - especially for the tests that can fit in L1 and L2 cache.
 For example, the biggest improvement is seen in the single precision 128-bit vector code, for the problem size of 4,096
-elements. The 16% reduction in run time makes it ~2.3 faster than its corresponding base code (up from ~2x).
+elements. The 16% reduction in run time makes it ~2.3x faster than its corresponding base code (up from ~2x).
 
-Most of the other tests gain at least 4% from its unaligned counterpart.
+Most of the other tests gain at least 4% from their unaligned counterpart.
 
 ## Adding compiler optimisations
 
@@ -488,8 +488,8 @@ OVERALL_GEOMEAN                                   -0.0423    -0.0427           0
 Quite interestingly, the `-O2` compiler optimisations amplify the performance of SIMD instructions for
 the tests that fit within L1 and L2 cache. The 128-bit tests are brought much closer to ideal performance for those
 small problem sizes. The 128-bit tests do not seem to perform very differently with or without aligned memory. Aligning 
-the data allocations even seem to cause the 128-bit tests to  perform worse by a little bit! In contrast, the 256-bit
-vector instructions apparently require aligned memory to benefit form `-O2` optimisations in terms of speedup.
+the data allocations even seems to cause the 128-bit tests to  perform worse by a little bit! In contrast, the 256-bit
+vector instructions apparently require aligned memory to benefit from `-O2` optimisations in terms of speedup.
 
 | Test ID | Best speedup over base |
 | --- | --- |
@@ -502,9 +502,9 @@ vector instructions apparently require aligned memory to benefit form `-O2` opti
 | `abc_256_dbl` | 1.92x |
 | `abc_256_dbl_aligned` | 2.6x |
 
-Note that the non-vectorized code also benefits from using aligned data, so the best speedups shown above, comparing 
-like-for-like i.e., aligned vectorized, with aligned non-vectorized; and non-aligned vectorized, with non-aligned 
-non-vectorized.
+Note that the non-vectorized code also benefits from using aligned data, so the best speedups shown above compare
+like-for-like, i.e., aligned vectorized data with aligned non-vectorized data; and non-aligned vectorized data with
+non-aligned non-vectorized data.
 
 ## Conclusion
 
@@ -517,8 +517,8 @@ Hopefully it's clear here how manual vectorization works. The main takeaways are
 can be replaced with `store` and `load` respectively.
     * I demonstrate a meaningful performance gain when using aligned memory with manual vectorization
     * In later pages, I'll show an example where aligned array allocation is unsuitable
-* Once loaded, vectors are added with `_mm_add_xx` function.
-    * While not shown here, there are equivalent functions for subtraction (`sub`), multiplication `mul`, division
+* Once loaded, vectors are added with the `_mm_add_xx` function.
+    * While not shown here, there are equivalent functions for subtraction (`sub`), multiplication (`mul`), division
     (`div`), min/max (`min`/`max`) and others.
-* For the array addition example used here, it's not *too complicated* to achieve the same performance as the compilers
+* For the array addition example used here, it's not *too complicated* to achieve the same performance as the compiler's
 auto-vectorization (assuming other compiler optimisations as used in tandem).

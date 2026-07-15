@@ -9,7 +9,7 @@ The Nvidia Jetson Nano is a Single Board Computer (SBC) with a scaled-down Nvidi
 
 Consequently, this page is to document the steps to trim down the OS to save disk space and RAM - adding to steps documented elsewhere.
 
-After installing the OS, hooking up periferals, inserting the flashed SD card, and setting up the Jetson, you can run the following:
+After installing the OS, hooking up peripherals, inserting the flashed SD card, and setting up the Jetson, you can run the following:
 ```bash {style=tango,linenos=false}
 sudo systemctl stop gdm3
 sudo systemctl disable gdm3

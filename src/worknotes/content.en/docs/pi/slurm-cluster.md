@@ -35,7 +35,7 @@ booktoc: false
         10.0.0.2 picompute1
         10.0.0.3 picompute2
 
-5. Setup dhcp server on manager/login node (detailed instructions)
+5. Setup dhcp server on manager/login node
     * Install packages required for this step:
 
             sudo apt install iptables dnsmasq
@@ -74,7 +74,7 @@ booktoc: false
             sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
             sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
 
-    * ensure iptables rules are presistent between boots:
+    * ensure iptables rules are persistent between boots:
 
             sudo apt install iptables-persistent
 
@@ -132,7 +132,7 @@ booktoc: false
                 sudo mount -a
                 sudo exportfs -a
 
-    * on the nodes not connect to the drive:
+    * on the nodes not connected to the drive:
         * install nfs common package:
 
                 sudo apt install nfs-common -y

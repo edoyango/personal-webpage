@@ -5,9 +5,9 @@ weight: 1
 
 # Getting Started
 
-This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. a Virtual Machine (VM) or WSL2 will work fine too. If you're using a different OS or CPU architecture, you will need modify the package install commands and paths used in the compilation setup. This page assumes you are working in a terminal.
+This page will help you get setup and started to run the GraSPH code and is aimed at beginners. The instructions assume you are working on an Ubuntu machine with x86_64 CPU architecture. A Virtual Machine (VM) or WSL2 will work fine too. If you're using a different OS or CPU architecture, you will need to modify the package install commands and paths used in the compilation setup. This page assumes you are working in a terminal.
 
-Steps are seperated based on which version you wish to run. See the table of contents on the right side of the page.
+Steps are separated based on which version you wish to run. See the table of contents on the right side of the page.
 
 ## Getting the GraSPH code
 
@@ -100,7 +100,7 @@ You can then build hdf5 with the command
 ```
 spack install hdf5+fortran%nvhpc
 ```
-which is saying "build the `hdf5` package with Fortran libraries using the `nvhpc` compilers.
+which is saying "build the `hdf5` package with Fortran libraries using the `nvhpc` compilers."
 
 ### Setting up the compilation environment
 ```
@@ -119,5 +119,5 @@ make -f makefiles/Makefile.cuda
 ```
 
 ## Example Video
-This is run with for 10000 steps printing every 50 steps, running in `caf` mode.
+This is run for 10000 steps printing every 50 steps, running in `caf` mode.
 ![Dambreak.gif](/docs/imgs/Dambreak.gif)

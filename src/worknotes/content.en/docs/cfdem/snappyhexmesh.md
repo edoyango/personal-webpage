@@ -5,10 +5,10 @@ weight: 1
 
 # Snappy Hex Mesh Basics
 
-This is a summary of meshing in OpenFOAM using the `snappyHexMesh` tool. I'm writing this in detail because I couldn't find any comprehensive tutorial that is beginner friendly. The ones I could find were like as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools. This only covers absolute basics and creating simple geometries. It only covers `snappyhexMesh` tool as [the user guide for the basic tool `blockMesh`](https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.4-mesh-generation-with-the-snappyhexmesh-utility) is pretty ok.
+This is a summary of meshing in OpenFOAM using the `snappyHexMesh` tool. I'm writing this in detail because I couldn't find any comprehensive tutorial that is beginner friendly. The ones I could find were as if they were picking up from where someone else left off. Consequently, this tool is a beginner guide and aims only to recommend easy-to-pickup tools, rather than the most fully featured tools. This only covers absolute basics and creating simple geometries. It only covers `snappyHexMesh` tool as [the user guide for the basic tool `blockMesh`](https://www.openfoam.com/documentation/user-guide/4-mesh-generation-and-conversion/4.4-mesh-generation-with-the-snappyhexmesh-utility) is pretty ok.
 
 ## Background
-The high-level of how `snappyHexMesh` works can be found here.
+Below is a high-level overview of how `snappyHexMesh` works.
 
 The basic steps are to:
 
@@ -23,7 +23,7 @@ The basic steps are to:
 
 
 ## Step 1: Defining the Background Mesh
-This steps assumes that you know how to generate a simple mesh using the `blockMesh` utility. If you don't follow that guide first, and work through the excercises.
+This step assumes that you know how to generate a simple mesh using the `blockMesh` utility. If you don't follow that guide first, and work through the exercises.
 
 The background mesh has to satisfy a few requirements:
 * cells ought to be approximately cubic within the vicinity of the `stl` mesh, otherwise `snappyHexMesh` will fail
@@ -44,7 +44,7 @@ This step requires a Computer Aided Design (CAD) program. I found the following 
 ### Step 2b: Converting the mesh into something nice
 The meshes the above tools create are not guaranteed to be nice e.g., meshes produced by the above utilities will have cells that are far from being equilateral.
 
-The tool that I found pretty easy to use and pickup is [MeshLab](https://www.meshlab.net/), but I found it to be pretty capable. To make a mesh nicer for use with `snappyHexMesh`, the "filters" dropdown list has a few tools that are pretty handy.
+The tool that I found pretty easy to use and pickup is [MeshLab](https://www.meshlab.net/), and I found it to be pretty capable. To make a mesh nicer for use with `snappyHexMesh`, the "filters" dropdown list has a few tools that are pretty handy.
 
 ![baffles-sketchup.png](/worknotes/imgs/baffles-sketchup.png)
 
@@ -56,7 +56,7 @@ The tool that I found pretty easy to use and pickup is [MeshLab](https://www.mes
 
 ![baffles-meshlab-isotropic.png](/worknotes/imgs/baffles-meshlab-isotropic.png)
 
-*Remeshing with Meshlab using Filters → Remeshing, Simplification and Reconstruction → Remeshing: Isotropic Explicit Remeshing. While looking more complex, this mesh may be more preferred than the second figure above, as the triangles are closer to being equilateral.*
+*Remeshing with MeshLab using Filters → Remeshing, Simplification and Reconstruction → Remeshing: Isotropic Explicit Remeshing. While looking more complex, this mesh may be more preferred than the second figure above, as the triangles are closer to being equilateral.*
 
 To save the remeshed mesh, you go to File → Export Mesh As... and choose to save it as an `stl` file. Save this to the project folder in `constant/triSurface/` with any name you like.
 

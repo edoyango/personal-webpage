@@ -61,7 +61,7 @@ The Intel compilers meaningfully benefitted from the `-xhost` compiler option, w
 
 I failed to make use of the Intel `-ipo` option, which I would like to work as this option has been quite useful in my Fortran simulation code. I suspect it's because the VTK libraries are dynamic, not static.
 
-The `-O3` option didn't really make a difference, and the loop unrolling seemed to slow down the LIGGGHTS code. However, I need to see if both of those effects are observed with larger simulation (the `chute-wear` example uses only ~800 concurrent DEM particles).
+The `-O3` option didn't really make a difference, and the loop unrolling seemed to slow down the LIGGGHTS code. However, I need to see if both of those effects are observed with larger simulations (the `chute-wear` example uses only ~800 concurrent DEM particles).
 
 ## Getting the Intel compilers
 The Intel OneAPI compilers are free for anybody to use. For LIGGGHTS, only the base kit is necessary.
@@ -70,7 +70,7 @@ Once you have installed the compilers by following Intel's instructions, you wil
 
 ## Modifying the make File to use the Intel compiler
 
-The basic [LIGGGHTS installation documentation](https://www.cfdem.com/media/DEM/docu/Section_start.html#start-2-2) will suggest users to build LIGGGHTS using the `make auto` command. But, here, we'll be using the `make mpi` command, which uses the `Makefile.mpi` Make file. LIGGGHTS assumes we're using the default APT packages, so we have to modify the Makefile. Edit `LIGGGHTS-PUBLIC/src/MAKE/Makefile.mpi` so that the following lines have been modified:
+The basic [LIGGGHTS installation documentation](https://www.cfdem.com/media/DEM/docu/Section_start.html#start-2-2) will suggest that users build LIGGGHTS using the `make auto` command. But, here, we'll be using the `make mpi` command, which uses the `Makefile.mpi` Make file. LIGGGHTS assumes we're using the default APT packages, so we have to modify the Makefile. Edit `LIGGGHTS-PUBLIC/src/MAKE/Makefile.mpi` so that the following lines have been modified:
 
 ```
 CC = icpx # this is the Intel OneAPI C++ compiler
@@ -88,7 +88,6 @@ VTK_LIB = -lvtkCommonCore-6.3 -lvtkIOCore-6.3 -lvtkIOXML-6.3 -lvtkIOLegacy-6.3 -
 ```
 
 If you've modified the Make file correctly for your system, the `make mpi` command run inside the `src` directory should build the `lmp_mpi` executable.
-Changing
 
 ## Changing the LIGGGHTS default compiler options
 The default `make auto` command uses some default compiler options. While you can add to the default compiler options by editing the `Makefile.user` file, it's less straightforward to change the compiler options. To change them, you will want to edit the `LIGGGHTS_PUBLIC/src/MAKE/Makefile.mpi` file and use the `make mpi` command instead. At the time of writing, the default compiler and linker options are:
