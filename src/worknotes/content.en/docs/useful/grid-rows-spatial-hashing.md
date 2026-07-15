@@ -17,7 +17,7 @@ Read the above article for details. The code makes use of the C++ sort function 
 
 ### Additional notes
 
-I managed to obtain another 1.4x speedup for 1E5 points over [The half-search cell-list pair search](/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/) when using no optimisations. A speedup of 4x over the previous version
+I managed to obtain another 1.4x speedup for 1E5 points over [The half-search cell-list pair search](/docs/useful/fixed-cutoff-cell-lists-pair-searchhalf-search/) when using no optimisations. A speedup of 4x over the previous version
 when compiling all the codes with `-O3` (using total program time, measured roughly with `time`).
 
 The significant speedup obtained is for a few reasons:

@@ -11,7 +11,7 @@ I work with point pair searches through particle-based simulations (mostly SPH a
 
 I use it frequently to server as a reference when investigating other ways to search for pairs. It's simple to code, so is harder to introduce conceptual and coding errors.
 
-It does also have some real-world relevance, as the [cell-list pair-search algorithm](/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search) uses many smaller direct searches.
+It does also have some real-world relevance, as the [cell-list pair-search algorithm](/docs/useful/fixed-cutoff-cell-lists-pair-search) uses many smaller direct searches.
 
 The Fortran code below contains the module `dsearch_m`, and a `main` program. To compile only the module, pass the `-DNOMAIN` option to the compiler, and the preprocessor will omit it.
 

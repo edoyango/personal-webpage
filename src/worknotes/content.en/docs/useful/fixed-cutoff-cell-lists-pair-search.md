@@ -7,7 +7,7 @@ bookToc: false
 # Point-pairs search with fixed cutoff distance (using cell-lists)
 
 ## Description
-This is an improvement to the [direct search](/worknotes/docs/useful/fixed-cutoff-direct-pair-search/) algorithm for searching for pairs of points within a cutoff distance. It uses a grid of cells whose side-length is equal to the specified cutoff distance.
+This is an improvement to the [direct search](/docs/useful/fixed-cutoff-direct-pair-search/) algorithm for searching for pairs of points within a cutoff distance. It uses a grid of cells whose side-length is equal to the specified cutoff distance.
 
 This is beneficial to performance since for any given point, all its neighbours are guaranteed to be within its own cell, or in adjacent cells. This means that instead of performing a comparison with all other points, comparisons only need to be made to points in the same or adjacent cells.
 

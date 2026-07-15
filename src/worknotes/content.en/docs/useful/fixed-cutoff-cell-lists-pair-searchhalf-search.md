@@ -7,7 +7,7 @@ bookToc: false
 # Cell-lists point-pairs search with fixed cutoff - reducing search space
 
 ## Description
-[The naive cell-list pair search](/worknotes/docs/useful/fixed-cutoff-cell-lists-pair-search/), is a good
+[The naive cell-list pair search](/docs/useful/fixed-cutoff-cell-lists-pair-search/), is a good
 start. But a drawback of that implementation is that it searches through *all* adjacent cells, and uses an `if`
 statement to avoid duplicate checks. However, looping over all adjacent cells still takes time, and the `if`
 statement can be expensive by introducing branching. 

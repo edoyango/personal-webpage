@@ -9,7 +9,8 @@
   {{- if not $isRemote }}
     {{- $path := print .Page.File.Dir .Destination }}
     {{- if strings.HasPrefix .Destination "/" }}
-      {{- $path = print "/static" .Destination }}
+      {{- $basePath := strings.TrimSuffix "/" (urls.Parse .Page.Site.BaseURL).Path }}
+      {{- $path = print "/static" (strings.TrimPrefix $basePath .Destination) }}
     {{- end }}
     {{- if not (fileExists $path) }}
       {{- warnf "Image '%s' not found in '%s'" .Destination .Page.File }}

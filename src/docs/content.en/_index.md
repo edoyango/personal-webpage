@@ -19,7 +19,7 @@ GraSPH can be run in serial, or in parallel using Coarray Fortran (which is base
 
 It uses HDF5 as the IO library, so output files can be read from Matlab or Python (using h5py). Future work include writing the code in a HDF5 file format compatible with ParaView.
 
-GraSPH is a hobby project of mine that builds on the work I did with SPH in my masters. It is not supported by MCGLAB, which its origins are traced from. You can download the code from [my GitHub](https://github.com/edoyango/GraSPH). See the README for brief instructions on how to get started, or the [Getting Started](/docs/docs/start) page.
+GraSPH is a hobby project of mine that builds on the work I did with SPH in my masters. It is not supported by MCGLAB, which its origins are traced from. You can download the code from [my GitHub](https://github.com/edoyango/GraSPH). See the README for brief instructions on how to get started, or the [Getting Started](/docs/start) page.
 
 ## About the Author
 See my [about page](https://ed-yang.com/about). I worked on SPH as a part of my time with MCGLAB as an undergrad + masters student between 2017-2020. But now I work in health science research at WEHI as a Research Computing Engineer.

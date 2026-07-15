@@ -107,4 +107,4 @@ CCFLAGS = -O3 -xhost -fPIC
 LINKFLAGS = -O3 -xhost -fPIC
 ```
 
-would be the best of the options [looked at on this page](/worknotes/docs/cfdem/liggghts-intel-comp/#results). The meaning of the above changes are explained [above](/worknotes/docs/cfdem/liggghts-intel-comp/#the-compiler-options-to-investigate).
+would be the best of the options [looked at on this page](/docs/cfdem/liggghts-intel-comp/#results). The meaning of the above changes are explained [above](/docs/cfdem/liggghts-intel-comp/#the-compiler-options-to-investigate).

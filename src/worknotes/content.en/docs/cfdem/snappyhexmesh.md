@@ -112,7 +112,7 @@ Untitled2.stl //change this to match your file name
 After this is saved, run the `surfaceFeatureExtract` tool in the project root directory, which creates an .emesh file in `constant/triSurface`.
 
 ### Step 4: `snappyHexMesh`
-Create the file `system/snappyHexMeshDict` with the contents of the file below, modifying it to point to the correct files. See the [appendix](/worknotes/docs/cfdem/snappyhexmesh/#appendix) to see the full file.
+Create the file `system/snappyHexMeshDict` with the contents of the file below, modifying it to point to the correct files. See the [appendix](/docs/cfdem/snappyhexmesh/#appendix) to see the full file.
 
 If it's been setup correctly, you can then run `snappyHexMesh` in the project root directory to create the new mesh. This will create new time-step folders with the mesh created in steps. If you wish for the mesh to be saved into constant/polyMesh, pass the -overwrite option. The alternative is to move it there yourself.
 
