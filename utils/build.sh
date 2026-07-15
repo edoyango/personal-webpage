@@ -54,4 +54,6 @@ if [[ -f "${ROOT_DIR}/CNAME" ]]; then
   cp "${ROOT_DIR}/CNAME" "${PUBLISH_ROOT}/CNAME"
 fi
 
-"${ROOT_DIR}/utils/fix.sh" "${PUBLISH_ROOT}/trips/content/2019jpn-twn/index.html"
+while IFS= read -r -d '' page; do
+  "${ROOT_DIR}/utils/fix.sh" "${page}"
+done < <(find "${PUBLISH_ROOT}/trips/content" -name "index.html" -print0)
