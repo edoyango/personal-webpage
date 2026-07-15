@@ -1,6 +1,7 @@
 /public/
 /docs/
 /.hugo_cache/
+src/**/public/
 src/**/resources/_gen/
 .hugo_build.lock
 .DS_Store

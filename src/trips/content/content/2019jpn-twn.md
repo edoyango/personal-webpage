@@ -69,7 +69,7 @@ The biggest obstacle of the day was Mt Hakone, a popular tourist spot, known for
 
 It was rewarding to reach the peak of Mt Hakone, but I was incredibly exhausted climbing up it, and I didn't pace myself very well, resulting in needing frequent breaks and behing very behind schedule. I arrove at my accomodation exhausted and had thought already about quitting and taking a train to Tokyo.
 
-<!-- REPLACE WITH ACTIVITY 2164094022 -->
+`STRAVA_ACTIVITY:2164094022`
 
 #### Day 2: Shizuoka to Toba
 I woke up today with a pretty bad pain in my left knee. I didn't let that dissuade me, so I powered on. But honestly, it got worse throughout the day and had to take many breaks because of the pain. I limped when walking, and having my knee bent in certain angles were really painful. It was the least painful while cycling, but still pretty painful.
@@ -82,14 +82,14 @@ The ride to Iragocho was pretty chill - mostly flat with rolling hills in some p
 
 The Strava activity was cut short by about 30km before reaching the ferry, because my phone accidentally ended the activity early.
 
-<!-- REPLACE WITH ACTIVITY 2166398671 -->
+`STRAVA_ACTIVITY:2166398671`
 
 #### Day 3: Toba and failing to get to Osaka
 I woke up today with even more pain in my left knee than the previous. The hot spring didn't help at all! I struggled to get down the stairs in the morning. I still gave it a go - one more day, how bad could it be?
 
 Anyway, I rode about 30km before giving up 🤣. The headwind was pretty strong, so I ended up with additional load on my injured knee. I needed to get a bikebag to store my bike to bring it on the train back to Osaka - compulsory for trains in Japan. I took the train from Matsugasaki Station to Osaka and finished the Japan leg with sushi train (Genrokuzushi Osaka) and Onsen (Yasaka Onsen), and getting ready to take my flight to Taiwan.
 
-<!-- REPLACE WITH ACTIVITY 2168197783 -->
+`STRAVA_ACTIVITY:2168197783`
 
 ### Taiwan Cycle Route No. 1
 I didn't do anything on the first day after arriving in Taipei. My knee hurt when walking, so I confined myself to the bed. I only left the room for food, which was easy because Maccas was on the ground floor of the accomodation. But the next day, I put my bike together and repositioned my cleats, so my toes were pointing a couple degrees outward, rather than straight on. and did an easy 22km ride around the cycle paths which were almost all flat. I also made a visit to the Giant store nearby to grab a pair of light armwarmers, since it wasn't as cold in Taiwan to need a jacket most of the time. In terms of planned duration or daily distance, I was going to let my the pain in my knee at the start of the day govern how far I would go. As a minimum, I aimed to do the whole Cycle Route No. 1 in 10 days (a bit less than 100km per day). I planned to skip the "dangerous" section of road between Hualien and Yilan, which is [often recommended](https://www.bikeexpress.com.tw/2020/around-the-island-in-9-days-day-8-hualien-to-yilan/).
@@ -101,7 +101,7 @@ The first 20kms coming out of Taipei is flat, urban terrain; followed by a slow 
 
 My knee was still a bit sore by the end of the day, but it wasn't worse, which was good news for me. 100km was bearable, so if it stays the same, then I should have no problem making it to the end!
 
-<!-- REPLACE WITH ACTIVITY 2175930772 -->
+`STRAVA_ACTIVITY:2175930772`
 
 #### Day 2: Zhunan to Yuanlin
 Today, the route had me follow the coast most of the way, before climbing slightly inward toward Taichung (total of ~108km). I was feeling pretty good, so I rode the extra 26km to Yuanlin. I booked my accomodation during the day, after deciding I felt pretty good to push a bit more. There wasn't heaps of accomodation in the area, so I ended up paying more than I would've liked.
@@ -110,7 +110,7 @@ The day started with a bit of a drizzle, but cleared up past 9am-ish. My knee fe
 
 The route is pretty flat - with max ~90m of elevation gain for a given climb.
 
-<!-- REPLACE WITH ACTIVITY 2178519713 -->
+`STRAVA_ACTIVITY:2178519713`
 
 #### Day 3: Yuanlin to Tainan
 I planned to go all the way to Tainan, which took 130km all up, all away from the coast. The route had a net decent of 24m, so was pretty chill. The roads were in a less populated area, so stop lights were less frequent too.
@@ -119,14 +119,14 @@ My knee continued to be pain free, so I felt pretty good. I was happy to have an
 
 I tried booking accomodation in the afternoon. I was really lucky to get a bunk space in a hostel - all the accomodation in Tainan and nearby areas was booked out because of the long weekend. According to the owner of the hostel, usually there's a lot of openings! Tainan is supposed to be the city of food in Taiwan, so usually a good idea to stop at on your ride!
 
-<!-- REPLACE WITH ACTIVITY 2180914194 -->
+`STRAVA_ACTIVITY:2180914194`
 
 #### Day 4: Tainan to Fangshan
 Kaohsiung was today's mid-point, with the ultimate destination being the coastal town of Fangshan. This town is just before where I would cross the mountain range to get onto the east coast of Taiwan. Kaohsiung is a nice city to visit, so I would recommend staying for longer if possible.
 
 The route was flat again, with a net decent of 10m. Navigating the city roads of Tainan and Kaohsiung can be a bit tricky, so I had to rely on google maps a bit more than usual.
 
-<!-- REPLACE WITH ACTIVITY 2183032370 -->
+`STRAVA_ACTIVITY:2183032370`
 
 #### Day 5: Fangshan to Taichung
 Today I needed to cross the mountain range to get to the east coast. My final destination would be to head north to Taitung (total of 100km and net 0 elevation change). There isn't anything stopping you from going all the way to the top of Taiwan (Hengchun), so that is an option to explore if you've got time.
@@ -137,24 +137,24 @@ The east coast typically has a southerly wind, but I lucked out with a northerly
 
 I stayed at 40Inn Backpackers in Taitung, which is the only accomodation I would give a strong recommendation for, just because of their nice vibe and friendly english-speaking staff. The Taitung night market is also pretty solid, compared to the other night markets I went to in Taiwan.
 
-<!-- REPLACE WITH ACTIVITY 2184904148 -->
+`STRAVA_ACTIVITY:2184904148`
 
 #### Day 6: Taitung to Hualien
 Going to Hualien, I followed the coastal highway most of the way, which was rolling almost the whole 150km. Near the end, there is a short climb of 210m over ~9km to mentally prepare for. There is an alternative route that takes you further in land, but is much hillier and less scenic, but with fewer cars to contend with.
 
 The whole ride is very scenic, although you have to ride alongsid cars a lot of the time. I was lucky for the northerly wind to push me lightly along. There was a surprise downpour just before I reached Hualien, which waterlogged my laptop and killed its screen 😢.
 
-<!-- REPLACE WITH ACTIVITY 2187434992 -->
+`STRAVA_ACTIVITY:2187434992`
 
 #### Day 7: Nanxing to Jiaoxi
 This is the recommended rest day. From Hualien, the roads can be very narrow and many trucks and blind corners. Hence why many recommend to take the train from Hualien to Suaoxin Station. You can then keep your legs active by riding the short (30km) and flat (13m up) distance to Jiaoxi, a hot spring town.
 
-<!-- REPLACE WITH ACTIVITY 2189995780 -->
+`STRAVA_ACTIVITY:2189995780`
 
 #### Day 8: Jiaoxi to Taipei
 Last day! It was on the shorter side too, being "only" 94km. It initially followed the coast to the eastern most point of Taiwan, before heading back west and crossing the hills into Taipei. The hills are nothing dramatic in terms of gradient and elevation gain, so don't worry too much. You get to enjoy a very comfortable down hill ride into Taipei, but the roads are a bit narrow and there are a few blind corners, so make sure to take it slow if you're not a confident descender!
 
-<!-- REPLACE WITH ACTIVITY 2191955784 -->
+`STRAVA_ACTIVITY:2191955784`
 
 ### Reflections and future improvements - 3 years later
 
