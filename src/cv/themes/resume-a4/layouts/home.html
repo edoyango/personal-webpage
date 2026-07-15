@@ -4,6 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<link rel="icon" href="{{ "favicon.png" | relURL }}" type="image/png">
 	{{ $style := resources.Get "css/main.scss" | toCSS | minify | fingerprint }}
 	<link rel="stylesheet" href="{{ $style.RelPermalink }}" />
 	<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">
