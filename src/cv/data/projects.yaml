@@ -1,11 +1,20 @@
 projects:
-- title: "GraSPH"
-  subtitle: "Simulation of fluids and granular flows with SPH"
-  date: "2020"
+- title: "Partinet"
+  subtitle: "Cryo-EM particle-picking with AI"
   details: |
-    My master's code improved to use an NVIDIA GPU, Coarray Fortran, better usability, and documentation.
-  link: https://github.com/edoyango/GraSPH.git
-  links:
-  - title: Available on GitHub
-    url: https://github.com/edoyango/GraSPH.git
-    icon: fab fa-github
+    CLI and YOLOv10 integration for PyTorch cryo-EM particle-picking tool developed with researchers.
+
+- title: "XGBoost pipeline parallelisation"
+  subtitle: "Nextflow-based HPC hyperparameter tuning pipeline"
+  details: |
+    Scaled XGBoost pipeline on HPC and added GPU support via RapidsAI (6x faster). Hosted on Seqera Platform.
+
+- title: "AI-powered backyard bird watcher"
+  subtitle: "YOLO + OpenCV bird species tracker"
+  details: |
+    NPU inference with C++ pipeline to track bird species in backyard, with semi-auto data collection and training.
+
+- title: "High-performance improvements to in-house SPH code"
+  subtitle: "Accelerating an in-house Fortran SPH code"
+  details: |
+    MPI parallelisation (3,250x speedup on 4,096 cores) and algorithmic/vectorization upgrades for a further ~8x speedup. Enabled GPU support via C++/Kokkos/Thrust.

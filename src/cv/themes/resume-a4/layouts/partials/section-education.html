@@ -4,5 +4,8 @@
 	<span>{{ .university }}</span><br>
 	{{ if .more }}<span>{{ .more }}</span><br>{{ end }}
 	<span>{{ .date }}{{ if .gpa }} | GPA: {{ .gpa }}{{ end }}</span>
+	{{ if .details }}
+	{{- partial "markdown" .details }}
+	{{ end }}
 </div>
 {{ end }}

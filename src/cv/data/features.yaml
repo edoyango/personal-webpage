@@ -4,14 +4,14 @@ about:
   phone: "Available on Request"
   email: edward_yang_125@hotmail.com
   links:
-    - title: /in/mertbakir
-      url: https://tr.linkedin.com/in/mertbakir
+    - title: edward-yang-a0a9941b1
+      url: https://www.linkedin.com/in/edward-yang-a0a9941b1/
       icon: fab fa-linkedin
     - title: edoyango
       url: https://github.com/edoyango
       icon: fab fa-github
   details: |
-    I am an Engineer with the WEHI Research Computing Platform and have over four years of experience using, administering, or providing support for HPC systems in science. My current interests include compute acceleration through parallelization and optimization, and leveraging GPGPUs.
+    I have over 7 years of experience working with High-Performance Computing and writing software for scientific applications, currently as a Research Software Engineer with ACCESS-NRI. My interests include compute acceleration through parallelization and optimization, and leveraging GPGPUs. I am strongly motivated by social causes and the opportunity to learn and contribute to projects for the greater good.
 
 skills:
   - groupName: Systems
@@ -19,7 +19,7 @@ skills:
       - Linux - CentOS RHEL
   - groupName: Programming
     list:
-      - Fortran - Bash - Git - Python - C++ - R
+      - Fortran - Bash - Git - Python - C++ - R - MATLAB - Excel VBA
   - groupName: Parallelisation
     list: 
       - MPI, OpenMP, CUDA (C and Fortran)

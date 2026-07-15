@@ -1,6 +1,55 @@
 - authors:
+    - last_name: Marceaux
+      first_name: Claire
+    - last_name: Tarasova
+      first_name: Ilariya
+    - last_name: Batey
+      first_name: Daniel
+    - last_name: Yokote
+      first_name: Kenta
+    - last_name: Gayevskiy
+      first_name: Velimir
+    - last_name: Jain
+      first_name: Reema
+    - last_name: Leiwe
+      first_name: Marina
+    - last_name: Choux
+      first_name: Laurie
+    - last_name: Riley
+      first_name: Lucy
+    - last_name: "Tubau Ribera"
+      first_name: Nina
     - last_name: Yang
       first_name: Edward
+      emphasize: true
+    - last_name: Hywood
+      first_name: Jack
+    - last_name: Christie
+      first_name: Michael
+    - last_name: Antippa
+      first_name: Phillip
+    - last_name: Speed
+      first_name: Terence
+      middle_name: P
+    - last_name: Rogers
+      first_name: Kelly
+      middle_name: L
+    - last_name: Phipson
+      first_name: Belinda
+    - last_name: Asselin-Labat
+      first_name: Marie-Liesse
+  date: "2026"
+  title: "TNF-α-mediated myeloid-instructed CD14+CD4+ T cells are associated with poor survival in lung adenocarcinoma"
+  journal: Cell Reports Medicine
+  vol: 7
+  issue: 2
+  page: 102593
+  link: https://doi.org/10.1016/j.xcrm.2026.102593
+
+- authors:
+    - last_name: Yang
+      first_name: Edward
+      emphasize: true
     - last_name: Bui
       first_name: Ha Hong
     - last_name: Nguyen
@@ -18,10 +67,12 @@
   journal: Acta Geotechnica
   vol: 16
   page: "2505-2527"
+  link: https://doi.org/10.1007/s11440-021-01162-4
 
 - authors:
     - last_name: Yang
       first_name: Edward
+      emphasize: true
     - last_name: Bui
       first_name: Ha Hong
     - last_name: Nguyen
@@ -34,10 +85,12 @@
   title: "High-Resolution Modelling of Axisymmetric Granular Column Collapse Using Parallelized SPH"
   journal: "Challenges and Innovations in Geomechanics. IACMAG 2021. Lecture Notes in Civil Engineering"
   vol: 126
-  
+  link: https://doi.org/10.1007/978-3-030-64518-2_61
+
 - authors:
     - last_name: Yang
       first_name: Edward
+      emphasize: true
     - last_name: Bui
       first_name: Ha Hong
     - last_name: De Sterck
@@ -51,3 +104,4 @@
   journal: Computers and Geotechnics
   vol: 121
   page: 103474
+  link: https://doi.org/10.1016/j.compgeo.2020.103474

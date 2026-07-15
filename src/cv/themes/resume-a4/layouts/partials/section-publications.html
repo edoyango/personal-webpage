@@ -6,7 +6,9 @@
 	{{- if eq $.Feature.style "IEEE" }}
 		<span>
 			{{- range .authors -}}
-				{{- substr .first_name 0 1 }}. {{ with .middle_name }}{{ substr . 0 1 }}. {{ end }}{{ .last_name }},
+				{{- if .emphasize }}<strong>{{ end -}}
+				{{- substr .first_name 0 1 }}. {{ with .middle_name }}{{ substr . 0 1 }}. {{ end }}{{ .last_name }}
+				{{- if .emphasize }}</strong>{{ end -}},
 			{{- end -}}
 		</span>
 		<span>"{{ .title }}",</span>

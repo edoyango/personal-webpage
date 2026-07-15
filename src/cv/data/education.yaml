@@ -1,11 +1,15 @@
 - name: "MEngSc. - Civil (research)"
   university: "Monash University"
   date: "Sep 2018 - May 2021"
+  details: |
+    Supervision: A/Prof. Ha H. Bui (Main), Prof. Abdelmalek Bouazza (Associate). Thesis: *Development of a scalable parallel SPH code for large-scale geotechnical applications*. Awards: Full RTP stipend scholarship; best poster award (Monash engineering postgraduate conference).
 
 - name: "BEng. - Civil (honours)"
   university: "Monash University"
   more: "WAM: 76.2 (first class)" # Optional field, if you want to add a non-standard line.
   date: "Feb 2013 - Nov 2017"
+  details: |
+    Thesis: *Large deformation modelling of the trapdoor problem using SPH* (Grade: 91%).
 
 - name: "BComm - Finance"
   university: "Monash University"
