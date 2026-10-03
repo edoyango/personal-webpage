@@ -177,9 +177,19 @@ Mid-Autumn Festival. I had a go at looking for the city's official bird - the Ph
 tail-end of the breeding season and there was only one Jacana with 2 chicks at the reserve and that Jacana had already
 lost its yellow plumage and long tail.
 
+{{< trio img1="/trips/img/trips-taiwan2026/jacana.jpeg" caption1="Last Pheasant-tailed Jacana father taking care of his chicks at the reserve" img2="/trips/img/trips-taiwan2026/tainan-art-museum.jpg" caption2="Amusing piece at the Tainan Art Museum" img3="/trips/img/trips-taiwan2026/tainan-shennong.jpg" caption3="Walking down Shennong Street" >}}
+
 I highly recommend attending the Tainan National History Museum. It was an unexpectedly thorough and comprehensive
 museum with a permanent exhibit that mostly details its history of being occupied by the Dutch, Spanish, Han Chinese,
 Japanese, and KMT Chinese again. Quite out of the way, but worth the visit if you're even a little bit interested in
 history.
 
-{{< trio img1="/trips/img/trips-taiwan2026/jacana.jpeg" caption1="Last Pheasant-tailed Jacana father taking care of his chicks at the reserve" img2="/trips/img/trips-taiwan2026/tainan-art-museum.jpg" caption2="Amusing piece at the Tainan Art Museum" img3="/trips/img/trips-taiwan2026/tainan-shennong.jpg" caption3="Walking down Shennong Street" >}}
+{{< duo img1="/trips/img/trips-taiwan2026/museum1.jpg" caption1="The Taiwan history permanent exhibit" img2="/trips/img/trips-taiwan2026/museum2.jpg" caption2="Section of the Taiwan history museum discussing Qing dynasty Chinese immigration into Taiwan" >}}
+
+But in the end, visiting Tainan was more about food. So we enjoyed many beef soups, guabaos, and tofu puddings! Our
+favourite beef soup is from Alian Beef Soup (阿蓮牛肉湯), which had a very long line and was popular with tourists and
+locals alike. Guohua St turned out to be a nice place to visit because it had good food options (guabaos in
+particular) and the Asakusa Shopping Centre - also good for souvenirs and food!
+
+{{< trio img1="/trips/img/trips-taiwan2026/alian-soup1.jpg" caption1="Winn's soup from Alian Beef Soup" img2="/trips/img/trips-taiwan2026/alian-soup2.jpg" caption2="My soup from Alian Beef Soup" img3="/trips/img/trips-taiwan2026/guabao.jpg" caption3="Fatty pork guabao from Guohua St" >}}
+{{< duo img1="/trips/img/trips-taiwan2026/tofu-hua.jpeg" caption1="Tofu Hua (AKA silken tofu pudding) from a place down the street from our hotel" img2="/trips/img/trips-taiwan2026/beef-soup-guohua.jpg" caption2="Beef soup from somewhere on Guohua St" >}}
