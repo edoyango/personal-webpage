@@ -1,0 +1,14 @@
+<div class="img-row">
+    <figure>
+        <img src="{{ .Get "img1" }}" alt="{{ .Get "alt1" | default (.Get "caption1") }}" onload="this.parentElement.style.flexGrow=this.naturalWidth/this.naturalHeight">
+        {{ with .Get "caption1" }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+    <figure>
+        <img src="{{ .Get "img2" }}" alt="{{ .Get "alt2" | default (.Get "caption2") }}" onload="this.parentElement.style.flexGrow=this.naturalWidth/this.naturalHeight">
+        {{ with .Get "caption2" }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+    <figure>
+        <img src="{{ .Get "img3" }}" alt="{{ .Get "alt3" | default (.Get "caption3") }}" onload="this.parentElement.style.flexGrow=this.naturalWidth/this.naturalHeight">
+        {{ with .Get "caption3" }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+</div>

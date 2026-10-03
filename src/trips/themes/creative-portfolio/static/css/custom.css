@@ -8,3 +8,55 @@
 .fullwidth {
     width: 100%;
 }
+
+/* Lays out any number of images (any mix of portrait/landscape) in a single
+   justified row: they span the full content width (just a small gap between
+   them) at one shared height, each kept at its own aspect ratio instead of
+   being cropped to a square. See layouts/shortcodes/duo.html and trio.html -
+   each sets its figure's flex-grow to its image's aspect ratio once it
+   loads, so the row's available width is split in proportion to
+   width:height rather than evenly, which is what makes every image in the
+   row come out the same height. An optional figcaption sits directly under
+   its own image without affecting that split, rather than being pinned to a
+   shared baseline across the row - so captions of very different lengths
+   can leave the row looking ragged at the bottom, but each caption stays
+   attached to the image it describes. */
+.img-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 1em;
+    margin: 1em 0;
+}
+
+.img-row figure {
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.img-row img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.img-row figcaption {
+    margin-top: 0.4em;
+    font-size: 0.85em;
+    color: #666;
+    text-align: center;
+}
+
+/* strava-embeds.com's embed.js replaces .strava-embed-placeholder with a
+   fixed-width (554px) iframe that is display:block but has no auto margins,
+   so it sits flush left in the content column. Center it instead. */
+.stravacontainer {
+    margin: 1em 0;
+}
+
+.stravacontainer iframe {
+    display: block;
+    margin: 0 auto;
+}

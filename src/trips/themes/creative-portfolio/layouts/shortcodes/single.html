@@ -1,0 +1,6 @@
+<div class="img-row">
+    <figure>
+        <img src="{{ .Get "img" }}" alt="{{ .Get "alt" | default (.Get "caption") }}" onload="this.parentElement.style.flexGrow=this.naturalWidth/this.naturalHeight">
+        {{ with .Get "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}
+    </figure>
+</div>
