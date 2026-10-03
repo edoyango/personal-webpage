@@ -14,9 +14,7 @@ My partner, Winn, and her family typically take an annual trip to Guang Zhou, Ch
 
 Our first stopover was in Warrnambool, about 6.5h from Maribyrnong, the suburb we were starting from. As Stone was on his learner's driving license, we got him to drive the scenic route along great ocean road to practice his driving along windy roads and for long distances. We've all made many a trip along the great ocean road, so we didn't stop for sightseeing many times but we did make a visit to Loch Ard Gorge, which Winn's family hadn't seen before. After arriving at our accommodation in Warnambool (Motel Warrnambool), we visited Tower Hill Wildlife Reserve. The reserve, besides having Australian animals like emus, koalas, and kangaroos, is also located on an extinct volcano. For dinner in Warrnambool, we wandered around Liebig St, which had a strip of restaurants and stores. We eventually settled on Two Kings Burgers, which had very tasty and big burgers.
 
-![DSC_0252.jpeg](/trips/img/trips-adelaide/DSC_0252.jpeg "gallery")
-![DSC_0272.jpeg](/trips/img/trips-adelaide/DSC_0272.jpeg "gallery")
-![DSC_0331.jpeg](/trips/img/trips-adelaide/DSC_0331.jpeg "gallery")
+{{< trio img1="/trips/img/trips-adelaide/DSC_0252.jpeg" img2="/trips/img/trips-adelaide/DSC_0272.jpeg" img3="/trips/img/trips-adelaide/DSC_0331.jpeg" >}}
 
 ### Naracoorte via Mt Gambier
 
@@ -26,12 +24,8 @@ Our next stop was Mt Gambier, where we had lunch and visited the Umpherston Sink
 
 Before arriving at The Avenue Inn, our accommodation in Naracoorte, we made one more stop at Naracoorte Caves, where we had a tour of the underground caves (requires booking in advance).
 
-![DSC_0380.jpeg](/trips/img/trips-adelaide/DSC_0380.jpeg "gallery")
-![DSC_0438.jpeg](/trips/img/trips-adelaide/DSC_0438.jpeg "gallery")
-![DSC_0475.jpeg](/trips/img/trips-adelaide/DSC_0475.jpeg "gallery")
-![DSC_0487.jpeg](/trips/img/trips-adelaide/DSC_0487.jpeg "gallery")
-![DSC_0552.jpeg](/trips/img/trips-adelaide/DSC_0552.jpeg "gallery")
-![DSC_0562.jpeg](/trips/img/trips-adelaide/DSC_0562.jpeg "gallery")
+{{< trio img1="/trips/img/trips-adelaide/DSC_0380.jpeg" img2="/trips/img/trips-adelaide/DSC_0438.jpeg" img3="/trips/img/trips-adelaide/DSC_0475.jpeg" >}}
+{{< trio img1="/trips/img/trips-adelaide/DSC_0487.jpeg" img2="/trips/img/trips-adelaide/DSC_0552.jpeg" img3="/trips/img/trips-adelaide/DSC_0562.jpeg" >}}
 
 ### Adelaide
 
@@ -45,9 +39,7 @@ On day two of Adelaide, we got to learn about the history of South Australia's m
 
 Before leaving, our final visit was to the South Australia Museum, and another visit to the Central market.
 
-![IMG20211228154729.jpeg](/trips/img/trips-adelaide/IMG20211228154729.jpeg "gallery")
-![IMG20211228155218.jpeg](/trips/img/trips-adelaide/IMG20211228155218.jpeg "gallery")
-![mmexport1673856795050.jpeg](/trips/img/trips-adelaide/mmexport1673856795050.jpeg "gallery")
+{{< trio img1="/trips/img/trips-adelaide/IMG20211228154729.jpeg" img2="/trips/img/trips-adelaide/IMG20211228155218.jpeg" img3="/trips/img/trips-adelaide/mmexport1673856795050.jpeg" >}}
 
 ### Grampians
 

@@ -26,9 +26,7 @@ Prior to the Overland track, I also needed to break in my new hiking shoes (Merr
 
 We also made a visit to Grindelwald, which is a weird little Swiss town replica near Launceston. It was honestly pretty bizarre, and would only recommend visiting if you're interested in wondering what happens when the founder of Woolworths tries to recreate the beauty of the Swiss village of Grindelwald. Interesting fact: to build a house in the area, you must sign a contract that ensures that the house has specific features that give it the "Swiss" aesthetic!
 
-![DSC_0665.jpeg](/trips/img/trips-tasmania2022/greens-beach/DSC_0665.jpeg "gallery")
-![DSC_0671.jpeg](/trips/img/trips-tasmania2022/greens-beach/DSC_0671.jpeg "gallery")
-![DSC_0717.jpeg](/trips/img/trips-tasmania2022/greens-beach/DSC_0717.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/greens-beach/DSC_0665.jpeg" img2="/trips/img/trips-tasmania2022/greens-beach/DSC_0671.jpeg" img3="/trips/img/trips-tasmania2022/greens-beach/DSC_0717.jpeg" >}}
 
 ### Launceston to Cradle Mountain
 Once the rest of the family arrived in Launceston, we made a visit to Cataract Gorge, which we were surprised to learn had peacocks roaming the space and trying to woo peahens! We then went to Cradle Mountain, passing Ashgrove Cheese Dairy Door on the way. The dairy door is a pretty fun place to stop. My personal favourite part is the 1kg cheese offcuts you can buy that are much cheaper than if you were to buy in store, albeit in a less workable shape.
@@ -43,12 +41,8 @@ Most impressive was Yvette, who hadn't brought hiking shoes and summitted Mt Cra
 
 Starting from the Dove Lake bus dropoff, going to Mt Cradle via Wombat Pool, and returning via the boatshed, took us about 8h. The Cradle Mountain Summit climb itself took us 1.5h to get to the summit.
 
-![DSC_0776.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0776.jpeg "gallery")
-![DSC_0809.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0809.jpeg "gallery")
-![DSC_0830.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0830.jpeg "gallery")
-![DSC_0848.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0848.jpeg "gallery")
-![DSC_0868.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0868.jpeg "gallery")
-![DSC_0908.jpeg](/trips/img/trips-tasmania2022/cradlemt/DSC_0908.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/cradlemt/DSC_0776.jpeg" img2="/trips/img/trips-tasmania2022/cradlemt/DSC_0809.jpeg" img3="/trips/img/trips-tasmania2022/cradlemt/DSC_0830.jpeg" >}}
+{{< trio img1="/trips/img/trips-tasmania2022/cradlemt/DSC_0848.jpeg" img2="/trips/img/trips-tasmania2022/cradlemt/DSC_0868.jpeg" img3="/trips/img/trips-tasmania2022/cradlemt/DSC_0908.jpeg" >}}
 
 ### Cradle Mountain to Bicheno
 
@@ -66,9 +60,7 @@ The first half of the full day at Bicheno was learning, the hard way, the strugg
 
 The remainder of the day we used to make a visit the Freycinet Marine Farm for our first taste of fresh Tasmanian Oyster's (which was the only thing Winn's mum was looking forward to). We then made our way down to Freycinet National Park where there are many hikes varying in length (from day hikes to multi-day hikes). Our energy levels restricted us to the Wineglass Bay Lookout track (about 1h return). We finished off the trip with a late lunch at Devil's Corner Winery accompanied with wine tastings. We closed the day at home with a feast at the AirBnB!
 
-![DSC_0948.jpeg](/trips/img/trips-tasmania2022/bicheno/DSC_0948.jpeg "gallery")
-![DSC_0957.jpeg](/trips/img/trips-tasmania2022/bicheno/DSC_0957.jpeg "gallery")
-![DSC_0961.jpeg](/trips/img/trips-tasmania2022/bicheno/DSC_0961.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/bicheno/DSC_0948.jpeg" img2="/trips/img/trips-tasmania2022/bicheno/DSC_0957.jpeg" img3="/trips/img/trips-tasmania2022/bicheno/DSC_0961.jpeg" >}}
 
 ### Bicheno to Mt Rumney (Hobart)
 
@@ -86,12 +78,8 @@ The day after was Christmaaaas 🎄 which was our rest day since most things wer
 
 Boxing day is when the family would depart, but their flight wouldn't be until the evening. So, we spent the morning visiting Bonorong Wildlife Sanctuary and feeding spoilt kangaroos; and at Royal Tasmanian Botanical Gardens exploring the themed gardens and enjoying the company of ducklings with apparently no sense of danger.
 
-![DSC_0975.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_0975.jpeg "gallery")
-![DSC_1014.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_1014.jpeg "gallery")
-![DSC_1047.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_1047.jpeg "gallery")
-![DSC_1082.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_1082.jpeg "gallery")
-![DSC_1094.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_1094.jpeg "gallery")
-![DSC_1187.jpeg](/trips/img/trips-tasmania2022/mtrumney/DSC_1187.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/mtrumney/DSC_0975.jpeg" img2="/trips/img/trips-tasmania2022/mtrumney/DSC_1014.jpeg" img3="/trips/img/trips-tasmania2022/mtrumney/DSC_1047.jpeg" >}}
+{{< trio img1="/trips/img/trips-tasmania2022/mtrumney/DSC_1082.jpeg" img2="/trips/img/trips-tasmania2022/mtrumney/DSC_1094.jpeg" img3="/trips/img/trips-tasmania2022/mtrumney/DSC_1187.jpeg" >}}
 
 ### Bream Creek
 
@@ -101,7 +89,7 @@ Besides sorting dehydrated foods into zip-lock bags, Winn and I made a visit to 
 
 The fun part about the stay at the farm stay was the random encounters with cows as they're herded by the farmers between paddocks!
 
-![DSC_1200.jpeg](/trips/img/trips-tasmania2022/bream-creek/DSC_1200.jpeg "fullwidth")
+{{< single img="/trips/img/trips-tasmania2022/bream-creek/DSC_1200.jpeg" >}}
 
 ### The Overland Track
 
@@ -135,9 +123,7 @@ I arrive at the hut around 4:20pm feeling pretty tired. The Waterfall Valley Hut
 
 The remainder of my evening was spent chatting to the hikers from my bus in the dining room, marvelling at the wombat grazing next to the hut, and reading until falling asleep at 9pm.
 
-![DSC_1206.jpeg](/trips/img/trips-tasmania2022/overland/1/DSC_1206.jpeg "gallery")
-![DSC_1227.jpeg](/trips/img/trips-tasmania2022/overland/1/DSC_1227.jpeg "gallery")
-![DSC_1265.jpeg](/trips/img/trips-tasmania2022/overland/1/DSC_1265.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/1/DSC_1206.jpeg" img2="/trips/img/trips-tasmania2022/overland/1/DSC_1227.jpeg" img3="/trips/img/trips-tasmania2022/overland/1/DSC_1265.jpeg" >}}
 
 #### Day 2: Waterfall Valley to Windermere
 
@@ -161,12 +147,8 @@ After a break at the lake, I arrive at Windermere hut at around 2:45pm. Tonight 
 
 I was in bed pretty early today at around 7:20pm and read before falling asleep around 9pm.
 
-![DSC_1273.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1273.jpeg "gallery")
-![DSC_1278.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1278.jpeg "gallery")
-![DSC_1284.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1284.jpeg "gallery")
-![DSC_1287.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1287.jpeg "gallery")
-![DSC_1294.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1294.jpeg "gallery")
-![DSC_1299.jpeg](/trips/img/trips-tasmania2022/overland/2/DSC_1299.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/2/DSC_1273.jpeg" img2="/trips/img/trips-tasmania2022/overland/2/DSC_1278.jpeg" img3="/trips/img/trips-tasmania2022/overland/2/DSC_1284.jpeg" >}}
+{{< trio img1="/trips/img/trips-tasmania2022/overland/2/DSC_1287.jpeg" img2="/trips/img/trips-tasmania2022/overland/2/DSC_1294.jpeg" img3="/trips/img/trips-tasmania2022/overland/2/DSC_1299.jpeg" >}}
 
 #### Day 3: Windermere to Pelion
 
@@ -184,12 +166,8 @@ In the afternoon I had free, I napped, made a visit to Old Pelion Hut where I ma
 
 I fiddled around with the fit of my straps and how I carried my pack, which got rid of a lot of the soreness I was feeling in my shoulders and back I was feeling the previous days.
 
-![DSC_1303.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1303.jpeg "gallery")
-![DSC_1328.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1328.jpeg "gallery")
-![DSC_1345.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1345.jpeg "gallery")
-![DSC_1348.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1348.jpeg "gallery")
-![DSC_1350.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1350.jpeg "gallery")
-![DSC_1370.jpeg](/trips/img/trips-tasmania2022/overland/3/DSC_1370.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/3/DSC_1303.jpeg" img2="/trips/img/trips-tasmania2022/overland/3/DSC_1328.jpeg" img3="/trips/img/trips-tasmania2022/overland/3/DSC_1345.jpeg" >}}
+{{< trio img1="/trips/img/trips-tasmania2022/overland/3/DSC_1348.jpeg" img2="/trips/img/trips-tasmania2022/overland/3/DSC_1350.jpeg" img3="/trips/img/trips-tasmania2022/overland/3/DSC_1370.jpeg" >}}
 
 #### Day 4: Pelion to Kia Ora
 
@@ -211,12 +189,8 @@ I chose to tent again, since the weather looked good. After arriving, I setup my
 
 In terms of how my body was going - my backpack stopped being a problem and my shoulders and back were tired, but not sore. My feet were the most problematic - with blisters on my right heel and both big toes. The sole of my feet were also a bit sore. My max heart rate from the second day onwards was sitting around 150-160bpm, well below the first day whose max was 179bpm. So I think my body was adjusting pretty well. But I have been noticing that on the ascents with my pack, my heart rate wouldn't go nearly as high as the first day, but felt much harder. I chalked that up to being in calorie deficit as my diet was covering only half of my daily expenditure of energy.
 
-![DSC_1391.jpeg](/trips/img/trips-tasmania2022/overland/4/DSC_1391.jpeg "gallery")
-![DSC_1414.jpeg](/trips/img/trips-tasmania2022/overland/4/DSC_1414.jpeg "gallery")
-![DSC_1438.jpeg](/trips/img/trips-tasmania2022/overland/4/DSC_1438.jpeg "gallery")
-![from-jamesmaddie.jpeg](/trips/img/trips-tasmania2022/overland/4/from-jamesmaddie.jpeg "gallery")
-![DSC_1473.jpeg](/trips/img/trips-tasmania2022/overland/4/DSC_1473.jpeg "gallery")
-![DSC_1478.jpeg](/trips/img/trips-tasmania2022/overland/4/DSC_1478.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/4/DSC_1391.jpeg" img2="/trips/img/trips-tasmania2022/overland/4/DSC_1414.jpeg" img3="/trips/img/trips-tasmania2022/overland/4/DSC_1438.jpeg" >}}
+{{< trio img1="/trips/img/trips-tasmania2022/overland/4/from-jamesmaddie.jpeg" img2="/trips/img/trips-tasmania2022/overland/4/DSC_1473.jpeg" img3="/trips/img/trips-tasmania2022/overland/4/DSC_1478.jpeg" >}}
 
 #### Day 5: Kia Ora to Windy Ridge (Bert Nichols Hut)
 
@@ -234,9 +208,7 @@ The early arrival at Ben Nichols meant I could take it easy unpacking and hangin
 
 I slept at 8pm, so I could get up early enough to catch the 9:30am ferry leaving from Narcissus Hut.
 
-![DSC_1509.jpeg](/trips/img/trips-tasmania2022/overland/5/DSC_1509.jpeg "gallery")
-![DSC_1529.jpeg](/trips/img/trips-tasmania2022/overland/5/DSC_1529.jpeg "gallery")
-![DSC_1546.jpeg](/trips/img/trips-tasmania2022/overland/5/DSC_1546.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/5/DSC_1509.jpeg" img2="/trips/img/trips-tasmania2022/overland/5/DSC_1529.jpeg" img3="/trips/img/trips-tasmania2022/overland/5/DSC_1546.jpeg" >}}
 
 #### Day 6: Windy Ridge (Bert Nichols Hut) to Narcissus and Ferry to Lake St Clair Visitor Centre
 
@@ -256,9 +228,7 @@ I bummed around for a couple hours and chatted with the other hikers as they cam
 
 My time at the visitor centre was spent eating food at the lodge (which was ok), getting a spot on the bus back to Launceston, buying souvenirs, chatting with the hikers also waiting for the bus, and letting Winn know I hadn't died (since I had no reception after day 2 on Barn Bluff).
 
-![DSC_1564.jpeg](/trips/img/trips-tasmania2022/overland/6/DSC_1564.jpeg "gallery")
-![From-tristanmaddie.jpeg](/trips/img/trips-tasmania2022/overland/6/From-tristanmaddie.jpeg "gallery")
-![DSC_1583.jpeg](/trips/img/trips-tasmania2022/overland/6/DSC_1583.jpeg "gallery")
+{{< trio img1="/trips/img/trips-tasmania2022/overland/6/DSC_1564.jpeg" img2="/trips/img/trips-tasmania2022/overland/6/From-tristanmaddie.jpeg" img3="/trips/img/trips-tasmania2022/overland/6/DSC_1583.jpeg" >}}
 
 Back in Launceston, I spent the remaining two days getting souvenirs and hanging around the CBD. I stayed at the Pod Inn, which is very affordable (for Launceston), and a great option for Overland Track hikers.
 

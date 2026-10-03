@@ -22,14 +22,8 @@ The hike was gorgeous. Most of the time would be navigating forest, but then you
 
 I'd recommend this hike to anyone who's into multi-day hikes and loves beaches! Just don't do it when you're sick! 😂
 
-![map.webp](/trips/img/trips-wilsonsprom/map.webp "fullwidth")
+{{< single img="/trips/img/trips-wilsonsprom/map.webp" >}}
 
-![DSC_0030.jpeg](/trips/img/trips-wilsonsprom/DSC_0030.jpeg "gallery")
-![DSC_0213.jpeg](/trips/img/trips-wilsonsprom/DSC_0213.jpeg "gallery")
-![DSC_0260.jpeg](/trips/img/trips-wilsonsprom/DSC_0260.jpeg "gallery")
-![DSC_0275.jpeg](/trips/img/trips-wilsonsprom/DSC_0275.jpeg "gallery")
-![DSC_0288.jpeg](/trips/img/trips-wilsonsprom/DSC_0288.jpeg "gallery")
-![DSC_0372.jpeg](/trips/img/trips-wilsonsprom/DSC_0372.jpeg "gallery")
-![DSC_0406.jpeg](/trips/img/trips-wilsonsprom/DSC_0406.jpeg "gallery")
-![DSC_0441.jpeg](/trips/img/trips-wilsonsprom/DSC_0441.jpeg "gallery")
-![DSC_0492.jpeg](/trips/img/trips-wilsonsprom/DSC_0492.jpeg "gallery")
+{{< trio img1="/trips/img/trips-wilsonsprom/DSC_0030.jpeg" img2="/trips/img/trips-wilsonsprom/DSC_0213.jpeg" img3="/trips/img/trips-wilsonsprom/DSC_0260.jpeg" >}}
+{{< trio img1="/trips/img/trips-wilsonsprom/DSC_0275.jpeg" img2="/trips/img/trips-wilsonsprom/DSC_0288.jpeg" img3="/trips/img/trips-wilsonsprom/DSC_0372.jpeg" >}}
+{{< trio img1="/trips/img/trips-wilsonsprom/DSC_0406.jpeg" img2="/trips/img/trips-wilsonsprom/DSC_0441.jpeg" img3="/trips/img/trips-wilsonsprom/DSC_0492.jpeg" >}}

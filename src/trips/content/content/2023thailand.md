@@ -70,9 +70,7 @@ available in both the seated and bunk beds configuration. **Important tip**: rem
 kept on throughout the night. Ear plugs help too - we had issues with people talking in the middle of the night. We also
 found the food on the train to be *relatively* expensive, so we brought our own food.
 
-![IMG20231114061716.jpg](/trips/img/trips-thailand2023/IMG20231114061716.jpg "gallery")
-![IMG20231114062006.jpg](/trips/img/trips-thailand2023/IMG20231114062006.jpg "gallery")
-![DSC_0009.jpg](/trips/img/trips-thailand2023/DSC_0009.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231114061716.jpg" img2="/trips/img/trips-thailand2023/IMG20231114062006.jpg" img3="/trips/img/trips-thailand2023/DSC_0009.jpg" >}}
 
 Next time, if I were to take the train again, I'd consider booking at the ticket office rather than online. Apparently
 the ticket office and online bookings have separate pools of tickets (not sure why). When we booked online, we got the
@@ -102,21 +100,15 @@ used to surround the city. We spent a couple mornings exploring the area and see
 from the Chiang Mai Gate. Those mornings, we grabbed breakfast from Chiang Mai Gate Market - experimenting with the 
 available local cuisine. 
 
-![DSC_0020.jpg](/trips/img/trips-thailand2023/DSC_0020.jpg "gallery")
-![DSC_0024.jpg](/trips/img/trips-thailand2023/DSC_0024.jpg "gallery")
-![DSC_0032.jpg](/trips/img/trips-thailand2023/DSC_0032.jpg "gallery")
-![DSC_0091.jpg](/trips/img/trips-thailand2023/DSC_0091.jpg "gallery")
-![DSC_0124.jpg](/trips/img/trips-thailand2023/DSC_0124.jpg "gallery")
-![DSC_0146.jpg](/trips/img/trips-thailand2023/DSC_0146.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/DSC_0020.jpg" img2="/trips/img/trips-thailand2023/DSC_0024.jpg" img3="/trips/img/trips-thailand2023/DSC_0032.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/DSC_0091.jpg" img2="/trips/img/trips-thailand2023/DSC_0124.jpg" img3="/trips/img/trips-thailand2023/DSC_0146.jpg" >}}
 
 Besides eating the local cuisine, we also learnt to make it! We signed up for a cooking class on AirBnB experiences with
 [Aromdii Cooking School](https://aromdiicooking.com/) where we learnt how to make classic Thai soup, entree, main, and
 dessert. They were great for teaching us about the ingredients that go into Thai cooking (a lot of spices), and how
 sticky rice is made. The recipes are very forgiving, so great for beginners.
 
-![IMG20231115172148.jpg](/trips/img/trips-thailand2023/IMG20231115172148.jpg "gallery")
-![IMG20231115180845.jpg](/trips/img/trips-thailand2023/IMG20231115180845.jpg "gallery")
-![IMG20231115191743.jpg](/trips/img/trips-thailand2023/IMG20231115191743.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231115172148.jpg" img2="/trips/img/trips-thailand2023/IMG20231115180845.jpg" img3="/trips/img/trips-thailand2023/IMG20231115191743.jpg" >}}
 
 #### Doi Inthanon
 
@@ -134,12 +126,8 @@ more places on the mountainside like Doi Kham, and Huay Tueng Thao Reservoir. Bu
 items on our agenda for that day. We spent the rest of the day around MAYA shopping centre, getting a manicure, and 
 exploring shops around Chiang Mai Night Bazaar.
 
-![IMG20231116105524.jpg](/trips/img/trips-thailand2023/IMG20231116105524.jpg "gallery")
-![IMG20231116103347.jpg](/trips/img/trips-thailand2023/IMG20231116103347.jpg "gallery")
-![DSC_0168.jpg](/trips/img/trips-thailand2023/DSC_0168.jpg "gallery")
-![IMG20231116114757.jpg](/trips/img/trips-thailand2023/IMG20231116114757.jpg "gallery")
-![IMG20231116115847.jpg](/trips/img/trips-thailand2023/IMG20231116115847.jpg "gallery")
-![IMG20231116154240.jpg](/trips/img/trips-thailand2023/IMG20231116154240.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231116105524.jpg" img2="/trips/img/trips-thailand2023/IMG20231116103347.jpg" img3="/trips/img/trips-thailand2023/DSC_0168.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231116114757.jpg" img2="/trips/img/trips-thailand2023/IMG20231116115847.jpg" img3="/trips/img/trips-thailand2023/IMG20231116154240.jpg" >}}
 
 #### Elephant Nature Park
 
@@ -153,12 +141,8 @@ where new and/or young elephants are kept prior to being brought into the main p
 as you know that the elephants are treated well. And while the intention is to let the elephants roam free, they do
 occasionally come up to say hi (apparently they like sneaking up on the visitors!).
 
-![IMG20231117111820.jpg](/trips/img/trips-thailand2023/IMG20231117111820.jpg "gallery")
-![DSC_0286.jpg](/trips/img/trips-thailand2023/DSC_0286.jpg "gallery")
-![DSC_0300.jpg](/trips/img/trips-thailand2023/DSC_0300.jpg "gallery")
-![DSC_0384.jpg](/trips/img/trips-thailand2023/DSC_0384.jpg "gallery")
-![DSC_0395.jpg](/trips/img/trips-thailand2023/DSC_0395.jpg "gallery")
-![DSC_0408.jpg](/trips/img/trips-thailand2023/DSC_0408.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231117111820.jpg" img2="/trips/img/trips-thailand2023/DSC_0286.jpg" img3="/trips/img/trips-thailand2023/DSC_0300.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/DSC_0384.jpg" img2="/trips/img/trips-thailand2023/DSC_0395.jpg" img3="/trips/img/trips-thailand2023/DSC_0408.jpg" >}}
 
 #### Food we liked in Chiang Mai
 
@@ -238,12 +222,8 @@ Bon Island didn't have nearly as good snorkelling, but while banana bay got pret
 almost empty. On Bon Island, we mostly lazed around, explored the rockpools, and played with the hermit crabs on the
 beach.
 
-![DSC_0061.jpg](/trips/img/trips-thailand2023/DSC_0061.jpg "gallery")
-![DSC_0080.jpg](/trips/img/trips-thailand2023/DSC_0080.jpg "gallery")
-![IMG20231124105732.jpg](/trips/img/trips-thailand2023/IMG20231124105732.jpg "gallery")
-![DSC_0099.jpg](/trips/img/trips-thailand2023/DSC_0099.jpg "gallery")
-![DSC_0115.jpg](/trips/img/trips-thailand2023/DSC_0115.jpg "gallery")
-![IMG20231124144231.jpg](/trips/img/trips-thailand2023/IMG20231124144231.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/DSC_0061.jpg" img2="/trips/img/trips-thailand2023/DSC_0080.jpg" img3="/trips/img/trips-thailand2023/IMG20231124105732.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/DSC_0099.jpg" img2="/trips/img/trips-thailand2023/DSC_0115.jpg" img3="/trips/img/trips-thailand2023/IMG20231124144231.jpg" >}}
 
 Gastronomy-wise, Phuket was a little lacklustre for us so there aren't any great food places we can recommend. Although,
 if you're near Rawai beach, Sabai Massage was a pretty good experience if you're after a Thai massage.
@@ -280,9 +260,7 @@ show.
 
 But all in all, a fun experience (but hopefully not all concerts are this loud).
 
-![IMG20231126174040.jpg](/trips/img/trips-thailand2023/IMG20231126174040.jpg "gallery")
-![IMG20231126191530.jpg](/trips/img/trips-thailand2023/IMG20231126191530.jpg "gallery")
-![IMG20231126204847.jpg](/trips/img/trips-thailand2023/IMG20231126204847.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231126174040.jpg" img2="/trips/img/trips-thailand2023/IMG20231126191530.jpg" img3="/trips/img/trips-thailand2023/IMG20231126204847.jpg" >}}
 
 #### Getting Some Nice Silk Clothing
 
@@ -307,9 +285,7 @@ floor at a pretty good price and with nice patterns. But note that the silk stuf
 cotton stuff (which I thought was too expensive). My partner also managed to score a couple nice silk and linen dresses
 for a pretty good price too.
 
-![IMG20231127100335.jpg](/trips/img/trips-thailand2023/IMG20231127100335.jpg "gallery")
-![IMG20231127103139.jpg](/trips/img/trips-thailand2023/IMG20231127103139.jpg "gallery")
-![IMG20231127144442.jpg](/trips/img/trips-thailand2023/IMG20231127144442.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231127100335.jpg" img2="/trips/img/trips-thailand2023/IMG20231127103139.jpg" img3="/trips/img/trips-thailand2023/IMG20231127144442.jpg" >}}
 
 #### Loy Krathong Festival and Spectrum Sky Bar
 
@@ -324,9 +300,7 @@ We finally ended the night by making a visit to Spectrum sky bar that sits atop 
 monday night at around 6:30pm when we got there, so it was completely dead - we were the only people in the bar. The 
 vibe was clearly a little dull, but the views were amazing.
 
-![IMG20231127181232.jpg](/trips/img/trips-thailand2023/IMG20231127181232.jpg "gallery")
-![DSC_0028.jpg](/trips/img/trips-thailand2023/DSC_0028.jpg "gallery")
-![DSC_0058.jpg](/trips/img/trips-thailand2023/DSC_0058.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231127181232.jpg" img2="/trips/img/trips-thailand2023/DSC_0028.jpg" img3="/trips/img/trips-thailand2023/DSC_0058.jpg" >}}
 
 #### Studio Ghibli Exhibit in CentralwOrld
 
@@ -338,12 +312,8 @@ The end of the exhibit showed Studio Ghibli's animation process, using real stor
 Totoro. Apparently, a unique aspect of Ghibli films is that dialogue is created after storyboards are drawn, when
 animation studios usually do it the other way round.
 
-![IMG20231128134738.jpg](/trips/img/trips-thailand2023/IMG20231128134738.jpg "gallery")
-![DSC_0107.jpg](/trips/img/trips-thailand2023/DSC_0107.jpg "gallery")
-![DSC_0156.jpg](/trips/img/trips-thailand2023/DSC_0156.jpg "gallery")
-![IMG20231128141614.jpg](/trips/img/trips-thailand2023/IMG20231128141614.jpg "gallery")
-![IMG20231128142511.jpg](/trips/img/trips-thailand2023/IMG20231128142511.jpg "gallery")
-![DSC_0169.jpg](/trips/img/trips-thailand2023/DSC_0169.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231128134738.jpg" img2="/trips/img/trips-thailand2023/DSC_0107.jpg" img3="/trips/img/trips-thailand2023/DSC_0156.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231128141614.jpg" img2="/trips/img/trips-thailand2023/IMG20231128142511.jpg" img3="/trips/img/trips-thailand2023/DSC_0169.jpg" >}}
 
 While in the area, we took the opportunity to look around The Platinum Fashion Mall (apparently popular with young
 people, probably because of the inexpensive and large variety of clothing and accessories), Samyan Mitrtown (another
@@ -367,12 +337,8 @@ perch on you for photos (one hung out in my hair for awhile).
 A highly recommended experience if you love animals! Across the road also has a dog cafe, although it was empty at the
 time.
 
-![IMG20231129135450.jpg](/trips/img/trips-thailand2023/IMG20231129135450.jpg "gallery")
-![IMG20231129135930.jpg](/trips/img/trips-thailand2023/IMG20231129135930.jpg "gallery")
-![IMG20231129140921.jpg](/trips/img/trips-thailand2023/IMG20231129140921.jpg "gallery")
-![IMG20231129141738.jpg](/trips/img/trips-thailand2023/IMG20231129141738.jpg "gallery")
-![IMG20231129145756.jpg](/trips/img/trips-thailand2023/IMG20231129145756.jpg "gallery")
-![IMG20231129150857.jpg](/trips/img/trips-thailand2023/IMG20231129150857.jpg "gallery")
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231129135450.jpg" img2="/trips/img/trips-thailand2023/IMG20231129135930.jpg" img3="/trips/img/trips-thailand2023/IMG20231129140921.jpg" >}}
+{{< trio img1="/trips/img/trips-thailand2023/IMG20231129141738.jpg" img2="/trips/img/trips-thailand2023/IMG20231129145756.jpg" img3="/trips/img/trips-thailand2023/IMG20231129150857.jpg" >}}
 
 #### Food we liked in Bangkok
 

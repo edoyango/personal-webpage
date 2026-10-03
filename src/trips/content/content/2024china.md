@@ -55,9 +55,7 @@ city to collect the glasses we ordered in the morning.
 The next day we also went to see the Guangzhou International Light Show, which featured laser light shows and a
 beautifully lit up Canton tower!
 
-![A plentiful but affordable first breakfast in GZ](/trips/img/trips-china2024/Image_20241220145920_cr.jpg "gallery")
-![Visinting Winn's Grandma](/trips/img/trips-china2024/Image_20241220150732_cr.jpg "gallery")
-![GZ International Light Show](/trips/img/trips-china2024/DSC_0213_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241220145920_cr.jpg" caption1="A plentiful but affordable first breakfast in GZ" img2="/trips/img/trips-china2024/Image_20241220150732_cr.jpg" caption2="Visinting Winn's Grandma" img3="/trips/img/trips-china2024/DSC_0213_cr.jpg" caption3="GZ International Light Show" >}}
 
 # Changsha (长沙)
 
@@ -75,18 +73,14 @@ toward him seem to be that of admiration, and for some, regret - because of the 
 capture and imprisonment following. This part of the trip was very eye opening because it was the first time I had heard
 from people who were with him as a teenager, and who were that close to the events that changed his life forever.
 
-![My younger aunt and I going through a book about my Grandpa](/trips/img/trips-china2024/Image_20241220160457_cr.jpg "gallery")
-![Group photo with my aunts and I and some of my dad's classmates](/trips/img/trips-china2024/Image_20241220160448_cr.jpg "gallery")
-![Me with my dad's photo at his middle school](/trips/img/trips-china2024/Image_20241220160453_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241220160457_cr.jpg" caption1="My younger aunt and I going through a book about my Grandpa" img2="/trips/img/trips-china2024/Image_20241220160448_cr.jpg" caption2="Group photo with my aunts and I and some of my dad's classmates" img3="/trips/img/trips-china2024/Image_20241220160453_cr.jpg" caption3="Me with my dad's photo at his middle school" >}}
 
 There were a couple more personal visits we made - first to see a family friend who worked for my grandpa and I saw
 every time I visited with my family. We also met with my dad's cousins who I had apparently met when I was very young
 (no recollection) and we went together to visit my grandpa's grave. From them I learnt that my dad had apparently spent
 more time with their dad than his own.
 
-![Me with our old family friend, who I remember as xiebebe (谢伯伯)](/trips/img/trips-china2024/Image_20241220163342_cr.jpg "gallery")
-![Visiting Grandpa's grave](/trips/img/trips-china2024/Image_20241220163334_cr.jpg "gallery")
-![Me with my aunts and first cousins (once removed)](/trips/img/trips-china2024/Image_20241220163328_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241220163342_cr.jpg" caption1="Me with our old family friend, who I remember as xiebebe (谢伯伯)" img2="/trips/img/trips-china2024/Image_20241220163334_cr.jpg" caption2="Visiting Grandpa's grave" img3="/trips/img/trips-china2024/Image_20241220163328_cr.jpg" caption3="Me with my aunts and first cousins (once removed)" >}}
 
 But we still had plenty of chances to visit more touristy places - including Orange (as in the fruit) Isle, which had a
 bizarre giant statue of young Maozedong. We also visited a cultural revolution themed tea-house (an interesting business
@@ -95,18 +89,10 @@ director and restoration architect for China's oldest academy - Yuelu Academy. H
 faculty of the attached Hunan University (specialising in Chinese Philosophy and originally from Tasmania), who was 
 acting as our very over-qualified translator.
 
-![Giant young Maozedong status on Orange Isle](/trips/img/trips-china2024/DSC_0267_cr.jpg "gallery")
-![Entrance to the cultural revolution-themed tea house](/trips/img/trips-china2024/DSC_0286_cr.jpg "gallery")
-!["Graffiti" on the inside of the tea house, which says "The World is yours'!"](/trips/img/trips-china2024/DSC_0299_cr.jpg "gallery")
-!["Light garden" near Changsha's old city walls](/trips/img/trips-china2024/DSC_0315_cr.jpg "gallery")
-![Beautifully lit up stairwell leading up to the old city wall](/trips/img/trips-china2024/DSC_0322_cr.jpg "gallery")
-![Lit up traditional chinese-style building on the old city wall](/trips/img/trips-china2024/DSC_0350_cr.jpg "gallery")
-![A cured meat street vendor](/trips/img/trips-china2024/DSC_0376_cr.jpg "gallery")
-![A bread street vendor](/trips/img/trips-china2024/Image_20241220172813_cr.jpg "gallery")
-![Lion statue guarding Huoguodian](/trips/img/trips-china2024/DSC_0388_cr.jpg "gallery")
-![My younger aunt and in front of the entrance to Huoguodian](/trips/img/trips-china2024/Image_20241220172808_cr.jpg "gallery")
-![Yumcha lunch at Huoguodian](/trips/img/trips-china2024/Image_20241220172821_cr.jpg "gallery")
-![Confucian temple attached to Yuelu academy](/trips/img/trips-china2024/Image_20241220172838_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/DSC_0267_cr.jpg" caption1="Giant young Maozedong status on Orange Isle" img2="/trips/img/trips-china2024/DSC_0286_cr.jpg" caption2="Entrance to the cultural revolution-themed tea house" img3="/trips/img/trips-china2024/DSC_0299_cr.jpg" caption3=`"Graffiti" on the inside of the tea house, which says "The World is yours'!"` >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_0315_cr.jpg" caption1=`"Light garden" near Changsha's old city walls` img2="/trips/img/trips-china2024/DSC_0322_cr.jpg" caption2="Beautifully lit up stairwell leading up to the old city wall" img3="/trips/img/trips-china2024/DSC_0350_cr.jpg" caption3="Lit up traditional chinese-style building on the old city wall" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_0376_cr.jpg" caption1="A cured meat street vendor" img2="/trips/img/trips-china2024/Image_20241220172813_cr.jpg" caption2="A bread street vendor" img3="/trips/img/trips-china2024/DSC_0388_cr.jpg" caption3="Lion statue guarding Huoguodian" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241220172808_cr.jpg" caption1="My younger aunt and in front of the entrance to Huoguodian" img2="/trips/img/trips-china2024/Image_20241220172821_cr.jpg" caption2="Yumcha lunch at Huoguodian" img3="/trips/img/trips-china2024/Image_20241220172838_cr.jpg" caption3="Confucian temple attached to Yuelu academy" >}}
 
 # Guanghzou pt. 2
 
@@ -120,12 +106,8 @@ of the light in the room!
 
 I had to work during the day while we were there, but I tried to make the most of it!
 
-![Us at the entrance of Lanyuan hot spring](/trips/img/trips-china2024/Image_20241221212107_cr.jpg "gallery")
-![Our first bath in the public hot spring](/trips/img/trips-china2024/Image_20241221212111_cr.jpg "gallery")
-![Winn, Stone, and I in the hot spring](/trips/img/trips-china2024/Image_20241221213231_cr.jpg "gallery")
-![Our dinner table while at the resourt](/trips/img/trips-china2024/Image_20241221213236_cr.jpg "gallery")
-![The painting that changes season with different colours of light](/trips/img/trips-china2024/Image_20241221213240_cr.jpg "gallery")
-![I'm working but enjoying the hot springs too!](/trips/img/trips-china2024/Image_20241221212114_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241221212107_cr.jpg" caption1="Us at the entrance of Lanyuan hot spring" img2="/trips/img/trips-china2024/Image_20241221212111_cr.jpg" caption2="Our first bath in the public hot spring" img3="/trips/img/trips-china2024/Image_20241221213231_cr.jpg" caption3="Winn, Stone, and I in the hot spring" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241221213236_cr.jpg" caption1="Our dinner table while at the resourt" img2="/trips/img/trips-china2024/Image_20241221213240_cr.jpg" caption2="The painting that changes season with different colours of light" img3="/trips/img/trips-china2024/Image_20241221212114_cr.jpg" caption3="I'm working but enjoying the hot springs too!" >}}
 
 # Yunnan (云南)
 
@@ -137,7 +119,7 @@ given since the seating was comfortable, but my mobile internet would drop often
 views heading toward western China were overall very charming, and in some parts, there were jagged 100-meter hills standing amongst
 the Chinese villages.
 
-![Screenshot of the journey taken from Dali, Lijiang, Shangri-La, and Kunming cities in Yunnan](/trips/img/trips-china2024/yunnan-screenshot.png)
+{{< single img="/trips/img/trips-china2024/yunnan-screenshot.png" caption="Screenshot of the journey taken from Dali, Lijiang, Shangri-La, and Kunming cities in Yunnan" >}}
 
 ## Yunnan - Dali (大理)
 
@@ -177,21 +159,11 @@ animals don't look well taken care of (there is a couple very adorable red panda
 in Dali) was also an interesting visit. It motivated me to buy Dali shi (shi is stone) AKA marble that Dali households often
 display like art, although in the end I never got a piece.
 
-![Old town gate a couple hundred meters from our accommodation](/trips/img/trips-china2024/DSC_0431_cr.jpg "gallery")
-![Exploring the streets with Winn's little brother and dad](/trips/img/trips-china2024/DSC_0451_cr.jpg "gallery")
-![Alpaca store-front mascots in Dali old town](/trips/img/trips-china2024/DSC_0452_cr.jpg "gallery")
-![Praying for my future studies in a temple inside the old town](/trips/img/trips-china2024/Image_20241223200420_cr.jpg "gallery")
-![The gate to old town on the other side](/trips/img/trips-china2024/DSC_0484_cr.jpg "gallery")
-![The Three Pagodas](/trips/img/trips-china2024/DSC_0521_cr.jpg "gallery")
-![The gate to Chongsheng temple (still a long way to go)](/trips/img/trips-china2024/DSC_0573_cr.jpg "gallery")
-![The view from Chongsheng](/trips/img/trips-china2024/DSC_0631_cr.jpg "gallery")
-![A red panda at Erhai Park Zoo (would not recommend as the animals don't look to be taken care of well)](/trips/img/trips-china2024/DSC_0825_cr.jpg "gallery")
-![Lantern lights while exploring the old town in the evening](/trips/img/trips-china2024/DSC_0874_cr.jpg "gallery")
-![One of the performers dancing from the balcony of a restaurant](/trips/img/trips-china2024/DSC_0923_cr.jpg "gallery")
-![View from one of the gates in the old town](/trips/img/trips-china2024/DSC_0946_cr.jpg "gallery")
-![Rice noodles and Dali yoghurt in the city](/trips/img/trips-china2024/Image_20241223200442_cr.jpg "gallery")
-![Yunnan coffee while exploring some of the old streets](/trips/img/trips-china2024/Image_20241223200436_cr.jpg "gallery")
-![Mushroom and beef hotpot at a restaurant near our AirBnB](/trips/img/trips-china2024/Image_20241223200414_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/DSC_0431_cr.jpg" caption1="Old town gate a couple hundred meters from our accommodation" img2="/trips/img/trips-china2024/DSC_0451_cr.jpg" caption2="Exploring the streets with Winn's little brother and dad" img3="/trips/img/trips-china2024/DSC_0452_cr.jpg" caption3="Alpaca store-front mascots in Dali old town" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241223200420_cr.jpg" caption1="Praying for my future studies in a temple inside the old town" img2="/trips/img/trips-china2024/DSC_0484_cr.jpg" caption2="The gate to old town on the other side" img3="/trips/img/trips-china2024/DSC_0521_cr.jpg" caption3="The Three Pagodas" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_0573_cr.jpg" caption1="The gate to Chongsheng temple (still a long way to go)" img2="/trips/img/trips-china2024/DSC_0631_cr.jpg" caption2="The view from Chongsheng" img3="/trips/img/trips-china2024/DSC_0825_cr.jpg" caption3="A red panda at Erhai Park Zoo (would not recommend as the animals don't look to be taken care of well)" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_0874_cr.jpg" caption1="Lantern lights while exploring the old town in the evening" img2="/trips/img/trips-china2024/DSC_0923_cr.jpg" caption2="One of the performers dancing from the balcony of a restaurant" img3="/trips/img/trips-china2024/DSC_0946_cr.jpg" caption3="View from one of the gates in the old town" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241223200442_cr.jpg" caption1="Rice noodles and Dali yoghurt in the city" img2="/trips/img/trips-china2024/Image_20241223200436_cr.jpg" caption2="Yunnan coffee while exploring some of the old streets" img3="/trips/img/trips-china2024/Image_20241223200414_cr.jpg" caption3="Mushroom and beef hotpot at a restaurant near our AirBnB" >}}
 
 ## Yunnan - Lijiang (丽江)
 
@@ -243,21 +215,11 @@ I'm a little disappointed that my first time at above 4000m was by cablecar inst
 was definitely the highlight of Yunnan for me! Although I did learn that a couple decades ago, the only way to get up was to hike
 up, and one of Winn's Dad's friend's wife did that!
 
-![Winn at our accommodation in Lijiang](/trips/img/trips-china2024/DSC_0960_cr.jpg "gallery")
-![Evening view nearby our accommodation](/trips/img/trips-china2024/DSC_0977_cr.jpg "gallery")
-![Wandering the old town streets at night](/trips/img/trips-china2024/DSC_0979_cr.jpg "gallery")
-![Stores and bars lit up at night](/trips/img/trips-china2024/DSC_0984_cr.jpg "gallery")
-![Local dance circle in the main square](/trips/img/trips-china2024/DSC_0990_cr.jpg "gallery")
-![View of Jade Dragon Snowy Mountain from Heilongtan Park](/trips/img/trips-china2024/DSC_1221_cr.jpg "gallery")
-![View of Jade Dragon Snowy Mountain from 3/4 up the hike behind Heilongtan Park](/trips/img/trips-china2024/DSC_1137_cr.jpg "gallery")
-![View of Jade Dragon Snowy Mountain from one the carpark near Blue Moon Lake](/trips/img/trips-china2024/DSC_1226_cr.jpg "gallery")
-![View going up the cablecar to the summit](/trips/img/trips-china2024/DSC_1234_cr.jpg "gallery")
-![Winn's little brother and I with the 4506m elevation marker](/trips/img/trips-china2024/Image_20241223212604_cr.jpg "gallery")
-![Winn and I at the viewing platform](/trips/img/trips-china2024/Image_20241223212609_cr.jpg "gallery")
-![Partial view of mountain peak and valley from the upper viewing platform](/trips/img/trips-china2024/DSC_1294_cr.jpg "gallery")
-![The crowd of people lining up to get down by cablecar](/trips/img/trips-china2024/DSC_1325_cr.jpg "gallery")
-![The crowd of people lining up to get down and the people still making their way up to the upper viewing platform](/trips/img/trips-china2024/DSC_1324_cr.jpg "gallery")
-![A live "decorative yak" hanging out at Blue Moon Lake with Jade Dragon Mountain in the background](/trips/img/trips-china2024/DSC_1352_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/DSC_0960_cr.jpg" caption1="Winn at our accommodation in Lijiang" img2="/trips/img/trips-china2024/DSC_0977_cr.jpg" caption2="Evening view nearby our accommodation" img3="/trips/img/trips-china2024/DSC_0979_cr.jpg" caption3="Wandering the old town streets at night" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_0984_cr.jpg" caption1="Stores and bars lit up at night" img2="/trips/img/trips-china2024/DSC_0990_cr.jpg" caption2="Local dance circle in the main square" img3="/trips/img/trips-china2024/DSC_1221_cr.jpg" caption3="View of Jade Dragon Snowy Mountain from Heilongtan Park" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1137_cr.jpg" caption1="View of Jade Dragon Snowy Mountain from 3/4 up the hike behind Heilongtan Park" img2="/trips/img/trips-china2024/DSC_1226_cr.jpg" caption2="View of Jade Dragon Snowy Mountain from one the carpark near Blue Moon Lake" img3="/trips/img/trips-china2024/DSC_1234_cr.jpg" caption3="View going up the cablecar to the summit" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241223212604_cr.jpg" caption1="Winn's little brother and I with the 4506m elevation marker" img2="/trips/img/trips-china2024/Image_20241223212609_cr.jpg" caption2="Winn and I at the viewing platform" img3="/trips/img/trips-china2024/DSC_1294_cr.jpg" caption3="Partial view of mountain peak and valley from the upper viewing platform" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1325_cr.jpg" caption1="The crowd of people lining up to get down by cablecar" img2="/trips/img/trips-china2024/DSC_1324_cr.jpg" caption2="The crowd of people lining up to get down and the people still making their way up to the upper viewing platform" img3="/trips/img/trips-china2024/DSC_1352_cr.jpg" caption3=`A live "decorative yak" hanging out at Blue Moon Lake with Jade Dragon Mountain in the background` >}}
 
 ## Yunnan - Shangri-La (香格里拉)
 
@@ -299,24 +261,12 @@ Aus), and past a beautiful lake seemingly overrun by cormorants, geese, and coot
 well worth it. The monastery itself was well-maintained and looked like it was still used, and it was filled with dressed-up
 tourists taking photos. But definitely worth a visit if you're in the area.
 
-![Walking into the old town](/trips/img/trips-china2024/Image_20241224112840.jpg "gallery")
-![Our first dinner in Shangri-la - yak hotpot](/trips/img/trips-china2024/Image_20241224112834_cr.jpg "gallery")
-![Inbetween songs in the evening guozhuang dance circle](/trips/img/trips-china2024/DSC_1403_cr.jpg "gallery")
-![Winn, her dad, and little brother together, dressed up](/trips/img/trips-china2024/DSC_1462_cr.jpg "gallery")
-![Winn and in matching traditional dress](/trips/img/trips-china2024/Image_20241224112844_cr.jpg "gallery")
-![Winn, dressed in traditional wear, with temple in background](/trips/img/trips-china2024/DSC_1467_cr.jpg "gallery")
-![Winn in traditional dress, looking cool](/trips/img/trips-china2024/DSC_1485_cr.jpg "gallery")
-![Our second yak hot pot dinner](/trips/img/trips-china2024/Image_20241224112830_cr.png "gallery")
-![White Wagtail seen in Potatso National Park](/trips/img/trips-china2024/DSC_1496_cr.jpg "gallery")
-![Horses grazing in Potatso National park](/trips/img/trips-china2024/DSC_1517_cr.jpg "gallery")
-![Yak's grazing in Potatso National Park](/trips/img/trips-china2024/DSC_1576_cr.jpg "gallery")
-![Perched crow with horse and Bita Lake in the background at Potatso National Park](/trips/img/trips-china2024/DSC_1580_cr.jpg "gallery")
-![Bita Lake at Potatso National Park](/trips/img/trips-china2024/DSC_1583_cr.jpg "gallery")
-![Squirrel expecting food at Potatso National Park](/trips/img/trips-china2024/DSC_1606_cr.jpg "gallery")
-![Sumtsenling Monastery from the lake](/trips/img/trips-china2024/DSC_1623_cr.jpg "gallery")
-![View from Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112847.jpg "gallery")
-![Winn's dad ringing the bell in one of the doorways in Sumtsenling](/trips/img/trips-china2024/Image_20241224112818_cr.jpg "gallery")
-![Winn, her dad, and little brother at Sumtsenling Monastery](/trips/img/trips-china2024/Image_20241224112822_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241224112840.jpg" caption1="Walking into the old town" img2="/trips/img/trips-china2024/Image_20241224112834_cr.jpg" caption2="Our first dinner in Shangri-la - yak hotpot" img3="/trips/img/trips-china2024/DSC_1403_cr.jpg" caption3="Inbetween songs in the evening guozhuang dance circle" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1462_cr.jpg" caption1="Winn, her dad, and little brother together, dressed up" img2="/trips/img/trips-china2024/Image_20241224112844_cr.jpg" caption2="Winn and in matching traditional dress" img3="/trips/img/trips-china2024/DSC_1467_cr.jpg" caption3="Winn, dressed in traditional wear, with temple in background" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1485_cr.jpg" caption1="Winn in traditional dress, looking cool" img2="/trips/img/trips-china2024/Image_20241224112830_cr.png" caption2="Our second yak hot pot dinner" img3="/trips/img/trips-china2024/DSC_1496_cr.jpg" caption3="White Wagtail seen in Potatso National Park" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1517_cr.jpg" caption1="Horses grazing in Potatso National park" img2="/trips/img/trips-china2024/DSC_1576_cr.jpg" caption2="Yak's grazing in Potatso National Park" img3="/trips/img/trips-china2024/DSC_1580_cr.jpg" caption3="Perched crow with horse and Bita Lake in the background at Potatso National Park" >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1583_cr.jpg" caption1="Bita Lake at Potatso National Park" img2="/trips/img/trips-china2024/DSC_1606_cr.jpg" caption2="Squirrel expecting food at Potatso National Park" img3="/trips/img/trips-china2024/DSC_1623_cr.jpg" caption3="Sumtsenling Monastery from the lake" >}}
+{{< trio img1="/trips/img/trips-china2024/Image_20241224112847.jpg" caption1="View from Sumtsenling Monastery" img2="/trips/img/trips-china2024/Image_20241224112818_cr.jpg" caption2="Winn's dad ringing the bell in one of the doorways in Sumtsenling" img3="/trips/img/trips-china2024/Image_20241224112822_cr.jpg" caption3="Winn, her dad, and little brother at Sumtsenling Monastery" >}}
 
 ## Yunnan - Kunming (昆明)
 
@@ -336,12 +286,8 @@ info about the geology was very lacking). On the way to the Stone Forest, we sto
 that come down to Kunming from November to March. The city park was also another place we visited which had the migratory gulls
 visiting.
 
-![Peacocks in the Kunming Zoo](/trips/img/trips-china2024/Image_20241224152409_cr.jpg "gallery")
-![Enjoying the city park](/trips/img/trips-china2024/Image_20241224152405_cr.jpg "gallery")
-![The Ma family (Winn, stone, their dad) standing in front of a "Ma Gate"](/trips/img/trips-china2024/DSC_1741_cr.jpg "gallery")
-![Siberian gull feeding from a tourist's hand](/trips/img/trips-china2024/DSC_1815_cr.jpg "gallery")
-![Example of the cool rock formations in the Stone Park](/trips/img/trips-china2024/DSC_1944_cr.jpg "gallery")
-![Final dinner in Kunming at our favourite pulled noodle restaurant](/trips/img/trips-china2024/Image_20241224152358_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241224152409_cr.jpg" caption1="Peacocks in the Kunming Zoo" img2="/trips/img/trips-china2024/Image_20241224152405_cr.jpg" caption2="Enjoying the city park" img3="/trips/img/trips-china2024/DSC_1741_cr.jpg" caption3=`The Ma family (Winn, stone, their dad) standing in front of a "Ma Gate"` >}}
+{{< trio img1="/trips/img/trips-china2024/DSC_1815_cr.jpg" caption1="Siberian gull feeding from a tourist's hand" img2="/trips/img/trips-china2024/DSC_1944_cr.jpg" caption2="Example of the cool rock formations in the Stone Park" img3="/trips/img/trips-china2024/Image_20241224152358_cr.jpg" caption3="Final dinner in Kunming at our favourite pulled noodle restaurant" >}}
 
 # Guangzhou pt. 3
 
@@ -350,9 +296,7 @@ piercings, went shopping, and caught up with Winn's family friends and her grand
 had just outside the apartment and enjoy the cheap oysters as well (1 RMB per oyster!). We also got a tour of the White Swan Hotel
 (白天鹅宾馆) and enjoyed the facilities, as a former CEO is friends with Winn's dad.
 
-![Daily Xiaolongbaos are a must!](/trips/img/trips-china2024/Image_20241224160229_cr.jpg "gallery")
-![Swimming a few laps in the White Swan Hotel pool](/trips/img/trips-china2024/Image_20241224160225_cr.png "gallery")
-![Hotpot dinner with Winn's family friends](/trips/img/trips-china2024/Image_20241224160236_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241224160229_cr.jpg" caption1="Daily Xiaolongbaos are a must!" img2="/trips/img/trips-china2024/Image_20241224160225_cr.png" caption2="Swimming a few laps in the White Swan Hotel pool" img3="/trips/img/trips-china2024/Image_20241224160236_cr.jpg" caption3="Hotpot dinner with Winn's family friends" >}}
 
 # Shenzhen (深圳)
 
@@ -362,9 +306,7 @@ place. There I got to learn more about my Grandpa and some of how my dad and his
 cousins and my uncle, who I hadn't really gotten to know growing up. This short visit to Shenzhen was very special for me.
 
 
-![Me hanging out with my cousin and my uncle and aunt](/trips/img/trips-china2024/Image_20241224161357_cr.jpg "gallery")
-![Winn, my uncle, and I](/trips/img/trips-china2024/Image_20241224161413_cr.jpg "gallery")
-![My aunt and I looking through her old photos](/trips/img/trips-china2024/Image_20241224161405_cr.jpg "gallery")
+{{< trio img1="/trips/img/trips-china2024/Image_20241224161357_cr.jpg" caption1="Me hanging out with my cousin and my uncle and aunt" img2="/trips/img/trips-china2024/Image_20241224161413_cr.jpg" caption2="Winn, my uncle, and I" img3="/trips/img/trips-china2024/Image_20241224161405_cr.jpg" caption3="My aunt and I looking through her old photos" >}}
 
 # Conclusion
 

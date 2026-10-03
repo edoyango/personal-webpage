@@ -1,13 +1,4 @@
 /* your styles go here */
-.gallery {
-    width: 33%;
-    float: left;
-    padding: 0.5%;
-}
-
-.fullwidth {
-    width: 100%;
-}
 
 /* Lays out any number of images (any mix of portrait/landscape) in a single
    justified row: they span the full content width (just a small gap between

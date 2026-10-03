@@ -22,9 +22,7 @@ I didn't invest a lot into looking for interesting things to do. I made visits t
 * Spittelberg; and
 * Kohlmarkt
 
-![DSC_0224.jpeg](/trips/img/trips-austria/DSC_0224.jpeg "gallery")
-![DSC_0232.jpeg](/trips/img/trips-austria/DSC_0232.jpeg "gallery")
-![DSC_0287.jpeg](/trips/img/trips-austria/DSC_0287.jpeg "gallery")
+{{< trio img1="/trips/img/trips-austria/DSC_0224.jpeg" img2="/trips/img/trips-austria/DSC_0232.jpeg" img3="/trips/img/trips-austria/DSC_0287.jpeg" >}}
 
 ### Innsbruck
 
@@ -38,19 +36,11 @@ After the first day, I had to come down from N&#246;rdlinger H&#252;tte because 
 
 The hike is quite challenging and quite a lot of distance is covered, so I would recommend this only if you're pretty fit and have good balance and hand-eye coordination.
 
-![DSC_0060.jpeg](/trips/img/trips-austria/DSC_0060.jpeg "gallery")
-![DSC_0062.jpeg](/trips/img/trips-austria/DSC_0062.jpeg "gallery")
-![DSC_0078.jpeg](/trips/img/trips-austria/DSC_0078.jpeg "gallery")
-![DSC_0124.jpeg](/trips/img/trips-austria/DSC_0124.jpeg "gallery")
-![DSC_0151.jpeg](/trips/img/trips-austria/DSC_0151.jpeg "gallery")
-![DSC_0152.jpeg](/trips/img/trips-austria/DSC_0152.jpeg "gallery")
-![DSC_0158.jpeg](/trips/img/trips-austria/DSC_0158.jpeg "gallery")
-![DSC_0165.jpeg](/trips/img/trips-austria/DSC_0165.jpeg "gallery")
-![DSC_0167.jpeg](/trips/img/trips-austria/DSC_0167.jpeg "gallery")
+{{< trio img1="/trips/img/trips-austria/DSC_0060.jpeg" img2="/trips/img/trips-austria/DSC_0062.jpeg" img3="/trips/img/trips-austria/DSC_0078.jpeg" >}}
+{{< trio img1="/trips/img/trips-austria/DSC_0124.jpeg" img2="/trips/img/trips-austria/DSC_0151.jpeg" img3="/trips/img/trips-austria/DSC_0152.jpeg" >}}
+{{< trio img1="/trips/img/trips-austria/DSC_0158.jpeg" img2="/trips/img/trips-austria/DSC_0165.jpeg" img3="/trips/img/trips-austria/DSC_0167.jpeg" >}}
 
 ### Salzburg
 Salzburg is famous for being where The Sound of Music was filmed. I spent a couple nights here, where I rented a bike and rode around Salzburg (would highly recommend).
 
-![DSC_0187.jpeg](/trips/img/trips-austria/DSC_0187.jpeg "gallery")
-![DSC_0197.jpeg](/trips/img/trips-austria/DSC_0197.jpeg "gallery")
-![DSC_0212.jpeg](/trips/img/trips-austria/DSC_0212.jpeg "gallery")
+{{< trio img1="/trips/img/trips-austria/DSC_0187.jpeg" img2="/trips/img/trips-austria/DSC_0197.jpeg" img3="/trips/img/trips-austria/DSC_0212.jpeg" >}}

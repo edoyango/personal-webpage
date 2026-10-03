@@ -35,12 +35,8 @@ And if all that wasn't enough, outside of Icon Siam, you can hop on a boat for a
 
 A highlight of our stay in Bangkok was the day tour to Ayutthaya (pronounced like a-yoo-ta-ya, with an emphasis on yoo). Winn booked this tour via Klook. We were picked up at Sheraton Grande Sukhumvit at the early hours of 6:20 (to avoid the heat and tourist peak traffic) and we were done by about 2:30pm. Unfortunately for us, the weather had done us dirty with almost 40 degree C temperatures and 100% humidity. Tip: some say you need to wear pants and long sleeves, but shorts and t-shirts are ok - as long as women have their shoulders covered.
 
-![DSC_0331.jpeg](/trips/img/trips-thailand/DSC_0331.jpeg "gallery")
-![DSC_0361.jpeg](/trips/img/trips-thailand/DSC_0361.jpeg "gallery")
-![DSC_0469.jpeg](/trips/img/trips-thailand/DSC_0469.jpeg "gallery")
-![DSC_0502.jpeg](/trips/img/trips-thailand/DSC_0502.jpeg "gallery")
-![IMG20221024192508.jpeg](/trips/img/trips-thailand/IMG20221024192508.jpeg "gallery")
-![DSC_0538.jpeg](/trips/img/trips-thailand/DSC_0538.jpeg "gallery")
+{{< trio img1="/trips/img/trips-thailand/DSC_0331.jpeg" img2="/trips/img/trips-thailand/DSC_0361.jpeg" img3="/trips/img/trips-thailand/DSC_0469.jpeg" >}}
+{{< trio img1="/trips/img/trips-thailand/DSC_0502.jpeg" img2="/trips/img/trips-thailand/IMG20221024192508.jpeg" img3="/trips/img/trips-thailand/DSC_0538.jpeg" >}}
 
 ### Phuket
 
@@ -58,9 +54,5 @@ Our second day was allocated to a snorkeling cruise to Phi Phi islands and a cou
 
 It's such a shame we only had a few nights at Phuket - I would've loved to spend a few more days lounging by the beach or swimming more in the waters.
 
-![IMG20221025172745.jpeg](/trips/img/trips-thailand/IMG20221025172745.jpeg "gallery")
-![IMG20221025172956.jpeg](/trips/img/trips-thailand/IMG20221025172956.jpeg "gallery")
-![DSC_0587.jpeg](/trips/img/trips-thailand/DSC_0587.jpeg "gallery")
-![DSC_0594.jpeg](/trips/img/trips-thailand/DSC_0594.jpeg "gallery")
-![DSC_0612.jpeg](/trips/img/trips-thailand/DSC_0612.jpeg "gallery")
-![DSC_0640.jpeg](/trips/img/trips-thailand/DSC_0640.jpeg "gallery")
+{{< trio img1="/trips/img/trips-thailand/IMG20221025172745.jpeg" img2="/trips/img/trips-thailand/IMG20221025172956.jpeg" img3="/trips/img/trips-thailand/DSC_0587.jpeg" >}}
+{{< trio img1="/trips/img/trips-thailand/DSC_0594.jpeg" img2="/trips/img/trips-thailand/DSC_0612.jpeg" img3="/trips/img/trips-thailand/DSC_0640.jpeg" >}}
