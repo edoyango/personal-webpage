@@ -55,11 +55,13 @@
 /* See layouts/shortcodes/video.html. The padding is on a wrapper that shrinks
    to fit the video but, padding included, is never wider than the content
    column; the video fills the wrapper up to its own maxwidth. So on narrow
-   screens the video scales down to fit instead of overflowing. */
+   screens the video scales down to fit instead of overflowing. A video that
+   isn't floated is centered (auto margins have no effect on a float). */
 .video-shortcode {
     box-sizing: border-box;
     width: fit-content;
     max-width: 100%;
+    margin: 0 auto;
 }
 
 .video-shortcode video {
@@ -77,14 +79,11 @@
 }
 
 /* On phones a floated video leaves only a sliver of a column for the text
-   beside it, so give it its own line, centered, instead. */
+   beside it, so give it its own line instead (centered, like any other
+   video that isn't floated). */
 @media (max-width: 767px) {
     .video-float-left,
     .video-float-right {
         float: none;
-    }
-
-    .video-shortcode {
-        margin: 0 auto;
     }
 }
