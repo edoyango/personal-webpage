@@ -51,3 +51,40 @@
     display: block;
     margin: 0 auto;
 }
+
+/* See layouts/shortcodes/video.html. The padding is on a wrapper that shrinks
+   to fit the video but, padding included, is never wider than the content
+   column; the video fills the wrapper up to its own maxwidth. So on narrow
+   screens the video scales down to fit instead of overflowing. */
+.video-shortcode {
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+}
+
+.video-shortcode video {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.video-float-left {
+    float: left;
+}
+
+.video-float-right {
+    float: right;
+}
+
+/* On phones a floated video leaves only a sliver of a column for the text
+   beside it, so give it its own line, centered, instead. */
+@media (max-width: 767px) {
+    .video-float-left,
+    .video-float-right {
+        float: none;
+    }
+
+    .video-shortcode {
+        margin: 0 auto;
+    }
+}
