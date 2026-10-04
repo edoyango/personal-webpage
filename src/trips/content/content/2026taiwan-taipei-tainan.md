@@ -193,3 +193,19 @@ particular) and the Asakusa Shopping Centre - also good for souvenirs and food!
 
 {{< trio img1="/trips/img/trips-taiwan2026/alian-soup1.jpg" caption1="Winn's soup from Alian Beef Soup" img2="/trips/img/trips-taiwan2026/alian-soup2.jpg" caption2="My soup from Alian Beef Soup" img3="/trips/img/trips-taiwan2026/guabao.jpg" caption3="Fatty pork guabao from Guohua St" >}}
 {{< duo img1="/trips/img/trips-taiwan2026/tofu-hua.jpeg" caption1="Tofu Hua (AKA silken tofu pudding) from a place down the street from our hotel" img2="/trips/img/trips-taiwan2026/beef-soup-guohua.jpg" caption2="Beef soup from somewhere on Guohua St" >}}
+
+## Reading List: Taiwan Travelogue, by Yang Shuang-zi
+
+I stumbled across this book at the airport as we were waiting for our plane to Taiwan (as if the shop knew the exact
+flight schedule!). My wife pointed out it was a prize-winner or something, which, plus the apparent topic of the book,
+was enough to make it my book for the trip.
+
+The book is set in Japanese-occupied Taiwan. It spends a lot of time describing the Taiwanese cuisine and scenery that
+the protagonist experiences during her year-long travels in Taiwan. But really, it's exploring the dynamic between her
+(a Japanese "mainlander") and her translator (a Taiwanese "islander"). The book touches on topics such as gender roles
+and class, but their relationship, regardless of social background or upbringing, is governed by the protagonist's
+biases as a member of the occupying class.
+
+I thought the way the book illustrated the complexity of power-imbalanced relationships was very insightful. The power
+imbalance shown in the book might even offer an insight into other structural power-imbalanced relationships, such as
+those due to race, wealth, or sex.
