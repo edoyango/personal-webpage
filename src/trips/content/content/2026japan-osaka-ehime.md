@@ -15,8 +15,9 @@ tourists!
 
 I heard about the Shimanami Kaido on an Instagram reel, and as I was visiting Osaka for a conference (Supercomputing
 Asia 2026), I thought it would be a good opportunity to stretch my legs and give the famous cycle route a go!
-One of the reasons it was convenient for me on this trip is that there is an [overnight Orange Ferry](https://www.orange-ferry.co.jp/en/osaka.html)
-which takes you directly to one end of the Shimanami Kaido in Ehime.
+One of the reasons it was convenient for me on this trip is that there is an
+[overnight Orange Ferry](https://www.orange-ferry.co.jp/en/osaka.html) which takes you directly to one end of the
+Shimanami Kaido in Ehime.
 
 The Shimanami Kaido is a roughly 70km route between the towns of Imabari (on the Ehime side in the south) and
 Onomichi (on the Hiroshima side in the north). It's become famous because it is a route that is specifically made for
@@ -25,7 +26,8 @@ rental options, and bike repair stations on the way. But the real draw is that t
 of islands between Imabari and Onomichi, joined together by bridges with special bike lanes, providing both a safe ride
 and gorgeous views of the Seto Inland Sea that the bridges cross.
 
-I did this trip in winter (early Feb). I wouldn't recommend that time of year! It's quiet, but it's freezing and I got quite sick afterward 😷. Best times are apparently spring or autumn (March-May or September-November).
+I did this trip in winter (early Feb). I wouldn't recommend that time of year! It's quiet, but it's freezing and I got
+quite sick afterward 😷. Best times are apparently spring or autumn (March-May or September-November).
 
 ## Taking the Orange Ferry
 
@@ -61,10 +63,10 @@ It might not have been a problem if I hadn't had a big backpack on.
 ## The route
 
 A nice thing about the Shimanami Kaido is the wide variety of side-trip options. Apparently people usually take a few
-days to do the entire route so they can explore the islands - usually staying in accommodation on the islands themselves. I was
-on a bit of a schedule so I had opted to go out and back in 2 days - staying overnight in a capsule hotel in Onomichi.
-Hence, I only followed the main route both ways. You do get plenty of nice views on the main route, but I can see how
-some might want to take their time to soak in the islands' vibes.
+days to do the entire route so they can explore the islands - usually staying in accommodation on the islands
+themselves. I was on a bit of a schedule so I had opted to go out and back in 2 days - staying overnight in a capsule
+hotel in Onomichi. Hence, I only followed the main route both ways. You do get plenty of nice views on the main route,
+but I can see how some might want to take their time to soak in the islands' vibes.
 
 Note that the longest bridge with arguably the best views is the Kurushima Kaikyo Bridge, which is the last bridge if
 you're coming from Onomichi. Some might prefer starting at Onomichi as it saves the best for last.
@@ -77,7 +79,8 @@ On both days, I had lunch on Hakatajima Island - near [Hakata Beach](https://map
 The main reason was that the sandy beach, tourist shop, and restaurant seemed a welcoming spot to eat. Plus it was
 about lunch time anyway! On the way there, I had a set with rice and eggs and udon. On the way back I had a smaller
 ramen and gyoza set. I also picked up a cute Cycle Imabari T-shirt from the souvenir shop! On both days, I stopped at
-a few 7-Elevens and FamilyMarts. I was cycling in winter (single-digit temps), so the warm drinks were very much needed!
+a few 7-Elevens and FamilyMarts. I was cycling in winter (single-digit temps), so the warm drinks were very much
+needed!
 
 If you follow the signs all the way to Onomichi, you'll be taken to a ferry terminal that exists solely to ferry people
 (and vehicles) across to Onomichi proper. This is a perfectly fine option to go with since it only costs ¥110 with a
@@ -85,9 +88,9 @@ bike, plus riding the rest of the way would be mostly through suburban streets a
 
 {{< trio img1="/trips/img/trips-japan2026/hakata-bridge.jpg" caption1="My rented Giant Defy Advanced 2 with the Hakata Bridge as the backdrop. Photo taken just after crossing the bridge." img2="/trips/img/trips-japan2026/lunch1.jpg" caption2="Lunch at Hakata Beach" img3="/trips/img/trips-japan2026/onomichi-ferry.jpg" caption3="Arriving at Onomichi on the ferry" >}}
 
-I stayed at a capsule hotel ([Station Inn the Urashima](https://maps.app.goo.gl/pDq6K3zFwSHmELsB9)), which sits directly
-above the train station, with a few decent food options around for dinner. It was winter, so the capsule hotel was
-mostly empty! If you do stay near the station, remember to park the bike in the nearby bike parking spot; otherwise
+I stayed at a capsule hotel ([Station Inn the Urashima](https://maps.app.goo.gl/pDq6K3zFwSHmELsB9)), which sits
+directly above the train station, with a few decent food options around for dinner. It was winter, so the capsule hotel
+was mostly empty! If you do stay near the station, remember to park the bike in the nearby bike parking spot; otherwise
 you might be in for a surprise when your bike has been moved!
 
 The ride back was very much the same (which is a good thing, given that I got to enjoy the beautiful scenery a second
