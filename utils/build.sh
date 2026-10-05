@@ -57,3 +57,10 @@ fi
 while IFS= read -r -d '' page; do
   "${ROOT_DIR}/utils/fix.sh" "${page}"
 done < <(find "${PUBLISH_ROOT}/trips/content" -name "index.html" -print0)
+
+# Inject the GoatCounter snippet into every page across all sub-sites, skipping
+# Hugo's alias redirect stubs so a redirect isn't counted as a separate visit.
+GOATCOUNTER_SNIPPET='<script data-goatcounter="https://edoyango.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>' \
+  find "${PUBLISH_ROOT}" -name "*.html" -exec perl -0777 -pi -e '
+    s{</head>}{$ENV{GOATCOUNTER_SNIPPET}</head>}i unless /http-equiv=\W?refresh/i
+  ' {} +
